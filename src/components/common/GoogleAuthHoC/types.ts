@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
 
-export interface GoogleAuthHocProps {
+export interface GoogleAuthHoCProps {
   children: ReactNode;
 }

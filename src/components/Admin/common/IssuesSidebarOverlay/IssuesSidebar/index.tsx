@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { CSSTransition } from "react-transition-group";
 import { useTheme } from "styled-components";
 import {
@@ -11,6 +11,7 @@ import {
 } from "../../../../../redux/services/digma";
 import { setIsInsightJiraTicketHintShown } from "../../../../../redux/slices/persistSlice";
 import { isUndefined } from "../../../../../typeGuards/isUndefined";
+import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import type { Scope } from "../../../../common/App/types";
 import { CrossIcon } from "../../../../common/icons/16px/CrossIcon";
 import { EyeIcon } from "../../../../common/icons/16px/EyeIcon";
@@ -31,6 +32,7 @@ import {
   type InsightTicketInfo
 } from "../../../../Insights/types";
 import { ScopeBar } from "../../../../Navigation/ScopeBar";
+import { trackingEvents } from "../../../tracking";
 import * as s from "./styles";
 import { SuggestionBar } from "./SuggestionBar";
 import type { IssuesSidebarProps } from "./types";
@@ -97,6 +99,9 @@ export const IssuesSidebar = ({
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        sendUserActionTrackingEvent(
+          trackingEvents.ISSUES_SIDEBAR_ESCAPE_KEY_PRESSED
+        );
         if (infoToOpenJiraTicket) {
           handleJiraTicketPopupClose();
         } else if (insightIdToOpenSuggestion) {
@@ -130,10 +135,30 @@ export const IssuesSidebar = ({
   };
 
   const handleSidebarCloseButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ISSUES_SIDEBAR_CLOSE_BUTTON_CLICKED
+    );
     onClose();
   };
 
+  const handleSidebarResizeHandleMouseDown = (e: MouseEvent) => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ISSUES_SIDEBAR_RESIZE_HANDLE_MOUSE_BUTTON_PRESSED
+    );
+    onResizeHandleMouseDown(e);
+  };
+
+  const handleChangePage = (page: number) => {
+    sendUserActionTrackingEvent(trackingEvents.ISSUES_SIDEBAR_PAGE_CHANGED);
+    setPage(page);
+  };
+
   const handleDismissalViewModeButtonClick = () => {
+    sendUserActionTrackingEvent(
+      viewMode === ViewMode.All
+        ? trackingEvents.ISSUES_SIDEBAR_SHOW_ALL_BUTTON_CLICKED
+        : trackingEvents.ISSUES_SIDEBAR_SHOW_ONLY_DISMISSED_BUTTON_CLICKED
+    );
     const newMode =
       viewMode === ViewMode.All ? ViewMode.OnlyDismissed : ViewMode.All;
     setViewMode(newMode);
@@ -217,7 +242,7 @@ export const IssuesSidebar = ({
         )}
       </s.Header>
       <s.ContentContainer>
-        <s.ResizeHandle onMouseDown={onResizeHandleMouseDown}>
+        <s.ResizeHandle onMouseDown={handleSidebarResizeHandleMouseDown}>
           <TwoVerticalLinesIcon size={16} color={"currentColor"} />
         </s.ResizeHandle>
         {data ? (
@@ -263,7 +288,7 @@ export const IssuesSidebar = ({
               itemsCount={totalCount}
               page={page}
               pageSize={PAGE_SIZE}
-              onPageChange={setPage}
+              onPageChange={handleChangePage}
               extendedNavigation={true}
             />
             <s.FooterItemsCount>

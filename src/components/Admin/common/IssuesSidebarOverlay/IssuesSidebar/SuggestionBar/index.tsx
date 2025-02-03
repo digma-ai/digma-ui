@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useGetIssueRecommendationsQuery } from "../../../../../../redux/services/digma";
 import { RecommendationPriority } from "../../../../../../redux/services/types";
+import { sendUserActionTrackingEvent } from "../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { intersperse } from "../../../../../../utils/intersperse";
 import { CrossIcon } from "../../../../../common/icons/16px/CrossIcon";
 import { LightBulbWithScrewIcon } from "../../../../../common/icons/16px/LightBulbWithScrewIcon";
@@ -9,6 +10,7 @@ import { NewIconButton } from "../../../../../common/v3/NewIconButton";
 import { Pagination } from "../../../../../common/v3/Pagination";
 import { Toggle } from "../../../../../common/v3/Toggle";
 import type { ToggleOption } from "../../../../../common/v3/Toggle/types";
+import { trackingEvents } from "../../../../tracking";
 import * as s from "./styles";
 import type { AssetsViewMode, SuggestionBarProps } from "./types";
 
@@ -49,11 +51,25 @@ export const SuggestionBar = ({ insightId, onClose }: SuggestionBarProps) => {
   }, [page]);
 
   const handleAssetsToggleValueChange = (value: AssetsViewMode) => {
+    sendUserActionTrackingEvent(
+      trackingEvents.SUGGESTION_BAR_ASSETS_TOGGLE_VALUE_CHANGED,
+      {
+        value: assetsViewModeToggleOptions.find((x) => x.value === value)?.label
+      }
+    );
     setAssetsToggleValue(value);
   };
 
   const handleCloseButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.SUGGESTION_BAR_CLOSE_BUTTON_CLICKED
+    );
     onClose();
+  };
+
+  const handlePageChange = (page: number) => {
+    sendUserActionTrackingEvent(trackingEvents.SUGGESTION_BAR_PAGE_CHANGED);
+    setPage(page);
   };
 
   const sortedRecommendations = [...(data?.recommendations ?? [])].sort(
@@ -149,7 +165,7 @@ export const SuggestionBar = ({ insightId, onClose }: SuggestionBarProps) => {
                   itemsCount={recommendationsCount}
                   page={page}
                   pageSize={1}
-                  onPageChange={setPage}
+                  onPageChange={handlePageChange}
                 />
               </s.Footer>
             </>

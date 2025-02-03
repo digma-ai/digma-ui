@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import { trackingEvents } from "../../tracking";
 import { IssuesSidebar } from "./IssuesSidebar";
 import * as s from "./styles";
 import type { IssuesSidebarOverlayProps } from "./types";
@@ -39,6 +41,11 @@ export const IssuesSidebarOverlay = ({
   const [left, setLeft] = useState(windowWidth - defaultSidebarWidth);
   const [startLeft, setStartLeft] = useState(0);
   const isPaginationEnabled = isUndefined(issuesSidebarQuery?.limit);
+
+  const handleOverlayClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.ISSUES_SIDEBAR_OVERLAY_CLICKED);
+    onSidebarClose();
+  };
 
   const handleIssuesSidebarClose = () => {
     onSidebarClose();
@@ -91,6 +98,9 @@ export const IssuesSidebarOverlay = ({
     };
 
     const handleMouseUp = () => {
+      sendUserActionTrackingEvent(
+        trackingEvents.ISSUES_SIDEBAR_RESIZE_HANDLE_MOUSE_BUTTON_RELEASED
+      );
       setIsResizeHandlePressed(false);
     };
 
@@ -118,7 +128,7 @@ export const IssuesSidebarOverlay = ({
           $isVisible={isSidebarOpen}
           $transitionClassName={s.overlayTransitionClassName}
           $transitionDuration={s.TRANSITION_DURATION}
-          onClick={handleIssuesSidebarClose}
+          onClick={handleOverlayClick}
         />
       </CSSTransition>
       <CSSTransition

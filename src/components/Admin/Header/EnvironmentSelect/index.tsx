@@ -5,9 +5,11 @@ import {
 } from "../../../../containers/Admin/hooks";
 import { useGetEnvironmentsQuery } from "../../../../redux/services/digma";
 import { setEnvironmentId } from "../../../../redux/slices/scopeSlice";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { CodeIcon } from "../../../common/icons/12px/CodeIcon";
 import { InfinityIcon } from "../../../common/icons/InfinityIcon";
 import { sortEnvironments } from "../../../common/IssuesReport/utils";
+import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
 
 export const EnvironmentSelect = () => {
@@ -28,6 +30,11 @@ export const EnvironmentSelect = () => {
 
   const handleEnvironmentChanged = (option: string | string[]) => {
     const newItem = Array.isArray(option) ? option[0] : option;
+
+    sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_CHANGED, {
+      environmentId: newItem
+    });
+
     dispatch(setEnvironmentId(newItem));
   };
 

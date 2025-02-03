@@ -1,8 +1,10 @@
 import { useEffect, useState, type MouseEvent } from "react";
 import { useMatch } from "react-router-dom";
+import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { ArrowDownToRightIcon } from "../../../../common/icons/12px/ArrowDownToRightIcon";
 import { ChevronIcon } from "../../../../common/icons/16px/ChevronIcon";
 import { Direction } from "../../../../common/icons/types";
+import { trackingEvents } from "../../../tracking";
 import * as s from "./styles";
 import type { NavMenuItemProps } from "./types";
 
@@ -12,7 +14,10 @@ export const NavMenuItem = ({ item, onClick }: NavMenuItemProps) => {
   const [isExpanded, setIsExpanded] = useState(isActive);
   const hasSubItems = Boolean(item.items && item.items.length > 0);
 
-  const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
+  const handleItemClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    sendUserActionTrackingEvent(trackingEvents.NAV_MENU_ITEM_CLICKED, {
+      item: item.name
+    });
     if (item.items) {
       e.preventDefault();
       setIsExpanded(!isExpanded);
@@ -27,7 +32,7 @@ export const NavMenuItem = ({ item, onClick }: NavMenuItemProps) => {
 
   return (
     <s.Container key={item.id} $isActive={isActive}>
-      <s.ItemLink to={item.route} onClick={handleClick}>
+      <s.ItemLink to={item.route} onClick={handleItemClick}>
         {item.icon}
         <span>{item.name}</span>
         {item.items && item.items.length > 0 && (
@@ -43,7 +48,11 @@ export const NavMenuItem = ({ item, onClick }: NavMenuItemProps) => {
       {hasSubItems && isExpanded && (
         <s.SubList>
           {item.items?.map((x) => (
-            <s.SubListItemLink to={x.route} key={x.id}>
+            <s.SubListItemLink
+              to={x.route}
+              key={x.id}
+              onClick={handleItemClick}
+            >
               <ArrowDownToRightIcon size={12} color={"currentColor"} />
               <span>{x.name}</span>
             </s.SubListItemLink>

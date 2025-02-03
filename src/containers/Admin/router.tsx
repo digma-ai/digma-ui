@@ -1,5 +1,5 @@
 import type { RouteObject } from "react-router-dom";
-import { Navigate, createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter, useRouteError } from "react-router-dom";
 import { Admin } from "../../components/Admin";
 import { Home } from "../../components/Admin/Home";
 import { CodeIssues } from "../../components/Admin/Reports/CodeIssues";
@@ -8,6 +8,9 @@ export const routes: RouteObject[] = [
   {
     path: "/*",
     element: <Admin />,
+    ErrorBoundary: () => {
+      throw useRouteError();
+    },
     children: [
       {
         index: true,

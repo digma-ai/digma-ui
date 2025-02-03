@@ -10,11 +10,11 @@ import {
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { trackingEvents } from "../../../Dashboard/MetricsReport/tracking";
 import { SortIcon } from "../../icons/16px/SortIcon";
 import { ChevronIcon } from "../../icons/20px/ChevronIcon";
 import { Direction } from "../../icons/types";
 import { Tooltip } from "../../v3/Tooltip";
+import { trackingEvents } from "../tracking";
 import type { PresentationalReportData } from "../types";
 import * as s from "./styles";
 import type { ColumnMeta, Severity, TableProps } from "./types";

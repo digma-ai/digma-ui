@@ -1,9 +1,14 @@
 import { BOOK_DEMO_URL } from "../../../../constants";
 import { openURLInDefaultBrowser } from "../../../../utils/actions/openURLInDefaultBrowser";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
 
-export const PromotionCard = () => {
+export const TrialPromotionCard = () => {
   const handleStartNowButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.TRIAL_PROMOTION_CARD_START_NOW_BUTTON_CLICKED
+    );
     openURLInDefaultBrowser(BOOK_DEMO_URL);
   };
 
