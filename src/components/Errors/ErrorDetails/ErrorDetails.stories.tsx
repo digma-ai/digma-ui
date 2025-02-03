@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { ErrorDetails } from ".";
 import { actions } from "../actions";
 import { mockedErrorDetails } from "./mockData";

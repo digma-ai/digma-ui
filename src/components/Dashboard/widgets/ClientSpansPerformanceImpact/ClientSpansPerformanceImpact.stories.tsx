@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { ClientSpansPerformanceImpact } from ".";
 import { actions } from "../../actions";
 

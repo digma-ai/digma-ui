@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { SpanQueryOptimizationHighlightCard } from ".";
 import { mockedSpanQueryOptimizationHighlightData } from "./mockData";
 

@@ -1,6 +1,5 @@
 import { useTheme } from "styled-components";
 import { getThemeKind } from "../../../common/App/styles";
-import { HomeSection } from "../HomeSection";
 import { ReportWidget } from "./ReportWidget";
 import * as s from "./styles";
 
@@ -10,7 +9,7 @@ export const Reports = () => {
 
   return (
     <s.Container>
-      <HomeSection title={"Your reports"}>
+      <s.Section title={"Your reports"}>
         <s.WidgetsContainer>
           {[
             {
@@ -41,7 +40,7 @@ export const Reports = () => {
             />
           ))}
         </s.WidgetsContainer>
-      </HomeSection>
+      </s.Section>
     </s.Container>
   );
 };

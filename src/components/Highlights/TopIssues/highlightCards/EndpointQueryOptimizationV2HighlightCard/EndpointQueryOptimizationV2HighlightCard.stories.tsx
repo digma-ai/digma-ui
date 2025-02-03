@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { EndpointQueryOptimizationV2HighlightCard } from ".";
 import { mockedEndpointQueryHighLightData } from "./mockData";
 

@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { HotSpotHighlightCard } from ".";
 import { mockedHotSpotHighlightData } from "./mockData";
 

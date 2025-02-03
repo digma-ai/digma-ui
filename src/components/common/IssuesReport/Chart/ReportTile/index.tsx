@@ -1,4 +1,4 @@
-import type { MouseEvent } from "react";
+import { useState, type MouseEvent } from "react";
 import type { IssuesReportTimeMode } from "../../../../../redux/slices/issuesReportSlice";
 import { Tile } from "../../../TreeMap/Tile";
 import * as s from "./styles";
@@ -19,6 +19,8 @@ export const ReportTile = ({
   onIssuesClick,
   isActive
 }: ReportTileProps) => {
+  const [isIssuesLinkHovered, setIsIssuesLinkHovered] = useState(false);
+
   const formattedCriticalIssuesCount = getFormattedNumber(
     timeMode,
     criticalIssuesCount
@@ -36,6 +38,14 @@ export const ReportTile = ({
       e.preventDefault();
       onIssuesClick();
     }
+  };
+
+  const handleIssuesLinkMouseEnter = () => {
+    setIsIssuesLinkHovered(true);
+  };
+
+  const handleIssuesLinkMouseLeave = () => {
+    setIsIssuesLinkHovered(false);
   };
 
   return (
@@ -56,11 +66,21 @@ export const ReportTile = ({
         </s.TooltipContent>
       }
     >
-      <s.StyledLink href={"#"} onClick={handleIssuesLinkClick}>
-        <span>
-          {formattedCriticalIssuesCount} | {formattedScore}
-        </span>
-      </s.StyledLink>
+      <s.TileContentContainer>
+        <s.StyledLink
+          href={"#"}
+          onClick={handleIssuesLinkClick}
+          onMouseEnter={handleIssuesLinkMouseEnter}
+          onMouseLeave={handleIssuesLinkMouseLeave}
+        >
+          <span>
+            {formattedCriticalIssuesCount} | {formattedScore}
+          </span>
+        </s.StyledLink>
+        {isIssuesLinkHovered && (
+          <s.HoverDescription>Issues | Criticality score</s.HoverDescription>
+        )}
+      </s.TileContentContainer>
     </Tile>
   );
 };

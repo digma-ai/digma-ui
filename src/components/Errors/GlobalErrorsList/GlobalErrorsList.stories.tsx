@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { GlobalErrorsList } from ".";
 import { ViewMode } from "../../../store/errors/errorsSlice";
 import { useStore } from "../../../store/useStore";

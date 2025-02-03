@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { EndpointChattyApiV2HighlightCard } from ".";
 import { mockedEndpointChattyApiV2HighlightData } from "./mockData";
 

@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { SpanScalingHighlightCard } from ".";
 import { mockedSpanScalingHighlightData } from "./mockData";
 

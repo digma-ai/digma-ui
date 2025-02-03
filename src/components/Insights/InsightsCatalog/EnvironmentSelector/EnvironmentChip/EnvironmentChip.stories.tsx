@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { EnvironmentChip } from ".";
 import type { Environment } from "../../../../common/App/types";
 

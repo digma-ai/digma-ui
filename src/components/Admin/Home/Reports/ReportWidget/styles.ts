@@ -7,12 +7,12 @@ import {
 import type { BackgroundProps, LinkProps } from "./types";
 
 export const Link = styled(RouterLink)<LinkProps>`
-  width: 360px;
-  height: 168px;
+  aspect-ratio: 360 / 168;
+  min-width: 370px;
+  flex: 1 1 0;
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   position: relative;
-  flex-shrink: 0;
   box-sizing: border-box;
   overflow: hidden;
   cursor: ${({ $isEnabled }) => ($isEnabled ? "pointer" : "initial")};
@@ -32,6 +32,8 @@ export const Link = styled(RouterLink)<LinkProps>`
 `;
 
 export const Background = styled.img<BackgroundProps>`
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   mix-blend-mode: ${({ $isEnabled }) => ($isEnabled ? "normal" : "luminosity")};
 `;

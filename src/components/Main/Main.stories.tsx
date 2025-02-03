@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import type { RouterRoute } from "storybook-addon-remix-react-router";
 import { reactRouterParameters } from "storybook-addon-remix-react-router";
 import { Main } from ".";

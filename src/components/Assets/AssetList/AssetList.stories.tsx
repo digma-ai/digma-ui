@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { fn } from "@storybook/test";
 import { AssetList } from ".";
 import { ConfigContext, initialState } from "../../common/App/ConfigContext";
