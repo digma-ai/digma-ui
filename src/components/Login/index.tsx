@@ -4,9 +4,31 @@ import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { isString } from "../../typeGuards/isString";
+import { sendErrorTrackingEvent } from "../../utils/actions/sendErrorTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { TextField } from "../common/v3/TextField";
 import { GoogleSignInButton } from "./GoogleSignInButton";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
+
+const reportError = (error: Error) => {
+  if (isAxiosError(error)) {
+    sendErrorTrackingEvent(error, {
+      "request.url": error.config?.url,
+      severity: "high",
+      "error.source":
+        error.response &&
+        error.response.status >= 500 &&
+        error.response.status < 600
+          ? "backend"
+          : "ui"
+    });
+  } else {
+    sendErrorTrackingEvent(error, {
+      severity: "high"
+    });
+  }
+};
 
 export const Login = () => {
   const [username, setUsername] = useState("");
@@ -22,6 +44,7 @@ export const Login = () => {
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    sendUserActionTrackingEvent(trackingEvents.SIGN_IN_FORM_SUBMITTED);
     e.preventDefault();
 
     axios
@@ -37,6 +60,8 @@ export const Login = () => {
         }
       })
       .catch((error: Error) => {
+        reportError(error);
+
         let errorMessage = "Failed to sign in";
 
         if (isAxiosError(error)) {
@@ -70,6 +95,7 @@ export const Login = () => {
         }
       })
       .catch((error: Error) => {
+        reportError(error);
         // eslint-disable-next-line no-console
         console.error(error);
         setError("Failed to sign in with Google");

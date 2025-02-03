@@ -3,10 +3,12 @@ import { useTheme } from "styled-components";
 import { useAdminDispatch } from "../../../containers/Admin/hooks";
 import { useLogoutMutation } from "../../../redux/services/auth";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getThemeKind } from "../../common/App/styles";
 import { LogoutIcon } from "../../common/icons/16px/LogoutIcon";
+import { trackingEvents } from "../tracking";
 import { NavMenu } from "./NavMenu";
-import { PromotionCard } from "./PromotionCard";
+import { TrialPromotionCard } from "./TrialPromotionCard";
 import * as s from "./styles";
 
 export const Sidebar = () => {
@@ -16,7 +18,12 @@ export const Sidebar = () => {
   const dispatch = useAdminDispatch();
   const { isSandboxModeEnabled } = useConfigSelector();
 
+  const handleLogoLinkClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.LOGO_LINK_CLICKED);
+  };
+
   const handleLogoutButtonClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.LOGOUT_BUTTON_CLICKED);
     void logout();
   };
 
@@ -38,7 +45,7 @@ export const Sidebar = () => {
 
   return (
     <s.Sidebar>
-      <s.LogoLink to={"/"}>
+      <s.LogoLink to={"/"} onClick={handleLogoLinkClick}>
         <s.Logo
           src={`/assets/images/admin/digmaLogo_${themeKind}.svg`}
           alt={"Digma logotype"}
@@ -46,7 +53,7 @@ export const Sidebar = () => {
       </s.LogoLink>
       <NavMenu />
       <s.Footer>
-        {isSandboxModeEnabled && <PromotionCard />}
+        {isSandboxModeEnabled && <TrialPromotionCard />}
         <s.LogoutButton onClick={handleLogoutButtonClick}>
           <LogoutIcon size={16} color={"currentColor"} />
           Log out

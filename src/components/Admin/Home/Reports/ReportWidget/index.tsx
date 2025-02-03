@@ -1,6 +1,8 @@
 import type { MouseEvent } from "react";
+import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { ChevronIcon } from "../../../../common/icons/20px/ChevronIcon";
 import { Direction } from "../../../../common/icons/types";
+import { trackingEvents } from "../../../tracking";
 import * as s from "./styles";
 import type { ReportWidgetProps } from "./types";
 
@@ -11,6 +13,10 @@ export const ReportWidget = ({
   isEnabled
 }: ReportWidgetProps) => {
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    sendUserActionTrackingEvent(trackingEvents.REPORT_WIDGET_CLICKED, {
+      report: title
+    });
+
     if (!isEnabled) {
       e.preventDefault();
     }
@@ -21,7 +27,7 @@ export const ReportWidget = ({
       <s.Background src={backgroundImage} $isEnabled={isEnabled} />
       <s.TitleContainer>
         <s.Title>{title}</s.Title>
-        {!isEnabled && <s.SoonBadge>Soon</s.SoonBadge>}
+        {!isEnabled && <s.SoonBadge>Coming soon</s.SoonBadge>}
         <s.ChevronIconContainer>
           <ChevronIcon
             size={20}

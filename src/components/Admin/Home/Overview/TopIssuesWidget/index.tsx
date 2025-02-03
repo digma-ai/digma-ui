@@ -3,11 +3,13 @@ import { useAdminSelector } from "../../../../../containers/Admin/hooks";
 import { getFeatureFlagValue } from "../../../../../featureFlags";
 import { useGetAboutQuery } from "../../../../../redux/services/digma";
 import { FeatureFlag } from "../../../../../types";
+import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getThemeKind } from "../../../../common/App/styles";
 import { WarningTriangleIcon } from "../../../../common/icons/12px/WarningTriangleIcon";
 import { MeterHighIcon } from "../../../../common/icons/16px/MeterHighIcon";
 import { ChevronIcon } from "../../../../common/icons/20px/ChevronIcon";
 import { Direction } from "../../../../common/icons/types";
+import { trackingEvents } from "../../../tracking";
 import { OverviewWidget } from "../OverviewWidget";
 import * as s from "./styles";
 import type { TopIssuesWidgetProps } from "./types";
@@ -20,6 +22,9 @@ export const TopIssuesWidget = ({ onGetIssues }: TopIssuesWidgetProps) => {
   const environmentId = useAdminSelector((state) => state.scope.environmentId);
 
   const handleByCriticalityButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.TOP_ISSUES_WIDGET_BY_CRITICALITY_BUTTON_CLICKED
+    );
     onGetIssues({
       query: {
         environment: environmentId ?? undefined
@@ -30,6 +35,9 @@ export const TopIssuesWidget = ({ onGetIssues }: TopIssuesWidgetProps) => {
   };
 
   const handleBySeverityButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.TOP_ISSUES_WIDGET_BY_SEVERITY_BUTTON_CLICKED
+    );
     onGetIssues({
       query: {
         environment: environmentId ?? undefined,

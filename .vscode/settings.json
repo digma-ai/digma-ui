@@ -9,6 +9,7 @@
     "drilldowns",
     "hotspot",
     "leaderboard",
+    "posthog",
     "precommit",
     "stylelint",
     "tanstack",

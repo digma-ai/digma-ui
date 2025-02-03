@@ -46,15 +46,23 @@ export const isDigmaStatus = (status: unknown): status is DigmaStatus =>
   (isString(status.connection.type) || isNull(status.connection.type)) &&
   Array.isArray(status.runningDigmaInstances);
 
-const getTheme = (): Theme => {
-  if (!isTheme(window.theme)) {
-    const bodyEl = document.getElementsByTagName("body");
-    const vscodeTheme =
-      bodyEl[0].dataset.vscodeThemeKind === "vscode-light" ? "light" : "dark";
-    return vscodeTheme;
+const getTheme = (colorScheme: "light" | "dark"): Theme => {
+  if (isTheme(window.theme)) {
+    return window.theme;
   }
 
-  return window.theme;
+  switch (platform) {
+    case "Web":
+      return colorScheme;
+    case "VS Code": {
+      const bodyEl = document.getElementsByTagName("body");
+      const vscodeTheme =
+        bodyEl[0].dataset.vscodeThemeKind === "vscode-light" ? "light" : "dark";
+      return vscodeTheme;
+    }
+    default:
+      return "dark-jetbrains";
+  }
 };
 
 const defaultMainFont = isString(window.mainFont) ? window.mainFont : "";
@@ -62,9 +70,7 @@ const defaultCodeFont = isString(window.codeFont) ? window.codeFont : "";
 
 export const App = ({ theme, children, id }: AppProps) => {
   const colorScheme = useColorScheme();
-  const [currentTheme, setCurrentTheme] = useState(
-    theme ?? platform === "Web" ? colorScheme : getTheme()
-  );
+  const [currentTheme, setCurrentTheme] = useState(getTheme(colorScheme));
   const [mainFont, setMainFont] = useState(defaultMainFont);
   const [codeFont, setCodeFont] = useState(defaultCodeFont);
   const [config, setConfig] = useState(useContext(ConfigContext));
@@ -106,9 +112,7 @@ export const App = ({ theme, children, id }: AppProps) => {
   }, [theme]);
 
   useEffect(() => {
-    if (platform === "Web") {
-      setCurrentTheme(colorScheme);
-    }
+    getTheme(colorScheme);
   }, [colorScheme]);
 
   useEffect(() => {

@@ -56,6 +56,8 @@ declare global {
     areInsightSuggestionsEnabled?: unknown;
     googleClientId?: unknown;
     isSandboxModeEnabled?: unknown;
+    postHogApiKey?: unknown;
+    postHogHost?: unknown;
   }
 }
 

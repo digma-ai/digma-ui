@@ -10,8 +10,8 @@ export interface ErrorData {
 
 export const sendErrorTrackingEvent = (error: Error, data: ErrorData) => {
   sendTrackingEvent(trackingEvents.ERROR, {
-    ...(data ? { ...data } : {}),
     "error.source": "ui",
+    ...data,
     "exception.type": error.name,
     "exception.message": error.message,
     "exception.stack-trace": error.stack,

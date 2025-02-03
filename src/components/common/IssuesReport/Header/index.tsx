@@ -15,7 +15,6 @@ import type {
 import { FeatureFlag } from "../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../../utils/formatUnit";
-import { trackingEvents } from "../../../Dashboard/MetricsReport/tracking";
 import { CodeIcon } from "../../icons/12px/CodeIcon";
 import { DurationBreakdownIcon } from "../../icons/12px/DurationBreakdownIcon";
 import { WrenchIcon } from "../../icons/12px/WrenchIcon";
@@ -28,6 +27,7 @@ import { Direction } from "../../icons/types";
 import type { ToggleValue } from "../../Toggle/types";
 import { NewIconButton } from "../../v3/NewIconButton";
 import { Tooltip } from "../../v3/Tooltip";
+import { trackingEvents } from "../tracking";
 import { sortEnvironments } from "../utils";
 import * as s from "./styles";
 import type { HeaderProps } from "./types";

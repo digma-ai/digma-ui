@@ -3,6 +3,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { rememberReducer } from "redux-remember";
 import { platform } from "../../platform";
 import { PERSIST_PREFIX, STATE_VERSION } from "../../redux/constants";
+import { posthogMiddleware } from "../../redux/posthogMiddleware";
 import { authApi } from "../../redux/services/auth";
 import { digmaApi } from "../../redux/services/digma";
 import { appSlice } from "../../redux/slices/appSlice";
@@ -41,7 +42,11 @@ export const store = configureStore({
   // TODO: Fix types
   // @ts-expect-error More info: https://github.com/zewish/redux-remember/issues/11
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(digmaApi.middleware, authApi.middleware)
+    getDefaultMiddleware().concat(
+      digmaApi.middleware,
+      authApi.middleware,
+      posthogMiddleware
+    )
 });
 
 setupListeners(store.dispatch);

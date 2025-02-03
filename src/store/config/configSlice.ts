@@ -44,6 +44,8 @@ export interface ConfigState {
   areInsightSuggestionsEnabled: boolean | null;
   googleClientId: string | null;
   isSandboxModeEnabled: boolean | null;
+  postHogApiKey: string | null;
+  postHogHost: string | null;
 }
 
 const initialState: ConfigState = {
@@ -104,7 +106,9 @@ const initialState: ConfigState = {
     : null,
   isSandboxModeEnabled: isBoolean(window.isSandboxModeEnabled)
     ? window.isSandboxModeEnabled
-    : null
+    : null,
+  postHogApiKey: isString(window.postHogApiKey) ? window.postHogApiKey : null,
+  postHogHost: isString(window.postHogHost) ? window.postHogHost : null
 };
 
 const set = (update: Partial<ConfigState>) => (state: ConfigState) => ({

@@ -4,9 +4,9 @@ import useDimensions from "react-cool-dimensions";
 import useScrollbarSize from "react-scrollbar-size";
 import type { Input } from "squarify";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { trackingEvents } from "../../../Dashboard/MetricsReport/tracking";
 import { TreeMap } from "../../TreeMap";
 import type { TileData } from "../../TreeMap/types";
+import { trackingEvents } from "../tracking";
 import { ReportTile } from "./ReportTile";
 import * as s from "./styles";
 import type { ChartProps } from "./types";
@@ -66,7 +66,9 @@ export const Chart = ({
           criticalIssuesCount={x.criticalIssuesCount}
           scoreCriterion={scoreCriterion}
           score={score}
-          severity={x.severity}
+          severity={
+            data.length === 1 && x.criticalIssuesCount > 0 ? "Top" : x.severity
+          }
           timeMode={timeMode}
           onIssuesClick={handleSeeIssuesClick}
           onTitleClick={viewLevel === "services" ? handleTitleClick : undefined}

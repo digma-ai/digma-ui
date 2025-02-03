@@ -15,6 +15,7 @@ export interface GetAboutResponse {
 
 export interface GetUserProfileResponse {
   email: string;
+  uid?: string;
 }
 
 export interface GetMetricsReportDataPayloadV1 {
