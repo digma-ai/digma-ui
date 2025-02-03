@@ -9,6 +9,7 @@ import { WarningTriangleIcon } from "../../../../common/icons/12px/WarningTriang
 import { MeterHighIcon } from "../../../../common/icons/16px/MeterHighIcon";
 import { ChevronIcon } from "../../../../common/icons/20px/ChevronIcon";
 import { Direction } from "../../../../common/icons/types";
+import { Tooltip } from "../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../tracking";
 import { OverviewWidget } from "../OverviewWidget";
 import * as s from "./styles";
@@ -63,37 +64,52 @@ export const TopIssuesWidget = ({ onGetIssues }: TopIssuesWidgetProps) => {
       <s.Container>
         <s.Title>Top 10 Issues</s.Title>
         <s.ButtonsContainer>
-          <s.ByCriticalityButton onClick={handleByCriticalityButtonClick}>
-            <s.IconContainer>
-              <MeterHighIcon size={16} color={"currentColor"} />
-            </s.IconContainer>
-            By Criticality
-            <s.ChevronIconContainer>
-              <ChevronIcon
-                size={20}
-                direction={Direction.RIGHT}
-                color={"currentColor"}
-              />
-            </s.ChevronIconContainer>
-          </s.ByCriticalityButton>
+          <Tooltip
+            placement={"bottom"}
+            title={
+              "A list of the 10 most important issues, ranked by their impact and urgency."
+            }
+          >
+            <s.ByCriticalityButton onClick={handleByCriticalityButtonClick}>
+              <s.IconContainer>
+                <MeterHighIcon size={16} color={"currentColor"} />
+              </s.IconContainer>
+              By Criticality
+              <s.ChevronIconContainer>
+                <ChevronIcon
+                  size={20}
+                  direction={Direction.RIGHT}
+                  color={"currentColor"}
+                />
+              </s.ChevronIconContainer>
+            </s.ByCriticalityButton>
+          </Tooltip>
+
           {isBySeverityButtonVisible && (
             <>
               <s.Divider
                 src={`/assets/images/admin/home/overviewWidgetMetricsDivider_${themeKind}.svg`}
               />
-              <s.BySeverityButton onClick={handleBySeverityButtonClick}>
-                <s.IconContainer>
-                  <WarningTriangleIcon size={16} color={"currentColor"} />
-                </s.IconContainer>
-                By Severity
-                <s.ChevronIconContainer>
-                  <ChevronIcon
-                    size={20}
-                    direction={Direction.RIGHT}
-                    color={"currentColor"}
-                  />
-                </s.ChevronIconContainer>
-              </s.BySeverityButton>
+              <Tooltip
+                placement={"bottom"}
+                title={
+                  "A list of the 10 most severe issues, ranked by their severity level."
+                }
+              >
+                <s.BySeverityButton onClick={handleBySeverityButtonClick}>
+                  <s.IconContainer>
+                    <WarningTriangleIcon size={16} color={"currentColor"} />
+                  </s.IconContainer>
+                  By Severity
+                  <s.ChevronIconContainer>
+                    <ChevronIcon
+                      size={20}
+                      direction={Direction.RIGHT}
+                      color={"currentColor"}
+                    />
+                  </s.ChevronIconContainer>
+                </s.BySeverityButton>
+              </Tooltip>
             </>
           )}
         </s.ButtonsContainer>

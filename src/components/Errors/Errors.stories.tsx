@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { Errors } from ".";
 import { ConfigContext, initialState } from "../common/App/ConfigContext";
 import type { ConfigContextData } from "../common/App/types";

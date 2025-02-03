@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { MetricsReport } from ".";
 import { mockedReport } from "../../common/IssuesReport/Table/mockData";
 import { actions } from "../actions";

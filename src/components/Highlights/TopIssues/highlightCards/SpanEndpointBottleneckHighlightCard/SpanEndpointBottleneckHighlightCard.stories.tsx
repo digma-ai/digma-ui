@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { SpanEndpointBottleneckHighlightCard } from ".";
 import { mockedSpanEndpointBottleneckHighlightData } from "./mockData";
 

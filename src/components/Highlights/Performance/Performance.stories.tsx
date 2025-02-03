@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { Performance } from ".";
 import { actions } from "../../Main/actions";
 import { mockedPerformanceData } from "./mockData";

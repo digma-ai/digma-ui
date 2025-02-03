@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { sub } from "date-fns";
 import { Status } from ".";
 

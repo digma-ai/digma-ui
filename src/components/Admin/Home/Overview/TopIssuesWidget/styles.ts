@@ -29,6 +29,7 @@ export const IconContainer = styled.span`
   justify-content: center;
   border-radius: 50%;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
 export const Button = styled.button`
@@ -42,6 +43,11 @@ export const Button = styled.button`
   text-transform: capitalize;
   padding: 0;
   cursor: pointer;
+
+  &:hover,
+  &:active {
+    color: ${({ theme }) => theme.colors.v3.text.link};
+  }
 `;
 
 export const ByCriticalityButton = styled(Button)`

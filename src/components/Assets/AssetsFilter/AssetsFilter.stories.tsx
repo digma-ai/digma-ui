@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { AssetsFilter } from ".";
 import { actions } from "../actions";
 

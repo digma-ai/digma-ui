@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { Navigation } from ".";
 import { TAB_IDS } from "./Tabs/types";
 

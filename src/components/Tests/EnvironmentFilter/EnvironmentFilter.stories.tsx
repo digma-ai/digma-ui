@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { useState } from "react";
 import { EnvironmentFilter } from ".";
 import type { MenuItem } from "../../common/FilterMenu/types";

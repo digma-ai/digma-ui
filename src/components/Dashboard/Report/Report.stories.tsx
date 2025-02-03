@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { Report } from ".";
 import { actions as globalActions } from "../../../actions";
 import { actions } from "../actions";

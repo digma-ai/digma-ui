@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { IconButton } from ".";
 import { CodeIcon } from "../../../common/icons/16px/CodeIcon";
 
