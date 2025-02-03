@@ -8,17 +8,17 @@ import { Login } from "../../components/Login";
 import { initPosthog } from "../../posthog";
 import { isString } from "../../typeGuards/isString";
 import { handleUncaughtError } from "../../utils/handleUncaughtError";
-import { APP_ID } from "../Admin/constants";
+import { APP_ID } from "./constants";
 
 if (isString(window.postHogApiKey) && isString(window.postHogHost)) {
   initPosthog(window.postHogApiKey, window.postHogHost, APP_ID);
 }
 
-const rootElement = document.getElementById("root");
-
 window.addEventListener("error", (e) => {
   handleUncaughtError(APP_ID, e);
 });
+
+const rootElement = document.getElementById("root");
 
 if (rootElement) {
   const root = createRoot(rootElement);

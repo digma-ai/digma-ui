@@ -17,14 +17,14 @@ if (isString(window.postHogApiKey) && isString(window.postHogHost)) {
   initPosthog(window.postHogApiKey, window.postHogHost, APP_ID);
 }
 
-const rootElement = document.getElementById("root");
+window.addEventListener("error", (e) => {
+  handleUncaughtError(APP_ID, e);
+});
 
 // TODO: make not required and remove
 window.sendMessageToDigma = sendMessage;
 
-window.addEventListener("error", (e) => {
-  handleUncaughtError(APP_ID, e);
-});
+const rootElement = document.getElementById("root");
 
 if (rootElement) {
   const root = createRoot(rootElement);

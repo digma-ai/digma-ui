@@ -1,5 +1,5 @@
+import { APP_ID } from "../../containers/Login/constants";
 import { addPrefix } from "../../utils/addPrefix";
-import { APP_ID } from "./constants";
 
 export const trackingEvents = addPrefix(
   APP_ID,
