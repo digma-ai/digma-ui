@@ -1,3 +1,4 @@
+import posthog from "posthog-js";
 import { useEffect } from "react";
 import { useTheme } from "styled-components";
 import { useAdminDispatch } from "../../../containers/Admin/hooks";
@@ -31,6 +32,9 @@ export const Sidebar = () => {
     let timeoutId: number | null = null;
 
     if (result.isSuccess) {
+      if (posthog.__loaded) {
+        posthog.reset();
+      }
       timeoutId = window.setTimeout(() => {
         window.location.reload();
       }, 500);

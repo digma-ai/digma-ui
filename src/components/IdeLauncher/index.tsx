@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useTheme } from "styled-components";
+import { JETBRAINS_MARKETPLACE_PLUGIN_URL } from "../../constants";
 import { isString } from "../../typeGuards/isString";
+import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { getThemeKind } from "../common/App/styles";
 import { NewButton } from "../common/v3/NewButton";
 import { Select } from "../common/v3/Select";
@@ -9,6 +12,7 @@ import type { SelectItem } from "../common/v3/Select/types";
 import { scanRunningIdeProjects } from "./scanRunningIdeProjects";
 import { showIdeProject } from "./showIdeProject";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
 import type { ShowIdeProjectResult } from "./types";
 
 const SELECT_VALUE_DELIMITER = ":";
@@ -52,6 +56,9 @@ export const IdeLauncher = () => {
       setIsShowIdeProjectInProgress(true);
       const params = getURLQueryParams(window.location.search);
       const result = await showIdeProject(port, project, params);
+      sendTrackingEvent(trackingEvents.IDE_PROJECT_OPEN_RESULT_RECEIVED, {
+        result
+      });
       setShowIdeProjectResult(result);
       setIsShowIdeProjectInProgress(false);
     },
@@ -90,6 +97,7 @@ export const IdeLauncher = () => {
   }, [tryToShowIdeProject]);
 
   const handleSelectChange = async (value: string | string[]) => {
+    sendUserActionTrackingEvent(trackingEvents.IDE_PROJECT_SELECTED);
     const selectedValue = isString(value) ? value : value[0];
     const { port, project } = parseSelectedItemValue(selectedValue);
 
@@ -108,10 +116,14 @@ export const IdeLauncher = () => {
   };
 
   const handleTryScanningAgainButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.TRY_SCANNING_AGAIN_BUTTON_CLICKED
+    );
     window.location.reload();
   };
 
   const handleTryShowIdeProjectAgainButtonClick = async () => {
+    sendUserActionTrackingEvent(trackingEvents.TRY_AGAIN_BUTTON_CLICKED);
     const selectedItemValue = selectItems?.find((item) => item.selected)?.value;
     if (!selectedItemValue) {
       return;
@@ -122,8 +134,9 @@ export const IdeLauncher = () => {
   };
 
   const handleGetDigmaButtonClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.GET_DIGMA_BUTTON_CLICKED);
     window.open(
-      "https://plugins.jetbrains.com/plugin/19470-digma-continuous-feedback",
+      JETBRAINS_MARKETPLACE_PLUGIN_URL,
       "_blank",
       "noopener noreferrer"
     );
