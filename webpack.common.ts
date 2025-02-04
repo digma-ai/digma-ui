@@ -89,21 +89,6 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
             : [])
         ]
       }),
-      new CopyWebpackPlugin({
-        patterns: [
-          {
-            from: path.resolve(__dirname, "./public")
-          },
-          ...(env.PLATFORM === "JetBrains"
-            ? [
-                {
-                  from: path.resolve(__dirname, `./jaeger-ui/dist`),
-                  to: "jaeger-ui"
-                }
-              ]
-            : [])
-        ]
-      }),
       ...Object.keys(entriesToBuild).map((app) => {
         return new HtmlWebpackPlugin({
           template: path.resolve(

@@ -1,4 +1,4 @@
-import posthog from "posthog-js";
+import { usePostHog } from "posthog-js/react";
 import { useEffect } from "react";
 import { useTheme } from "styled-components";
 import { useAdminDispatch } from "../../../containers/Admin/hooks";
@@ -18,6 +18,7 @@ export const Sidebar = () => {
   const [logout, result] = useLogoutMutation();
   const dispatch = useAdminDispatch();
   const { isSandboxModeEnabled } = useConfigSelector();
+  const posthog = usePostHog();
 
   const handleLogoLinkClick = () => {
     sendUserActionTrackingEvent(trackingEvents.LOGO_LINK_CLICKED);
@@ -45,7 +46,7 @@ export const Sidebar = () => {
         window.clearTimeout(timeoutId);
       }
     };
-  }, [result.isSuccess, dispatch]);
+  }, [posthog, result.isSuccess, dispatch]);
 
   return (
     <s.Sidebar>

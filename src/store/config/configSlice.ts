@@ -46,6 +46,7 @@ export interface ConfigState {
   isSandboxModeEnabled: boolean | null;
   postHogApiKey: string | null;
   postHogHost: string | null;
+  productFruitsWorkspaceCode: string | null;
 }
 
 const initialState: ConfigState = {
@@ -108,7 +109,10 @@ const initialState: ConfigState = {
     ? window.isSandboxModeEnabled
     : null,
   postHogApiKey: isString(window.postHogApiKey) ? window.postHogApiKey : null,
-  postHogHost: isString(window.postHogHost) ? window.postHogHost : null
+  postHogHost: isString(window.postHogHost) ? window.postHogHost : null,
+  productFruitsWorkspaceCode: isString(window.productFruitsWorkspaceCode)
+    ? window.productFruitsWorkspaceCode
+    : null
 };
 
 const set = (update: Partial<ConfigState>) => (state: ConfigState) => ({
