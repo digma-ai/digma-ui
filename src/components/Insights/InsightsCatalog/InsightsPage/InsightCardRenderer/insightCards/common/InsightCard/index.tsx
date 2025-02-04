@@ -542,57 +542,56 @@ export const InsightCard = ({
 
   const isFooterVisible = Boolean(renderActions() ?? insight.isDismissible);
   return (
-    <>
-      <s.StyledCard
-        ref={cardRef}
-        $isDismissed={insight.isDismissed}
-        $isRead={insight.isRead}
-        $isReadable={insight.isReadable}
-        onClick={handleClick}
-        header={
-          <InsightHeader
-            insight={insight}
-            isAsync={isAsync}
-            onSpanLinkClick={handleSpanLinkClick}
-            lastUpdateTimer={showTimer ? insight.actualStartTime : null}
-          />
-        }
-        content={
-          <s.ContentContainer>
-            {isCritical && (
-              <ProductionAffectionBar
-                isTicketCreated={isString(insight.ticketLink)}
-                onCreateTicket={
-                  onJiraButtonClick ? handleCreateTicketLinkClick : undefined
+    <s.StyledCard
+      ref={cardRef}
+      $isDismissed={insight.isDismissed}
+      $isRead={insight.isRead}
+      $isReadable={insight.isReadable}
+      onClick={handleClick}
+      className={"insight-card"}
+      header={
+        <InsightHeader
+          insight={insight}
+          isAsync={isAsync}
+          onSpanLinkClick={handleSpanLinkClick}
+          lastUpdateTimer={showTimer ? insight.actualStartTime : null}
+        />
+      }
+      content={
+        <s.ContentContainer>
+          {isCritical && (
+            <ProductionAffectionBar
+              isTicketCreated={isString(insight.ticketLink)}
+              onCreateTicket={
+                onJiraButtonClick ? handleCreateTicketLinkClick : undefined
+              }
+            />
+          )}
+          {showBanner && <RecalculateBar />}
+          {content}
+        </s.ContentContainer>
+      }
+      footer={
+        isFooterVisible ? (
+          <s.InsightFooter>
+            {insight.isDismissible && (
+              <DismissPanel
+                onShow={handleShowClick}
+                onDismiss={handleDismissClick}
+                confirmationMessage={"Dismiss insight?"}
+                state={
+                  isDismissalChangeInProgress
+                    ? "in-progress"
+                    : insight.isDismissed
+                    ? "dismissed"
+                    : "visible"
                 }
               />
             )}
-            {showBanner && <RecalculateBar />}
-            {content}
-          </s.ContentContainer>
-        }
-        footer={
-          isFooterVisible ? (
-            <s.InsightFooter>
-              {insight.isDismissible && (
-                <DismissPanel
-                  onShow={handleShowClick}
-                  onDismiss={handleDismissClick}
-                  confirmationMessage={"Dismiss insight?"}
-                  state={
-                    isDismissalChangeInProgress
-                      ? "in-progress"
-                      : insight.isDismissed
-                      ? "dismissed"
-                      : "visible"
-                  }
-                />
-              )}
-              {renderActions()}
-            </s.InsightFooter>
-          ) : undefined
-        }
-      />
-    </>
+            {renderActions()}
+          </s.InsightFooter>
+        ) : undefined
+      }
+    />
   );
 };

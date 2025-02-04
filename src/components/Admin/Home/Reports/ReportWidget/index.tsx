@@ -10,7 +10,8 @@ export const ReportWidget = ({
   title,
   route,
   backgroundImage,
-  isEnabled
+  isEnabled,
+  id
 }: ReportWidgetProps) => {
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     sendUserActionTrackingEvent(trackingEvents.REPORT_WIDGET_CLICKED, {
@@ -23,7 +24,13 @@ export const ReportWidget = ({
   };
 
   return (
-    <s.Link to={route} onClick={handleClick} $isEnabled={isEnabled}>
+    <s.Link
+      className={"report-widget"}
+      data-id={id}
+      to={route}
+      onClick={handleClick}
+      $isEnabled={isEnabled}
+    >
       <s.Background src={backgroundImage} $isEnabled={isEnabled} />
       <s.TitleContainer>
         <s.Title>{title}</s.Title>

@@ -14,7 +14,8 @@ export const Tile = ({
   severity,
   tooltip,
   onTitleClick,
-  isActive = true
+  isActive = true,
+  className = ""
 }: TileProps) => {
   const { observe: observeContainer, entry: containerEntry } = useDimensions();
 
@@ -34,18 +35,24 @@ export const Tile = ({
     }
   };
 
+  const classNames = [className, "treemap-tile"].join(" ");
+
   return (
-    <s.Container ref={observeContainer}>
+    <s.Container ref={observeContainer} className={classNames}>
       <Tooltip title={tooltip} followCursor={true}>
         <s.TileContainer $severity={severity} $isActive={isActive}>
           {isContentVisible && (
             <s.ContentContainer $isActive={isActive}>
               {onTitleClick ? (
-                <s.TitleLink href={"#"} onClick={handleTitleClick}>
+                <s.TitleLink
+                  href={"#"}
+                  onClick={handleTitleClick}
+                  className={"treemap-tile-title link"}
+                >
                   {title}
                 </s.TitleLink>
               ) : (
-                <s.Title>{title}</s.Title>
+                <s.Title className={"treemap-tile-title"}>{title}</s.Title>
               )}
               {isChildrenVisible && (
                 <s.ChildrenContainer>{children}</s.ChildrenContainer>

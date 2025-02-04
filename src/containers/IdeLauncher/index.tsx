@@ -23,7 +23,7 @@ if (rootElement) {
   const root = createRoot(rootElement);
   root.render(
     <StrictMode>
-      <PostHogHoC posthogClient={posthog}>
+      <PostHogHoC client={posthog}>
         <App id={APP_ID}>
           <IdeLauncher />
         </App>

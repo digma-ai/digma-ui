@@ -12,6 +12,8 @@ import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import type { RegistrationDialogProps, RegistrationFormValues } from "./types";
 
+const FORM_ID = "registrationForm";
+
 const validateEmail = (email: string): string | boolean => {
   const emailMessage = "Please enter a valid work email address";
 
@@ -80,7 +82,7 @@ export const RegistrationDialog = (props: RegistrationDialogProps) => {
       </s.Header>
       Please register with your email address
       <s.Form
-        id={"registrationForm"}
+        id={FORM_ID}
         onSubmit={(e) => {
           e.preventDefault();
           void handleSubmit(onSubmit)(e);
@@ -133,7 +135,7 @@ export const RegistrationDialog = (props: RegistrationDialogProps) => {
           label={"Submit"}
           size={"large"}
           type={"submit"}
-          form={"registrationForm"}
+          form={FORM_ID}
         />
       </s.ButtonsContainer>
     </s.Container>

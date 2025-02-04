@@ -115,6 +115,7 @@ export const TreeMap = ({
             return (
               <div
                 key={tile.id}
+                className={"treemap-tile-container"}
                 style={{
                   position: "absolute",
                   left: tile.x0,

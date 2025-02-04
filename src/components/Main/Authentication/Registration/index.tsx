@@ -11,6 +11,8 @@ import * as s from "../styles";
 import type { RegisterFormValues, RegistrationProps } from "./types";
 import { useRegistration } from "./useRegistration";
 
+const FORM_ID = "registrationForm";
+
 const validateEmail = (email: string): string | boolean => {
   const emailMessage = "Please enter a valid email address";
 
@@ -101,7 +103,7 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
   return (
     <s.FormContainer>
       <s.Form
-        id={"registrationForm"}
+        id={FORM_ID}
         onSubmit={(e) => {
           e.preventDefault();
           void handleSubmit(onSubmit)(e);
@@ -181,7 +183,7 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
           isDisabled={!isValid || isLoading}
           label={"Sign Up"}
           type={"submit"}
-          form={"registrationForm"}
+          form={FORM_ID}
         />
       </s.ButtonsContainer>
       {isLoading && (

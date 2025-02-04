@@ -221,7 +221,7 @@ export const IssuesSidebar = ({
   };
 
   return (
-    <s.Container $isResizing={isResizing}>
+    <s.Container $isResizing={isResizing} className={"issues-sidebar"}>
       <s.Header>
         <s.HeaderTitleRow>
           <span>{title}</span>

@@ -61,6 +61,7 @@ export const Chart = ({
       value: score,
       content: (
         <ReportTile
+          viewLevel={viewLevel}
           isActive={activeTileIds ? activeTileIds.includes(x.id) : undefined}
           name={x.name}
           criticalIssuesCount={x.criticalIssuesCount}
