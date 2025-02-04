@@ -1,17 +1,13 @@
-import posthog from "posthog-js";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "../../components/common/App";
 import { PostHogHoC } from "../../components/common/PostHogHoC";
 import { IdeLauncher } from "../../components/IdeLauncher";
-import { initPosthog } from "../../posthog";
-import { isString } from "../../typeGuards/isString";
+import posthog from "../../posthog";
 import { handleUncaughtError } from "../../utils/handleUncaughtError";
 import { APP_ID } from "./constants";
 
-if (isString(window.postHogApiKey) && isString(window.postHogHost)) {
-  initPosthog(window.postHogApiKey, window.postHogHost, APP_ID);
-}
+posthog?.register({ app: APP_ID });
 
 window.addEventListener("error", (e) => {
   handleUncaughtError(APP_ID, e);

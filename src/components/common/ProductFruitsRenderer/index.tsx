@@ -11,9 +11,6 @@ export const ProductFruitsRenderer = ({
     return null;
   }
 
-  // eslint-disable-next-line no-console
-  console.log("user.id", userProfile.uid);
-
   const userInfo = {
     username: userProfile.uid,
     email: userProfile.email
@@ -24,7 +21,6 @@ export const ProductFruitsRenderer = ({
       workspaceCode={workspaceCode}
       language={"en"}
       user={userInfo}
-      debug={true}
     />
   );
 };

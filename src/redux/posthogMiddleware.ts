@@ -1,6 +1,6 @@
 import { isRejectedWithValue } from "@reduxjs/toolkit";
-import posthog from "posthog-js";
 import type { Dispatch, UnknownAction } from "redux";
+import posthog from "../posthog";
 import { sendErrorTrackingEvent } from "../utils/actions/sendErrorTrackingEvent";
 import { digmaApi } from "./services/digma";
 

@@ -1,4 +1,3 @@
-import posthog from "posthog-js";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
@@ -7,7 +6,7 @@ import { sendMessage } from "../../api";
 import { App } from "../../components/common/App";
 import { PostHogHoC } from "../../components/common/PostHogHoC";
 import { ProductFruitsRenderer } from "../../components/common/ProductFruitsRenderer";
-import { initPosthog } from "../../posthog";
+import posthog from "../../posthog";
 import { isString } from "../../typeGuards/isString";
 import { handleUncaughtError } from "../../utils/handleUncaughtError";
 import { APP_ID } from "./constants";
@@ -15,9 +14,7 @@ import { router } from "./router";
 import { store } from "./store";
 import { GlobalStyle } from "./styles";
 
-if (isString(window.postHogApiKey) && isString(window.postHogHost)) {
-  initPosthog(window.postHogApiKey, window.postHogHost, APP_ID);
-}
+posthog?.register({ app: APP_ID });
 
 window.addEventListener("error", (e) => {
   handleUncaughtError(APP_ID, e);
