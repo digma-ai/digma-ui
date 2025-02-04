@@ -18,6 +18,8 @@ import {
 import type { LoginFormValues, LoginProps } from "./types";
 import { useLogin } from "./useLogin";
 
+const FORM_ID = "loginForm";
+
 const formDefaultValues: LoginFormValues = {
   password: "",
   email: ""
@@ -69,7 +71,7 @@ export const Login = ({ successMessage, onLogin }: LoginProps) => {
   return (
     <FormContainer>
       <Form
-        id={"loginForm"}
+        id={FORM_ID}
         onSubmit={(e) => {
           e.preventDefault();
           void handleSubmit(onSubmit)(e);
@@ -111,7 +113,7 @@ export const Login = ({ successMessage, onLogin }: LoginProps) => {
           isDisabled={!isValid || isLoading || isSucceed}
           label={"Sign In"}
           type={"submit"}
-          form={"loginForm"}
+          form={FORM_ID}
         />
       </ButtonsContainer>
       {successMessage && <s.SuccessMessage>{successMessage}</s.SuccessMessage>}

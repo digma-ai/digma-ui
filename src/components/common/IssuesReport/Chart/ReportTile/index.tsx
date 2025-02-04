@@ -17,7 +17,8 @@ export const ReportTile = ({
   timeMode,
   onTitleClick,
   onIssuesClick,
-  isActive
+  isActive,
+  viewLevel
 }: ReportTileProps) => {
   const [isIssuesLinkHovered, setIsIssuesLinkHovered] = useState(false);
 
@@ -54,6 +55,7 @@ export const ReportTile = ({
       title={name}
       severity={severity}
       onTitleClick={onTitleClick ? handleTitleClick : undefined}
+      className={viewLevel}
       tooltip={
         <s.TooltipContent>
           <span>{name}</span>
@@ -70,6 +72,7 @@ export const ReportTile = ({
         <s.StyledLink
           href={"#"}
           onClick={handleIssuesLinkClick}
+          className={"issues-link"}
           onMouseEnter={handleIssuesLinkMouseEnter}
           onMouseLeave={handleIssuesLinkMouseLeave}
         >

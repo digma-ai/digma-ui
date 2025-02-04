@@ -3,5 +3,5 @@ import type { ReactNode } from "react";
 
 export interface PostHogHoCProps {
   children: ReactNode;
-  posthogClient?: PostHog;
+  client?: PostHog;
 }

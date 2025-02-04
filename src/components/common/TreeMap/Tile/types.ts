@@ -8,6 +8,7 @@ export interface TileProps {
   tooltip?: ReactNode;
   onTitleClick?: () => void;
   isActive?: boolean;
+  className?: string;
 }
 
 export interface TileContainerProps {

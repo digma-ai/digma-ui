@@ -37,6 +37,7 @@ export const Default: Story = {
             scoreCriterion={"criticality"}
             severity={"Top"}
             timeMode={"baseline"}
+            viewLevel={"services"}
           />
         )
       },
@@ -51,6 +52,7 @@ export const Default: Story = {
             scoreCriterion={"criticality"}
             severity={"High"}
             timeMode={"baseline"}
+            viewLevel={"services"}
           />
         )
       },
@@ -65,6 +67,7 @@ export const Default: Story = {
             scoreCriterion={"criticality"}
             severity={"Medium"}
             timeMode={"baseline"}
+            viewLevel={"services"}
           />
         )
       },
@@ -79,6 +82,7 @@ export const Default: Story = {
             scoreCriterion={"criticality"}
             severity={"Low"}
             timeMode={"baseline"}
+            viewLevel={"services"}
           />
         )
       },
@@ -93,6 +97,7 @@ export const Default: Story = {
             scoreCriterion={"criticality"}
             severity={"Low"}
             timeMode={"baseline"}
+            viewLevel={"services"}
           />
         )
       }

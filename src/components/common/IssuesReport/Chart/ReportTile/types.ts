@@ -1,4 +1,7 @@
-import type { IssuesReportTimeMode } from "../../../../../redux/slices/issuesReportSlice";
+import type {
+  IssuesReportTimeMode,
+  IssuesReportViewLevel
+} from "../../../../../redux/slices/issuesReportSlice";
 import type { Severity } from "../../Table/types";
 import type { ScoreCriterion } from "../../types";
 
@@ -12,4 +15,5 @@ export interface ReportTileProps {
   onTitleClick?: () => void;
   onIssuesClick?: () => void;
   isActive?: boolean;
+  viewLevel: IssuesReportViewLevel;
 }

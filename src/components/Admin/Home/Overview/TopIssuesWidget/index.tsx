@@ -60,7 +60,7 @@ export const TopIssuesWidget = ({ onGetIssues }: TopIssuesWidgetProps) => {
   );
 
   return (
-    <OverviewWidget>
+    <OverviewWidget id={"top-issues"}>
       <s.Container>
         <s.Title>Top 10 Issues</s.Title>
         <s.ButtonsContainer>
@@ -70,7 +70,11 @@ export const TopIssuesWidget = ({ onGetIssues }: TopIssuesWidgetProps) => {
               "A list of the 10 most important issues, ranked by their impact and urgency."
             }
           >
-            <s.ByCriticalityButton onClick={handleByCriticalityButtonClick}>
+            <s.ByCriticalityButton
+              onClick={handleByCriticalityButtonClick}
+              className={"issues-button"}
+              data-id={"criticality"}
+            >
               <s.IconContainer>
                 <MeterHighIcon size={16} color={"currentColor"} />
               </s.IconContainer>
@@ -96,7 +100,11 @@ export const TopIssuesWidget = ({ onGetIssues }: TopIssuesWidgetProps) => {
                   "A list of the 10 most severe issues, ranked by their severity level."
                 }
               >
-                <s.BySeverityButton onClick={handleBySeverityButtonClick}>
+                <s.BySeverityButton
+                  onClick={handleBySeverityButtonClick}
+                  className={"issues-button"}
+                  id={"severity"}
+                >
                   <s.IconContainer>
                     <WarningTriangleIcon size={16} color={"currentColor"} />
                   </s.IconContainer>

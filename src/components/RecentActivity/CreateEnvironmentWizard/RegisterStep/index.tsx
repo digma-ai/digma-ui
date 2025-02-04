@@ -12,6 +12,8 @@ import { isWorkEmail } from "./isWorkEmail";
 import * as s from "./styles";
 import type { RegisterStepProps, RegistrationFormValues } from "./types";
 
+const FORM_ID = "registrationForm";
+
 const validateEmail = (email: string): string | boolean => {
   const emailMessage = "Please enter a valid work email address";
 
@@ -93,7 +95,7 @@ export const RegisterStep = ({ onNext }: RegisterStepProps) => {
         Please register with your email address
       </s.Description>
       <s.Form
-        id={"registrationForm"}
+        id={FORM_ID}
         onSubmit={(e) => {
           e.preventDefault();
           void handleSubmit(onSubmit)(e);
@@ -133,7 +135,7 @@ export const RegisterStep = ({ onNext }: RegisterStepProps) => {
           isDisabled={!isValid || isRegistrationInProgress}
           label={"Submit"}
           type={"submit"}
-          form={"registrationForm"}
+          form={FORM_ID}
         />
         {isRegistrationInProgress && <s.Loader />}
       </s.Form>

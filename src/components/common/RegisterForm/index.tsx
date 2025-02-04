@@ -14,6 +14,8 @@ import type {
   RegistrationFormValues
 } from "./types";
 
+const FORM_ID = "registrationForm";
+
 const validateEmail = (email: string): string | boolean => {
   const emailMessage = "Please enter a valid work email address";
 
@@ -79,7 +81,7 @@ export const RegisterForm = ({
 
   return (
     <s.Container className={className}>
-      <s.Form id={"registrationForm"} onSubmit={handleOnSubmit}>
+      <s.Form id={FORM_ID} onSubmit={handleOnSubmit}>
         <Controller
           name={"fullName"}
           control={control}
@@ -117,7 +119,7 @@ export const RegisterForm = ({
         isDisabled={!isValid}
         label={submitBtnText ?? "Submit"}
         type={"submit"}
-        form={"registrationForm"}
+        form={FORM_ID}
       />
     </s.Container>
   );

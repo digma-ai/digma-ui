@@ -1,10 +1,10 @@
 import { PostHogProvider } from "posthog-js/react";
 import type { PostHogHoCProps } from "./types";
 
-export const PostHogHoC = ({ children, posthogClient }: PostHogHoCProps) => {
-  if (!posthogClient) {
+export const PostHogHoC = ({ children, client }: PostHogHoCProps) => {
+  if (!client) {
     return children;
   }
 
-  return <PostHogProvider client={posthogClient}>{children}</PostHogProvider>;
+  return <PostHogProvider client={client}>{children}</PostHogProvider>;
 };

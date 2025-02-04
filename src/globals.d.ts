@@ -58,6 +58,7 @@ declare global {
     isSandboxModeEnabled?: unknown;
     postHogApiKey?: unknown;
     postHogHost?: unknown;
+    productFruitsWorkspaceCode?: unknown;
   }
 }
 
