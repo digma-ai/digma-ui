@@ -1,27 +1,29 @@
 import path from "path";
 
+type Platform = "jetbrains" | "web" | "vs";
+
 export const appData: AppData = {
   admin: {
     entry: path.resolve(__dirname, "./src/containers/Admin/index.tsx"),
-    platforms: ["Web"]
+    platforms: ["web"]
   },
   dashboard: {
     entry: path.resolve(__dirname, "./src/containers/Dashboard/index.tsx"),
     environmentVariables: ["dashboardEnvironment"],
-    platforms: ["JetBrains", "Visual Studio"]
+    platforms: ["jetbrains", "vs"]
   },
   documentation: {
     entry: path.resolve(__dirname, "./src/containers/Documentation/index.tsx"),
     environmentVariables: ["documentationPage"],
-    platforms: ["JetBrains"]
+    platforms: ["jetbrains"]
   },
   ["ide-launcher"]: {
     entry: path.resolve(__dirname, "./src/containers/IdeLauncher/index.tsx"),
-    platforms: ["Web"]
+    platforms: ["web"]
   },
   login: {
     entry: path.resolve(__dirname, "./src/containers/Login/index.tsx"),
-    platforms: ["Web"]
+    platforms: ["web"]
   },
   ["installation-wizard"]: {
     entry: path.resolve(
@@ -29,11 +31,11 @@ export const appData: AppData = {
       "./src/containers/InstallationWizard/index.tsx"
     ),
     environmentVariables: ["wizardFirstLaunch", "wizardSkipInstallationStep"],
-    platforms: ["JetBrains"]
+    platforms: ["jetbrains"]
   },
   main: {
     entry: path.resolve(__dirname, "./src/containers/Main/index.tsx"),
-    platforms: ["JetBrains", "Visual Studio"]
+    platforms: ["jetbrains", "vs"]
   },
   // /** @deprecated */
   // notifications: {
@@ -41,19 +43,19 @@ export const appData: AppData = {
   //   environmentVariables: [
   //     "notificationsViewMode"
   //   ],
-  //   platforms: ["JetBrains"]
+  //   platforms: ["jetbrains"]
   // },
   ["recent-activity"]: {
     entry: path.resolve(__dirname, "./src/containers/RecentActivity/index.tsx"),
     environmentVariables: ["recentActivityExpirationLimit"],
-    platforms: ["JetBrains"]
+    platforms: ["jetbrains"]
   },
   troubleshooting: {
     entry: path.resolve(
       __dirname,
       "./src/containers/Troubleshooting/index.tsx"
     ),
-    platforms: ["JetBrains"]
+    platforms: ["jetbrains"]
   }
 };
 
@@ -65,7 +67,7 @@ type AppData = Record<
 export interface WebpackEnv {
   WEBPACK_BUNDLE: true;
   WEBPACK_BUILD: true;
-  PLATFORM?: string;
+  PLATFORM?: Platform;
   ZIP?: boolean;
   ["ZIP_FILE_FORMAT"]?: string;
 }

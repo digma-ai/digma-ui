@@ -23,7 +23,7 @@ const getZipFilename = (env: WebpackEnv): string => {
     (argFormat && ZIP_NAME_FORMATS[argFormat]) ?? ZIP_NAME_FORMATS.default;
 
   return format
-    .replace("{platform}", (env.PLATFORM ?? "").toLocaleLowerCase())
+    .replace("{platform}", env.PLATFORM ?? "")
     .replace("{version}", (packageJson as PackageJson).version)
     .replace(/-{2,}/g, "-");
 };
@@ -65,7 +65,7 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
           {
             from: path.resolve(__dirname, "./public")
           },
-          ...(env.PLATFORM === "JetBrains"
+          ...(env.PLATFORM === "jetbrains"
             ? [
                 {
                   from: path.resolve(__dirname, `./jaeger-ui/dist/static`),
@@ -93,7 +93,7 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
         return new HtmlWebpackPlugin({
           template: path.resolve(
             __dirname,
-            `./assets/${env.PLATFORM === "Web" ? "index.web.ejs" : "index.ejs"}`
+            `./assets/${env.PLATFORM === "web" ? "index.web.ejs" : "index.ejs"}`
           ),
           filename: `${app}/index.html`,
           chunks: [app],
