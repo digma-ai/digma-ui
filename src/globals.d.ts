@@ -2,7 +2,7 @@ import type { DigmaOutgoingMessageData } from "./api/types";
 
 export {};
 
-export type Platform = "JetBrains" | "VS Code" | "Web";
+export type Platform = "JetBrains" | "VS Code" | "Web" | "Visual Studio";
 
 export type IDE = "IDEA" | "Rider" | "PyCharm";
 
@@ -18,6 +18,13 @@ declare global {
       onFailure: (error_code, error_message) => void;
     }) => string;
     cefQueryCancel?: (request_id: string) => void;
+    chrome?: {
+      webview?: {
+        addEventListener: typeof window.addEventListener;
+        removeEventListener: typeof window.removeEventListener;
+        postMessage: typeof window.postMessage;
+      };
+    };
     sendMessageToDigma: <T>(
       message: DigmaOutgoingMessageData<T>
     ) => string | undefined;

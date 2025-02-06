@@ -8,7 +8,7 @@ export const appData: AppData = {
   dashboard: {
     entry: path.resolve(__dirname, "./src/containers/Dashboard/index.tsx"),
     environmentVariables: ["dashboardEnvironment"],
-    platforms: ["JetBrains"]
+    platforms: ["JetBrains", "Visual Studio"]
   },
   documentation: {
     entry: path.resolve(__dirname, "./src/containers/Documentation/index.tsx"),
@@ -33,7 +33,7 @@ export const appData: AppData = {
   },
   main: {
     entry: path.resolve(__dirname, "./src/containers/Main/index.tsx"),
-    platforms: ["JetBrains"]
+    platforms: ["JetBrains", "Visual Studio"]
   },
   // /** @deprecated */
   // notifications: {

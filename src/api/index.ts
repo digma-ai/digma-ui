@@ -3,7 +3,14 @@ import { TaggedLogger } from "../logging/TaggedLogger";
 import { platform } from "../platform";
 import { isObject } from "../typeGuards/isObject";
 import type { ActionDispatcher } from "./ActionDispatcher";
-import type { DigmaMessageEvent, DigmaOutgoingMessageData } from "./types";
+import { convertToDigmaJsonRpcRequest } from "./json-rpc/convertToDigmaJsonRpcRequest";
+import { convertToDigmaMessageData } from "./json-rpc/convertToDigmaMessageData";
+import { isDigmaJsonRpcRequest } from "./json-rpc/isDigmaJsonRpcRequest";
+import type {
+  DigmaIncomingMessageData,
+  DigmaMessageEvent,
+  DigmaOutgoingMessageData
+} from "./types";
 import { sendMessageToWebService } from "./web/sendMessageToWebService";
 
 const messagingLogger = new TaggedLogger(logger, "MESSAGING");
@@ -22,27 +29,59 @@ export const initializeDigmaMessageListener = (
   dispatcher: ActionDispatcher
 ) => {
   const handleDigmaMessage = (e: MessageEvent) => {
-    if (isDigmaMessageEvent(e)) {
-      messagingLogger.debug(
-        `Message received: %c${e.data.action}
-%cRaw message: %O`,
-        INCOMING_MESSAGE_ACTION_ID_CONSOLE_STYLE,
-        null,
-        e.data
-      );
-      dispatcher.dispatch(
-        e.timeStamp,
-        e.data.action,
-        e.data.payload,
-        e.data.error
-      );
+    let data: DigmaIncomingMessageData | undefined;
+
+    if (isDigmaJsonRpcRequest(e)) {
+      data = convertToDigmaMessageData(e.data);
     }
+
+    if (isDigmaMessageEvent(e)) {
+      data = e.data;
+    }
+
+    if (!data) {
+      return;
+    }
+
+    messagingLogger.debug(
+      `Message received: %c${data.action}
+%cRaw message: %O`,
+      INCOMING_MESSAGE_ACTION_ID_CONSOLE_STYLE,
+      null,
+      data
+    );
+    dispatcher.dispatch(e.timeStamp, data.action, data.payload, data.error);
   };
+
+  switch (platform) {
+    case "Visual Studio":
+      if (window.chrome?.webview) {
+        window.chrome.webview.addEventListener("message", handleDigmaMessage);
+      }
+      break;
+    case "JetBrains":
+    case "Web":
+      window.addEventListener("message", handleDigmaMessage);
+      break;
+  }
 
   window.addEventListener("message", handleDigmaMessage);
 
   return () => {
-    window.removeEventListener("message", handleDigmaMessage);
+    switch (platform) {
+      case "Visual Studio":
+        if (window.chrome?.webview) {
+          window.chrome.webview.removeEventListener(
+            "message",
+            handleDigmaMessage
+          );
+        }
+        break;
+      case "JetBrains":
+      case "Web":
+        window.removeEventListener("message", handleDigmaMessage);
+        break;
+    }
   };
 };
 
@@ -59,6 +98,21 @@ Raw message: %O`,
     case "Web":
       sendMessageToWebService(message);
       break;
+    case "Visual Studio": {
+      const jsonRpcMessage = convertToDigmaJsonRpcRequest(message);
+
+      if (window.chrome?.webview) {
+        window.chrome.webview?.postMessage(jsonRpcMessage);
+        messagingLogger.debug(
+          `Message has been successfully sent to Visual Studio: %c${jsonRpcMessage.method}
+%cRaw message: %O`,
+          OUTGOING_MESSAGE_ACTION_ID_CONSOLE_STYLE,
+          null,
+          jsonRpcMessage
+        );
+      }
+      break;
+    }
     case "VS Code":
       if (window.sendMessageToVSCode) {
         window.sendMessageToVSCode(message);
