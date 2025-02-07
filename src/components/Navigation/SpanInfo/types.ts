@@ -3,6 +3,7 @@ import type { Environment } from "../../common/App/types";
 export interface SpanInfoProps {
   onCollapse: () => void;
   data: SpanInfoData;
+  spanCodeObjectId?: string;
 }
 
 export interface GetHighlightsSpanInfoDataPayload {

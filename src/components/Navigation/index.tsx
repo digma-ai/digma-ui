@@ -423,7 +423,11 @@ export const Navigation = () => {
         </NewPopover>
       </s.Row>
       {isAtSpan && isSpanInfoEnabled && spanInfo && isSpanInfoVisible && (
-        <SpanInfo data={spanInfo} onCollapse={handleSpanInfoCollapse} />
+        <SpanInfo
+          data={spanInfo}
+          onCollapse={handleSpanInfoCollapse}
+          spanCodeObjectId={scope?.span?.spanCodeObjectId}
+        />
       )}
       {/* <s.Row>
         <Tooltip
