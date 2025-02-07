@@ -25,8 +25,9 @@ export const Footer = styled.div`
 
 export const StatsContainer = styled.div`
   display: flex;
-  gap: 12 px;
+  gap: 12px;
   flex-grow: 1;
+  overflow: hidden;
 
   & > * {
     flex: 1 1 0;
@@ -39,6 +40,7 @@ export const Stat = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
+  overflow: hidden;
 `;
 
 export const StatIconContainer = styled.div`
@@ -50,10 +52,15 @@ export const StatValueContainer = styled.div`
   display: flex;
   gap: 4px;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
+  overflow: hidden;
+  align-items: center;
 `;
 
 export const StatValueText = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.primary};
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 export const CollapseButton = styled.div`
