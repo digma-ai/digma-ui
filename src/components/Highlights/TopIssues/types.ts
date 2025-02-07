@@ -12,6 +12,7 @@ export interface EnvironmentData<T> {
 
 export interface HighlightData<T> {
   insightType: InsightType;
+  insightSubType?: string;
   asset: SpanInfo | null;
   environments: EnvironmentData<T>[];
 }

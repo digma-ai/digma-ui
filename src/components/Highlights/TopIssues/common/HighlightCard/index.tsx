@@ -10,7 +10,10 @@ const getCriticality = (environments: EnvironmentData<GenericMetrics>[]) =>
   environments.reduce((acc, env) => Math.max(acc, env.insightCriticality), 0);
 
 export const HighlightCard = ({ highlight, content }: HighlightCardProps) => {
-  const insightTypeInfo = getInsightTypeInfo(highlight.insightType);
+  const insightTypeInfo = getInsightTypeInfo(
+    highlight.insightType,
+    highlight.insightSubType
+  );
   const insightCriticality = getCriticality(highlight.environments);
 
   return (
