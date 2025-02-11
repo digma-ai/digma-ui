@@ -30,7 +30,7 @@ interface InsightsState {
   areIssuesFiltersLoading: boolean;
 }
 
-const initialState: InsightsState = {
+export const initialState: InsightsState = {
   data: null,
   isDataLoading: false,
   search: "",
