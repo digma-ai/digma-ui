@@ -1,3 +1,4 @@
+import type { IssueCriticality } from "../../../../../redux/services/types";
 import type { InsightFilterType } from "../../types";
 
 export interface IssuesFilterEntry {
@@ -15,4 +16,6 @@ export interface IssuesFilterQuery {
   issueTypesInGlobalScope?: string[];
   filters?: InsightFilterType[];
   services?: string[];
+  criticalityFilter?: IssueCriticality[];
+  criticalityFilterInGlobalScope?: IssueCriticality[];
 }

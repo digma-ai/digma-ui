@@ -159,16 +159,23 @@ export const InsightsPage = ({
     search,
     filters,
     filteredInsightTypes: filteredInsightTypesInSpanScope,
-    filteredInsightTypesInGlobalScope
+    filteredInsightTypesInGlobalScope,
+    filteredCriticalityLevels: filteredCriticalityLevelsInSpanScope,
+    filteredCriticalityLevelsInGlobalScope
   } = useInsightsSelector();
   const { setInsightsViewMode: setMode } = useStore.getState();
   const isAtSpan = Boolean(scope?.span);
   const filteredInsightTypes = isAtSpan
     ? filteredInsightTypesInSpanScope
     : filteredInsightTypesInGlobalScope;
+  const filteredCriticalityLevels = isAtSpan
+    ? filteredCriticalityLevelsInSpanScope
+    : filteredCriticalityLevelsInGlobalScope;
   const areAnyFiltersApplied =
     (insightsViewType === "Issues"
-      ? filters.length > 0 || filteredInsightTypes.length > 0
+      ? filters.length > 0 ||
+        filteredInsightTypes.length > 0 ||
+        filteredCriticalityLevels.length > 0
       : 0) || search.length > 0;
   const [isInsightJiraTicketHintShown, setIsInsightJiraTicketHintShown] =
     usePersistence<isInsightJiraTicketHintShownPayload>(
