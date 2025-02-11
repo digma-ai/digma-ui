@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { getFeatureFlagValue } from "../../../../../featureFlags";
 import { usePrevious } from "../../../../../hooks/usePrevious";
+import type { IssueCriticality } from "../../../../../redux/services/types";
 import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../../../store/useStore";
@@ -25,6 +26,8 @@ export const IssuesFilter = () => {
   const {
     filteredInsightTypes: filteredInsightTypesInSpanScope,
     filteredInsightTypesInGlobalScope,
+    filteredCriticalityLevels: filteredCriticalityLevelsInSpanScope,
+    filteredCriticalityLevelsInGlobalScope,
     filters,
     viewMode,
     search
@@ -38,6 +41,10 @@ export const IssuesFilter = () => {
   const {
     setSelectedServices: setGloballySelectedServices,
     setInsightsFilteredInsightTypes: setFilteredInsightTypesInSpanScope,
+    setInsightsFilteredCriticalityLevels:
+      setFilteredCriticalityLevelsInSpanScope,
+    setInsightsFilteredCriticalityLevelsInGlobalScope:
+      setFilteredCriticalityLevelsInGlobalScope,
     setInsightsFilteredInsightTypesInGlobalScope:
       setFilteredInsightTypesInGlobalScope,
     setInsightsFilters: setFilters
@@ -57,6 +64,8 @@ export const IssuesFilter = () => {
   const filteredInsightTypes = scopeSpanCodeObjectId
     ? filteredInsightTypesInSpanScope
     : filteredInsightTypesInGlobalScope;
+  const [selectedInsightTypes, setSelectedInsightTypes] =
+    useState<string[]>(filteredInsightTypes);
   const isServicesFilterEnabled =
     Boolean(
       getFeatureFlagValue(backendInfo, FeatureFlag.ARE_ISSUES_FILTERS_ENABLED)
@@ -64,8 +73,19 @@ export const IssuesFilter = () => {
   const [selectedServices, setSelectedServices] = useState<string[]>(
     globallySelectedServices ?? []
   );
-  const [selectedInsightTypes, setSelectedInsightTypes] =
-    useState<string[]>(filteredInsightTypes);
+  const filteredCriticalityLevels = scopeSpanCodeObjectId
+    ? filteredCriticalityLevelsInSpanScope
+    : filteredCriticalityLevelsInGlobalScope;
+  const [selectedCriticalityLevels, setSelectedCriticalityLevels] = useState<
+    IssueCriticality[]
+  >(filteredCriticalityLevels);
+  const isCriticalityLevelsFilterEnabled = Boolean(
+    backendInfo &&
+      getFeatureFlagValue(
+        backendInfo,
+        FeatureFlag.IS_ISSUES_CRITICALITY_LEVELS_FILTER_ENABLED
+      )
+  );
 
   // Update selected filters when data is fetched
   useEffect(() => {
@@ -101,32 +121,46 @@ export const IssuesFilter = () => {
     isServicesFilterEnabled
   ]);
 
+  useEffect(() => {
+    setSelectedCriticalityLevels(filteredCriticalityLevels);
+  }, [filteredCriticalityLevels]);
+
   const discardChanges = useCallback(() => {
     const newServices = globallySelectedServices ?? [];
     setSelectedServices(newServices);
     setSelectedInsightTypes(filteredInsightTypes);
+
+    setSelectedCriticalityLevels(filteredCriticalityLevels);
     setIsCriticalOnly(filters.includes("criticality"));
+
     setIsUnreadOnly(filters.includes("unread"));
 
     getData({
       displayName: search,
       showDismissed: ViewMode.OnlyDismissed === viewMode,
       filters: [
-        ...(filters.includes("criticality") ? ["criticality"] : []),
+        ...(!isCriticalityLevelsFilterEnabled && filters.includes("criticality")
+          ? ["criticality"]
+          : []),
         ...(filters.includes("unread") ? ["unread"] : [])
       ] as InsightFilterType[],
       insightTypes: filteredInsightTypes,
       services: newServices,
-      scopedSpanCodeObjectId: scopeSpanCodeObjectId
+      scopedSpanCodeObjectId: scopeSpanCodeObjectId,
+      ...(isCriticalityLevelsFilterEnabled
+        ? { criticalityFilter: filteredCriticalityLevels }
+        : {})
     });
   }, [
+    isCriticalityLevelsFilterEnabled,
     filteredInsightTypes,
     filters,
     globallySelectedServices,
     search,
     scopeSpanCodeObjectId,
     viewMode,
-    getData
+    getData,
+    filteredCriticalityLevels
   ]);
 
   // Close popup and discard changes on environment or scope changes
@@ -158,11 +192,22 @@ export const IssuesFilter = () => {
     }
 
     setFilters([
-      ...(isCriticalOnly ? ["criticality"] : []),
+      ...(!isCriticalityLevelsFilterEnabled && isCriticalOnly
+        ? ["criticality"]
+        : []),
       ...(isUnreadOnly ? ["unread"] : [])
     ] as InsightFilterType[]);
+
     if (isServicesFilterEnabled) {
       setGloballySelectedServices(selectedServices);
+    }
+
+    if (isCriticalityLevelsFilterEnabled) {
+      if (scopeSpanCodeObjectId) {
+        setFilteredCriticalityLevelsInSpanScope(selectedCriticalityLevels);
+      } else {
+        setFilteredCriticalityLevelsInGlobalScope(selectedCriticalityLevels);
+      }
     }
   };
 
@@ -173,7 +218,10 @@ export const IssuesFilter = () => {
 
     setSelectedServices([]);
     setSelectedInsightTypes([]);
+
+    setSelectedCriticalityLevels([]);
     setIsCriticalOnly(false);
+
     setIsUnreadOnly(false);
   };
 
@@ -207,6 +255,16 @@ export const IssuesFilter = () => {
     if (isPopupOpen) {
       discardChanges();
     }
+  };
+
+  const handleCriticalityLevelsChange = (value: string | string[]) => {
+    sendUserActionTrackingEvent(trackingEvents.FILTER_OPTION_SELECTED, {
+      filterType: "criticalityLevel"
+    });
+    const newFilteredCriticalityLevels = Array.isArray(value) ? value : [value];
+    setSelectedCriticalityLevels(
+      newFilteredCriticalityLevels as IssueCriticality[]
+    );
   };
 
   const handleToggleFilterChange = (
@@ -251,6 +309,27 @@ export const IssuesFilter = () => {
       selected: selectedInsightTypes.includes(entry.name) && entry.enabled
     })) ?? [];
 
+  const criticalityLevelsFilterOptions: SelectItem[] = [
+    {
+      label: "Critical",
+      value: "High",
+      enabled: true,
+      selected: selectedCriticalityLevels.includes("High")
+    },
+    {
+      label: "Medium",
+      value: "Medium",
+      enabled: true,
+      selected: selectedCriticalityLevels.includes("Medium")
+    },
+    {
+      label: "Low",
+      value: "Low",
+      enabled: true,
+      selected: selectedCriticalityLevels.includes("Low")
+    }
+  ];
+
   const criticalityFilterOptions: SelectItem[] = [
     {
       label: "Critical",
@@ -289,13 +368,21 @@ export const IssuesFilter = () => {
   const selectedFiltersCount =
     selectedInsightTypes.length +
     (isServicesFilterEnabled ? selectedServices.length : 0) +
-    (isCriticalOnly ? 1 : 0) +
+    (isCriticalityLevelsFilterEnabled
+      ? selectedCriticalityLevels.length
+      : isCriticalOnly
+      ? 1
+      : 0) +
     (isUnreadOnly ? 1 : 0);
 
   const appliedFiltersCount =
     filteredInsightTypes.length +
     (isServicesFilterEnabled ? (globallySelectedServices ?? []).length : 0) +
-    (filters.includes("criticality") ? 1 : 0) +
+    (isCriticalityLevelsFilterEnabled
+      ? filteredCriticalityLevels.length
+      : filters.includes("criticality")
+      ? 1
+      : 0) +
     (filters.includes("unread") ? 1 : 0);
 
   const filterComponents = [
@@ -339,23 +426,45 @@ export const IssuesFilter = () => {
         />
       )
     },
-    {
-      title: "Criticality",
-      component: (
-        <s.StyledSelect
-          key={"criticality"}
-          items={criticalityFilterOptions}
-          onChange={(value) => handleToggleFilterChange(value, "criticality")}
-          placeholder={criticalityFilterPlaceholder}
-          icon={(props: IconProps) => (
-            <s.InsightIconContainer>
-              <WarningTriangleIcon {...props} />
-            </s.InsightIconContainer>
-          )}
-          showSelectedState={isCriticalOnly}
-        />
-      )
-    },
+    isCriticalityLevelsFilterEnabled
+      ? {
+          title: "Criticality",
+          component: (
+            <s.StyledSelect
+              key={"criticalityLevels"}
+              items={criticalityLevelsFilterOptions}
+              onChange={handleCriticalityLevelsChange}
+              placeholder={
+                selectedCriticalityLevels.length > 0 ? "Criticality" : "All"
+              }
+              multiselect={true}
+              icon={(props: IconProps) => (
+                <s.InsightIconContainer>
+                  <WarningTriangleIcon {...props} />
+                </s.InsightIconContainer>
+              )}
+            />
+          )
+        }
+      : {
+          title: "Criticality",
+          component: (
+            <s.StyledSelect
+              key={"criticality"}
+              items={criticalityFilterOptions}
+              onChange={(value) =>
+                handleToggleFilterChange(value, "criticality")
+              }
+              placeholder={criticalityFilterPlaceholder}
+              icon={(props: IconProps) => (
+                <s.InsightIconContainer>
+                  <WarningTriangleIcon {...props} />
+                </s.InsightIconContainer>
+              )}
+              showSelectedState={isCriticalOnly}
+            />
+          )
+        },
     {
       title: "Read/Unread",
       component: (

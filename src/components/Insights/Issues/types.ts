@@ -1,3 +1,4 @@
+import type { IssueCriticality } from "../../../redux/services/types";
 import type { Sorting } from "../../common/SortingSelector/types";
 import type { InsightFilterType } from "../InsightsCatalog/types";
 
@@ -8,6 +9,7 @@ export interface GetIssuesFiltersQuery {
   insightTypes?: string[];
   services?: string[];
   scopedSpanCodeObjectId?: string | null;
+  criticalityFilter?: IssueCriticality[];
 }
 
 export interface GetIssuesDataListQuery extends GetIssuesFiltersQuery {

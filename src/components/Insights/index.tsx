@@ -4,9 +4,11 @@ import { actions as globalActions } from "../../actions";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
+import { initialState as insightsInitialState } from "../../store/insights/insightsSlice";
 import { useInsightsSelector } from "../../store/insights/useInsightsSelector";
 import { useStore } from "../../store/useStore";
 import { isUndefined } from "../../typeGuards/isUndefined";
+import { SCOPE_CHANGE_EVENTS } from "../../types";
 import { areBackendInfosEqual } from "../../utils/areBackendInfosEqual";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import type { RegistrationFormValues } from "../common/RegistrationDialog/types";
@@ -57,6 +59,9 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     setInsightsFilteredInsightTypes: setFilteredInsightTypes,
     setInsightsFilteredInsightTypesInGlobalScope:
       setFilteredInsightTypesInGlobalScope,
+    setInsightsFilteredCriticalityLevels: setFilteredCriticalityLevels,
+    setInsightsFilteredCriticalityLevelsInGlobalScope:
+      setFilteredCriticalityLevelsInGlobalScope,
     setInsightsFilters: setFilters,
     resetInsights: reset
   } = useStore.getState();
@@ -64,6 +69,8 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     insightViewType: storedInsightViewType,
     filteredInsightTypes: filteredInsightTypesInSpanScope,
     filteredInsightTypesInGlobalScope,
+    filteredCriticalityLevels: filteredCriticalityLevelsInSpanScope,
+    filteredCriticalityLevelsInGlobalScope,
     filters
   } = useInsightsSelector();
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
@@ -71,6 +78,12 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     ? filteredInsightTypesInSpanScope
     : filteredInsightTypesInGlobalScope;
   const previousFilteredInsightTypes = usePrevious(filteredInsightTypes);
+  const filteredCriticalityLevels = scopeSpanCodeObjectId
+    ? filteredCriticalityLevelsInSpanScope
+    : filteredCriticalityLevelsInGlobalScope;
+  const previousFilteredCriticalityLevels = usePrevious(
+    filteredCriticalityLevels
+  );
   const previousFilters = usePrevious(filters);
   const previousBackendInfo = usePrevious(backendInfo);
   const previousScope = usePrevious(scope);
@@ -111,6 +124,10 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
       setFilteredInsightTypesInGlobalScope(
         persistedFilters?.issueTypesInGlobalScope ?? []
       );
+      setFilteredCriticalityLevelsInGlobalScope(
+        persistedFilters?.criticalityFilterInGlobalScope ??
+          insightsInitialState.filteredCriticalityLevelsInGlobalScope
+      );
       setFilters(persistedFilters?.filters ?? []);
       setAreFiltersRehydrated(true);
     }
@@ -119,14 +136,16 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     persistedFilters,
     setFilters,
     setFilteredInsightTypes,
-    setFilteredInsightTypesInGlobalScope
+    setFilteredInsightTypesInGlobalScope,
+    setFilteredCriticalityLevelsInGlobalScope
   ]);
 
   // Persist filters on its change
   useEffect(() => {
     if (
       (previousFilteredInsightTypes !== filteredInsightTypes ||
-        previousFilters !== filters) &&
+        previousFilters !== filters ||
+        previousFilteredCriticalityLevels !== filteredCriticalityLevels) &&
       areFiltersRehydrated
     ) {
       setPersistedFilters({
@@ -134,16 +153,21 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
           ? {
               issueTypes: filteredInsightTypes ?? [],
               issueTypesInGlobalScope:
-                persistedFilters?.issueTypesInGlobalScope ?? []
+                persistedFilters?.issueTypesInGlobalScope ?? [],
+              criticalityFilterInGlobalScope:
+                persistedFilters?.criticalityFilterInGlobalScope ?? []
             }
           : {
               issueTypes: persistedFilters?.issueTypes ?? [],
-              issueTypesInGlobalScope: filteredInsightTypes
+              issueTypesInGlobalScope: filteredInsightTypes,
+              criticalityFilterInGlobalScope: filteredCriticalityLevels
             }),
         filters
       });
     }
   }, [
+    previousFilteredCriticalityLevels,
+    filteredCriticalityLevels,
     previousFilteredInsightTypes,
     filteredInsightTypes,
     previousFilters,
@@ -154,7 +178,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     scopeSpanCodeObjectId
   ]);
 
-  // Reset insight type filters (for span and global scopes) on backend instance, environment change
+  // Reset insight type and criticality filters (for span and global scopes) on backend instance, environment change
   useEffect(() => {
     if (
       (areFiltersRehydrated &&
@@ -166,6 +190,12 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     ) {
       setFilteredInsightTypes([]);
       setFilteredInsightTypesInGlobalScope([]);
+      setFilteredCriticalityLevels(
+        insightsInitialState.filteredCriticalityLevels
+      );
+      setFilteredCriticalityLevelsInGlobalScope(
+        insightsInitialState.filteredCriticalityLevelsInGlobalScope
+      );
     }
   }, [
     previousBackendInfo,
@@ -173,22 +203,39 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     areFiltersRehydrated,
     setFilteredInsightTypes,
     setFilteredInsightTypesInGlobalScope,
+    setFilteredCriticalityLevels,
+    setFilteredCriticalityLevelsInGlobalScope,
     previousEnvironmentId,
     environmentId
   ]);
 
-  // Reset insight type filter (for span scope) on scope change from span to global and vice versa
+  // Reset insight type and criticality filters (for span scope) on scope change from span to global and vice versa
   useEffect(() => {
     if (
       (previousScopeSpanCodeObjectId && !scopeSpanCodeObjectId) ||
       (!previousScopeSpanCodeObjectId && scopeSpanCodeObjectId)
     ) {
       setFilteredInsightTypes([]);
+
+      // Reset criticality levels filter if the scope change event is not related to Metrics report
+      if (
+        scope?.context?.event &&
+        ![
+          SCOPE_CHANGE_EVENTS.METRICS_SERVICE_SELECTED,
+          SCOPE_CHANGE_EVENTS.METRICS_ENDPOINT_SELECTED
+        ].includes(scope?.context?.event as SCOPE_CHANGE_EVENTS)
+      ) {
+        setFilteredCriticalityLevels(
+          insightsInitialState.filteredCriticalityLevels
+        );
+      }
     }
   }, [
     previousScopeSpanCodeObjectId,
     scopeSpanCodeObjectId,
-    setFilteredInsightTypes
+    setFilteredInsightTypes,
+    setFilteredCriticalityLevels,
+    scope?.context?.event
   ]);
 
   // Reset filters on backend instance, scope or environment change
