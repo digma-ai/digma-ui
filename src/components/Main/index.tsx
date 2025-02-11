@@ -8,6 +8,7 @@ import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { logger } from "../../logging";
 import { PLUGIN_EVENTS } from "../../pluginEvents";
+import type { IssueCriticality } from "../../redux/services/types";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { useStore } from "../../store/useStore";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
@@ -79,7 +80,12 @@ export const Main = () => {
     backendInfo,
     selectedServices
   } = useConfigSelector();
-  const { setSelectedServices } = useStore.getState();
+  const {
+    setSelectedServices,
+    setInsightsFilteredCriticalityLevels:
+      setInsightsFilteredCriticalityLevelsInSpanScope,
+    setInsightsFilteredCriticalityLevelsInGlobalScope
+  } = useStore.getState();
   const previousEnvironment = usePrevious(environment);
   const userId = userInfo?.id;
   const previousUserId = usePrevious(userId);
@@ -246,6 +252,17 @@ export const Main = () => {
           case SCOPE_CHANGE_EVENTS.METRICS_ENDPOINT_SELECTED as string: {
             const serviceToSelect = scope.context.payload?.service as string;
             setSelectedServices(serviceToSelect ? [serviceToSelect] : []);
+            const criticalityLevels = scope.context.payload
+              ?.criticalityLevels as IssueCriticality[];
+            if (scope.span?.spanCodeObjectId) {
+              setInsightsFilteredCriticalityLevelsInSpanScope(
+                criticalityLevels
+              );
+            } else {
+              setInsightsFilteredCriticalityLevelsInGlobalScope(
+                criticalityLevels
+              );
+            }
             goTo(`/${TAB_IDS.ISSUES}`, { state });
             break;
           }
@@ -304,7 +321,9 @@ export const Main = () => {
     environments,
     environment,
     updateBrowserLocation,
-    setSelectedServices
+    setSelectedServices,
+    setInsightsFilteredCriticalityLevelsInSpanScope,
+    setInsightsFilteredCriticalityLevelsInGlobalScope
   ]);
 
   useLayoutEffect(() => {

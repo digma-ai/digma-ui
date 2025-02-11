@@ -11,6 +11,7 @@ import type {
   InsightsData,
   InsightViewType
 } from "../../components/Insights/types";
+import type { IssueCriticality } from "../../redux/services/types";
 
 interface InsightsState {
   data: InsightsData | null;
@@ -22,12 +23,14 @@ interface InsightsState {
   filters: InsightFilterType[];
   filteredInsightTypes: string[];
   filteredInsightTypesInGlobalScope: string[];
+  filteredCriticalityLevels: IssueCriticality[];
+  filteredCriticalityLevelsInGlobalScope: IssueCriticality[];
   insightViewType: InsightViewType | null;
   issuesFilters: IssuesFiltersData | null;
   areIssuesFiltersLoading: boolean;
 }
 
-const initialState: InsightsState = {
+export const initialState: InsightsState = {
   data: null,
   isDataLoading: false,
   search: "",
@@ -40,6 +43,8 @@ const initialState: InsightsState = {
   filters: [],
   filteredInsightTypes: [],
   filteredInsightTypesInGlobalScope: [],
+  filteredCriticalityLevels: ["Medium", "High"],
+  filteredCriticalityLevelsInGlobalScope: ["Medium", "High"],
   insightViewType: null,
   issuesFilters: null,
   areIssuesFiltersLoading: false
@@ -67,6 +72,12 @@ export const insightsSlice = createSlice({
     setInsightsFilteredInsightTypesInGlobalScope: (
       filteredInsightTypesInGlobalScope: string[]
     ) => set({ filteredInsightTypesInGlobalScope }),
+    setInsightsFilteredCriticalityLevels: (
+      filteredCriticalityLevels: IssueCriticality[]
+    ) => set({ filteredCriticalityLevels }),
+    setInsightsFilteredCriticalityLevelsInGlobalScope: (
+      filteredCriticalityLevelsInGlobalScope: IssueCriticality[]
+    ) => set({ filteredCriticalityLevelsInGlobalScope }),
     setInsightViewType: (insightViewType: InsightViewType) =>
       set({ insightViewType }),
     setInsightsIssuesFilters: (issuesFilters: IssuesFiltersData) =>

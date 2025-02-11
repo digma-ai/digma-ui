@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
+import type { IssueCriticality } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../store/useStore";
@@ -37,6 +38,22 @@ import { useMarkingAllAsRead } from "./useMarkingAllAsRead";
 
 const PAGE_SIZE = 10;
 
+const isShowCriticalOnly = (
+  filters: InsightFilterType[],
+  criticalityLevels: IssueCriticality[],
+  areCriticalityLevelsFilterEnabled: boolean
+) => {
+  if (areCriticalityLevelsFilterEnabled) {
+    return (
+      !filters.includes("unread") &&
+      criticalityLevels.length === 1 &&
+      criticalityLevels[0] === "High"
+    );
+  } else {
+    return filters.length === 1 && filters[0] === "criticality";
+  }
+};
+
 const isShowUnreadOnly = (filters: InsightFilterType[]) =>
   filters.length === 1 && filters[0] === "unread";
 
@@ -58,6 +75,8 @@ export const InsightsCatalog = ({
     filters,
     filteredInsightTypes: filteredInsightTypesInSpanScope,
     filteredInsightTypesInGlobalScope,
+    filteredCriticalityLevels: filteredCriticalityLevelsInSpanScope,
+    filteredCriticalityLevelsInGlobalScope,
     data,
     viewMode: mode,
     insightViewType
@@ -86,6 +105,9 @@ export const InsightsCatalog = ({
   const filteredInsightTypes = isAtSpan
     ? filteredInsightTypesInSpanScope
     : filteredInsightTypesInGlobalScope;
+  const filteredCriticalityLevels = isAtSpan
+    ? filteredCriticalityLevelsInSpanScope
+    : filteredCriticalityLevelsInGlobalScope;
   const theme = useTheme();
   const { isMarkingAllAsReadInProgress, markAllAsRead } = useMarkingAllAsRead(
     scope?.span ?? null
@@ -125,11 +147,21 @@ export const InsightsCatalog = ({
   const isDismissalViewModeButtonVisible =
     isIssuesView && data && (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
   const isMarkingAsReadOptionsEnabled =
-    isIssuesView &&
-    isNumber(unreadCount) &&
-    filters.length === 1 &&
-    filters[0] === "unread" &&
-    unreadCount > 0;
+    isIssuesView && isNumber(unreadCount) && unreadCount > 0;
+  const isCriticalityLevelsFilterEnabled = Boolean(
+    backendInfo &&
+      getFeatureFlagValue(
+        backendInfo,
+        FeatureFlag.IS_ISSUES_CRITICALITY_LEVELS_FILTER_ENABLED
+      )
+  );
+  const isUnreadOnlyViewMode = isShowUnreadOnly(filters);
+  const isCriticalOnlyViewMode = isShowCriticalOnly(
+    filters,
+    filteredCriticalityLevels,
+    isCriticalityLevelsFilterEnabled
+  );
+  const isFilteredViewMode = isUnreadOnlyViewMode || isCriticalOnlyViewMode;
   const areInsightStatsEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.ARE_INSIGHT_STATS_ENABLED
@@ -263,10 +295,11 @@ export const InsightsCatalog = ({
         {isIssuesView && <PromotionSection />}
         {mode === ViewMode.All ? (
           <>
-            {filters.length === 1 && (
+            {isFilteredViewMode && (
               <s.ViewModeToolbarRow>
                 <s.InsightsDescription>
-                  {isShowUnreadOnly(filters) ? "Unread" : "Critical"}
+                  {isUnreadOnlyViewMode && "Unread"}
+                  {isCriticalOnlyViewMode && "Critical"}
                 </s.InsightsDescription>
                 {isMarkingAsReadOptionsEnabled && (
                   <s.MarkingAsReadToolbarActionsContainer>

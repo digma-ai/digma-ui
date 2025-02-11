@@ -1,5 +1,10 @@
+import { useMemo } from "react";
+import { getFeatureFlagValue } from "../../../../featureFlags";
+import type { IssueCriticality } from "../../../../redux/services/types";
+import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../../store/useStore";
+import { FeatureFlag } from "../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import type { InsightFilterType } from "../types";
 import { FilterChip } from "./FilterChip";
@@ -11,8 +16,39 @@ export const FilterPanel = ({
   allIssuesCount,
   unreadCount
 }: FilterPanelProps) => {
-  const { filters } = useInsightsSelector();
-  const { setInsightsFilters: setFilters } = useStore.getState();
+  const { backendInfo, scope } = useConfigSelector();
+  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
+  const {
+    filters,
+    filteredCriticalityLevels: filteredCriticalityLevelsInSpanScope,
+    filteredCriticalityLevelsInGlobalScope
+  } = useInsightsSelector();
+  const {
+    setInsightsFilters: setFilters,
+    setInsightsFilteredCriticalityLevels:
+      setFilteredCriticalityLevelsInSpanScope,
+    setInsightsFilteredCriticalityLevelsInGlobalScope
+  } = useStore.getState();
+
+  const filteredCriticalityLevels = useMemo(
+    () =>
+      scopeSpanCodeObjectId
+        ? filteredCriticalityLevelsInSpanScope
+        : filteredCriticalityLevelsInGlobalScope,
+    [
+      scopeSpanCodeObjectId,
+      filteredCriticalityLevelsInSpanScope,
+      filteredCriticalityLevelsInGlobalScope
+    ]
+  );
+
+  const isCriticalityLevelsFilterEnabled = Boolean(
+    backendInfo &&
+      getFeatureFlagValue(
+        backendInfo,
+        FeatureFlag.IS_ISSUES_CRITICALITY_LEVELS_FILTER_ENABLED
+      )
+  );
 
   const handleFilterChipClick = (selectedFilter?: InsightFilterType) => {
     const newFilters = new Set(filters);
@@ -29,11 +65,28 @@ export const FilterPanel = ({
 
     const selection = Array.from(newFilters);
 
-    sendUserActionTrackingEvent("issues filter changed", { selection });
     setFilters(selection);
+
+    if (
+      isCriticalityLevelsFilterEnabled &&
+      selectedFilter === "criticality" &&
+      newFilters.has("criticality")
+    ) {
+      const newCriticalityLevels: IssueCriticality[] = ["High"];
+      if (scopeSpanCodeObjectId) {
+        setFilteredCriticalityLevelsInSpanScope(newCriticalityLevels);
+      } else {
+        setInsightsFilteredCriticalityLevelsInGlobalScope(newCriticalityLevels);
+      }
+    }
+
+    sendUserActionTrackingEvent("issues filter changed", { selection });
   };
 
-  const isCriticalSelected = filters.includes("criticality");
+  const isCriticalSelected = isCriticalityLevelsFilterEnabled
+    ? filteredCriticalityLevels.length === 1 &&
+      filteredCriticalityLevels[0] === "High"
+    : filters.includes("criticality");
   const isUnreadSelected = filters.includes("unread");
 
   return (

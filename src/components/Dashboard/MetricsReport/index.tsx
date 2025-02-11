@@ -89,7 +89,8 @@ export const MetricsReport = () => {
       context: {
         event: SCOPE_CHANGE_EVENTS.METRICS_ENDPOINT_SELECTED,
         payload: {
-          service
+          service,
+          criticalityLevels
         }
       }
     });
@@ -120,7 +121,8 @@ export const MetricsReport = () => {
         context: {
           event: SCOPE_CHANGE_EVENTS.METRICS_SERVICE_SELECTED,
           payload: {
-            service: target.value
+            service: target.value,
+            criticalityLevels
           }
         }
       });

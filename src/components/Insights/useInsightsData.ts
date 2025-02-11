@@ -4,6 +4,7 @@ import type { DigmaMessageError } from "../../api/types";
 import { dispatcher } from "../../dispatcher";
 import { getFeatureFlagValue } from "../../featureFlags";
 import { usePrevious } from "../../hooks/usePrevious";
+import type { IssueCriticality } from "../../redux/services/types";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../store/insights/useInsightsSelector";
 import { useStore } from "../../store/useStore";
@@ -39,6 +40,8 @@ interface GetDataListParams {
   insightViewType: InsightViewType | null;
   spanCodeObjectId: string | null;
   areIssuesFiltersEnabled: boolean;
+  filteredCriticalityLevels: IssueCriticality[];
+  isCriticalityLevelsFilterEnabled: boolean;
 }
 
 interface GetStatsParams {
@@ -77,7 +80,9 @@ const getDataList = ({
   filteredServices,
   insightViewType,
   spanCodeObjectId,
-  areIssuesFiltersEnabled
+  areIssuesFiltersEnabled,
+  filteredCriticalityLevels,
+  isCriticalityLevelsFilterEnabled
 }: GetDataListParams) => {
   if (!insightViewType) {
     return;
@@ -88,11 +93,16 @@ const getDataList = ({
       displayName: search,
       page,
       sorting,
-      filters,
+      filters: isCriticalityLevelsFilterEnabled
+        ? filters.filter((x) => x !== "criticality")
+        : filters,
       showDismissed,
       scopedSpanCodeObjectId: spanCodeObjectId,
       insightTypes: filteredInsightTypes,
-      services: spanCodeObjectId ? [] : filteredServices
+      services: spanCodeObjectId ? [] : filteredServices,
+      ...(isCriticalityLevelsFilterEnabled
+        ? { criticalityFilter: filteredCriticalityLevels }
+        : {})
     });
   } else {
     const showUnreadOnly = filters.length === 1 && filters[0] === "unread";
@@ -147,6 +157,8 @@ export const useInsightsData = ({
     filters,
     filteredInsightTypes: filteredInsightTypesInSpanScope,
     filteredInsightTypesInGlobalScope,
+    filteredCriticalityLevels: filteredCriticalityLevelsInSpanScope,
+    filteredCriticalityLevelsInGlobalScope,
     isDataLoading: isLoading,
     insightViewType
   } = useInsightsSelector();
@@ -166,6 +178,9 @@ export const useInsightsData = ({
   const filteredInsightTypes = spanCodeObjectId
     ? filteredInsightTypesInSpanScope
     : filteredInsightTypesInGlobalScope;
+  const filteredCriticalityLevels = spanCodeObjectId
+    ? filteredCriticalityLevelsInSpanScope
+    : filteredCriticalityLevelsInGlobalScope;
   const showDismissed = viewMode === ViewMode.OnlyDismissed;
   const isAppReadyToGetData = useMemo(
     () =>
@@ -178,7 +193,22 @@ export const useInsightsData = ({
   const areIssuesFiltersEnabled = useMemo(
     () =>
       Boolean(
-        getFeatureFlagValue(backendInfo, FeatureFlag.ARE_ISSUES_FILTERS_ENABLED)
+        backendInfo &&
+          getFeatureFlagValue(
+            backendInfo,
+            FeatureFlag.ARE_ISSUES_FILTERS_ENABLED
+          )
+      ),
+    [backendInfo]
+  );
+
+  const isCriticalityLevelsFilterEnabled = useMemo(
+    () =>
+      Boolean(
+        getFeatureFlagValue(
+          backendInfo,
+          FeatureFlag.IS_ISSUES_CRITICALITY_LEVELS_FILTER_ENABLED
+        )
       ),
     [backendInfo]
   );
@@ -194,7 +224,9 @@ export const useInsightsData = ({
       filteredServices,
       insightViewType,
       spanCodeObjectId,
-      areIssuesFiltersEnabled
+      areIssuesFiltersEnabled,
+      filteredCriticalityLevels,
+      isCriticalityLevelsFilterEnabled
     }),
     [
       search,
@@ -206,7 +238,9 @@ export const useInsightsData = ({
       filteredServices,
       insightViewType,
       spanCodeObjectId,
-      areIssuesFiltersEnabled
+      areIssuesFiltersEnabled,
+      filteredCriticalityLevels,
+      isCriticalityLevelsFilterEnabled
     ]
   );
 
