@@ -65,7 +65,7 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
           {
             from: path.resolve(__dirname, "./public")
           },
-          ...(env.PLATFORM === "jetbrains"
+          ...(env.PLATFORM && ["jetbrains", "vs"].includes(env.PLATFORM)
             ? [
                 {
                   from: path.resolve(__dirname, `./jaeger-ui/dist/static`),

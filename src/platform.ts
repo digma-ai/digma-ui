@@ -1,7 +1,7 @@
 import type { IDE, Platform } from "./globals";
 import { isString } from "./typeGuards/isString";
 
-const PLATFORMS = ["JetBrains", "VS Code", "Web"];
+const PLATFORMS = ["JetBrains", "VS Code", "Visual Studio", "Web"];
 
 const isPlatform = (platform: unknown): platform is Platform =>
   isString(platform) && PLATFORMS.includes(platform);

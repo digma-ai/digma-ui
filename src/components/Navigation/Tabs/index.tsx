@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
+import { platform } from "../../../platform";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
@@ -14,31 +15,39 @@ import type { BaseTabData, TabData } from "./types";
 import { TAB_IDS } from "./types";
 
 const tabs: BaseTabData[] = [
-  {
-    id: TAB_IDS.HIGHLIGHTS,
-    icon: MagicWandIcon,
-    width: 40
-  },
+  ...(platform === "JetBrains"
+    ? [
+        {
+          id: TAB_IDS.HIGHLIGHTS,
+          icon: MagicWandIcon,
+          width: 40
+        }
+      ]
+    : []),
   {
     title: "Issues",
     id: TAB_IDS.ISSUES
   },
-  {
-    title: "Assets",
-    id: TAB_IDS.ASSETS
-  },
-  {
-    title: "Analytics",
-    id: TAB_IDS.ANALYTICS
-  },
-  {
-    title: "Errors",
-    id: TAB_IDS.ERRORS
-  },
-  {
-    title: "Tests",
-    id: TAB_IDS.TESTS
-  }
+  ...(platform === "JetBrains"
+    ? [
+        {
+          title: "Assets",
+          id: TAB_IDS.ASSETS
+        },
+        {
+          title: "Analytics",
+          id: TAB_IDS.ANALYTICS
+        },
+        {
+          title: "Errors",
+          id: TAB_IDS.ERRORS
+        },
+        {
+          title: "Tests",
+          id: TAB_IDS.TESTS
+        }
+      ]
+    : [])
 ];
 
 const getTabTooltipMessage = (

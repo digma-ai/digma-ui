@@ -1,6 +1,7 @@
 import { actions as globalActions } from "../../../actions";
 import { DIGMA_DOCUMENTATION_URL } from "../../../constants";
 import { getFeatureFlagValue } from "../../../featureFlags";
+import { platform } from "../../../platform";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import type { OpenInstallationWizardPayload } from "../../../types";
 import { FeatureFlag } from "../../../types";
@@ -98,32 +99,36 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
   };
 
   const items: MenuItem[] = [
-    {
-      id: "onboarding",
-      label: "Digma Onboarding",
-      icon: <DigmaLogoFlatIcon size={16} color={"currentColor"} />,
-      onClick: handleOnboardingClick
-    },
-    {
-      id: "localEngine",
-      label: "Local Engine",
-      icon: (
-        <LocalEngineIcon
-          size={16}
-          isActive={isDigmaEngineRunning(digmaStatus)}
-        />
-      ),
-      onClick: handleLocalEngineClick
-    },
-    {
-      id: "insightsOverview",
-      label: "Insights Overview",
-      icon: <FourPointedStarIcon size={16} color={"currentColor"} />,
-      onClick: handleInsightsOverviewClick
-    }
+    ...(platform === "JetBrains"
+      ? [
+          {
+            id: "onboarding",
+            label: "Digma Onboarding",
+            icon: <DigmaLogoFlatIcon size={16} color={"currentColor"} />,
+            onClick: handleOnboardingClick
+          },
+          {
+            id: "localEngine",
+            label: "Local Engine",
+            icon: (
+              <LocalEngineIcon
+                size={16}
+                isActive={isDigmaEngineRunning(digmaStatus)}
+              />
+            ),
+            onClick: handleLocalEngineClick
+          },
+          {
+            id: "insightsOverview",
+            label: "Insights Overview",
+            icon: <FourPointedStarIcon size={16} color={"currentColor"} />,
+            onClick: handleInsightsOverviewClick
+          }
+        ]
+      : [])
   ];
 
-  if (environment) {
+  if (environment && platform === "JetBrains") {
     items.push({
       id: "dashboard",
       label: "Dashboard",
@@ -145,12 +150,14 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
     });
   }
 
-  items.push({
-    id: "digma_docs",
-    label: "Digma Docs",
-    icon: <BookIcon size={16} />,
-    onClick: handleOpenDocsClick
-  });
+  if (platform === "JetBrains") {
+    items.push({
+      id: "digma_docs",
+      label: "Digma Docs",
+      icon: <BookIcon size={16} />,
+      onClick: handleOpenDocsClick
+    });
+  }
 
   if (backendInfo?.centralize) {
     items.push({
