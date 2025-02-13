@@ -35,6 +35,7 @@ npm run build:prod:{platform}
 Supported `platform` values:
 
 - `jetbrains`
+- `vs`
 - `web`
 
 Build of the package will be in the `./dist` directory

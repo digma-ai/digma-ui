@@ -3,8 +3,8 @@ import { addPrefix } from "../../utils/addPrefix";
 const ACTION_PREFIX = "INSIGHTS";
 
 export const actions = addPrefix(ACTION_PREFIX, {
-  GET_DATA: "GET_DATA",
-  SET_DATA: "SET_DATA",
+  GET_DATA: "GET_DATA", // deprecated
+  SET_DATA: "SET_DATA", // deprecated
   GO_TO_ERRORS: "GO_TO_ERRORS", // deprecated
   GO_TO_ERROR: "GO_TO_ERROR", // deprecated
   GO_TO_METHOD: "GO_TO_METHOD", // deprecated
@@ -26,7 +26,7 @@ export const actions = addPrefix(ACTION_PREFIX, {
   SET_COMMIT_INFO: "SET_COMMIT_INFO",
   LINK_TICKET: "LINK_TICKET", // deprecated
   UNLINK_TICKET: "UNLINK_TICKET", // deprecated
-  SET_TICKET_LINK: "SET_TICKET_LINK",
+  SET_TICKET_LINK: "SET_TICKET_LINK", // deprecated
   SET_DATA_LIST: "SET_DATA_LIST",
   GET_DATA_LIST: "GET_DATA_LIST",
   DISMISS: "DISMISS", // deprecated
