@@ -12,6 +12,7 @@ import type {
 import { useEndpointDataSource } from "../common";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
+import { getNPlusOneInsightTypeName } from "../common/getNPlusOneInsightTypeName";
 import { getTraceAttachment } from "../common/getTraceAttachment";
 import { InsightJiraTicket } from "../common/InsightJiraTicket";
 import { NPlusOneEndpoints } from "../common/NPlusOneEndpoints";
@@ -49,8 +50,10 @@ export const EndpointSpanNPlusOneInsightTicket = ({
     data.insight.criticality
   )}`;
 
+  const insightTypeName = getNPlusOneInsightTypeName(data.insight.subType);
+
   const summary = [
-    "Repeated Query Issue found",
+    `${insightTypeName} Issue found`,
     serviceString,
     criticalityString
   ]
@@ -63,7 +66,7 @@ export const EndpointSpanNPlusOneInsightTicket = ({
     <>
       {intersperse<ReactElement, ReactElement>(
         [
-          <div key={"title"}>Repeated Query Detected</div>,
+          <div key={"title"}>{insightTypeName} Detected</div>,
           <div key={"query"}>{queryString}</div>,
           <CodeLocations key={"codeLocations"} codeLocations={codeLocations} />,
           <NPlusOneEndpoints key={"affectedEndpoints"} insight={spanInsight} />,
