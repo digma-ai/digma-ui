@@ -76,13 +76,13 @@ export const getInsightTypeInfo = (
 
     [InsightType.EndpointSpanNPlusOne]: {
       icon: SQLDatabaseIcon,
-      label: "Suspected N+1",
+      label: "Repeated query",
       description: descriptionProvider.NPlusOneDescription,
       documentationLink: SUSPECTED_N_PLUS_ONE_ISSUE_DOCUMENTATION_URL,
       subTypes: {
         repeatedQueries: {
           icon: SQLDatabaseIcon,
-          label: "Repeated query"
+          label: "Suspected N+1"
         },
         repeatedInserts: {
           icon: SQLDatabaseIcon,
