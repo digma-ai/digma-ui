@@ -49,7 +49,11 @@ export const EndpointSpanNPlusOneInsightTicket = ({
     data.insight.criticality
   )}`;
 
-  const summary = ["N+1 Issue found", serviceString, criticalityString]
+  const summary = [
+    "Repeated Query Issue found",
+    serviceString,
+    criticalityString
+  ]
     .filter(Boolean)
     .join(" - ");
 
@@ -59,7 +63,7 @@ export const EndpointSpanNPlusOneInsightTicket = ({
     <>
       {intersperse<ReactElement, ReactElement>(
         [
-          <div key={"title"}>N+1 Query Detected</div>,
+          <div key={"title"}>Repeated Query Detected</div>,
           <div key={"query"}>{queryString}</div>,
           <CodeLocations key={"codeLocations"} codeLocations={codeLocations} />,
           <NPlusOneEndpoints key={"affectedEndpoints"} insight={spanInsight} />,
