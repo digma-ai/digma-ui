@@ -43,7 +43,7 @@ export const getDigmathonInsightCardData = (
     case InsightType.EndpointSpanNPlusOne:
     case InsightType.SpaNPlusOne:
       return {
-        title: "N+1 Select",
+        title: "Repeated query",
         description: "Excuse me sir, your abstraction is leaking",
         illustration: (
           <img src={"/assets/images/insightCards/NPlusOneInsightCard.svg"} />
