@@ -335,8 +335,11 @@ export const CodeIssues = () => {
         environment: selectedEnvironmentId ?? undefined,
         scopedSpanCodeObjectId:
           selectedService && scope?.value
-            ? serviceEndpoints?.endpoints.find((x) => x.uid === scope.value)
-                ?.spanCodeObjectId
+            ? serviceEndpoints?.endpoints.find((x) =>
+                x.uid
+                  ? x.uid === scope.value
+                  : x.spanCodeObjectId === scope.value
+              )?.spanCodeObjectId
             : undefined,
         services: selectedService
           ? [selectedService]
