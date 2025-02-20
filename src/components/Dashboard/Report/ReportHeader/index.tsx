@@ -32,14 +32,14 @@ const refreshEnvList = () => {
 
 export const ReportHeader = ({
   onRefresh,
-  onFilterChanged
+  onFilterChange
 }: ReportHeaderProps) => {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedEnvironment, setSelectedEnvironment] = useState<string | null>(
     null
   );
   const { environments } = useConfigSelector();
-  const handleSelectedEnvironmentChanged = (option: string | string[]) => {
+  const handleSelectedEnvironmentChange = (option: string | string[]) => {
     const newItem =
       option === selectedEnvironment
         ? [""]
@@ -48,14 +48,14 @@ export const ReportHeader = ({
         : [option];
 
     setSelectedEnvironment(newItem[0]);
-    onFilterChanged({ environmentId: newItem[0], services: selectedServices });
+    onFilterChange({ environmentId: newItem[0], services: selectedServices });
     sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_FILTER_SELECTED);
   };
 
-  const handleSelectedServicesChanged = (option: string | string[]) => {
+  const handleSelectedServicesChange = (option: string | string[]) => {
     const newItem = Array.isArray(option) ? option : [option];
     setSelectedServices(newItem);
-    onFilterChanged({ environmentId: selectedEnvironment, services: newItem });
+    onFilterChange({ environmentId: selectedEnvironment, services: newItem });
     sendUserActionTrackingEvent(trackingEvents.SERVICES_FILTER_SELECTED);
   };
 
@@ -101,7 +101,7 @@ export const ReportHeader = ({
                     })) ?? []
                 }
                 icon={GlobeIcon}
-                onChange={handleSelectedEnvironmentChanged}
+                onChange={handleSelectedEnvironmentChange}
                 placeholder={
                   environments?.find((x) => x.id === selectedEnvironment)
                     ?.name ?? "All Environments"
@@ -118,7 +118,7 @@ export const ReportHeader = ({
                 }
                 multiselect={true}
                 icon={WrenchIcon}
-                onChange={handleSelectedServicesChanged}
+                onChange={handleSelectedServicesChange}
                 placeholder={
                   selectedServices.length > 0 ? "Services" : "All Services"
                 }

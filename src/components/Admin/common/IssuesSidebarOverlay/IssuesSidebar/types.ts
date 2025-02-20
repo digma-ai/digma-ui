@@ -10,6 +10,7 @@ export interface IssuesSidebarProps {
   query?: GetIssuesPayload;
   isPaginationEnabled?: boolean;
   title?: string;
+  onPageChange?: (page: number) => void;
 }
 
 export interface DrawerContainerProps {

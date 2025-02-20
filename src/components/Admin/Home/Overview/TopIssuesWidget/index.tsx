@@ -1,5 +1,4 @@
 import { useTheme } from "styled-components";
-import { useAdminSelector } from "../../../../../containers/Admin/hooks";
 import { getFeatureFlagValue } from "../../../../../featureFlags";
 import { useGetAboutQuery } from "../../../../../redux/services/digma";
 import { FeatureFlag } from "../../../../../types";
@@ -15,38 +14,25 @@ import { OverviewWidget } from "../OverviewWidget";
 import * as s from "./styles";
 import type { TopIssuesWidgetProps } from "./types";
 
-const ISSUES_LIMIT = 10;
-
-export const TopIssuesWidget = ({ onGetIssues }: TopIssuesWidgetProps) => {
+export const TopIssuesWidget = ({
+  onGetIssuesByCriticality,
+  onGetIssuesBySeverity
+}: TopIssuesWidgetProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
-  const environmentId = useAdminSelector((state) => state.scope.environmentId);
 
   const handleByCriticalityButtonClick = () => {
     sendUserActionTrackingEvent(
       trackingEvents.TOP_ISSUES_WIDGET_BY_CRITICALITY_BUTTON_CLICKED
     );
-    onGetIssues({
-      query: {
-        environment: environmentId ?? undefined
-      },
-      limit: ISSUES_LIMIT,
-      title: "Top issues by criticality"
-    });
+    onGetIssuesByCriticality();
   };
 
   const handleBySeverityButtonClick = () => {
     sendUserActionTrackingEvent(
       trackingEvents.TOP_ISSUES_WIDGET_BY_SEVERITY_BUTTON_CLICKED
     );
-    onGetIssues({
-      query: {
-        environment: environmentId ?? undefined,
-        sortBy: "severity"
-      },
-      limit: ISSUES_LIMIT,
-      title: "Top issues by severity"
-    });
+    onGetIssuesBySeverity();
   };
 
   const { data: about } = useGetAboutQuery();

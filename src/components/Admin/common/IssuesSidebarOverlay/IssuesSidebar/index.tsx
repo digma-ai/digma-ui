@@ -7,7 +7,8 @@ import {
 } from "../../../../../containers/Admin/hooks";
 import {
   useGetAboutQuery,
-  useGetIssuesQuery
+  useGetIssuesQuery,
+  useGetSpanInfoQuery
 } from "../../../../../redux/services/digma";
 import { setIsInsightJiraTicketHintShown } from "../../../../../redux/slices/persistSlice";
 import { isUndefined } from "../../../../../typeGuards/isUndefined";
@@ -64,12 +65,12 @@ export const IssuesSidebar = ({
   query,
   scopeDisplayName,
   isPaginationEnabled = true,
-  title = "Issues"
+  title = "Issues",
+  onPageChange
 }: IssuesSidebarProps) => {
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
     useState<InsightTicketInfo<GenericCodeObjectInsight>>();
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.All);
-  const [page, setPage] = useState(0);
   const [insightIdToOpenSuggestion, setInsightIdToOpenSuggestion] =
     useState<string>();
   const [isDrawerTransitioning, setIsDrawerTransitioning] = useState(false);
@@ -82,14 +83,23 @@ export const IssuesSidebar = ({
   const issuesListRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
   const { data: about } = useGetAboutQuery();
+  const { data: spanInfo, isLoading: isSpanInfoLoading } = useGetSpanInfoQuery(
+    { spanCodeObjectId: query?.scopedSpanCodeObjectId ?? "" },
+    {
+      skip: !query?.scopedSpanCodeObjectId
+    }
+  );
+  const scopeBarDisplayName = spanInfo?.displayName ?? scopeDisplayName;
+  const page = query?.page ?? 0;
+  const pageSize = query?.pageSize ?? PAGE_SIZE;
   const { data, isFetching, refetch } = useGetIssuesQuery(
     {
       showDismissed: viewMode === ViewMode.OnlyDismissed,
       sortBy: "criticalinsights",
       sortOrder: "desc",
+      ...query,
       page,
-      pageSize: PAGE_SIZE,
-      ...query
+      pageSize
     },
     {
       refetchOnMountOrArgChange: true
@@ -150,7 +160,7 @@ export const IssuesSidebar = ({
 
   const handleChangePage = (page: number) => {
     sendUserActionTrackingEvent(trackingEvents.ISSUES_SIDEBAR_PAGE_CHANGED);
-    setPage(page);
+    onPageChange?.(page);
   };
 
   const handleDismissalViewModeButtonClick = () => {
@@ -194,9 +204,9 @@ export const IssuesSidebar = ({
 
   const dismissedCount = data?.dismissedCount;
   const totalCount = data?.totalCount ?? 0;
-  const pageStartItemNumber = page * PAGE_SIZE + 1;
+  const pageStartItemNumber = page * pageSize + 1;
   const pageEndItemNumber = Math.min(
-    pageStartItemNumber + PAGE_SIZE - 1,
+    pageStartItemNumber + pageSize - 1,
     totalCount
   );
   const isDismissalViewModeButtonVisible =
@@ -204,7 +214,7 @@ export const IssuesSidebar = ({
 
   const extendedScope: Scope = {
     span: {
-      displayName: scopeDisplayName ?? query?.scopedSpanCodeObjectId ?? "",
+      displayName: scopeBarDisplayName ?? query?.scopedSpanCodeObjectId ?? "",
       spanCodeObjectId: query?.scopedSpanCodeObjectId ?? "",
       methodId: null,
       serviceName: null,
@@ -231,7 +241,7 @@ export const IssuesSidebar = ({
             onClick={handleSidebarCloseButtonClick}
           />
         </s.HeaderTitleRow>
-        {scopeDisplayName && (
+        {!isSpanInfoLoading && scopeBarDisplayName && (
           <ScopeBar
             isExpanded={false}
             isSpanInfoEnabled={false}
@@ -287,7 +297,7 @@ export const IssuesSidebar = ({
             <Pagination
               itemsCount={totalCount}
               page={page}
-              pageSize={PAGE_SIZE}
+              pageSize={pageSize}
               onPageChange={handleChangePage}
               extendedNavigation={true}
             />

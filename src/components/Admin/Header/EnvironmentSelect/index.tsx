@@ -28,7 +28,7 @@ export const EnvironmentSelect = () => {
   );
   const dispatch = useAdminDispatch();
 
-  const handleEnvironmentChanged = (option: string | string[]) => {
+  const handleEnvironmentChange = (option: string | string[]) => {
     const newItem = Array.isArray(option) ? option[0] : option;
 
     sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_CHANGED, {
@@ -64,7 +64,7 @@ export const EnvironmentSelect = () => {
           <CodeIcon {...props} size={12} />
         )
       }
-      onChange={handleEnvironmentChanged}
+      onChange={handleEnvironmentChange}
       placeholder={selectedEnvironment?.name ?? "Select Environments"}
       disabled={sortedEnvironments.length === 0}
     />

@@ -76,13 +76,13 @@ export const getInsightTypeInfo = (
 
     [InsightType.EndpointSpanNPlusOne]: {
       icon: SQLDatabaseIcon,
-      label: "Suspected N+1",
-      description: descriptionProvider.NPlusOneDescription,
-      documentationLink: SUSPECTED_N_PLUS_ONE_ISSUE_DOCUMENTATION_URL,
+      label: "Repeated query",
       subTypes: {
         repeatedQueries: {
           icon: SQLDatabaseIcon,
-          label: "Repeated query"
+          label: "Suspected N+1",
+          description: descriptionProvider.NPlusOneDescription,
+          documentationLink: SUSPECTED_N_PLUS_ONE_ISSUE_DOCUMENTATION_URL
         },
         repeatedInserts: {
           icon: SQLDatabaseIcon,
@@ -92,13 +92,13 @@ export const getInsightTypeInfo = (
     },
     [InsightType.SpaNPlusOne]: {
       icon: SQLDatabaseIcon,
-      label: "Suspected N+1",
-      description: descriptionProvider.NPlusOneDescription,
-      documentationLink: SUSPECTED_N_PLUS_ONE_ISSUE_DOCUMENTATION_URL,
+      label: "Repeated query",
       subTypes: {
         repeatedQueries: {
           icon: SQLDatabaseIcon,
-          label: "Repeated query"
+          label: "Suspected N+1",
+          description: descriptionProvider.NPlusOneDescription,
+          documentationLink: SUSPECTED_N_PLUS_ONE_ISSUE_DOCUMENTATION_URL
         },
         repeatedInserts: {
           icon: SQLDatabaseIcon,

@@ -74,7 +74,9 @@ export const Header = ({
 }: HeaderProps) => {
   const { data: about } = useGetAboutQuery();
 
-  const { data: environments } = useGetEnvironmentsQuery();
+  const { data: environments } = useGetEnvironmentsQuery(undefined, {
+    skip: viewLevel !== "services"
+  });
 
   const { data: serviceEnvironments } = useGetServiceEnvironmentsQuery(
     {
@@ -131,7 +133,7 @@ export const Header = ({
     onGoBack();
   };
 
-  const handleSelectedEnvironmentChanged = (option: string | string[]) => {
+  const handleSelectedEnvironmentChange = (option: string | string[]) => {
     sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_FILTER_SELECTED);
     const newItem = Array.isArray(option) ? option[0] : option;
     onSelectedEnvironmentIdChange(newItem);
@@ -139,44 +141,41 @@ export const Header = ({
     onSelectedEndpointsChange([]);
   };
 
-  const handleSelectedServicesChanged = (option: string | string[]) => {
+  const handleSelectedServicesChange = (option: string | string[]) => {
     sendUserActionTrackingEvent(trackingEvents.SERVICE_FILTER_SELECTED);
-    const newItem = Array.isArray(option) ? option : [option];
-    onSelectedServicesChange(newItem);
+    const newItems = Array.isArray(option) ? option : [option];
+    onSelectedServicesChange(newItems);
   };
 
-  const handleSelectedEndpointsChanged = (option: string | string[]) => {
+  const handleSelectedEndpointsChange = (option: string | string[]) => {
     sendUserActionTrackingEvent(trackingEvents.ENDPOINT_FILTER_SELECTED);
-    const newItem = Array.isArray(option) ? option : [option];
-    onSelectedEndpointsChange(newItem);
+    const newItems = Array.isArray(option) ? option : [option];
+    const newEndpoints =
+      serviceEndpoints?.endpoints.filter((x) =>
+        newItems.includes(x.spanCodeObjectId)
+      ) ?? [];
+    onSelectedEndpointsChange(newEndpoints);
   };
 
-  const handleDataChanged = (option: string | string[]) => {
+  const handleDataChange = (option: string | string[]) => {
     sendUserActionTrackingEvent(trackingEvents.DATA_FILTER_SELECTED);
-    const newItem = Array.isArray(option) ? option : [option];
-    onCriticalityLevelsChange(newItem as IssueCriticality[]);
+    const newItems = Array.isArray(option) ? option : [option];
+    onCriticalityLevelsChange(newItems as IssueCriticality[]);
   };
 
-  const handlePeriodChanged = (option: string | string[]) => {
+  const handlePeriodChange = (option: string | string[]) => {
     sendUserActionTrackingEvent(trackingEvents.PERIOD_FILTER_CHANGED);
-    const newItem = Array.isArray(option) ? option : [option];
-    if (newItem.length === 0) {
-      onPeriodInDaysChange(DEFAULT_PERIOD);
-      return;
-    }
-
-    const value = newItem[0];
-    const newValue = Number(value);
-    onPeriodInDaysChange(newValue);
+    const newItem = Array.isArray(option) ? option[0] : option;
+    onPeriodInDaysChange(Number(newItem));
   };
 
-  const handleViewModeChanged = (value: ToggleValue) => {
+  const handleViewModeChange = (value: ToggleValue) => {
     sendUserActionTrackingEvent(trackingEvents.VIEW_MODE_CHANGED, { value });
     const newViewMode = value as IssuesReportViewMode;
     onViewModeChange(newViewMode);
   };
 
-  const handleTimeModeChanged = (value: ToggleValue) => {
+  const handleTimeModeChange = (value: ToggleValue) => {
     sendUserActionTrackingEvent(trackingEvents.TIME_MODE_CHANGED, { value });
     const newTimeMode = value as IssuesReportTimeMode;
     onTimeModeChange(newTimeMode);
@@ -220,7 +219,7 @@ export const Header = ({
             { value: "changes", label: "Changes" }
           ]}
           value={timeMode}
-          onValueChange={handleTimeModeChanged}
+          onValueChange={handleTimeModeChange}
         />
       </s.Row>
       <s.Row>
@@ -240,7 +239,7 @@ export const Header = ({
                 <CodeIcon {...props} size={12} />
               )
             }
-            onChange={handleSelectedEnvironmentChanged}
+            onChange={handleSelectedEnvironmentChange}
             placeholder={selectedEnvironment?.name ?? "Select Environments"}
             disabled={environmentsToSelect.length === 0}
           />
@@ -252,14 +251,19 @@ export const Header = ({
                   label: x.displayName,
                   value: x.spanCodeObjectId,
                   enabled: true,
-                  selected: selectedEndpoints.includes(x.spanCodeObjectId)
+                  selected: Boolean(
+                    selectedEndpoints.find(
+                      (endpoint) =>
+                        endpoint.spanCodeObjectId === x.spanCodeObjectId
+                    )
+                  )
                 }))}
               useShift={false}
               sameWidth={false}
               showSelectedState={true}
               multiselect={true}
               icon={WrenchIcon}
-              onChange={handleSelectedEndpointsChanged}
+              onChange={handleSelectedEndpointsChange}
               searchable={true}
               placeholder={
                 selectedEndpoints.length > 0 ? "Endpoints" : "All Endpoints"
@@ -281,7 +285,7 @@ export const Header = ({
               showSelectedState={true}
               multiselect={true}
               icon={WrenchIcon}
-              onChange={handleSelectedServicesChanged}
+              onChange={handleSelectedServicesChange}
               placeholder={
                 selectedServices.length > 0 ? "Services" : "All Services"
               }
@@ -290,7 +294,7 @@ export const Header = ({
           )}
           {timeMode === "changes" && (
             <s.FilterSelect
-              items={[1, 7].map((x) => ({
+              items={[1, DEFAULT_PERIOD].map((x) => ({
                 value: x.toString(),
                 label: `${x} ${formatUnit(x, "Day")}`,
                 selected: x === periodInDays,
@@ -298,7 +302,7 @@ export const Header = ({
               }))}
               showSelectedState={false}
               icon={DurationBreakdownIcon}
-              onChange={handlePeriodChanged}
+              onChange={handlePeriodChange}
               placeholder={`Period: ${periodInDays} ${formatUnit(
                 periodInDays,
                 "day"
@@ -315,7 +319,7 @@ export const Header = ({
               }))}
               multiselect={true}
               icon={DatabaseIcon}
-              onChange={handleDataChanged}
+              onChange={handleDataChange}
               placeholder={"Data"}
             />
           )}
@@ -333,7 +337,7 @@ export const Header = ({
             }
           ]}
           value={viewMode}
-          onValueChange={handleViewModeChanged}
+          onValueChange={handleViewModeChange}
         />
       </s.Row>
     </s.Container>

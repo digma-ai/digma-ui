@@ -52,7 +52,6 @@ export const IssuesReport = ({
   onPeriodInDaysChange,
   onTimeModeChange,
   onViewModeChange,
-  onViewLevelChange,
   onTileTitleClick,
   onTileIssuesStatsClick,
   onSelectedServiceChange,
@@ -159,7 +158,7 @@ export const IssuesReport = ({
       {
         environment: selectedEnvironmentId ?? "",
         service: selectedService ?? "",
-        endpoints: selectedEndpoints,
+        endpoints: selectedEndpoints.map((x) => x.spanCodeObjectId),
         criticalities: criticalityLevels,
         lastDays: timeMode === "baseline" ? null : periodInDays
       },
@@ -177,7 +176,6 @@ export const IssuesReport = ({
   const handleTitleClick = (value: string) => {
     if (viewLevel === "services") {
       onSelectedServiceChange(value);
-      onViewLevelChange("endpoints");
     }
 
     const displayName =
@@ -198,7 +196,6 @@ export const IssuesReport = ({
   };
 
   const handleGoBack = () => {
-    onViewLevelChange("services");
     onSelectedServiceChange(null);
   };
 

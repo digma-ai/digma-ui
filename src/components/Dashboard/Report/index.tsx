@@ -17,7 +17,7 @@ export const Report = () => {
   const [query, setQuery] = useState<ReportFilterQuery>(DefaultQuery);
   const { discoveredAssets, discoveredIssues, refresh } = useReportsData(query);
 
-  const handleFilterChanged = (query: ReportFilterQuery) => {
+  const handleFilterChange = (query: ReportFilterQuery) => {
     setQuery(query);
   };
 
@@ -29,7 +29,7 @@ export const Report = () => {
 
   return (
     <s.Container>
-      <ReportHeader onRefresh={refresh} onFilterChanged={handleFilterChanged} />
+      <ReportHeader onRefresh={refresh} onFilterChange={handleFilterChange} />
       <s.Content>
         <s.Column key={"issues"}>
           <DiscoveredIssues statistics={discoveredIssues} />

@@ -5,14 +5,20 @@ import * as s from "./styles";
 import { TopIssuesWidget } from "./TopIssuesWidget";
 import type { OverviewProps } from "./types";
 
-export const Overview = ({ onGetIssues }: OverviewProps) => {
+export const Overview = ({
+  onGetTopIssuesByCriticality,
+  onGetTopIssuesBySeverity
+}: OverviewProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
 
   return (
     <HomeSection title={"Overview"}>
       <s.WidgetsContainer>
-        <TopIssuesWidget onGetIssues={onGetIssues} />
+        <TopIssuesWidget
+          onGetIssuesByCriticality={onGetTopIssuesByCriticality}
+          onGetIssuesBySeverity={onGetTopIssuesBySeverity}
+        />
         {[1, 2, 3].map((x) => (
           <s.OverviewWidgetPlaceholderImage
             key={x}
