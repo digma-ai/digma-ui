@@ -323,24 +323,34 @@ export const CodeIssues = () => {
   const viewLevel: IssuesReportViewLevel = selectedService
     ? "endpoints"
     : "services";
-  const activeTileIds = useMemo(
-    () => (scope?.value ? [scope.value] : undefined),
-    [scope?.value]
+
+  const spanCodeObjectId = useMemo(
+    () =>
+      selectedService && scope?.value
+        ? serviceEndpoints?.endpoints.find((x) =>
+            x.uid ? x.uid === scope.value : x.spanCodeObjectId === scope.value
+          )?.spanCodeObjectId
+        : undefined,
+    [scope?.value, selectedService, serviceEndpoints?.endpoints]
   );
+
+  const activeTileIds = useMemo(() => {
+    if (!scope?.value) {
+      return undefined;
+    }
+
+    const id = spanCodeObjectId ?? scope.value;
+
+    return id ? [id] : undefined;
+  }, [spanCodeObjectId, scope?.value]);
+
   const isIssuesSidebarOpen = Boolean(scope);
 
   const issuesSidebarQuery: IssuesSidebarQuery = useMemo(
     () => ({
       query: {
         environment: selectedEnvironmentId ?? undefined,
-        scopedSpanCodeObjectId:
-          selectedService && scope?.value
-            ? serviceEndpoints?.endpoints.find((x) =>
-                x.uid
-                  ? x.uid === scope.value
-                  : x.spanCodeObjectId === scope.value
-              )?.spanCodeObjectId
-            : undefined,
+        scopedSpanCodeObjectId: spanCodeObjectId,
         services: selectedService
           ? [selectedService]
           : scope?.value
@@ -354,7 +364,7 @@ export const CodeIssues = () => {
       selectedEnvironmentId,
       selectedService,
       issuesPage,
-      serviceEndpoints?.endpoints
+      spanCodeObjectId
     ]
   );
 
