@@ -1,13 +1,20 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   useAdminDispatch,
   useAdminSelector
 } from "../../../../containers/Admin/hooks";
+import { useMount } from "../../../../hooks/useMount";
+import { useStableSearchParams } from "../../../../hooks/useStableSearchParams";
+import { useGetServiceEndpointsQuery } from "../../../../redux/services/digma";
 import type {
-  GetIssuesPayload,
+  EndpointData,
   IssueCriticality
 } from "../../../../redux/services/types";
 import {
+  DEFAULT_TIME_PERIOD_IN_DAYS,
+  isIssueCriticality,
+  isIssuesReportTimeMode,
+  isIssuesReportViewMode,
   setCriticalityLevels,
   setPeriodInDays,
   setSelectedEndpoints,
@@ -15,20 +22,41 @@ import {
   setSelectedService,
   setSelectedServices,
   setTimeMode,
-  setViewLevel,
   setViewMode,
   type IssuesReportTimeMode,
   type IssuesReportViewLevel,
   type IssuesReportViewMode
 } from "../../../../redux/slices/issuesReportSlice";
+import { isNull } from "../../../../typeGuards/isNull";
 import { IssuesReport } from "../../../common/IssuesReport";
 import type { TargetScope } from "../../../common/IssuesReport/types";
 import { IssuesSidebarOverlay } from "../../common/IssuesSidebarOverlay";
+import type { IssuesSidebarQuery } from "../../common/IssuesSidebarOverlay/types";
 import * as s from "./styles";
 
 export const MIN_SIDEBAR_WIDTH = 382; // in pixels
 export const MAX_SIDEBAR_WIDTH = 640; // in pixels
 export const DEFAULT_SIDEBAR_WIDTH_RATIO = 0.33;
+
+export const getIssuesPage = (value: string | null): number => {
+  if (isNull(value)) {
+    return 0;
+  }
+
+  const parsedValue = Number.parseInt(value);
+  return Number.isInteger(parsedValue) && parsedValue > 0 ? parsedValue - 1 : 0;
+};
+
+export const getScope = (value: string | null): TargetScope | undefined =>
+  value ? { value } : undefined;
+
+export const isValidPeriodInDays = (value: string | null): boolean => {
+  if (!value) {
+    return false;
+  }
+
+  return [1, DEFAULT_TIME_PERIOD_IN_DAYS].includes(Number.parseInt(value));
+};
 
 export const getDefaultSidebarWidth = (windowWidth: number) => {
   const defaultWidth = windowWidth * DEFAULT_SIDEBAR_WIDTH_RATIO;
@@ -44,11 +72,6 @@ export const getDefaultSidebarWidth = (windowWidth: number) => {
 };
 
 export const CodeIssues = () => {
-  const [isIssuesSidebarOpen, setIsIssuesSidebarOpen] = useState(false);
-  const [scope, setScope] = useState<TargetScope>();
-  const [activeTileIds, setActiveTileIds] = useState<string[] | undefined>(
-    undefined
-  );
   const selectedEnvironmentId = useAdminSelector(
     (state) => state.codeIssuesReport.selectedEnvironmentId
   );
@@ -64,59 +87,90 @@ export const CodeIssues = () => {
   const selectedServices = useAdminSelector(
     (state) => state.codeIssuesReport.selectedServices
   );
-  const viewLevel = useAdminSelector(
-    (state) => state.codeIssuesReport.viewLevel
-  );
   const viewMode = useAdminSelector((state) => state.codeIssuesReport.viewMode);
   const timeMode = useAdminSelector((state) => state.codeIssuesReport.timeMode);
   const selectedEndpoints = useAdminSelector(
     (state) => state.codeIssuesReport.selectedEndpoints
   );
 
-  const query: Partial<GetIssuesPayload> = useMemo(
-    () => ({
-      environment: selectedEnvironmentId ?? undefined,
-      scopedSpanCodeObjectId:
-        viewLevel === "endpoints" ? scope?.value : undefined,
-      services:
-        viewLevel === "services"
-          ? scope?.value
-            ? [scope.value]
-            : []
-          : viewLevel === "endpoints" && selectedService
-          ? [selectedService]
-          : []
-    }),
-    [scope?.value, viewLevel, selectedEnvironmentId, selectedService]
-  );
-
-  const issuesSidebarQuery = useMemo(
-    () => ({
-      query
-    }),
-    [query]
-  );
-
   const dispatch = useAdminDispatch();
+
+  const [searchParams, setSearchParams] = useStableSearchParams();
+  const [scope, setScope] = useState<TargetScope | undefined>(
+    getScope(searchParams.get("issues-scope"))
+  );
+  const [issuesPage, setIssuesPage] = useState<number>(
+    getIssuesPage(searchParams.get("issues-page"))
+  );
+
+  const environmentParam = searchParams.get("environment");
+  const viewModeParam = searchParams.get("view-mode");
+  const timeModeParam = searchParams.get("time-mode");
+  const criticalityParam = useMemo(
+    () => searchParams.getAll("criticality"),
+    [searchParams]
+  );
+  const periodInDaysParam = searchParams.get("period-in-days");
+  const servicesParam = useMemo(
+    () => searchParams.getAll("services"),
+    [searchParams]
+  );
+  const serviceParam = searchParams.get("service");
+  const endpointsParam = useMemo(
+    () => searchParams.getAll("endpoints"),
+    [searchParams]
+  );
+
+  const { data: serviceEndpoints } = useGetServiceEndpointsQuery(
+    {
+      service: selectedService ?? "",
+      environment: selectedEnvironmentId ?? ""
+    },
+    {
+      skip: !selectedEnvironmentId || !selectedService
+    }
+  );
 
   const handleTileTitleClick = (
     viewLevel: IssuesReportViewLevel,
     target: TargetScope
   ) => {
     if (viewMode === "table" && viewLevel === "endpoints") {
-      setScope(target);
-      setIsIssuesSidebarOpen(true);
-      setActiveTileIds([target.value]);
+      const spanId = serviceEndpoints?.endpoints.find(
+        (x) => x.spanCodeObjectId === target.value
+      )?.uid;
+
+      setScope({
+        ...target,
+        value: spanId ?? target.value
+      });
     }
   };
 
   const handleTileIssuesStatsClick = (
-    _: IssuesReportViewLevel,
+    viewLevel: IssuesReportViewLevel,
     target: TargetScope
   ) => {
-    setScope(target);
-    setIsIssuesSidebarOpen(true);
-    setActiveTileIds([target.value]);
+    const spanId =
+      viewLevel === "endpoints"
+        ? serviceEndpoints?.endpoints.find(
+            (x) => x.spanCodeObjectId === target.value
+          )?.uid
+        : undefined;
+
+    setScope({
+      ...target,
+      value: spanId ?? target.value
+    });
+  };
+
+  const handleIssuesSidebarPageChange = (page: number) => {
+    setIssuesPage(page);
+  };
+
+  const handleIssuesSidebarClose = () => {
+    setScope(undefined);
+    setIssuesPage(0);
   };
 
   const handleSelectedEnvironmentIdChange = (environmentId: string) => {
@@ -127,7 +181,7 @@ export const CodeIssues = () => {
     dispatch(setSelectedServices(services));
   };
 
-  const handleSelectedEndpointsChange = (endpoints: string[]) => {
+  const handleSelectedEndpointsChange = (endpoints: EndpointData[]) => {
     dispatch(setSelectedEndpoints(endpoints));
   };
 
@@ -147,18 +201,161 @@ export const CodeIssues = () => {
     dispatch(setViewMode(viewMode));
   };
 
-  const handleViewLevelChange = (viewLevel: IssuesReportViewLevel) => {
-    dispatch(setViewLevel(viewLevel));
-  };
-
   const handleSelectedServiceChange = (service: string | null) => {
     dispatch(setSelectedService(service));
+    dispatch(setSelectedEndpoints([]));
   };
 
-  const handleIssuesSidebarClose = () => {
-    setIsIssuesSidebarOpen(false);
-    setActiveTileIds(undefined);
-  };
+  useMount(() => {
+    if (environmentParam) {
+      dispatch(setSelectedEnvironmentId(environmentParam));
+    }
+
+    if (isIssuesReportViewMode(viewModeParam)) {
+      dispatch(setViewMode(viewModeParam));
+    }
+
+    if (isIssuesReportTimeMode(timeModeParam)) {
+      dispatch(setTimeMode(timeModeParam));
+    }
+
+    if (criticalityParam.every(isIssueCriticality)) {
+      dispatch(setCriticalityLevels(criticalityParam));
+    }
+
+    if (isValidPeriodInDays(periodInDaysParam)) {
+      dispatch(setPeriodInDays(Number(periodInDaysParam)));
+    }
+
+    dispatch(setSelectedServices(servicesParam));
+
+    dispatch(setSelectedService(serviceParam));
+  });
+
+  useEffect(() => {
+    if (serviceEndpoints?.endpoints) {
+      const selectedEndpoints = serviceEndpoints.endpoints.filter((endpoint) =>
+        endpointsParam.includes(endpoint.uid ?? endpoint.spanCodeObjectId)
+      );
+      dispatch(setSelectedEndpoints(selectedEndpoints));
+    }
+  }, [dispatch, serviceEndpoints?.endpoints, endpointsParam]);
+
+  useEffect(() => {
+    if (selectedEnvironmentId) {
+      setSearchParams((params) => {
+        params.set("environment", selectedEnvironmentId);
+        return params;
+      });
+    }
+  }, [setSearchParams, selectedEnvironmentId]);
+
+  useEffect(() => {
+    setSearchParams((params) => {
+      params.set("view-mode", viewMode);
+      return params;
+    });
+  }, [setSearchParams, viewMode]);
+
+  useEffect(() => {
+    setSearchParams((params) => {
+      params.set("time-mode", timeMode);
+      return params;
+    });
+  }, [setSearchParams, timeMode]);
+
+  useEffect(() => {
+    setSearchParams((params) => {
+      params.delete("criticality");
+      criticalityLevels.forEach((criticality) =>
+        params.append("criticality", criticality)
+      );
+      return params;
+    });
+  }, [setSearchParams, criticalityLevels]);
+
+  useEffect(() => {
+    setSearchParams((params) => {
+      if (timeMode === "baseline") {
+        params.delete("period-in-days");
+      }
+      if (timeMode === "changes") {
+        params.set("period-in-days", String(periodInDays));
+      }
+      return params;
+    });
+  }, [setSearchParams, timeMode, periodInDays]);
+
+  useEffect(() => {
+    setSearchParams((params) => {
+      if (selectedService) {
+        params.set("service", selectedService);
+        params.delete("services");
+        params.delete("endpoints");
+        selectedEndpoints.forEach((endpoint) =>
+          params.append("endpoints", endpoint.uid ?? endpoint.spanCodeObjectId)
+        );
+      } else {
+        params.delete("service");
+        params.delete("endpoints");
+        params.delete("services");
+        selectedServices.forEach((service) =>
+          params.append("services", service)
+        );
+      }
+      return params;
+    });
+  }, [setSearchParams, selectedService, selectedServices, selectedEndpoints]);
+
+  useEffect(() => {
+    setSearchParams((params) => {
+      if (scope?.value) {
+        params.set("issues-scope", scope.value);
+        params.set("issues-page", String(issuesPage + 1));
+      } else {
+        params.delete("issues-scope");
+        params.delete("issues-page");
+      }
+      return params;
+    });
+  }, [setSearchParams, scope?.value, issuesPage]);
+
+  const viewLevel: IssuesReportViewLevel = selectedService
+    ? "endpoints"
+    : "services";
+  const activeTileIds = useMemo(
+    () => (scope?.value ? [scope.value] : undefined),
+    [scope?.value]
+  );
+  const isIssuesSidebarOpen = Boolean(scope);
+
+  const issuesSidebarQuery: IssuesSidebarQuery = useMemo(
+    () => ({
+      query: {
+        environment: selectedEnvironmentId ?? undefined,
+        scopedSpanCodeObjectId:
+          selectedService && scope?.value
+            ? serviceEndpoints?.endpoints.find((x) => x.uid === scope.value)
+                ?.spanCodeObjectId
+            : undefined,
+        services: selectedService
+          ? [selectedService]
+          : scope?.value
+          ? [scope.value]
+          : [],
+        page: issuesPage
+      }
+    }),
+    [
+      scope?.value,
+      selectedEnvironmentId,
+      selectedService,
+      issuesPage,
+      serviceEndpoints?.endpoints
+    ]
+  );
+
+  const scopeDisplayName = selectedService ? undefined : scope?.value;
 
   return (
     <s.Container>
@@ -182,15 +379,15 @@ export const CodeIssues = () => {
         onPeriodInDaysChange={handlePeriodInDaysChange}
         onTimeModeChange={handleTimeModeChange}
         onViewModeChange={handleViewModeChange}
-        onViewLevelChange={handleViewLevelChange}
         onSelectedServiceChange={handleSelectedServiceChange}
         activeTileIds={activeTileIds}
       />
       <IssuesSidebarOverlay
         isSidebarOpen={isIssuesSidebarOpen}
+        onIssuesPageChange={handleIssuesSidebarPageChange}
         onSidebarClose={handleIssuesSidebarClose}
         issuesSidebarQuery={issuesSidebarQuery}
-        scopeDisplayName={scope?.displayName ?? scope?.value}
+        scopeDisplayName={scopeDisplayName}
       />
     </s.Container>
   );

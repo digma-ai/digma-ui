@@ -1,4 +1,7 @@
-import type { IssueCriticality } from "../../../../redux/services/types";
+import type {
+  EndpointData,
+  IssueCriticality
+} from "../../../../redux/services/types";
 import type {
   IssuesReportTimeMode,
   IssuesReportViewLevel,
@@ -13,11 +16,11 @@ export interface HeaderProps {
   selectedService: string | null;
   criticalityLevels: IssueCriticality[];
   periodInDays: number;
-  selectedEndpoints: string[];
+  selectedEndpoints: EndpointData[];
   selectedServices: string[];
   onSelectedEnvironmentIdChange: (environmentId: string) => void;
   onSelectedServicesChange: (services: string[]) => void;
-  onSelectedEndpointsChange: (endpoints: string[]) => void;
+  onSelectedEndpointsChange: (endpoints: EndpointData[]) => void;
   onCriticalityLevelsChange: (criticalities: IssueCriticality[]) => void;
   onPeriodInDaysChange: (periodInDays: number) => void;
   onTimeModeChange: (timeMode: IssuesReportTimeMode) => void;

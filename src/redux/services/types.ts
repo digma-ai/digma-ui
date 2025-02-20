@@ -58,6 +58,7 @@ export interface GetServiceEndpointsPayload {
 export interface EndpointData {
   displayName: string;
   spanCodeObjectId: string;
+  uid?: string;
 }
 
 export interface SetServiceEndpointsPayload {
@@ -231,6 +232,37 @@ export interface IssueRecommendation {
   modifiedCode: string;
   searchTerms: string[];
   sources: IssueRecommendationSource[];
+}
+
+export interface GetSpanByIdPayload {
+  id: string;
+}
+
+export interface GetSpanByIdResponse {
+  environmentId: string;
+  spanCodeObjectId: string;
+}
+
+export interface GetSpanInfoPayload {
+  spanCodeObjectId: string;
+}
+
+export interface GetSpanInfoResponse {
+  displayName: string;
+  firstSeen: string;
+  lastSeen: string;
+  services: string[];
+  environments: {
+    type: "Private" | "Public";
+    id: string;
+    name: string;
+  }[];
+  assetTypeId: string;
+  linkedEndpoints: {
+    spanCodeObjectId: string;
+    displayName: string;
+    environment: string;
+  }[];
 }
 
 export interface GetIssueRecommendationsResponse {

@@ -8,6 +8,7 @@ export interface IssuesSidebarQuery {
 
 export interface IssuesSidebarOverlayProps {
   isSidebarOpen: boolean;
+  onIssuesPageChange?: (page: number) => void;
   onSidebarClose: () => void;
   issuesSidebarQuery?: IssuesSidebarQuery;
   scopeDisplayName?: string;
