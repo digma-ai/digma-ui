@@ -26,6 +26,7 @@ export const getDefaultSidebarWidth = (windowWidth: number) => {
 
 export const IssuesSidebarOverlay = ({
   isSidebarOpen,
+  onIssuesPageChange,
   onSidebarClose,
   issuesSidebarQuery,
   scopeDisplayName
@@ -45,6 +46,10 @@ export const IssuesSidebarOverlay = ({
   const handleOverlayClick = () => {
     sendUserActionTrackingEvent(trackingEvents.ISSUES_SIDEBAR_OVERLAY_CLICKED);
     onSidebarClose();
+  };
+
+  const handlesIssuesSidebarPageChange = (page: number) => {
+    onIssuesPageChange?.(page);
   };
 
   const handleIssuesSidebarClose = () => {
@@ -158,6 +163,7 @@ export const IssuesSidebarOverlay = ({
             scopeDisplayName={scopeDisplayName}
             isPaginationEnabled={isPaginationEnabled}
             title={issuesSidebarQuery?.title}
+            onPageChange={handlesIssuesSidebarPageChange}
           />
         </s.IssuesSidebarContainer>
       </CSSTransition>

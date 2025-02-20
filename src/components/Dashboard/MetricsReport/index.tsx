@@ -4,7 +4,10 @@ import {
   useDashboardSelector
 } from "../../../containers/Dashboard/hooks";
 import { useMount } from "../../../hooks/useMount";
-import { type IssueCriticality } from "../../../redux/services/types";
+import {
+  type EndpointData,
+  type IssueCriticality
+} from "../../../redux/services/types";
 import {
   setCriticalityLevels,
   setPeriodInDays,
@@ -13,7 +16,6 @@ import {
   setSelectedService,
   setSelectedServices,
   setTimeMode,
-  setViewLevel,
   setViewMode,
   type IssuesReportTimeMode,
   type IssuesReportViewLevel,
@@ -44,9 +46,6 @@ export const MetricsReport = () => {
   const selectedServices = useDashboardSelector(
     (state) => state.metricsReport.selectedServices
   );
-  const viewLevel = useDashboardSelector(
-    (state) => state.metricsReport.viewLevel
-  );
   const viewMode = useDashboardSelector(
     (state) => state.metricsReport.viewMode
   );
@@ -67,7 +66,7 @@ export const MetricsReport = () => {
 
   useMount(() => {
     if (isString(window.dashboardEnvironment)) {
-      setSelectedEnvironmentId(window.dashboardEnvironment);
+      dispatch(setSelectedEnvironmentId(window.dashboardEnvironment));
     }
   });
 
@@ -97,10 +96,10 @@ export const MetricsReport = () => {
   };
 
   const handleTileTitleClick = (
-    viewLevel: IssuesReportViewLevel,
+    _: IssuesReportViewLevel,
     target: TargetScope
   ) => {
-    if (viewLevel === "endpoints" && selectedEnvironmentId && selectedService) {
+    if (selectedEnvironmentId && selectedService) {
       goToEndpointIssues({
         spanCodeObjectId: target.value,
         service: selectedService,
@@ -110,10 +109,10 @@ export const MetricsReport = () => {
   };
 
   const handleIssuesStatsClick = (
-    viewLevel: IssuesReportViewLevel,
+    _: IssuesReportViewLevel,
     target: TargetScope
   ) => {
-    if (viewLevel === "services") {
+    if (!selectedService) {
       changeScope({
         span: null,
         openMainPanel: true,
@@ -128,7 +127,7 @@ export const MetricsReport = () => {
       });
     }
 
-    if (viewLevel === "endpoints" && selectedEnvironmentId && selectedService) {
+    if (selectedEnvironmentId && selectedService) {
       goToEndpointIssues({
         spanCodeObjectId: target.value,
         service: selectedService,
@@ -145,7 +144,7 @@ export const MetricsReport = () => {
     dispatch(setSelectedServices(services));
   };
 
-  const handleSelectedEndpointsChange = (endpoints: string[]) => {
+  const handleSelectedEndpointsChange = (endpoints: EndpointData[]) => {
     dispatch(setSelectedEndpoints(endpoints));
   };
 
@@ -165,13 +164,13 @@ export const MetricsReport = () => {
     dispatch(setViewMode(viewMode));
   };
 
-  const handleViewLevelChange = (viewLevel: IssuesReportViewLevel) => {
-    dispatch(setViewLevel(viewLevel));
-  };
-
   const handleSelectedServiceChange = (service: string | null) => {
     dispatch(setSelectedService(service));
   };
+
+  const viewLevel: IssuesReportViewLevel = selectedService
+    ? "endpoints"
+    : "services";
 
   return (
     <s.Container>
@@ -198,7 +197,6 @@ export const MetricsReport = () => {
           onPeriodInDaysChange={handlePeriodInDaysChange}
           onTimeModeChange={handleTimeModeChange}
           onViewModeChange={handleViewModeChange}
-          onViewLevelChange={handleViewLevelChange}
           onSelectedServiceChange={handleSelectedServiceChange}
         />
         <s.Footer>

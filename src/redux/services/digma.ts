@@ -15,8 +15,12 @@ import type {
   GetMetricsReportDataPayloadV2,
   GetServiceEndpointsPayload,
   GetServiceEnvironmentsPayload,
+  GetSpanByIdPayload,
+  GetSpanByIdResponse,
   GetSpanCodeLocationsPayload,
   GetSpanCodeLocationsResponse,
+  GetSpanInfoPayload,
+  GetSpanInfoResponse,
   GetSpanInsightPayload,
   GetSpanInsightResponse,
   GetSpanPercentilesHistogramPayload,
@@ -169,6 +173,15 @@ export const digmaApi = createApi({
     >({
       query: ({ service }) => `Services/${service}/environments`
     }),
+    getSpanById: builder.query<GetSpanByIdResponse, GetSpanByIdPayload>({
+      query: ({ id }) => ({ url: `/Spans/spanCodeObjectId/${id}` })
+    }),
+    getSpanInfo: builder.query<GetSpanInfoResponse, GetSpanInfoPayload>({
+      query: (data) => ({
+        url: `/Spans/info`,
+        params: data
+      })
+    }),
     getIssueRecommendations: builder.query<
       GetIssueRecommendationsResponse,
       GetIssueRecommendationsPayload
@@ -199,5 +212,7 @@ export const {
   useGetEnvironmentServicesQuery,
   useGetServiceEndpointsQuery,
   useGetServiceEnvironmentsQuery,
+  useGetSpanByIdQuery,
+  useGetSpanInfoQuery,
   useGetIssueRecommendationsQuery
 } = digmaApi;
