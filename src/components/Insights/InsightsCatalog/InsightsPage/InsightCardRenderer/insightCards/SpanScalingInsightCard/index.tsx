@@ -45,7 +45,7 @@ export const SpanScalingInsightCard = ({
     insight.id
   );
 
-  const handleLinkClick = (spanCodeObjectId: string) => {
+  const handleLinkClick = (spanCodeObjectId: string) => () => () => {
     onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
@@ -111,7 +111,7 @@ export const SpanScalingInsightCard = ({
               <ListItem
                 key={spanCodeObjectId}
                 name={spanName}
-                onClick={() => handleLinkClick(spanCodeObjectId)}
+                onClick={handleLinkClick(spanCodeObjectId)}
                 endContent={buttons}
               />
             );
@@ -155,7 +155,7 @@ export const SpanScalingInsightCard = ({
                 return (
                   <ListItem
                     key={endpoint.route}
-                    onClick={() => handleLinkClick(endpoint.spanCodeObjectId)}
+                    onClick={handleLinkClick(endpoint.spanCodeObjectId)}
                     name={endpointRoute}
                   />
                 );

@@ -37,7 +37,7 @@ export const SpanQueryOptimizationInsightCard = ({
     insight.id
   );
 
-  const handleAssetLinkClick = (spanCodeObjectId?: string) => {
+  const handleAssetLinkClick = (spanCodeObjectId?: string) => () => {
     if (spanCodeObjectId) {
       onAssetLinkClick(spanCodeObjectId, insight.type);
     }
@@ -101,7 +101,7 @@ export const SpanQueryOptimizationInsightCard = ({
                     <ListItem
                       name={route}
                       key={key}
-                      onClick={() => handleAssetLinkClick(spanCodeObjectId)}
+                      onClick={handleAssetLinkClick(spanCodeObjectId)}
                     />
                   );
                 })}

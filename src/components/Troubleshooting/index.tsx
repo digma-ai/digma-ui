@@ -53,7 +53,7 @@ export const Troubleshooting = () => {
     });
   };
 
-  const handleRunOptionButtonClick = (key: string) => {
+  const handleRunOptionButtonClick = (key: string) => () => {
     sendUserActionTrackingEvent(trackingEvents.RUN_OPTION_BUTTON_CLICKED, {
       buttonId: key
     });
@@ -98,7 +98,7 @@ export const Troubleshooting = () => {
           {runOptions.map((option) => (
             <s.RunOptionButton
               key={option.key}
-              onClick={() => handleRunOptionButtonClick(option.key)}
+              onClick={handleRunOptionButtonClick(option.key)}
             >
               <s.IconContainer>
                 <option.icon size={24} color={"currentColor"} />

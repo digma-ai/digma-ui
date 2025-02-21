@@ -16,7 +16,7 @@ export const ErrorsInsight = ({
   onRecalculate,
   onRefresh
 }: ErrorsInsightProps) => {
-  const handleErrorLinkClick = (errorId: string) => {
+  const handleErrorLinkClick = (errorId: string) => () => {
     onErrorSelect(errorId, insight.type);
   };
 
@@ -40,7 +40,7 @@ export const ErrorsInsight = ({
             {insight.topErrors.map((error) => (
               <Description key={error.uid}>
                 <s.Error>
-                  <Link onClick={() => handleErrorLinkClick(error.uid)}>
+                  <Link onClick={handleErrorLinkClick(error.uid)}>
                     {error.errorType}
                   </Link>
                 </s.Error>{" "}

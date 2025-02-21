@@ -55,7 +55,7 @@ export const Select = ({
     setSearchValue(e.target.value);
   };
 
-  const handleItemClick = (item: SelectItem) => {
+  const handleItemClick = (item: SelectItem) => () => {
     if (!item.enabled) {
       return;
     }
@@ -114,7 +114,7 @@ export const Select = ({
               sortedItems.map((x) => (
                 <s.OptionListItem
                   key={x.value}
-                  onClick={() => handleItemClick(x)}
+                  onClick={handleItemClick(x)}
                   $enabled={x.enabled}
                   $selected={x.selected}
                 >

@@ -9,7 +9,7 @@ import type { PreviewProps } from "./types";
  * safe to delete after the implementation of the version with new UI
  */
 export const Preview = ({ onMethodSelect, methods }: PreviewProps) => {
-  const handleMethodLinkClick = (method: Method) => {
+  const handleMethodLinkClick = (method: Method) => () => {
     onMethodSelect(method);
   };
 
@@ -23,7 +23,7 @@ export const Preview = ({ onMethodSelect, methods }: PreviewProps) => {
         <>
           <span>Try to click one of the following code objects</span>
           {methods.map((x) => (
-            <Link key={x.id} onClick={() => handleMethodLinkClick(x)}>
+            <Link key={x.id} onClick={handleMethodLinkClick(x)}>
               {x.name}
             </Link>
           ))}

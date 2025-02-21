@@ -50,7 +50,7 @@ export const FilterPanel = ({
       )
   );
 
-  const handleFilterChipClick = (selectedFilter?: InsightFilterType) => {
+  const handleFilterChipClick = (selectedFilter?: InsightFilterType) => () => {
     const newFilters = new Set(filters);
 
     if (selectedFilter) {
@@ -94,20 +94,20 @@ export const FilterPanel = ({
       <FilterChip
         disabled={!criticalCount && !isCriticalSelected}
         selected={isCriticalSelected}
-        onClick={() => handleFilterChipClick("criticality")}
+        onClick={handleFilterChipClick("criticality")}
         count={criticalCount}
         type={"critical"}
       />
       <FilterChip
         disabled={!unreadCount && !isUnreadSelected}
         selected={filters.includes("unread")}
-        onClick={() => handleFilterChipClick("unread")}
+        onClick={handleFilterChipClick("unread")}
         count={unreadCount}
         type={"unread"}
       />
       <FilterChip
         selected={filters.length === 0}
-        onClick={() => handleFilterChipClick()}
+        onClick={handleFilterChipClick()}
         count={allIssuesCount}
         type={"all"}
       />

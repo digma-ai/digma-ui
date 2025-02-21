@@ -219,7 +219,7 @@ export const InstallationWizard = () => {
     }
   };
 
-  const handleGoToStep = (stepIndex: number) => {
+  const handleGoToStep = (stepIndex: number) => () => {
     if (stepIndex < currentStep) {
       setCurrentStep(stepIndex);
     }
@@ -499,7 +499,7 @@ export const InstallationWizard = () => {
             $transitionDuration={TRANSITION_DURATION}
           >
             <s.BackToInstallMethodButton
-              onClick={() => handleGoToStep(installStepIndex)}
+              onClick={handleGoToStep(installStepIndex)}
               disabled={isEmailValid === false || isEmailValidating}
               buttonType={"secondary"}
             >

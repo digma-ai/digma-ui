@@ -82,7 +82,7 @@ export const Tabs = () => {
   const location = useLocation();
   const { goTo } = useHistory();
 
-  const handleTabClick = (tab: TabData) => {
+  const handleTabClick = (tab: TabData) => () => {
     if (!getIsTabDisabled(tab, scope)) {
       sendUserActionTrackingEvent(trackingEvents.TAB_CLICKED, {
         tabName: tab.id
@@ -123,7 +123,7 @@ export const Tabs = () => {
               $width={tab.width}
               $isSelected={tab.isSelected}
               $isDisabled={tab.isDisabled}
-              onClick={() => handleTabClick(tab)}
+              onClick={handleTabClick(tab)}
             >
               {tab.icon && <tab.icon color={"currentColor"} size={16} />}
               {isString(tab.title) && <s.TabTitle>{tab.title}</s.TabTitle>}

@@ -15,7 +15,7 @@ const renderClientSpanOverallImpactEntry = (
   item: ClientSpanOverallImpactEntry,
   environment: string
 ) => {
-  const handleSpanClick = (spanCodeObjectId: string) => {
+  const handleSpanClick = (spanCodeObjectId: string) => () => {
     changeScope({
       span: {
         spanCodeObjectId
@@ -31,7 +31,7 @@ const renderClientSpanOverallImpactEntry = (
   return (
     <s.Entry key={item.spanCodeObjectId}>
       <Tooltip title={item.displayName}>
-        <s.SpanLink onClick={() => handleSpanClick(item.spanCodeObjectId)}>
+        <s.SpanLink onClick={handleSpanClick(item.spanCodeObjectId)}>
           {item.displayName}
         </s.SpanLink>
       </Tooltip>

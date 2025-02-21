@@ -21,7 +21,7 @@ const renderSlowQueryEntry = (
     durationString = duration ? getDurationString(duration) : "";
   }
 
-  const handleSpanClick = (spanCodeObjectId: string) => {
+  const handleSpanClick = (spanCodeObjectId: string) => () => {
     changeScope({
       span: {
         spanCodeObjectId
@@ -37,7 +37,7 @@ const renderSlowQueryEntry = (
   return (
     <s.Entry key={item.spanCodeObjectId}>
       <Tooltip title={item.displayName}>
-        <s.SpanLink onClick={() => handleSpanClick(item.spanCodeObjectId)}>
+        <s.SpanLink onClick={handleSpanClick(item.spanCodeObjectId)}>
           {item.displayName}
         </s.SpanLink>
       </Tooltip>

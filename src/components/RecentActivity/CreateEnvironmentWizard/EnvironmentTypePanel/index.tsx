@@ -16,7 +16,7 @@ export const EnvironmentTypePanel = ({
 }: EnvironmentTypePanelProps) => {
   const config = useContext(ConfigContext);
 
-  const handleEnvironmentTypeButtonClick = (type: EnvironmentType) => {
+  const handleEnvironmentTypeButtonClick = (type: EnvironmentType) => () => {
     const typeData = environmentTypes.find((x) => x.type === type);
     if (typeData) {
       sendUserActionTrackingEvent(
@@ -42,7 +42,7 @@ export const EnvironmentTypePanel = ({
       icon: CodeIcon,
       button: (
         <s.AddButton
-          onClick={() => handleEnvironmentTypeButtonClick("Private")}
+          onClick={handleEnvironmentTypeButtonClick("Private")}
           label={"Add"}
           buttonType={"primary"}
         />
@@ -56,7 +56,7 @@ export const EnvironmentTypePanel = ({
       icon: InfinityIcon,
       button: config.backendInfo?.centralize ? (
         <s.AddButton
-          onClick={() => handleEnvironmentTypeButtonClick("Public")}
+          onClick={handleEnvironmentTypeButtonClick("Public")}
           label={"Add"}
           buttonType={"primary"}
         />

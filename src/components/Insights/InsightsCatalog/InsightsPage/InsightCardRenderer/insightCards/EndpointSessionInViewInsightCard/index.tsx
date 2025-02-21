@@ -33,7 +33,7 @@ export const EndpointSessionInViewInsightCard = ({
     insight.id
   );
 
-  const handleLinkClick = (spanCodeObjectId: string) => {
+  const handleLinkClick = (spanCodeObjectId: string) => () => {
     onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
@@ -82,7 +82,7 @@ export const EndpointSessionInViewInsightCard = ({
               return (
                 <ListItem
                   key={spanCodeObjectId}
-                  onClick={() => handleLinkClick(spanCodeObjectId)}
+                  onClick={handleLinkClick(spanCodeObjectId)}
                   name={spanName}
                   endContent={buttons}
                 />

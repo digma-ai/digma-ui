@@ -23,14 +23,14 @@ export const CarouselPagination = ({
   const isPrevDisabled = page === 0;
   const isNextDisabled = page === pageCount - 1;
 
-  const handleButtonClick = (page: number) => {
+  const handleButtonClick = (page: number) => () => {
     sendUserActionTrackingEvent(
       prefixedGlobalTrackingEvents.CAROUSEL_NAVIGATION_BUTTON_CLICKED
     );
     onPageChange(page);
   };
 
-  const handlePageCircleClick = (page: number) => {
+  const handlePageCircleClick = (page: number) => () => {
     sendUserActionTrackingEvent(
       prefixedGlobalTrackingEvents.CAROUSEL_PAGE_BUTTON_CLICKED
     );
@@ -43,7 +43,7 @@ export const CarouselPagination = ({
         <s.Container>
           <s.Button
             disabled={isPrevDisabled}
-            onClick={() => handleButtonClick(page - 1)}
+            onClick={handleButtonClick(page - 1)}
           >
             <ChevronIcon
               direction={Direction.LEFT}
@@ -58,13 +58,13 @@ export const CarouselPagination = ({
                 <s.PageButton
                   key={i}
                   $isActive={page === i}
-                  onClick={() => handlePageCircleClick(i)}
+                  onClick={handlePageCircleClick(i)}
                 />
               ))}
           </s.PageButtonsContainer>
           <s.Button
             disabled={isNextDisabled}
-            onClick={() => handleButtonClick(page + 1)}
+            onClick={handleButtonClick(page + 1)}
           >
             <ChevronIcon
               direction={Direction.RIGHT}

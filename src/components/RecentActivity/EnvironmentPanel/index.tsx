@@ -72,7 +72,7 @@ export const EnvironmentPanel = ({
     onEnvironmentClearData(environmentId);
   };
 
-  const handleCarouselButtonClick = (direction: ScrollDirection) => {
+  const handleCarouselButtonClick = (direction: ScrollDirection) => () => {
     const { entry: containerEntry, width: containerWidth } =
       environmentListContainerDimensions;
     const { entry } = environmentListDimensions;
@@ -258,7 +258,7 @@ export const EnvironmentPanel = ({
       <s.CarouselButtonContainer key={"left"}>
         {areCarouselButtonsVisible && (
           <s.CarouselButton
-            onClick={() => handleCarouselButtonClick("left")}
+            onClick={handleCarouselButtonClick("left")}
             disabled={isLeftCarouselButtonDisabled}
           >
             <ChevronIcon direction={Direction.LEFT} color={"currentColor"} />
@@ -287,7 +287,7 @@ export const EnvironmentPanel = ({
       <s.CarouselButtonContainer key={"right"}>
         {areCarouselButtonsVisible && (
           <s.CarouselButton
-            onClick={() => handleCarouselButtonClick("right")}
+            onClick={handleCarouselButtonClick("right")}
             disabled={isRightCarouselButtonDisabled}
           >
             <ChevronIcon direction={Direction.RIGHT} color={"currentColor"} />
