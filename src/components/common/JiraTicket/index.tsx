@@ -89,25 +89,23 @@ export const JiraTicket = ({
     }
   };
 
-  const handleDownloadButtonClick = (attachment: {
-    url: string;
-    fileName: string;
-  }) => {
-    sendUserActionTrackingEvent(
-      prefixedTrackingEvents.JIRA_TICKET_ATTACHMENT_DOWNLOAD_BUTTON_CLICKED,
-      { ...(tracking?.additionalInfo ?? {}) }
-    );
-
-    downloadFile(attachment.url, attachment.fileName).catch((e) => {
-      const errorMessageString =
-        e instanceof Error ? `Error: ${e.message}` : "";
-      setDownloadErrorMessage(
-        `Failed to download file.${
-          errorMessageString.length > 1 ? `\n${errorMessageString}` : ""
-        }`
+  const handleDownloadButtonClick =
+    (attachment: { url: string; fileName: string }) => () => {
+      sendUserActionTrackingEvent(
+        prefixedTrackingEvents.JIRA_TICKET_ATTACHMENT_DOWNLOAD_BUTTON_CLICKED,
+        { ...(tracking?.additionalInfo ?? {}) }
       );
-    });
-  };
+
+      downloadFile(attachment.url, attachment.fileName).catch((e) => {
+        const errorMessageString =
+          e instanceof Error ? `Error: ${e.message}` : "";
+        setDownloadErrorMessage(
+          `Failed to download file.${
+            errorMessageString.length > 1 ? `\n${errorMessageString}` : ""
+          }`
+        );
+      });
+    };
 
   const errorMessage = description.isLoading ? "" : description.errorMessage;
 
@@ -183,7 +181,7 @@ export const JiraTicket = ({
                     icon={DownloadIcon}
                     title={"Download"}
                     size={16}
-                    onClick={() => handleDownloadButtonClick(attachment)}
+                    onClick={handleDownloadButtonClick(attachment)}
                   />
                 }
               >

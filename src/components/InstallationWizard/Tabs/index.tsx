@@ -9,7 +9,7 @@ export const Tabs = ({
   selectedTab,
   fullWidth
 }: TabsProps) => {
-  const handleTabClick = (tabIndex: number) => {
+  const handleTabClick = (tabIndex: number) => () => {
     onSelect(tabIndex);
   };
 
@@ -24,7 +24,7 @@ export const Tabs = ({
               isDisabled={tab.disabled}
               key={tab.title}
               isSelected={isSelected}
-              onClick={() => handleTabClick(i)}
+              onClick={handleTabClick(i)}
               icon={tab.icon}
               fullWidth={fullWidth}
             >

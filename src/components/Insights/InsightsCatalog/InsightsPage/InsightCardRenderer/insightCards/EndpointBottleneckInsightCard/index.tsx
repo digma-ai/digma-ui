@@ -22,7 +22,7 @@ export const EndpointBottleneckInsightCard = ({
 }: EndpointBottleneckInsightCardProps) => {
   const { span, ticketLink } = insight;
 
-  const handleSpanLinkClick = (spanCodeObjectId: string) => {
+  const handleSpanLinkClick = (spanCodeObjectId: string) => () => {
     onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
@@ -62,7 +62,7 @@ export const EndpointBottleneckInsightCard = ({
             <Description>Asset</Description>
             <AssetLink
               name={spanName}
-              onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+              onClick={handleSpanLinkClick(spanCodeObjectId)}
             />
           </Details>
           <ColumnsContainer>

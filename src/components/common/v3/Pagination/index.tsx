@@ -28,7 +28,7 @@ export const Pagination = ({
   const isPrevDisabled = page === 0;
   const isNextDisabled = page === pageCount - 1;
 
-  const handleButtonClick = (page: number) => {
+  const handleButtonClick = (page: number) => () => {
     sendUserActionTrackingEvent(
       prefixedGlobalTrackingEvents.PAGINATION_BUTTON_CLICKED
     );
@@ -58,7 +58,7 @@ export const Pagination = ({
             {extendedNavigation && (
               <s.Button
                 disabled={isPrevDisabled}
-                onClick={() => handleButtonClick(0)}
+                onClick={handleButtonClick(0)}
               >
                 <DoubleChevronIcon
                   direction={Direction.LEFT}
@@ -69,7 +69,7 @@ export const Pagination = ({
             )}
             <s.Button
               disabled={isPrevDisabled}
-              onClick={() => handleButtonClick(page - 1)}
+              onClick={handleButtonClick(page - 1)}
             >
               <ChevronIcon
                 direction={Direction.LEFT}
@@ -84,7 +84,7 @@ export const Pagination = ({
           <s.ButtonGroup>
             <s.Button
               disabled={isNextDisabled}
-              onClick={() => handleButtonClick(page + 1)}
+              onClick={handleButtonClick(page + 1)}
             >
               <ChevronIcon
                 direction={Direction.RIGHT}
@@ -95,7 +95,7 @@ export const Pagination = ({
             {extendedNavigation && (
               <s.Button
                 disabled={isNextDisabled}
-                onClick={() => handleButtonClick(pageCount - 1)}
+                onClick={handleButtonClick(pageCount - 1)}
               >
                 <DoubleChevronIcon
                   direction={Direction.RIGHT}

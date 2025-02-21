@@ -2,7 +2,7 @@ import * as s from "./styles";
 import type { EnvironmentMenuProps } from "./types";
 
 export const EnvironmentMenu = ({ onSelect, items }: EnvironmentMenuProps) => {
-  const handleMenuItemClick = (value: string) => {
+  const handleMenuItemClick = (value: string) => () => {
     onSelect(value);
   };
 
@@ -12,7 +12,7 @@ export const EnvironmentMenu = ({ onSelect, items }: EnvironmentMenuProps) => {
         {items.map((item) => (
           <s.ListItem
             key={item.value}
-            onClick={() => handleMenuItemClick(item.value)}
+            onClick={handleMenuItemClick(item.value)}
           >
             <s.IconContainer>
               <item.icon color={"currentColor"} size={16} />

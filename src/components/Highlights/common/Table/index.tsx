@@ -40,7 +40,7 @@ export const Table = <T,>({ columns, data, id, onRowClick }: TableProps<T>) => {
     getCoreRowModel: getCoreRowModel()
   });
 
-  const handleTableBodyRowClick = (row: Row<T>) => {
+  const handleTableBodyRowClick = (row: Row<T>) => () => {
     if (onRowClick) {
       onRowClick(row);
     }
@@ -76,10 +76,7 @@ export const Table = <T,>({ columns, data, id, onRowClick }: TableProps<T>) => {
         </s.TableHead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <s.TableBodyRow
-              key={row.id}
-              onClick={() => handleTableBodyRowClick(row)}
-            >
+            <s.TableBodyRow key={row.id} onClick={handleTableBodyRowClick(row)}>
               {row.getVisibleCells().map((cell) => {
                 const meta = cell.column.columnDef.meta as
                   | ColumnMeta

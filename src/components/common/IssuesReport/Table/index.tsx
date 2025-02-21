@@ -94,14 +94,14 @@ export const Table = ({
 }: TableProps) => {
   const columnHelper = createColumnHelper<PresentationalReportData>();
 
-  const handleIssuesLinkClick = (value: string, source: string) => {
+  const handleIssuesLinkClick = (value: string, source: string) => () => {
     onIssuesStatsClick(value);
     sendUserActionTrackingEvent(trackingEvents.TABLE_SEE_ISSUES_LINK_CLICKED, {
       source
     });
   };
 
-  const handleTitleLinkClick = (value: string) => {
+  const handleTitleLinkClick = (value: string) => () => {
     onTitleClick(value);
     sendUserActionTrackingEvent(trackingEvents.TABLE_ITEM_NAME_CLICKED, {
       view: viewLevel
@@ -115,7 +115,7 @@ export const Table = ({
         const value = info.getValue();
         return (
           <HoverableTableCellContent
-            onClick={() => handleTitleLinkClick(value.id)}
+            onClick={handleTitleLinkClick(value.id)}
             hoverContent={
               <NavigationLink
                 text={`See ${
@@ -142,7 +142,7 @@ export const Table = ({
         const issuesCount = value.criticalIssuesCount;
         return (
           <HoverableTableCellContent
-            onClick={() => handleIssuesLinkClick(value.id, "issues")}
+            onClick={handleIssuesLinkClick(value.id, "issues")}
             hoverContent={<NavigationLink text={"See issues"} />}
           >
             {timeMode === "baseline"
@@ -168,7 +168,7 @@ export const Table = ({
         const value = info.getValue();
         return (
           <HoverableTableCellContent
-            onClick={() => handleIssuesLinkClick(value.id, scoreCriterion)}
+            onClick={handleIssuesLinkClick(value.id, scoreCriterion)}
             hoverContent={<NavigationLink text={"See issues"} />}
           >
             {value.score}

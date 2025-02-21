@@ -22,7 +22,7 @@ export const EndpointQueryOptimizationV2InsightCard = ({
   onOpenSuggestion,
   tooltipBoundaryRef
 }: EndpointQueryOptimizationV2InsightCardProps) => {
-  const handleSpanLinkClick = (spanCodeObjectId: string) => {
+  const handleSpanLinkClick = (spanCodeObjectId: string) => () => {
     onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
@@ -55,7 +55,7 @@ export const EndpointQueryOptimizationV2InsightCard = ({
           <Details>
             <AssetLink
               name={spanName}
-              onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+              onClick={handleSpanLinkClick(spanCodeObjectId)}
             />
           </Details>
           <ColumnsContainer>
