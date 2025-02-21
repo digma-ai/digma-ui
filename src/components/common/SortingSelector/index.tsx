@@ -66,12 +66,13 @@ export const SortingSelector = ({
     setIsSortingMenuOpen(!isSortingMenuOpen);
   };
 
-  const handleSortingOrderToggleOptionButtonClick = (order: SORTING_ORDER) => {
-    setSorting({
-      ...sorting,
-      order
-    });
-  };
+  const handleSortingOrderToggleOptionButtonClick =
+    (order: SORTING_ORDER) => () => {
+      setSorting({
+        ...sorting,
+        order
+      });
+    };
 
   return (
     <s.PopoverContainer>
@@ -112,7 +113,7 @@ export const SortingSelector = ({
             <s.SortingOrderToggleOptionButton
               key={order}
               $selected={isSelected}
-              onClick={() => handleSortingOrderToggleOptionButtonClick(order)}
+              onClick={handleSortingOrderToggleOptionButtonClick(order)}
             >
               <s.SortingOrderIconContainer $sortingOrder={order}>
                 <SortIcon color={"currentColor"} size={14} />

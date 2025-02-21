@@ -198,7 +198,7 @@ export const AssetTypeList = ({
     onAssetTypeSelect(assetTypeId);
   };
 
-  const handleAssetLinkClick = (spanCodeObjectId: string) => {
+  const handleAssetLinkClick = (spanCodeObjectId: string) => () => {
     sendUserActionTrackingEvent(trackingEvents.ALL_ASSETS_LINK_CLICKED);
     changeScope({
       span: { spanCodeObjectId },
@@ -233,7 +233,7 @@ export const AssetTypeList = ({
               {data.parents.map((x) => (
                 <s.ParentLink
                   key={x.spanCodeObjectId}
-                  onClick={() => handleAssetLinkClick(x.spanCodeObjectId)}
+                  onClick={handleAssetLinkClick(x.spanCodeObjectId)}
                 >
                   {x.displayName}
                 </s.ParentLink>

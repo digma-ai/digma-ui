@@ -6,7 +6,7 @@ import { ChevronIcon } from "../../../../common/icons/16px/ChevronIcon";
 import { Direction } from "../../../../common/icons/types";
 import { trackingEvents } from "../../../tracking";
 import * as s from "./styles";
-import type { NavMenuItemProps } from "./types";
+import type { NavigationItem, NavMenuItemProps } from "./types";
 
 export const NavMenuItem = ({ item, onClick }: NavMenuItemProps) => {
   const match = useMatch(`${item.route}/*`);
@@ -14,17 +14,18 @@ export const NavMenuItem = ({ item, onClick }: NavMenuItemProps) => {
   const [isExpanded, setIsExpanded] = useState(isActive);
   const hasSubItems = Boolean(item.items && item.items.length > 0);
 
-  const handleItemClick = (e: MouseEvent<HTMLAnchorElement>) => {
-    sendUserActionTrackingEvent(trackingEvents.NAV_MENU_ITEM_CLICKED, {
-      item: item.name
-    });
-    if (item.items) {
-      e.preventDefault();
-      setIsExpanded(!isExpanded);
-    } else {
-      onClick?.();
-    }
-  };
+  const handleItemClick =
+    (item: NavigationItem) => (e: MouseEvent<HTMLAnchorElement>) => {
+      sendUserActionTrackingEvent(trackingEvents.NAV_MENU_ITEM_CLICKED, {
+        item: item.name
+      });
+      if (item.items) {
+        e.preventDefault();
+        setIsExpanded(!isExpanded);
+      } else {
+        onClick?.();
+      }
+    };
 
   useEffect(() => {
     setIsExpanded(isActive);
@@ -32,7 +33,7 @@ export const NavMenuItem = ({ item, onClick }: NavMenuItemProps) => {
 
   return (
     <s.Container key={item.id} $isActive={isActive}>
-      <s.ItemLink to={item.route} onClick={handleItemClick}>
+      <s.ItemLink to={item.route} onClick={handleItemClick(item)}>
         {item.icon}
         <span>{item.name}</span>
         {item.items && item.items.length > 0 && (
@@ -51,7 +52,7 @@ export const NavMenuItem = ({ item, onClick }: NavMenuItemProps) => {
             <s.SubListItemLink
               to={x.route}
               key={x.id}
-              onClick={handleItemClick}
+              onClick={handleItemClick(x)}
             >
               <ArrowDownToRightIcon size={12} color={"currentColor"} />
               <span>{x.name}</span>

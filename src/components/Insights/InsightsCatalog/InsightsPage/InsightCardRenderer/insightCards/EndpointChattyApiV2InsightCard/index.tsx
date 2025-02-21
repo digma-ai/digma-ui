@@ -19,7 +19,7 @@ export const EndpointChattyApiV2InsightCard = ({
   onDismissalChange,
   tooltipBoundaryRef
 }: EndpointChattyApiV2InsightCardProps) => {
-  const handleSpanLinkClick = (spanCodeObjectId: string) => {
+  const handleSpanLinkClick = (spanCodeObjectId: string) => () => {
     onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
@@ -47,7 +47,7 @@ export const EndpointChattyApiV2InsightCard = ({
             >
               <AssetLink
                 name={spanName}
-                onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+                onClick={handleSpanLinkClick(spanCodeObjectId)}
               />
             </s.DescriptionColumn>
             <KeyValue label={"Repeats"}>

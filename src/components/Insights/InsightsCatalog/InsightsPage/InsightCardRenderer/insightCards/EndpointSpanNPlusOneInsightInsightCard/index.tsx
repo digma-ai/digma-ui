@@ -23,7 +23,7 @@ export const EndpointSpanNPlusOneInsightCard = ({
 }: EndpointSpanNPlusOneInsightCardProps) => {
   const { span } = insight;
 
-  const handleSpanLinkClick = (spanCodeObjectId: string) => {
+  const handleSpanLinkClick = (spanCodeObjectId: string) => () => {
     onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
@@ -72,7 +72,7 @@ export const EndpointSpanNPlusOneInsightCard = ({
             <Description>Asset</Description>
             <AssetLink
               name={spanName}
-              onClick={() => handleSpanLinkClick(spanInfo.spanCodeObjectId)}
+              onClick={handleSpanLinkClick(spanInfo.spanCodeObjectId)}
             />
           </Details>
           <ColumnsContainer>

@@ -25,7 +25,7 @@ export const FilterMenu = ({
     onClose();
   };
 
-  const handleMenuItemClick = (value: string) => {
+  const handleMenuItemClick = (value: string) => () => {
     onItemClick(value);
   };
 
@@ -52,7 +52,7 @@ export const FilterMenu = ({
               <Tooltip title={x.label} key={x.value}>
                 <s.Tag>
                   <s.TagText>{x.label}</s.TagText>
-                  <s.IconButton onClick={() => handleMenuItemClick(x.value)}>
+                  <s.IconButton onClick={handleMenuItemClick(x.value)}>
                     <CrossIcon color={"currentColor"} size={14} />
                   </s.IconButton>
                 </s.Tag>

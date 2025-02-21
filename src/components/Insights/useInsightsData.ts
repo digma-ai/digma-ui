@@ -280,7 +280,7 @@ export const useInsightsData = ({
     ) => {
       const insightsData = data as WrappedInsightData;
 
-      //Do not handle the response message if the view mode has been already changed
+      // Do not handle the response message if the view mode has been already changed
       if (insightViewType !== insightsData.insightsViewMode) {
         return;
       }

@@ -21,18 +21,19 @@ export const EndpointSlowdownSourceInsightCard = ({
   tooltipBoundaryRef,
   onHistogramButtonClick
 }: EndpointSlowdownSourceInsightCardProps) => {
-  const handleSpanLinkClick = (spanCodeObjectId: string) => {
+  const handleSpanLinkClick = (spanCodeObjectId: string) => () => {
     onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
-  const handleHistogramIconButtonClick = (source: EndpointSlowdownSource) => {
-    onHistogramButtonClick(
-      source.spanInfo.spanCodeObjectId,
-      insight.type,
-      source.spanInfo.displayName,
-      insight.environment
-    );
-  };
+  const handleHistogramIconButtonClick =
+    (source: EndpointSlowdownSource) => () => {
+      onHistogramButtonClick(
+        source.spanInfo.spanCodeObjectId,
+        insight.type,
+        source.spanInfo.displayName,
+        insight.environment
+      );
+    };
 
   const p50Sources = insight.endpointSlowdownSources?.filter(
     (x) => x.percentile === "0.5"
@@ -51,7 +52,7 @@ export const EndpointSlowdownSourceInsightCard = ({
         return (
           <ListItem
             key={spanCodeObjectId}
-            onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+            onClick={handleSpanLinkClick(spanCodeObjectId)}
             name={spanName}
             endContent={
               <>
@@ -64,7 +65,7 @@ export const EndpointSlowdownSourceInsightCard = ({
                 <Tooltip title={"Open Histogram"}>
                   <NewIconButton
                     icon={HistogramIcon}
-                    onClick={() => handleHistogramIconButtonClick(x)}
+                    onClick={handleHistogramIconButtonClick(x)}
                   />
                 </Tooltip>
               </>

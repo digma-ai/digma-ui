@@ -91,6 +91,10 @@ export const SpanDurationBreakdownInsightCard = ({
 
   const columnHelper = createColumnHelper<SpanDurationBreakdownEntry>();
 
+  const handleSpanLinkClick = (spanCodeObjectId: string) => () => {
+    onAssetLinkClick(spanCodeObjectId, insight.type);
+  };
+
   const columns = [
     columnHelper.accessor((row) => row, {
       header: "Asset",
@@ -105,7 +109,7 @@ export const SpanDurationBreakdownInsightCard = ({
           <s.TableItem
             key={spanCodeObjectId}
             name={spanDisplayName}
-            onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+            onClick={handleSpanLinkClick(spanCodeObjectId)}
           />
         );
       }
@@ -247,6 +251,10 @@ export const SpanDurationBreakdownInsightCard = ({
   const previousPage = usePrevious(page);
   const previousInsightId = usePrevious(insight.id);
 
+  const handlePercentileViewModeChange = (value: number) => {
+    setPercentileViewMode(value);
+  };
+
   // Keep pageItems in state to avoid table infinite re-rendering
   // More info: https://github.com/TanStack/table/issues/4614
   useEffect(() => {
@@ -263,14 +271,6 @@ export const SpanDurationBreakdownInsightCard = ({
       setData({ items: sortedItems.slice(0, PAGE_SIZE) });
     }
   }, [sortedItems, data.items]);
-
-  const handleSpanLinkClick = (spanCodeObjectId: string) => {
-    onAssetLinkClick(spanCodeObjectId, insight.type);
-  };
-
-  const handlePercentileViewModeChange = (value: number) => {
-    setPercentileViewMode(value);
-  };
 
   const renderTable = () => (
     <s.Table>

@@ -86,7 +86,7 @@ export const AssetEntry = ({
             </s.AssetTypeIconContainer>
           )}
           <Tooltip title={name}>
-            <s.Link onClick={() => handleLinkClick()}>{name}</s.Link>
+            <s.Link onClick={handleLinkClick}>{name}</s.Link>
           </Tooltip>
           <s.StyledCopyButton text={name} />
           <s.IndicatorsContainer>

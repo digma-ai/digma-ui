@@ -10,7 +10,7 @@ export const LinkedEndpointsMenu = ({
   endpoints,
   onEndpointsClick
 }: LinkedEndpointsMenuProps) => {
-  const handleMenuItemClick = (endpoint: LinkedEndpoint) => {
+  const handleMenuItemClick = (endpoint: LinkedEndpoint) => () => {
     sendUserActionTrackingEvent(trackingEvents.CODE_LOCATION_SELECTED);
     onEndpointsClick(endpoint);
   };
@@ -22,7 +22,7 @@ export const LinkedEndpointsMenu = ({
         items={endpoints.map((x) => ({
           id: x.spanCodeObjectId,
           customContent: (
-            <s.MenuItem onClick={() => handleMenuItemClick(x)}>
+            <s.MenuItem onClick={handleMenuItemClick(x)}>
               <HTTPClientIcon size={12} color={"currentColor"} />
               <span>{x.displayName}</span>
             </s.MenuItem>

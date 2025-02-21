@@ -8,7 +8,7 @@ export const Toggle = <T extends ToggleValue>({
   onValueChange,
   className
 }: ToggleProps<T>) => {
-  const handleOptionButtonClick = (value: T) => {
+  const handleOptionButtonClick = (value: T) => () => {
     onValueChange(value);
   };
 
@@ -19,7 +19,7 @@ export const Toggle = <T extends ToggleValue>({
           $size={size}
           key={option.value}
           $selected={value === option.value}
-          onClick={() => handleOptionButtonClick(option.value)}
+          onClick={handleOptionButtonClick(option.value)}
         >
           {option.label}
           {option.icon && <option.icon color={"currentColor"} />}
