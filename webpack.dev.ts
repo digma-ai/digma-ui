@@ -89,7 +89,7 @@ const getSession = async (
 const styledComponentsTransformer = createStyledComponentsTransformer();
 
 const webApps = Object.entries(appData)
-  .filter(([, entry]) => entry.platforms.includes("Web"))
+  .filter(([, entry]) => entry.platforms.includes("web"))
   .map(([name]) => name);
 
 const config: WebpackConfiguration = {

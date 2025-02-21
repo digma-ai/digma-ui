@@ -505,7 +505,7 @@ export const InsightCard = ({
       actions.push("openTrace");
     }
 
-    if (onGoToLive && platform !== "Web") {
+    if (onGoToLive && platform === "JetBrains") {
       actions.push("openLiveView");
     }
 

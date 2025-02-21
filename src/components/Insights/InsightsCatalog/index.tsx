@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { platform } from "../../../platform";
 import type { IssueCriticality } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
@@ -292,7 +293,7 @@ export const InsightsCatalog = ({
             </s.ToolbarRow>
           </>
         )}
-        {isIssuesView && <PromotionSection />}
+        {platform === "JetBrains" && isIssuesView && <PromotionSection />}
         {mode === ViewMode.All ? (
           <>
             {isFilteredViewMode && (
