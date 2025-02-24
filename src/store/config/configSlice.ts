@@ -3,7 +3,6 @@ import type {
   BackendInfo,
   DigmaStatus,
   Environment,
-  InsightStats,
   PersistedState,
   RunConfiguration,
   Scope,
@@ -33,7 +32,6 @@ export interface ConfigState {
   isDigmathonGameFinished: boolean | null;
   environment: Environment | null;
   environments: Environment[] | null;
-  insightStats: InsightStats | null;
   userId: string | null;
   userInfo: UserInfo | null;
   userEmail: string | null;
@@ -89,7 +87,6 @@ const initialState: ConfigState = {
     : null,
   environment: isEnvironment(window.environment) ? window.environment : null,
   environments: null,
-  insightStats: null,
   userId: isString(window.userId) ? window.userId : null,
   userInfo: null,
   userEmail: isString(window.userEmail) ? window.userEmail : null,
@@ -152,12 +149,12 @@ export const configSlice = createSlice({
       set({ isDigmathonGameFinished: isFinished }),
     setEnvironment: (environment: Environment | null) => set({ environment }),
     setEnvironments: (environments: Environment[]) => set({ environments }),
-    setInsightStats: (stats: InsightStats) => set({ insightStats: stats }),
     setUserId: (userId: string) => set({ userId }),
     setUserInfo: (userInfo: UserInfo) => set({ userInfo }),
     setUserEmail: (email) => set({ userEmail: email }),
     setUserRegistrationEmail: (email: string) =>
       set({ userRegistrationEmail: email }),
+    /** @deprecated */
     setPersistedState: (state: PersistedState) =>
       set({ persistedState: state }),
     setSelectedServices: (services: string[]) =>

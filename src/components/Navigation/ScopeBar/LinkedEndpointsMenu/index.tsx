@@ -1,7 +1,7 @@
+import type { LinkedEndpoint } from "../../../../redux/services/types";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { HTTPClientIcon } from "../../../common/icons/HTTPClientIcon";
 import { MenuList } from "../../common/MenuList";
-import type { LinkedEndpoint } from "../../SpanInfo/types";
 import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
 import type { LinkedEndpointsMenuProps } from "./types";

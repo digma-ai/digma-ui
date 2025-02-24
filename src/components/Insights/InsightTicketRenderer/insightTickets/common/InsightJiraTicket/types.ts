@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import type { InsightsQuery } from "../../../../../common/App/types";
 import type { Attachment } from "../../../../../common/JiraTicket/types";
 import type { GenericCodeObjectInsight } from "../../../../types";
 
@@ -16,19 +15,4 @@ export interface InsightJiraTicketProps {
   onClose: () => void;
   onReloadSpanInsight?: () => void;
   refreshInsights: () => void;
-}
-
-export interface InsightsGetDataListQuery {
-  query: InsightsQuery;
-}
-
-export interface LinkTicketPayload {
-  insightId: string;
-  ticketLink: string;
-  insightType: string;
-}
-
-export interface UnlinkTicketPayload {
-  insightId: string;
-  insightType: string;
 }

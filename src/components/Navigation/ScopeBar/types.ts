@@ -1,5 +1,5 @@
+import type { LinkedEndpoint } from "../../../redux/services/types";
 import type { Scope } from "../../common/App/types";
-import type { LinkedEndpoint } from "../SpanInfo/types";
 import type { CodeContext } from "../types";
 
 export interface ScopeBarProps {

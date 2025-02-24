@@ -24,7 +24,7 @@ Start dev server:
 npm run start
 ```
 
-Dev server will start `http://localhost:3000`
+Dev server will start on `http://localhost:3000`
 
 Build package:
 
@@ -58,7 +58,7 @@ To set environment variables use .env file
 
 The Digma UI distributive includes a [Digma fork of Jaeger UI](https://github.com/digma-ai/jaeger-ui). You can find the linked version in the [./dependencies.json](./dependencies.json) file.
 
-To use a custom build of Jaeger UI during development use `JAEGER_UI_PATH` environment variable.
+To use a custom build of Jaeger UI during development set `JAEGER_UI_PATH` environment variable.
 
 ```env
 JAEGER_UI_PATH=path/to/jaeger-ui/dist

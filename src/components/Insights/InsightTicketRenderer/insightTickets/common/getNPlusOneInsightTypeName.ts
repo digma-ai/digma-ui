@@ -3,7 +3,7 @@ export const getNPlusOneInsightTypeName = (subType?: string) => {
     case "repeatedQueries":
       return "Suspected N+1";
     case "repeatedInserts":
-      return "Repeated inserts";
+      return "Repeated Inserts";
     default:
       return "Repeated Query";
   }

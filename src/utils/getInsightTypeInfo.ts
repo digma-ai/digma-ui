@@ -76,7 +76,7 @@ export const getInsightTypeInfo = (
 
     [InsightType.EndpointSpanNPlusOne]: {
       icon: SQLDatabaseIcon,
-      label: "Repeated query",
+      label: "Repeated Query",
       subTypes: {
         repeatedQueries: {
           icon: SQLDatabaseIcon,
@@ -86,13 +86,13 @@ export const getInsightTypeInfo = (
         },
         repeatedInserts: {
           icon: SQLDatabaseIcon,
-          label: "Repeated inserts"
+          label: "Repeated Inserts"
         }
       }
     },
     [InsightType.SpaNPlusOne]: {
       icon: SQLDatabaseIcon,
-      label: "Repeated query",
+      label: "Repeated Query",
       subTypes: {
         repeatedQueries: {
           icon: SQLDatabaseIcon,

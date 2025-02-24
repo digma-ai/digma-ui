@@ -92,13 +92,13 @@ export const ReportHeader = ({
               <s.FilterSelector
                 items={
                   environments
-                    ?.sort((a, b) => a.name.localeCompare(b.name))
-                    .map((x) => ({
+                    ?.map((x) => ({
                       label: x.name,
                       value: x.id,
                       enabled: true,
                       selected: x.id === selectedEnvironment
-                    })) ?? []
+                    }))
+                    .sort((a, b) => a.label.localeCompare(b.label)) ?? []
                 }
                 icon={GlobeIcon}
                 onChange={handleSelectedEnvironmentChange}
@@ -109,12 +109,14 @@ export const ReportHeader = ({
               />
               <s.FilterSelector
                 items={
-                  services?.sort()?.map((service) => ({
-                    label: service,
-                    value: service,
-                    enabled: true,
-                    selected: selectedServices.includes(service)
-                  })) ?? []
+                  services
+                    ?.map((service) => ({
+                      label: service,
+                      value: service,
+                      enabled: true,
+                      selected: selectedServices.includes(service)
+                    }))
+                    .sort() ?? []
                 }
                 multiselect={true}
                 icon={WrenchIcon}

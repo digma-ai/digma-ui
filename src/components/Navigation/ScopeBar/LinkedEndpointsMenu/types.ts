@@ -1,4 +1,4 @@
-import type { LinkedEndpoint } from "../../SpanInfo/types";
+import type { LinkedEndpoint } from "../../../../redux/services/types";
 
 export interface LinkedEndpointsMenuProps {
   endpoints: LinkedEndpoint[];
