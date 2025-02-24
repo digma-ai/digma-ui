@@ -1,10 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { actions as globalActions } from "../../actions";
+import { useCallback, useEffect, useState } from "react";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 // import { isNull } from "../../typeGuards/isNull";
 // import { isUndefined } from "../../typeGuards/isUndefined";
-import type { GetInsightStatsPayload } from "../../types";
 import { FeatureFlag } from "../../types";
 import { changeScope } from "../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
@@ -18,18 +16,13 @@ import { ThreeDotsVerticalIcon } from "../common/icons/ThreeDotsVerticalIcon";
 // import { CodeButtonMenu } from "./CodeButtonMenu";
 import useDimensions from "react-cool-dimensions";
 import { getFeatureFlagValue } from "../../featureFlags";
-import { useFetchData } from "../../hooks/useFetchData";
+import { useGetSpanInfoQuery } from "../../redux/services/digma";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
-import { actions as mainActions } from "../Main/actions";
 import { EnvironmentBar } from "./EnvironmentBar";
 import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { KebabMenu } from "./KebabMenu";
 import { ScopeBar } from "./ScopeBar";
 import { SpanInfo } from "./SpanInfo";
-import type {
-  GetHighlightsSpanInfoDataPayload,
-  SpanInfoData
-} from "./SpanInfo/types";
 import { Tabs } from "./Tabs";
 import { actions } from "./actions";
 import { IconButton } from "./common/IconButton";
@@ -110,27 +103,16 @@ export const Navigation = () => {
   // const previousCodeContext = usePrevious(codeContext);
   const previousEnvironment = usePrevious(environment);
   const [isSpanInfoVisible, setIsSpanInfoVisible] = useState(false);
-  const payload: GetHighlightsSpanInfoDataPayload = useMemo(
-    () => ({
-      query: {
-        spanCodeObjectId: scope?.span?.spanCodeObjectId ?? null
-      }
-    }),
-    [scope?.span?.spanCodeObjectId]
+
+  const { data: spanInfo } = useGetSpanInfoQuery(
+    {
+      spanCodeObjectId: scope?.span?.spanCodeObjectId ?? ""
+    },
+    {
+      skip: !scope?.span?.spanCodeObjectId
+    }
   );
 
-  const { data: spanInfo } = useFetchData<
-    GetHighlightsSpanInfoDataPayload,
-    SpanInfoData
-  >(
-    {
-      requestAction: mainActions.GET_HIGHLIGHTS_SPAN_INFO_DATA,
-      responseAction: mainActions.SET_HIGHLIGHTS_SPAN_INFO_DATA,
-      isEnabled: Boolean(scope?.span?.spanCodeObjectId),
-      refreshOnPayloadChange: true
-    },
-    payload
-  );
   const previousSpanInfo = usePrevious(spanInfo);
 
   const isAtSpan = Boolean(scope?.span);
@@ -193,20 +175,8 @@ export const Navigation = () => {
   useEffect(() => {
     if (environment?.id !== previousEnvironment?.id) {
       setSelectedEnvironment(environment);
-      window.sendMessageToDigma<GetInsightStatsPayload>({
-        action: globalActions.GET_INSIGHT_STATS,
-        payload: {
-          scope: scope?.span
-            ? {
-                span: {
-                  spanCodeObjectId: scope.span.spanCodeObjectId
-                }
-              }
-            : null
-        }
-      });
     }
-  }, [environment, scope, previousEnvironment?.id]);
+  }, [environment, previousEnvironment?.id]);
 
   const handleEnvironmentChange = useCallback(
     (environment: Environment) => {

@@ -3,6 +3,7 @@ import { useTheme } from "styled-components";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { platform } from "../../../platform";
+import { useGetSpanEnvironmentsQuery } from "../../../redux/services/digma";
 import type { IssueCriticality } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
@@ -24,6 +25,7 @@ import { Direction } from "../../common/icons/types";
 import { NewButton } from "../../common/v3/NewButton";
 import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
+import { useGetInsightsStats } from "../hooks/useGetInsightsStats";
 import { trackingEvents } from "../tracking";
 import { EnvironmentSelector } from "./EnvironmentSelector";
 import type { SelectorEnvironment } from "./EnvironmentSelector/types";
@@ -38,6 +40,7 @@ import { SORTING_CRITERION, ViewMode } from "./types";
 import { useMarkingAllAsRead } from "./useMarkingAllAsRead";
 
 const PAGE_SIZE = 10;
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 const isShowCriticalOnly = (
   filters: InsightFilterType[],
@@ -83,14 +86,8 @@ export const InsightsCatalog = ({
     insightViewType
   } = useInsightsSelector();
 
-  const {
-    selectedServices,
-    insightStats,
-    environment,
-    environments,
-    scope,
-    backendInfo
-  } = useConfigSelector();
+  const { selectedServices, environment, environments, scope, backendInfo } =
+    useConfigSelector();
 
   const insights = data?.insights ?? [];
   const totalCount = data?.totalCount ?? 0;
@@ -117,6 +114,7 @@ export const InsightsCatalog = ({
     isMarkingAllAsReadInProgress
   );
   const [isFiltersToolbarVisible, setIsFiltersToolbarVisible] = useState(false);
+  const { data: insightStats } = useGetInsightsStats();
 
   const isServicesFilterEnabled = !scopeSpanCodeObjectId;
 
@@ -141,8 +139,20 @@ export const InsightsCatalog = ({
     backendInfo,
     FeatureFlag.ARE_SPAN_ENVIRONMENTS_ENABLED
   );
+
+  const { data: spanEnvironments } = useGetSpanEnvironmentsQuery(
+    { spanCodeObjectId: scopeSpanCodeObjectId ?? "" },
+    {
+      skip: !areSpanEnvironmentsEnabled || !scopeSpanCodeObjectId,
+      pollingInterval: REFRESH_INTERVAL
+    }
+  );
+
   const selectorEnvironments: SelectorEnvironment[] = areSpanEnvironmentsEnabled
-    ? insightStats?.spanEnvironments ?? []
+    ? scopeSpanCodeObjectId &&
+      scopeSpanCodeObjectId === spanEnvironments?.extra.spanCodeObjectId
+      ? spanEnvironments?.data ?? []
+      : []
     : environments?.map((x) => ({ environment: x })) ?? [];
 
   const isDismissalViewModeButtonVisible =
@@ -227,11 +237,11 @@ export const InsightsCatalog = ({
 
     return (
       <FilterPanel
-        criticalCount={insightStats?.criticalInsightsCount}
-        allIssuesCount={insightStats?.issuesInsightsCount}
+        criticalCount={insightStats?.data.criticalInsightsCount}
+        allIssuesCount={insightStats?.data.issuesInsightsCount}
         unreadCount={
           areInsightStatsEnabled
-            ? insightStats?.unreadInsightsCount ?? 0
+            ? insightStats?.data.unreadInsightsCount ?? 0
             : unreadCount ?? 0
         }
       />

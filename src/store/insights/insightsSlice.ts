@@ -1,17 +1,23 @@
 import { createSlice } from "zustand-slices";
 import type { Sorting } from "../../components/common/SortingSelector/types";
 import { SORTING_ORDER } from "../../components/common/SortingSelector/types";
-import type { IssuesFiltersData } from "../../components/Insights/InsightsCatalog/FilterPanel/IssuesFilter/types";
 import type { InsightFilterType } from "../../components/Insights/InsightsCatalog/types";
 import {
   SORTING_CRITERION,
   ViewMode
 } from "../../components/Insights/InsightsCatalog/types";
 import type {
-  InsightsData,
+  InsightType,
   InsightViewType
 } from "../../components/Insights/types";
-import type { IssueCriticality } from "../../redux/services/types";
+import type {
+  GetInsightsResponse,
+  GetIssuesFiltersResponse,
+  GetIssuesResponse,
+  IssueCriticality
+} from "../../redux/services/types";
+
+export type InsightsData = GetIssuesResponse | GetInsightsResponse;
 
 interface InsightsState {
   data: InsightsData | null;
@@ -21,12 +27,12 @@ interface InsightsState {
   sorting: Sorting;
   viewMode: ViewMode;
   filters: InsightFilterType[];
-  filteredInsightTypes: string[];
-  filteredInsightTypesInGlobalScope: string[];
+  filteredInsightTypes: InsightType[];
+  filteredInsightTypesInGlobalScope: InsightType[];
   filteredCriticalityLevels: IssueCriticality[];
   filteredCriticalityLevelsInGlobalScope: IssueCriticality[];
   insightViewType: InsightViewType | null;
-  issuesFilters: IssuesFiltersData | null;
+  issuesFilters: GetIssuesFiltersResponse | null;
   areIssuesFiltersLoading: boolean;
 }
 
@@ -67,10 +73,10 @@ export const insightsSlice = createSlice({
     setInsightsSorting: (sorting: Sorting) => set({ sorting }),
     setInsightsViewMode: (viewMode: ViewMode) => set({ viewMode }),
     setInsightsFilters: (filters: InsightFilterType[]) => set({ filters }),
-    setInsightsFilteredInsightTypes: (filteredInsightTypes: string[]) =>
+    setInsightsFilteredInsightTypes: (filteredInsightTypes: InsightType[]) =>
       set({ filteredInsightTypes }),
     setInsightsFilteredInsightTypesInGlobalScope: (
-      filteredInsightTypesInGlobalScope: string[]
+      filteredInsightTypesInGlobalScope: InsightType[]
     ) => set({ filteredInsightTypesInGlobalScope }),
     setInsightsFilteredCriticalityLevels: (
       filteredCriticalityLevels: IssueCriticality[]
@@ -80,7 +86,7 @@ export const insightsSlice = createSlice({
     ) => set({ filteredCriticalityLevelsInGlobalScope }),
     setInsightViewType: (insightViewType: InsightViewType) =>
       set({ insightViewType }),
-    setInsightsIssuesFilters: (issuesFilters: IssuesFiltersData) =>
+    setInsightsIssuesFilters: (issuesFilters: GetIssuesFiltersResponse) =>
       set({ issuesFilters }),
     setAreInsightsIssuesFiltersLoading: (areIssuesFiltersLoading: boolean) =>
       set({ areIssuesFiltersLoading }),

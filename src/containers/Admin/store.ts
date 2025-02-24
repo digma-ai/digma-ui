@@ -8,7 +8,7 @@ import { authApi } from "../../redux/services/auth";
 import { digmaApi } from "../../redux/services/digma";
 import { appSlice } from "../../redux/slices/appSlice";
 import { authSlice } from "../../redux/slices/authSlice";
-import issuesReportSlice from "../../redux/slices/issuesReportSlice";
+import { issuesReportSlice } from "../../redux/slices/issuesReportSlice";
 import { persistSlice } from "../../redux/slices/persistSlice";
 import { scopeSlice } from "../../redux/slices/scopeSlice";
 import { getRememberEnhancer } from "../../redux/utils/getRememberEnhancer";
@@ -23,7 +23,7 @@ const reducer = rememberReducer({
   app: appSlice.reducer,
   scope: scopeSlice.reducer,
   auth: authSlice.reducer,
-  codeIssuesReport: issuesReportSlice,
+  codeIssuesReport: issuesReportSlice.reducer,
   persist: persistSlice.reducer,
   [authApi.reducerPath]: authApi.reducer,
   [digmaApi.reducerPath]: digmaApi.reducer

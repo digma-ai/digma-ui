@@ -1,12 +1,14 @@
 import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { platform } from "../../../platform";
+import type { ExtendedGetInsightsStatsResponse } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { useGetInsightsStats } from "../../Insights/hooks/useGetInsightsStats";
 import { useHistory } from "../../Main/useHistory";
-import type { InsightStats, Scope } from "../../common/App/types";
+import type { Scope } from "../../common/App/types";
 import { MagicWandIcon } from "../../common/icons/16px/MagicWandIcon";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
@@ -71,15 +73,14 @@ const getIsTabDisabled = (tab: BaseTabData, scope: Scope | null): boolean => {
 
 const getIsNewIndicatorVisible = (
   tab: BaseTabData,
-  insightsStats: InsightStats | null,
+  insightsStats: ExtendedGetInsightsStatsResponse | undefined,
   scope: Scope | null
 ): boolean =>
   Boolean(
     tab.id === TAB_IDS.ISSUES
       ? insightsStats &&
-        scope?.span?.spanCodeObjectId ===
-          insightsStats.scope?.span.spanCodeObjectId
-        ? insightsStats && insightsStats.unreadInsightsCount > 0
+        scope?.span?.spanCodeObjectId === insightsStats.extra.spanCodeObjectId
+        ? insightsStats && insightsStats.data.unreadInsightsCount > 0
         : scope &&
           isNumber(scope.unreadInsightsCount) &&
           scope.unreadInsightsCount > 0
@@ -87,7 +88,9 @@ const getIsNewIndicatorVisible = (
   );
 
 export const Tabs = () => {
-  const { scope, insightStats } = useConfigSelector();
+  const { scope } = useConfigSelector();
+  const { data: insightStats } = useGetInsightsStats();
+
   const location = useLocation();
   const { goTo } = useHistory();
 
@@ -103,47 +106,41 @@ export const Tabs = () => {
     }
   };
 
-  const tabsData: TabData[] = useMemo(() => {
-    return tabs.map((tab) => ({
-      ...tab,
-      isSelected: location.pathname.startsWith(`/${tab.id}`),
-      isDisabled: getIsTabDisabled(tab, scope),
-      hasNewData: getIsNewIndicatorVisible(tab, insightStats, scope),
-      tooltipMessage: getTabTooltipMessage(tab, scope)
-    }));
-  }, [scope, insightStats, location.pathname]);
+  const tabsData: TabData[] = useMemo(
+    () =>
+      tabs.map((tab) => ({
+        ...tab,
+        isSelected: location.pathname.startsWith(`/${tab.id}`),
+        isDisabled: getIsTabDisabled(tab, scope),
+        hasNewData: getIsNewIndicatorVisible(tab, insightStats, scope),
+        tooltipMessage: getTabTooltipMessage(tab, scope)
+      })),
+    [scope, insightStats, location.pathname]
+  );
 
   return (
     <s.TabList>
-      {tabsData.map((tab) => {
-        const isNewIndicatorVisible = getIsNewIndicatorVisible(
-          tab,
-          insightStats,
-          scope
-        );
-
-        return (
-          <Tooltip
-            title={tab.tooltipMessage ?? ""}
-            key={tab.id}
-            isOpen={isString(tab.tooltipMessage) ? undefined : false}
+      {tabsData.map((tab) => (
+        <Tooltip
+          title={tab.tooltipMessage ?? ""}
+          key={tab.id}
+          isOpen={isString(tab.tooltipMessage) ? undefined : false}
+        >
+          <s.Tab
+            $width={tab.width}
+            $isSelected={tab.isSelected}
+            $isDisabled={tab.isDisabled}
+            onClick={handleTabClick(tab)}
           >
-            <s.Tab
-              $width={tab.width}
-              $isSelected={tab.isSelected}
-              $isDisabled={tab.isDisabled}
-              onClick={handleTabClick(tab)}
-            >
-              {tab.icon && <tab.icon color={"currentColor"} size={16} />}
-              {isString(tab.title) && <s.TabTitle>{tab.title}</s.TabTitle>}
-              {isNewIndicatorVisible && <s.Indicator type={"new"} />}
-              {scope?.hasErrors && [TAB_IDS.ERRORS].includes(tab.id) && (
-                <s.Indicator type={"errors"} />
-              )}
-            </s.Tab>
-          </Tooltip>
-        );
-      })}
+            {tab.icon && <tab.icon color={"currentColor"} size={16} />}
+            {isString(tab.title) && <s.TabTitle>{tab.title}</s.TabTitle>}
+            {tab.hasNewData && <s.Indicator type={"new"} />}
+            {scope?.hasErrors && [TAB_IDS.ERRORS].includes(tab.id) && (
+              <s.Indicator type={"errors"} />
+            )}
+          </s.Tab>
+        </Tooltip>
+      ))}
     </s.TabList>
   );
 };

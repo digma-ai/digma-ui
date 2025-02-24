@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { history } from "../../../containers/Main/history";
+import type { LinkedEndpoint } from "../../../redux/services/types";
 import { isString } from "../../../typeGuards/isString";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -13,7 +14,6 @@ import { MinimizeIcon } from "../../common/icons/16px/MinimizeIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
-import type { LinkedEndpoint } from "../SpanInfo/types";
 import { actions } from "../actions";
 import { Popup } from "../common/Popup";
 import { trackingEvents } from "../tracking";

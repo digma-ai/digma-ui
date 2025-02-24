@@ -4,7 +4,10 @@ import { actions as globalActions } from "../../actions";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
-import { initialState as insightsInitialState } from "../../store/insights/insightsSlice";
+import {
+  initialState as insightsInitialState,
+  type InsightsData
+} from "../../store/insights/insightsSlice";
 import { useInsightsSelector } from "../../store/insights/useInsightsSelector";
 import { useStore } from "../../store/useStore";
 import { isUndefined } from "../../typeGuards/isUndefined";
@@ -13,6 +16,7 @@ import { areBackendInfosEqual } from "../../utils/areBackendInfosEqual";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import type { RegistrationFormValues } from "../common/RegistrationDialog/types";
 import { EmptyState } from "./EmptyState";
+import { useInsightsData } from "./hooks/useInsightsData";
 import { InsightsCatalog } from "./InsightsCatalog";
 import type { IssuesFilterQuery } from "./InsightsCatalog/FilterPanel/IssuesFilter/types";
 import { InsightTicketRenderer } from "./InsightTicketRenderer";
@@ -20,11 +24,9 @@ import * as s from "./styles";
 import type {
   GenericCodeObjectInsight,
   InsightTicketInfo,
-  InsightsData,
+  InsightType,
   InsightsProps
 } from "./types";
-import { InsightsStatus } from "./types";
-import { useInsightsData } from "./useInsightsData";
 
 export const ISSUES_FILTERS_PERSISTENCE_KEY = "issuesFilters";
 
@@ -120,9 +122,11 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
       isUndefined(previousPersistedFilters) &&
       !isUndefined(persistedFilters)
     ) {
-      setFilteredInsightTypes(persistedFilters?.issueTypes ?? []);
+      setFilteredInsightTypes(
+        (persistedFilters?.issueTypes as InsightType[]) ?? []
+      );
       setFilteredInsightTypesInGlobalScope(
-        persistedFilters?.issueTypesInGlobalScope ?? []
+        (persistedFilters?.issueTypesInGlobalScope as InsightType[]) ?? []
       );
       setFilteredCriticalityLevelsInGlobalScope(
         persistedFilters?.criticalityFilterInGlobalScope ??
@@ -318,26 +322,26 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
       return <EmptyState preset={"noDataYet"} />;
     }
 
-    switch (data?.insightsStatus) {
-      case InsightsStatus.STARTUP:
-        return <EmptyState preset={"nothingToShow"} />;
-      case InsightsStatus.NO_INSIGHTS:
-        return <EmptyState preset={"noInsights"} />;
-      case InsightsStatus.INSIGHT_PENDING:
-        return <EmptyState preset={"processing"} />;
-      case InsightsStatus.NO_SPANS_DATA:
-        return <EmptyState preset={"noDataYet"} />;
-      case InsightsStatus.NO_OBSERVABILITY:
-        return <EmptyState preset={"noObservability"} />;
-      case InsightsStatus.DEFAULT:
-      default:
-        return (
-          <InsightsCatalog
-            onJiraTicketCreate={handleJiraTicketPopupOpen}
-            onRefresh={refresh}
-          />
-        );
-    }
+    // switch (data?.insightsStatus) {
+    //   case InsightsStatus.STARTUP:
+    //     return <EmptyState preset={"nothingToShow"} />;
+    //   case InsightsStatus.NO_INSIGHTS:
+    //     return <EmptyState preset={"noInsights"} />;
+    //   case InsightsStatus.INSIGHT_PENDING:
+    //     return <EmptyState preset={"processing"} />;
+    //   case InsightsStatus.NO_SPANS_DATA:
+    //     return <EmptyState preset={"noDataYet"} />;
+    //   case InsightsStatus.NO_OBSERVABILITY:
+    //     return <EmptyState preset={"noObservability"} />;
+    //   case InsightsStatus.DEFAULT:
+    //   default:
+    return (
+      <InsightsCatalog
+        onJiraTicketCreate={handleJiraTicketPopupOpen}
+        onRefresh={refresh}
+      />
+    );
+    // }
   };
 
   return (
