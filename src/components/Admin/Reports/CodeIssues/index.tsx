@@ -219,7 +219,10 @@ export const CodeIssues = () => {
       dispatch(setTimeMode(timeModeParam));
     }
 
-    if (criticalityParam.every(isIssueCriticality)) {
+    if (
+      criticalityParam.length > 0 &&
+      criticalityParam.every(isIssueCriticality)
+    ) {
       dispatch(setCriticalityLevels(criticalityParam));
     }
 

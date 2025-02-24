@@ -21,19 +21,7 @@ export const Default: Story = {};
 export const WithStats: Story = {
   decorators: [
     (Story) => (
-      <ConfigContext.Provider
-        value={{
-          ...initialState,
-          insightStats: {
-            allIssuesCount: 100,
-            criticalInsightsCount: 5,
-            issuesInsightsCount: 14,
-            unreadInsightsCount: 20,
-            analyticsInsightsCount: 10,
-            scope: null
-          }
-        }}
-      >
+      <ConfigContext.Provider value={initialState}>
         <Story />
       </ConfigContext.Provider>
     )

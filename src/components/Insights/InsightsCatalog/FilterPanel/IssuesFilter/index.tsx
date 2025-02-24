@@ -5,7 +5,7 @@ import type { IssueCriticality } from "../../../../../redux/services/types";
 import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../../../store/useStore";
-import { FeatureFlag } from "../../../../../types";
+import { FeatureFlag, type InsightType } from "../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
 import { FilterPopup } from "../../../../common/FilterPopup";
@@ -15,9 +15,8 @@ import { WrenchIcon } from "../../../../common/icons/12px/WrenchIcon";
 import { WarningTriangleIcon } from "../../../../common/icons/WarningTriangleIcon";
 import type { IconProps } from "../../../../common/icons/types";
 import type { SelectItem } from "../../../../common/v3/Select/types";
-import { useIssuesFilters } from "../../../Issues/useIssuesFilters";
-import type { InsightFilterType } from "../../types";
-import { ViewMode } from "../../types";
+import { useIssuesFilters } from "../../../hooks/useIssuesFilters";
+import { type InsightFilterType } from "../../types";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 
@@ -28,9 +27,7 @@ export const IssuesFilter = () => {
     filteredInsightTypesInGlobalScope,
     filteredCriticalityLevels: filteredCriticalityLevelsInSpanScope,
     filteredCriticalityLevelsInGlobalScope,
-    filters,
-    viewMode,
-    search
+    filters
   } = useInsightsSelector();
   const {
     selectedServices: globallySelectedServices,
@@ -55,7 +52,7 @@ export const IssuesFilter = () => {
   const [isUnreadOnly, setIsUnreadOnly] = useState<boolean>(
     filters.includes("unread")
   );
-  const { data, getData } = useIssuesFilters();
+  const { data } = useIssuesFilters();
   const previousData = usePrevious(data);
   const environmentId = environment?.id;
   const previousEnvironmentId = usePrevious(environmentId);
@@ -65,7 +62,7 @@ export const IssuesFilter = () => {
     ? filteredInsightTypesInSpanScope
     : filteredInsightTypesInGlobalScope;
   const [selectedInsightTypes, setSelectedInsightTypes] =
-    useState<string[]>(filteredInsightTypes);
+    useState<InsightType[]>(filteredInsightTypes);
   const isServicesFilterEnabled =
     Boolean(
       getFeatureFlagValue(backendInfo, FeatureFlag.ARE_ISSUES_FILTERS_ENABLED)
@@ -91,8 +88,12 @@ export const IssuesFilter = () => {
   useEffect(() => {
     if (previousData && previousData !== data) {
       if (selectedInsightTypes.length > 0) {
-        const newSelection = selectedInsightTypes.filter((e) =>
-          Boolean(data?.issueTypeFilters.find((x) => x.name === e && x.enabled))
+        const newSelection = selectedInsightTypes.filter((insightType) =>
+          Boolean(
+            data?.issueTypeFilters.find(
+              (x) => (x.name as InsightType) === insightType && x.enabled
+            )
+          )
         );
 
         if (newSelection.length !== selectedInsightTypes.length) {
@@ -101,8 +102,8 @@ export const IssuesFilter = () => {
       }
 
       if (isServicesFilterEnabled && selectedServices.length > 0) {
-        const newSelection = selectedServices.filter((e) =>
-          Boolean(data?.services?.find((x) => x === e))
+        const newSelection = selectedServices.filter((service) =>
+          Boolean(data?.services?.find((x) => x === service))
         );
 
         if (newSelection.length !== selectedServices.length) {
@@ -129,37 +130,13 @@ export const IssuesFilter = () => {
     const newServices = globallySelectedServices ?? [];
     setSelectedServices(newServices);
     setSelectedInsightTypes(filteredInsightTypes);
-
     setSelectedCriticalityLevels(filteredCriticalityLevels);
     setIsCriticalOnly(filters.includes("criticality"));
-
     setIsUnreadOnly(filters.includes("unread"));
-
-    getData({
-      displayName: search,
-      showDismissed: ViewMode.OnlyDismissed === viewMode,
-      filters: [
-        ...(!isCriticalityLevelsFilterEnabled && filters.includes("criticality")
-          ? ["criticality"]
-          : []),
-        ...(filters.includes("unread") ? ["unread"] : [])
-      ] as InsightFilterType[],
-      insightTypes: filteredInsightTypes,
-      services: newServices,
-      scopedSpanCodeObjectId: scopeSpanCodeObjectId,
-      ...(isCriticalityLevelsFilterEnabled
-        ? { criticalityFilter: filteredCriticalityLevels }
-        : {})
-    });
   }, [
-    isCriticalityLevelsFilterEnabled,
     filteredInsightTypes,
     filters,
     globallySelectedServices,
-    search,
-    scopeSpanCodeObjectId,
-    viewMode,
-    getData,
     filteredCriticalityLevels
   ]);
 
@@ -230,7 +207,7 @@ export const IssuesFilter = () => {
       filterType: "issueType"
     });
     const newInsightTypes = Array.isArray(value) ? value : [value];
-    setSelectedInsightTypes(newInsightTypes);
+    setSelectedInsightTypes(newInsightTypes as InsightType[]);
   };
 
   const handleServiceChange = (value: string | string[]) => {
@@ -305,8 +282,12 @@ export const IssuesFilter = () => {
     data?.issueTypeFilters?.map((entry) => ({
       value: entry.name,
       label: getInsightTypeInfo(entry.name)?.label ?? entry.name,
-      enabled: entry.enabled || selectedInsightTypes.includes(entry.name),
-      selected: selectedInsightTypes.includes(entry.name) && entry.enabled
+      enabled:
+        entry.enabled ||
+        selectedInsightTypes.includes(entry.name as InsightType),
+      selected:
+        selectedInsightTypes.includes(entry.name as InsightType) &&
+        entry.enabled
     })) ?? [];
 
   const criticalityLevelsFilterOptions: SelectItem[] = [

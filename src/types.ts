@@ -1,7 +1,3 @@
-import type {
-  GetIssuesDataListQuery,
-  GetIssuesFiltersQuery
-} from "./components/Insights/Issues/types";
 import type { Duration } from "./globals";
 
 export enum FeatureFlag {
@@ -119,26 +115,6 @@ export interface SetObservabilityPayload {
 
 export interface OpenInstallationWizardPayload {
   skipInstallationStep: boolean;
-}
-
-export interface GetInsightStatsPayload {
-  scope: {
-    span: {
-      spanCodeObjectId: string;
-    };
-  } | null;
-  filters?: {
-    insights?: string[];
-    services?: string[];
-  };
-}
-
-export interface GetIssuesFiltersPayload {
-  query: GetIssuesFiltersQuery;
-}
-
-export interface GetIssuesDataListPayload {
-  query: GetIssuesDataListQuery;
 }
 
 export interface SendPluginEventPayload {

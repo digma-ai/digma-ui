@@ -2,13 +2,22 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { isString } from "../../typeGuards/isString";
 import type {
   DismissUndismissInsightPayload,
+  ExtendedGetInsightsPayload,
+  ExtendedGetInsightsResponse,
+  ExtendedGetInsightsStatsResponse,
+  ExtendedGetSpanEnvironmentsResponse,
   GetAboutResponse,
   GetEndpointsIssuesPayload,
   GetEnvironmentServicesPayload,
   GetEnvironmentServicesResponse,
   GetEnvironmentsResponse,
+  GetInsightsResponse,
+  GetInsightsStatsPayload,
+  GetInsightsStatsResponse,
   GetIssueRecommendationsPayload,
   GetIssueRecommendationsResponse,
+  GetIssuesFiltersPayload,
+  GetIssuesFiltersResponse,
   GetIssuesPayload,
   GetIssuesResponse,
   GetMetricsReportDataPayloadV1,
@@ -19,6 +28,8 @@ import type {
   GetSpanByIdResponse,
   GetSpanCodeLocationsPayload,
   GetSpanCodeLocationsResponse,
+  GetSpanEnvironmentsPayload,
+  GetSpanEnvironmentsResponse,
   GetSpanInfoPayload,
   GetSpanInfoResponse,
   GetSpanInsightPayload,
@@ -90,8 +101,48 @@ export const digmaApi = createApi({
         body: data
       })
     }),
+    getInsights: builder.query<
+      ExtendedGetInsightsResponse,
+      ExtendedGetInsightsPayload
+    >({
+      query: ({ data }) => {
+        return { url: `/Insights/get_insights_view`, params: data };
+      },
+      transformResponse: (response: GetInsightsResponse, meta, arg) => {
+        return {
+          data: response,
+          extra: arg.extra
+        };
+      }
+    }),
+    getInsightsStats: builder.query<
+      ExtendedGetInsightsStatsResponse,
+      GetInsightsStatsPayload
+    >({
+      query: (data) => ({
+        url: `/Insights/statistics`,
+        params: data
+      }),
+      transformResponse: (response: GetInsightsStatsResponse, meta, arg) => {
+        return {
+          data: response,
+          extra: {
+            spanCodeObjectId: arg.scopedSpanCodeObjectId
+          }
+        };
+      }
+    }),
     getIssues: builder.query<GetIssuesResponse, GetIssuesPayload>({
       query: (data) => ({ url: "Insights/issues", method: "POST", body: data })
+    }),
+    getIssuesFilters: builder.query<
+      GetIssuesFiltersResponse,
+      GetIssuesFiltersPayload
+    >({
+      query: (data) => ({
+        url: `/Insights/issues/filters`,
+        params: data
+      })
     }),
     linkTicketToIssue: builder.mutation<
       LinkTicketResponse,
@@ -182,6 +233,23 @@ export const digmaApi = createApi({
         params: data
       })
     }),
+    getSpanEnvironments: builder.query<
+      ExtendedGetSpanEnvironmentsResponse,
+      GetSpanEnvironmentsPayload
+    >({
+      query: (data) => ({
+        url: `/Spans/environments`,
+        params: data
+      }),
+      transformResponse: (response: GetSpanEnvironmentsResponse, meta, arg) => {
+        return {
+          data: response,
+          extra: {
+            spanCodeObjectId: arg.spanCodeObjectId
+          }
+        };
+      }
+    }),
     getIssueRecommendations: builder.query<
       GetIssueRecommendationsResponse,
       GetIssueRecommendationsPayload
@@ -202,7 +270,10 @@ export const {
   useGetEnvironmentsQuery,
   useLazyGetSpanPercentilesHistogramQuery,
   useMarkInsightAsReadMutation,
+  useGetInsightsQuery,
+  useGetInsightsStatsQuery,
   useGetIssuesQuery,
+  useGetIssuesFiltersQuery,
   useLinkTicketToIssueMutation,
   useUnlinkTicketFromIssueMutation,
   useDismissInsightMutation,
@@ -214,5 +285,6 @@ export const {
   useGetServiceEnvironmentsQuery,
   useGetSpanByIdQuery,
   useGetSpanInfoQuery,
+  useGetSpanEnvironmentsQuery,
   useGetIssueRecommendationsQuery
 } = digmaApi;

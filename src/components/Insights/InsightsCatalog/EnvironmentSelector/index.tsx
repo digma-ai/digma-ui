@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { changeScope } from "../../../../utils/actions/changeScope";
@@ -62,8 +62,9 @@ export const EnvironmentSelector = ({
   const { scope, environment } = useConfigSelector();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { observe, width } = useDimensions();
-  const sortedEnvironments = environments.sort(
-    sortEnvironmentsByCriticalIssues
+  const sortedEnvironments = useMemo(
+    () => [...environments].sort(sortEnvironmentsByCriticalIssues),
+    [environments]
   );
 
   const changeEnvironment = (environmentId: string) => {

@@ -28,7 +28,6 @@ export const initialState: ConfigContextData = {
   scope: undefined,
   isMicrometerProject: window.isMicrometerProject === true,
   state: undefined,
-  insightStats: undefined,
   productKey: isString(window.productKey) ? window.productKey : "",
   isDigmathonModeEnabled: window.isDigmathonModeEnabled === true,
   userId: isString(window.userId) ? window.userId : "",

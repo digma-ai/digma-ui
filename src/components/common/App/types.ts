@@ -120,6 +120,7 @@ export interface ScopeWithErrorDetailsId extends Omit<Scope, "context"> {
   };
 }
 
+/** @deprecated */
 export interface InsightsQuery {
   displayName: string | null;
   sortBy: string;
@@ -130,10 +131,6 @@ export interface InsightsQuery {
   insightViewType: InsightViewType;
   showUnreadOnly: boolean;
   filters: InsightFilterType[];
-}
-
-export interface GetInsightsDataListPayload {
-  query: InsightsQuery;
 }
 
 /** @deprecated */
@@ -175,7 +172,6 @@ export interface ConfigContextData {
   scope?: Scope;
   isMicrometerProject: boolean;
   state?: PersistedState;
-  insightStats?: InsightStats;
   productKey: string;
   isDigmathonModeEnabled: boolean;
   userId: string;
@@ -184,20 +180,6 @@ export interface ConfigContextData {
   runConfig?: RunConfiguration;
   areInsightSuggestionsEnabled: boolean;
   googleClientId: string;
-}
-
-export interface InsightStats {
-  scope: {
-    span: {
-      spanCodeObjectId: string;
-    };
-  } | null;
-  issuesInsightsCount: number;
-  analyticsInsightsCount: number;
-  unreadInsightsCount: number;
-  criticalInsightsCount?: number;
-  allIssuesCount?: number;
-  spanEnvironments?: SpanEnvironment[];
 }
 
 export interface UserInfo {

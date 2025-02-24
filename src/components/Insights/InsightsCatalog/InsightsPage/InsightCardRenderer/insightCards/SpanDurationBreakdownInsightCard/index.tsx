@@ -44,7 +44,7 @@ const getPercentile = (
 };
 
 const getDurationTitle = (breakdownEntry: SpanDurationBreakdownEntry) => {
-  const sortedPercentiles = breakdownEntry.percentiles.sort(
+  const sortedPercentiles = [...breakdownEntry.percentiles].sort(
     (a, b) => a.percentile - b.percentile
   );
 

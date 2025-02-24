@@ -125,6 +125,7 @@ export const InsightCard = ({
     insight.type
   ]);
 
+  // TODO: replace with RTK query cache invalidation (via tags)
   useEffect(() => {
     if (
       previousDismissalData !== dismissalData &&

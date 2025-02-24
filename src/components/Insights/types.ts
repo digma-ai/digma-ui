@@ -6,11 +6,12 @@ import type { Sorting } from "../common/SortingSelector/types";
 import type { IconProps } from "../common/icons/types";
 import type { InsightFilterType } from "./InsightsCatalog/types";
 
+/** @deprecated */
 export enum ViewMode {
   PREVIEW = "PREVIEW",
   INSIGHTS = "INSIGHTS"
 }
-
+/** @deprecated */
 export enum InsightsStatus {
   STARTUP = "Startup",
   DEFAULT = "Default",
@@ -65,29 +66,6 @@ export interface MethodSpan {
 export interface Method {
   id: string;
   name: string;
-}
-
-export interface WrappedInsightData {
-  insightsViewMode: string;
-  data: InsightsData;
-}
-
-export interface InsightsData {
-  insights: GenericCodeObjectInsight[];
-  totalCount: number;
-  insightsStatus: InsightsStatus; // ??  default
-  viewMode: ViewMode; // Insights
-  dismissedCount?: number;
-  unreadCount?: number;
-
-  // methods: Method[]; // empty
-  // assetId?: string; // remove
-  // environment: string; // remove
-  // serviceName: string; //
-  // spans: MethodSpan[]; // to add on plugin
-  // hasMissingDependency: boolean; // remove
-  // canInstrumentMethod: boolean; // remove
-  // needsObservabilityFix: boolean; //remove
 }
 
 export type InsightViewType = "Issues" | "Analytics";

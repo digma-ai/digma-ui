@@ -23,7 +23,6 @@ import type {
   BackendInfo,
   DigmaStatus,
   Environment,
-  InsightStats,
   PersistedState,
   RunConfiguration,
   Scope,
@@ -90,7 +89,6 @@ export const App = ({ theme, children, id }: AppProps) => {
     setEnvironment,
     setScope,
     setUserInfo,
-    setInsightStats,
     setRunConfig,
     setIsDigmathonGameFinished,
     setIsMicrometerProject
@@ -116,6 +114,19 @@ export const App = ({ theme, children, id }: AppProps) => {
   }, [colorScheme]);
 
   useEffect(() => {
+    const handleStorageState = (data: unknown) => {
+      handleSetTheme(data);
+      handleSetMainFont(data);
+      handleSetCodeFont(data);
+      handleSetDigmaApiUrl(data);
+      handleSetJaegerURL(data);
+      handleSetIsJaegerEnabled(data);
+      handleSetBackendInfo(data);
+      handleSetEnvironments(data);
+      handleSetUserInfo(data);
+      handleSetScope(data);
+    };
+
     const handleSetTheme = (data: unknown) => {
       if (isObject(data) && isTheme(data.theme)) {
         setCurrentTheme(data.theme);
@@ -299,14 +310,6 @@ export const App = ({ theme, children, id }: AppProps) => {
       setUserInfo(data as UserInfo);
     };
 
-    const handleSetInsightStats = (data: unknown) => {
-      setConfig((config) => ({
-        ...config,
-        insightStats: data as InsightStats
-      }));
-      setInsightStats(data as InsightStats);
-    };
-
     const handleSetState = (data: unknown) => {
       setConfig((config) => ({
         ...config,
@@ -350,6 +353,7 @@ export const App = ({ theme, children, id }: AppProps) => {
       setRunConfig(data as RunConfiguration);
     };
 
+    dispatcher.addActionListener(actions.SET_STORAGE_STATE, handleStorageState);
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);
     dispatcher.addActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
     dispatcher.addActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
@@ -406,10 +410,6 @@ export const App = ({ theme, children, id }: AppProps) => {
     );
     dispatcher.addActionListener(actions.SET_SCOPE, handleSetScope);
     dispatcher.addActionListener(
-      actions.SET_INSIGHT_STATS,
-      handleSetInsightStats
-    );
-    dispatcher.addActionListener(
       actions.SET_DIGMATHON_MODE,
       handleSetIsDigmathonModeEnabled
     );
@@ -424,6 +424,10 @@ export const App = ({ theme, children, id }: AppProps) => {
     );
 
     return () => {
+      dispatcher.removeActionListener(
+        actions.SET_STORAGE_STATE,
+        handleStorageState
+      );
       dispatcher.removeActionListener(actions.SET_THEME, handleSetTheme);
       dispatcher.removeActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
       dispatcher.removeActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
@@ -483,10 +487,6 @@ export const App = ({ theme, children, id }: AppProps) => {
       );
       dispatcher.removeActionListener(actions.SET_SCOPE, handleSetScope);
       dispatcher.removeActionListener(
-        actions.SET_INSIGHT_STATS,
-        handleSetInsightStats
-      );
-      dispatcher.removeActionListener(
         actions.SET_DIGMATHON_MODE,
         handleSetIsDigmathonModeEnabled
       );
@@ -519,7 +519,6 @@ export const App = ({ theme, children, id }: AppProps) => {
     setEnvironment,
     setScope,
     setUserInfo,
-    setInsightStats,
     setRunConfig,
     setIsDigmathonGameFinished,
     setIsMicrometerProject

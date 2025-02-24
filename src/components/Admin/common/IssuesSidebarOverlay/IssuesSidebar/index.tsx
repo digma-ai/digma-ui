@@ -92,19 +92,14 @@ export const IssuesSidebar = ({
   const scopeBarDisplayName = spanInfo?.displayName ?? scopeDisplayName;
   const page = query?.page ?? 0;
   const pageSize = query?.pageSize ?? PAGE_SIZE;
-  const { data, isFetching, refetch } = useGetIssuesQuery(
-    {
-      showDismissed: viewMode === ViewMode.OnlyDismissed,
-      sortBy: "criticalinsights",
-      sortOrder: "desc",
-      ...query,
-      page,
-      pageSize
-    },
-    {
-      refetchOnMountOrArgChange: true
-    }
-  );
+  const { data, isFetching, refetch } = useGetIssuesQuery({
+    showDismissed: viewMode === ViewMode.OnlyDismissed,
+    sortBy: "criticalinsights",
+    sortOrder: "desc",
+    ...query,
+    page,
+    pageSize
+  });
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

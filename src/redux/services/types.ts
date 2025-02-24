@@ -1,8 +1,14 @@
 import type {
   DeploymentType,
+  Environment,
   EnvironmentType
 } from "../../components/common/App/types";
-import type { GenericCodeObjectInsight } from "../../components/Insights/types";
+import type { InsightFilterType } from "../../components/Insights/InsightsCatalog/types";
+import type {
+  GenericCodeObjectInsight,
+  InsightType,
+  InsightViewType
+} from "../../components/Insights/types";
 
 export type IssueCriticality = "Low" | "Medium" | "High";
 
@@ -109,18 +115,103 @@ export interface GetEnvironmentServicesPayload {
 
 export type GetEnvironmentServicesResponse = string[];
 
+export interface GetInsightsPayload {
+  filters?: string[];
+  sortBy?: string;
+  sortOrder?: string;
+  page?: number;
+  pageSize?: number;
+  showDismissed?: boolean;
+  showUnreadOnly?: boolean;
+  displayName?: string;
+  services?: string;
+  insights?: string;
+  operations?: string;
+  scopedSpanCodeObjectId?: string;
+  directOnly?: boolean;
+  environment?: string;
+}
+
+export interface ExtendedGetInsightsPayload {
+  data: GetInsightsPayload;
+  extra: {
+    insightViewType?: InsightViewType;
+  };
+}
+
+export interface GetInsightsResponse {
+  totalCount: number;
+  dismissedCount?: number;
+  insights: GenericCodeObjectInsight[];
+  unreadCount?: number;
+}
+
+export interface ExtendedGetInsightsResponse {
+  data: GetInsightsResponse;
+  extra: {
+    insightViewType?: InsightViewType;
+  };
+}
+
+export interface GetInsightsStatsPayload {
+  displayName?: string;
+  services?: string;
+  insights?: string;
+  operations?: string;
+  scopedSpanCodeObjectId?: string;
+  directOnly?: boolean;
+  environment?: string;
+}
+
+export interface GetInsightsStatsResponse {
+  issuesInsightsCount: number;
+  analyticsInsightsCount: number;
+  unreadInsightsCount: number;
+  criticalInsightsCount?: number;
+  allIssuesCount?: number;
+  dismissedCount?: number;
+}
+
+export interface ExtendedGetInsightsStatsResponse {
+  data: GetInsightsStatsResponse;
+  extra: {
+    spanCodeObjectId?: string;
+  };
+}
+
 export interface GetIssuesPayload {
   environment?: string;
   scopedSpanCodeObjectId?: string;
   displayName?: string;
   showDismissed?: boolean;
-  filters?: string[];
+  filters?: InsightFilterType[];
   services?: string[];
-  insightTypes?: string[];
+  insightTypes?: InsightType[];
   sortBy?: string;
   sortOrder?: string;
   page?: number;
   pageSize?: number;
+}
+
+export interface GetIssuesFiltersPayload {
+  filters?: InsightFilterType[];
+  services?: string[];
+  insightTypes?: InsightType[];
+  criticalityFilter?: IssueCriticality[];
+  scopedSpanCodeObjectId?: string;
+  displayName?: string;
+  showDismissed?: boolean;
+  environment?: string;
+}
+
+export interface IssueTypeFilter {
+  name: string;
+  enabled: boolean;
+}
+
+export interface GetIssuesFiltersResponse {
+  issueTypeFilters: IssueTypeFilter[];
+  services?: string[];
 }
 
 export interface GetIssuesResponse {
@@ -160,7 +251,6 @@ export interface GetSpanCodeLocationsPayload {
 }
 
 export interface GetSpanCodeLocationsResponse {
-  accountId: string;
   environment: string;
   spanCodeObjectId: string;
   navigationEntry: {
@@ -247,24 +337,46 @@ export interface GetSpanInfoPayload {
   spanCodeObjectId: string;
 }
 
+export interface LinkedEndpoint {
+  spanCodeObjectId: string;
+  displayName: string;
+  environment: string;
+}
+
 export interface GetSpanInfoResponse {
   displayName: string;
-  firstSeen: string;
-  lastSeen: string;
   services: string[];
-  environments: {
-    type: "Private" | "Public";
-    id: string;
-    name: string;
-  }[];
+  environments: Environment[];
   assetTypeId: string;
-  linkedEndpoints: {
-    spanCodeObjectId: string;
-    displayName: string;
-    environment: string;
-  }[];
+  firstSeen?: string;
+  lastSeen?: string;
+  linkedEndpoints?: LinkedEndpoint[];
 }
+
+export interface GetSpanEnvironmentsPayload {
+  spanCodeObjectId: string;
+}
+
+export interface EnvironmentIssueCounts {
+  highCriticality: number;
+  mediumCriticality: number;
+  lowCriticality: number;
+}
+
+export interface SpanEnvironmentDetails {
+  environment: Environment;
+  issueCounts: EnvironmentIssueCounts;
+}
+
+export type GetSpanEnvironmentsResponse = SpanEnvironmentDetails[];
 
 export interface GetIssueRecommendationsResponse {
   recommendations: IssueRecommendation[];
+}
+
+export interface ExtendedGetSpanEnvironmentsResponse {
+  data: GetSpanEnvironmentsResponse;
+  extra: {
+    spanCodeObjectId: string;
+  };
 }
