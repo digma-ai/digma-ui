@@ -6,7 +6,7 @@ const FunnelIconComponent = (props: IconProps) => {
   const { size, color } = useIconProps(props);
 
   return (
-    <svg width={size} height={size} fill="none">
+    <svg width={size} height={size} fill="none" viewBox="0 0 16 16">
       <g clipPath="url(#funnel-16px-clip-1)">
         <path
           stroke={color}

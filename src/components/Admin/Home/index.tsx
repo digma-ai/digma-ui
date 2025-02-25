@@ -5,7 +5,7 @@ import {
   useAdminSelector
 } from "../../../containers/Admin/hooks";
 import { useMount } from "../../../hooks/useMount";
-import { setEnvironmentId } from "../../../redux/slices/scopeSlice";
+import { setSelectedEnvironmentId } from "../../../redux/slices/issuesReportSlice";
 import { IssuesSidebarOverlay } from "../common/IssuesSidebarOverlay";
 import type { IssuesSidebarQuery } from "../common/IssuesSidebarOverlay/types";
 import { Environments } from "./Environments";
@@ -16,7 +16,9 @@ import * as s from "./styles";
 const ISSUES_LIMIT = 10;
 
 export const Home = () => {
-  const environmentId = useAdminSelector((state) => state.scope.environmentId);
+  const environmentId = useAdminSelector(
+    (state) => state.codeIssuesReport.selectedEnvironmentId
+  );
   const dispatch = useAdminDispatch();
   const [issuesQuery, setIssuesQuery] = useState<string>();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -59,7 +61,7 @@ export const Home = () => {
 
   useMount(() => {
     if (environmentParam) {
-      dispatch(setEnvironmentId(environmentParam));
+      dispatch(setSelectedEnvironmentId(environmentParam));
     }
 
     setIssuesQuery(issuesParam ?? undefined);

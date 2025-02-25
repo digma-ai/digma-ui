@@ -1,4 +1,6 @@
 import { Route, Routes } from "react-router-dom";
+import { FunnelIcon } from "../../common/icons/16px/FunnelIcon";
+import { NewIconButton } from "../../common/v3/NewIconButton";
 import { EnvironmentSelect } from "./EnvironmentSelect";
 import { Greeting } from "./Greeting";
 import * as s from "./styles";
@@ -11,7 +13,14 @@ export const Header = () => (
         element={
           <s.HomeHeader>
             <Greeting currentDateTime={Date.now()} />
-            <EnvironmentSelect />
+            <s.FilterContainer>
+              <EnvironmentSelect />
+              <NewIconButton
+                buttonType={"secondary"}
+                icon={FunnelIcon}
+                size={"large"}
+              />
+            </s.FilterContainer>
           </s.HomeHeader>
         }
       />

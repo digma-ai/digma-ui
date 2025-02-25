@@ -44,7 +44,7 @@ const NewIconButtonComponent = (
       $size={size}
       $isHighlighted={isHighlighted}
     >
-      <Icon size={16} color={"currentColor"} />
+      <Icon size={size === "large" ? 20 : 16} color={"currentColor"} />
     </ButtonComponent>
   );
 };

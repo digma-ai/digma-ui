@@ -4,6 +4,7 @@ import {
   useAdminSelector
 } from "../../../../containers/Admin/hooks";
 import { useGetEnvironmentsQuery } from "../../../../redux/services/digma";
+import { setSelectedEnvironmentId } from "../../../../redux/slices/issuesReportSlice";
 import { setEnvironmentId } from "../../../../redux/slices/scopeSlice";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { CodeIcon } from "../../../common/icons/12px/CodeIcon";
@@ -19,7 +20,7 @@ export const EnvironmentSelect = () => {
     [environments]
   );
   const selectedEnvironmentId = useAdminSelector(
-    (state) => state.scope.environmentId
+    (state) => state.codeIssuesReport.selectedEnvironmentId
   );
   const selectedEnvironment = useMemo(
     () =>
@@ -35,7 +36,7 @@ export const EnvironmentSelect = () => {
       environmentId: newItem
     });
 
-    dispatch(setEnvironmentId(newItem));
+    dispatch(setSelectedEnvironmentId(newItem));
   };
 
   useEffect(() => {
