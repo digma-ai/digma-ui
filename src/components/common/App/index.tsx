@@ -131,7 +131,7 @@ export const App = ({ theme, children, id }: AppProps) => {
         if (isString(data.jaegerUrl)) {
           setConfig((config) => ({
             ...config,
-            jaegerUrl: data.jaegerUrl as string
+            jaegerURL: data.jaegerUrl as string
           }));
         }
 
