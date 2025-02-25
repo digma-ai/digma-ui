@@ -118,13 +118,27 @@ export const App = ({ theme, children, id }: AppProps) => {
       handleSetTheme(data);
       handleSetMainFont(data);
       handleSetCodeFont(data);
-      handleSetDigmaApiUrl(data);
-      handleSetJaegerURL(data);
       handleSetIsJaegerEnabled(data);
-      handleSetBackendInfo(data);
       handleSetEnvironments(data);
-      handleSetUserInfo(data);
-      handleSetScope(data);
+
+      if (isObject(data)) {
+        if (isString(data.digmaApiUrl)) {
+          setConfig((config) => ({
+            ...config,
+            digmaApiUrl: data.digmaApiUrl as string
+          }));
+        }
+        if (isString(data.jaegerUrl)) {
+          setConfig((config) => ({
+            ...config,
+            jaegerUrl: data.jaegerUrl as string
+          }));
+        }
+
+        handleSetBackendInfo(data.backendInfo);
+        handleSetUserInfo(data.userInfo);
+        handleSetScope(data.scope);
+      }
     };
 
     const handleSetTheme = (data: unknown) => {
