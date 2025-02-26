@@ -5,7 +5,10 @@ import {
   useAdminSelector
 } from "../../../containers/Admin/hooks";
 import { useMount } from "../../../hooks/useMount";
-import { setSelectedEnvironmentId } from "../../../redux/slices/issuesReportSlice";
+import {
+  setSelectedEnvironmentId,
+  setSelectedServices
+} from "../../../redux/slices/issuesReportSlice";
 import { IssuesSidebarOverlay } from "../common/IssuesSidebarOverlay";
 import type { IssuesSidebarQuery } from "../common/IssuesSidebarOverlay/types";
 import { Environments } from "./Environments";
@@ -19,18 +22,26 @@ export const Home = () => {
   const environmentId = useAdminSelector(
     (state) => state.codeIssuesReport.selectedEnvironmentId
   );
+  const selectedServices = useAdminSelector(
+    (state) => state.codeIssuesReport.selectedServices
+  );
   const dispatch = useAdminDispatch();
   const [issuesQuery, setIssuesQuery] = useState<string>();
   const [searchParams, setSearchParams] = useSearchParams();
   const environmentParam = searchParams.get("environment");
   const issuesParam = searchParams.get("issues");
+  const servicesParam = useMemo(
+    () => searchParams.getAll("services"),
+    [searchParams]
+  );
 
   const queries: Record<string, IssuesSidebarQuery> = useMemo(
     () => ({
       "top-criticality": {
         query: {
           environment: environmentId ?? undefined,
-          sortBy: "criticality"
+          sortBy: "criticality",
+          services: selectedServices
         },
         limit: ISSUES_LIMIT,
         title: "Top issues by criticality"
@@ -38,13 +49,14 @@ export const Home = () => {
       "top-severity": {
         query: {
           environment: environmentId ?? undefined,
-          sortBy: "severity"
+          sortBy: "severity",
+          services: selectedServices
         },
         limit: ISSUES_LIMIT,
         title: "Top issues by severity"
       }
     }),
-    [environmentId]
+    [environmentId, selectedServices]
   );
 
   const handleGetTopIssuesByCriticality = () => {
@@ -64,6 +76,10 @@ export const Home = () => {
       dispatch(setSelectedEnvironmentId(environmentParam));
     }
 
+    if (servicesParam.length > 0) {
+      dispatch(setSelectedServices(servicesParam));
+    }
+
     setIssuesQuery(issuesParam ?? undefined);
   });
 
@@ -80,6 +96,14 @@ export const Home = () => {
       });
     }
   }, [setSearchParams, environmentId]);
+
+  useEffect(() => {
+    setSearchParams((params) => {
+      params.delete("services");
+      selectedServices.forEach((service) => params.append("services", service));
+      return params;
+    });
+  }, [setSearchParams, selectedServices]);
 
   useEffect(() => {
     setSearchParams((params) => {
