@@ -52,6 +52,7 @@ export const FilterMenu = () => {
       onChange={handleSelectedServicesChange}
       disabled={!services || services.length === 0}
       ButtonComponent={FilterButton}
+      menuHeight={230}
     />
   );
 };

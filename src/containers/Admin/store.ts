@@ -21,7 +21,7 @@ const persistPrefix = `${PERSIST_PREFIX}${APP_ID}-`;
 
 const reducer = rememberReducer({
   app: appSlice.reducer,
-  scope: scopeSlice.reducer,
+  scope: scopeSlice.reducer, // not in use
   auth: authSlice.reducer,
   codeIssuesReport: issuesReportSlice.reducer,
   persist: persistSlice.reducer,
