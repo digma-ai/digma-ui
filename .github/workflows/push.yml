@@ -39,6 +39,13 @@ jobs:
     with:
       platform: "jetbrains"
 
+  build-vs:
+    name: Build for Visual Studio
+    needs: lint-test
+    uses: ./.github/workflows/build.yml
+    with:
+      platform: "vs"
+
   build-web:
     name: Build for web
     needs: lint-test
@@ -48,7 +55,7 @@ jobs:
 
   build-docker-image:
     name: Build Docker image
-    needs: [build-jetbrains, build-web]
+    needs: [build-jetbrains, build-vs, build-web]
     uses: ./.github/workflows/docker-image.yml
     secrets: inherit
     with:
