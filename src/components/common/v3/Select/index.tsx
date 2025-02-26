@@ -36,7 +36,8 @@ export const Select = ({
   showSelectedState,
   useShift,
   sameWidth,
-  ButtonComponent
+  ButtonComponent,
+  menuHeight
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -114,7 +115,7 @@ export const Select = ({
       sameWidth={sameWidth !== false}
       useShift={useShift !== false}
       content={
-        <s.MenuContainer>
+        <s.MenuContainer $height={menuHeight}>
           {isSearchBarVisible && (
             <s.SearchInputContainer>
               <s.SearchInputIconContainer>

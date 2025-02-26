@@ -54,8 +54,8 @@ jobs:
     name: Update UI releases in digma
     needs:
       [
-        attach-release-web-asset,
         attach-release-jetbrains-asset,
+        attach-release-web-asset,
         build-push-docker-image
       ]
     runs-on: ubuntu-latest
