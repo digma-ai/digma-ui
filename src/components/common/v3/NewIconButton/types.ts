@@ -3,7 +3,7 @@ import type { IconProps } from "../../icons/types";
 
 export type ButtonType = "primary" | "secondary" | "secondaryBorderless";
 
-export type ButtonSize = "medium" | "small";
+export type ButtonSize = "small" | "medium" | "large";
 
 export interface NewIconButtonProps {
   icon: ComponentType<IconProps>;

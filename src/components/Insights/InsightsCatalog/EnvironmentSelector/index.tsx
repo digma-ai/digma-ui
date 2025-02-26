@@ -140,6 +140,7 @@ export const EnvironmentSelector = ({
             <NewPopover
               content={
                 <EnvironmentMenu
+                  selectedEnvironment={environment}
                   environments={sortedEnvironments.map((x) => x.environment)}
                   onMenuItemClick={handleMenuItemClick}
                 />

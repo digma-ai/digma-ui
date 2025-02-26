@@ -245,9 +245,8 @@ export const Header = ({
           />
           {viewLevel === "endpoints" ? (
             <s.FilterSelect
-              items={[...(serviceEndpoints?.endpoints ?? [])]
-                .sort()
-                ?.map((x) => ({
+              items={(serviceEndpoints?.endpoints ?? [])
+                .map((x) => ({
                   label: x.displayName,
                   value: x.spanCodeObjectId,
                   enabled: true,
@@ -257,7 +256,8 @@ export const Header = ({
                         endpoint.spanCodeObjectId === x.spanCodeObjectId
                     )
                   )
-                }))}
+                }))
+                .sort((a, b) => a.label.localeCompare(b.label))}
               useShift={false}
               sameWidth={false}
               showSelectedState={true}
@@ -274,14 +274,12 @@ export const Header = ({
             />
           ) : (
             <s.FilterSelect
-              items={
-                [...(services ?? [])].sort()?.map((service) => ({
-                  label: service,
-                  value: service,
-                  enabled: true,
-                  selected: selectedServices.includes(service)
-                })) ?? []
-              }
+              items={[...(services ?? [])].sort().map((service) => ({
+                label: service,
+                value: service,
+                enabled: true,
+                selected: selectedServices.includes(service)
+              }))}
               showSelectedState={true}
               multiselect={true}
               icon={WrenchIcon}

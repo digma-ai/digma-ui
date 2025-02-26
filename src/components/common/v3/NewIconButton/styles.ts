@@ -5,13 +5,24 @@ const BaseIconButton = styled.button<ButtonElementProps>`
   font-family: inherit;
   display: flex;
   flex-shrink: 0;
-  border-radius: 4px;
+  border-radius: ${({ $size }) => {
+    switch ($size) {
+      case "large":
+        return 10;
+      case "small":
+      case "medium":
+      default:
+        return 4;
+    }
+  }}px;
   cursor: pointer;
   user-select: none;
   padding: ${({ $size }) => {
     switch ($size) {
       case "small":
         return 3;
+      case "large":
+        return 7;
       case "medium":
       default:
         return 5;

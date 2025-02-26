@@ -29,6 +29,7 @@ export interface SelectProps {
   showSelectedState?: boolean;
   useShift?: boolean;
   sameWidth?: boolean;
+  ButtonComponent?: ComponentType<{ onClick: () => void; disabled?: boolean }>;
 }
 
 export interface ButtonProps {
