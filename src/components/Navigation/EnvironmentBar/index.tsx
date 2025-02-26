@@ -79,6 +79,7 @@ export const EnvironmentBar = ({
     <NewPopover
       content={
         <EnvironmentMenu
+          selectedEnvironment={selectedEnvironment}
           environments={environments}
           onMenuItemClick={handleMenuItemClick}
         />

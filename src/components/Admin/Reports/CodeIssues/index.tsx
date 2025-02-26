@@ -230,7 +230,9 @@ export const CodeIssues = () => {
       dispatch(setPeriodInDays(Number(periodInDaysParam)));
     }
 
-    dispatch(setSelectedServices(servicesParam));
+    if (servicesParam.length > 0) {
+      dispatch(setSelectedServices(servicesParam));
+    }
 
     dispatch(setSelectedService(serviceParam));
   });
@@ -293,7 +295,6 @@ export const CodeIssues = () => {
     setSearchParams((params) => {
       if (selectedService) {
         params.set("service", selectedService);
-        params.delete("services");
         params.delete("endpoints");
         selectedEndpoints.forEach((endpoint) =>
           params.append("endpoints", endpoint.uid ?? endpoint.spanCodeObjectId)

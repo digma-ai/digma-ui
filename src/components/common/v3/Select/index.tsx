@@ -35,7 +35,9 @@ export const Select = ({
   searchable,
   showSelectedState,
   useShift,
-  sameWidth
+  sameWidth,
+  ButtonComponent,
+  menuHeight
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -113,7 +115,7 @@ export const Select = ({
       sameWidth={sameWidth !== false}
       useShift={useShift !== false}
       content={
-        <s.MenuContainer>
+        <s.MenuContainer $height={menuHeight}>
           {isSearchBarVisible && (
             <s.SearchInputContainer>
               <s.SearchInputIconContainer>
@@ -166,33 +168,39 @@ export const Select = ({
       isOpen={disabled ? false : isOpen}
       placement={"bottom-start"}
     >
-      <s.Button
-        $isActive={isActive}
-        onClick={handleButtonClick}
-        disabled={disabled}
-        className={className}
-      >
-        {Icon && (
-          <s.ButtonIconContainer>
-            <Icon color={"currentColor"} />
-          </s.ButtonIconContainer>
-        )}
-        {isString(placeholder) && (
-          <Tooltip title={placeholder} isDisabled={placeholder.length === 0}>
-            <s.ButtonLabel $isActive={isActive}>{placeholder}</s.ButtonLabel>
-          </Tooltip>
-        )}
-        {multiselect && isSelectedStateEnabled && selectedValues.length > 0 && (
-          <s.Number>{selectedValues.length}</s.Number>
-        )}
-        <s.ChevronIconContainer $disabled={disabled}>
-          <ChevronIcon
-            color={"currentColor"}
-            size={14}
-            direction={isOpen ? Direction.UP : Direction.DOWN}
-          />
-        </s.ChevronIconContainer>
-      </s.Button>
+      {ButtonComponent ? (
+        <ButtonComponent onClick={handleButtonClick} disabled={disabled} />
+      ) : (
+        <s.Button
+          $isActive={isActive}
+          onClick={handleButtonClick}
+          disabled={disabled}
+          className={className}
+        >
+          {Icon && (
+            <s.ButtonIconContainer>
+              <Icon color={"currentColor"} />
+            </s.ButtonIconContainer>
+          )}
+          {isString(placeholder) && (
+            <Tooltip title={placeholder} isDisabled={placeholder.length === 0}>
+              <s.ButtonLabel $isActive={isActive}>{placeholder}</s.ButtonLabel>
+            </Tooltip>
+          )}
+          {multiselect &&
+            isSelectedStateEnabled &&
+            selectedValues.length > 0 && (
+              <s.Number>{selectedValues.length}</s.Number>
+            )}
+          <s.ChevronIconContainer $disabled={disabled}>
+            <ChevronIcon
+              color={"currentColor"}
+              size={14}
+              direction={isOpen ? Direction.UP : Direction.DOWN}
+            />
+          </s.ChevronIconContainer>
+        </s.Button>
+      )}
     </NewPopover>
   );
 };

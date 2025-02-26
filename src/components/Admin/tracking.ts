@@ -10,6 +10,7 @@ export const trackingEvents = addPrefix(
       "trial promotion card start now button clicked",
     LOGOUT_BUTTON_CLICKED: "logout button clicked",
     ENVIRONMENT_CHANGED: "environment changed",
+    SERVICES_CHANGED: "selected services changed",
     TOP_ISSUES_WIDGET_BY_CRITICALITY_BUTTON_CLICKED:
       "top issues widget by criticality button clicked",
     TOP_ISSUES_WIDGET_BY_SEVERITY_BUTTON_CLICKED:

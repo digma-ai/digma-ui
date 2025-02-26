@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { isString } from "../../../../typeGuards/isString";
 import {
   bodyRegularTypography,
   bodySemiboldTypography,
@@ -9,6 +10,7 @@ import type {
   ButtonLabelProps,
   ButtonProps,
   ChevronIconContainerProps,
+  MenuContainerProps,
   OptionListItemProps
 } from "./types";
 
@@ -85,14 +87,15 @@ export const ChevronIconContainer = styled.span<ChevronIconContainerProps>`
       : theme.colors.v3.stroke.primaryLight};
 `;
 
-export const MenuContainer = styled.div`
+export const MenuContainer = styled.div<MenuContainerProps>`
   padding: 8px;
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primaryLight};
   box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 25%);
   display: flex;
   flex-direction: column;
-  max-height: 162px;
+  max-height: ${({ $height }) =>
+    isString($height) ? $height : `${$height ?? 162}px`};
   box-sizing: border-box;
   background: ${({ theme }) => theme.colors.v3.surface.primaryLight};
   gap: 8px;

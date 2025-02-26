@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { MetricsReport } from ".";
-import { mockedReport } from "../../common/IssuesReport/Table/mockData";
-import { actions } from "../actions";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof MetricsReport> = {
@@ -18,22 +16,4 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const Default: Story = {
-  play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_METRICS_REPORT_DATA,
-        payload: { ...mockedReport }
-      });
-    }, 500);
-
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_SERVICES,
-        payload: ["service 1", "service 2", "service 3", "service 4"]
-      });
-    }, 500);
-  }
-};
+export const Default: Story = {};

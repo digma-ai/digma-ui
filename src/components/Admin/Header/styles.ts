@@ -4,7 +4,6 @@ import { heading1SemiboldTypography } from "../../common/App/typographies";
 export const Header = styled.header`
   ${heading1SemiboldTypography}
 
-  height: 104px;
   padding: 44px 44px 24px 24px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.v3.stroke.tertiary};
   box-sizing: border-box;
@@ -16,4 +15,13 @@ export const HomeHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 8px;
+`;
+
+export const FilterContainer = styled.div`
+  display: flex;
+  padding: 8px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 12px;
+  background: ${({ theme }) => theme.colors.v3.surface.primary};
 `;

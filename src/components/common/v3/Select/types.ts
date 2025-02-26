@@ -29,6 +29,8 @@ export interface SelectProps {
   showSelectedState?: boolean;
   useShift?: boolean;
   sameWidth?: boolean;
+  ButtonComponent?: ComponentType<{ onClick: () => void; disabled?: boolean }>;
+  menuHeight?: string | number;
 }
 
 export interface ButtonProps {
@@ -46,4 +48,8 @@ export interface OptionListItemProps {
 
 export interface ChevronIconContainerProps {
   $disabled?: boolean;
+}
+
+export interface MenuContainerProps {
+  $height?: string | number;
 }
