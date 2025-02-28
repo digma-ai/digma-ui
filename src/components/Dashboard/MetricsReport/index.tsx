@@ -198,6 +198,8 @@ export const MetricsReport = () => {
           onTimeModeChange={handleTimeModeChange}
           onViewModeChange={handleViewModeChange}
           onSelectedServiceChange={handleSelectedServiceChange}
+          showEnvironmentSelect={false}
+          showServicesSelect={false}
         />
         <s.Footer>
           <DigmaLogoIcon size={14} />

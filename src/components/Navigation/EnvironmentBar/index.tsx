@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import type { Environment } from "../../common/App/types";
 import { EnvironmentIcon } from "../../common/EnvironmentIcon";
@@ -19,7 +19,12 @@ export const EnvironmentBar = ({
 }: EnvironmentBarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const isDisabled = environments.length === 0;
+  const sortedEnvironments = useMemo(
+    () => [...environments].sort((a, b) => a.name.localeCompare(b.name)),
+    [environments]
+  );
+
+  const isDisabled = sortedEnvironments.length === 0;
 
   const handleMenuItemClick = (environment: Environment) => {
     setIsMenuOpen(false);
@@ -80,7 +85,7 @@ export const EnvironmentBar = ({
       content={
         <EnvironmentMenu
           selectedEnvironment={selectedEnvironment}
-          environments={environments}
+          environments={sortedEnvironments}
           onMenuItemClick={handleMenuItemClick}
         />
       }

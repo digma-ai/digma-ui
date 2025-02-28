@@ -27,4 +27,6 @@ export interface HeaderProps {
   onViewModeChange: (viewMode: IssuesReportViewMode) => void;
   onGoBack: () => void;
   defaultTitle: string;
+  showEnvironmentSelect?: boolean;
+  showServicesSelect?: boolean;
 }
