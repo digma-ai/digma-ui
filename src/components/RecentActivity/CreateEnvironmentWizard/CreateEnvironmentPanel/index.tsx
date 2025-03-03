@@ -17,6 +17,15 @@ export const CreateEnvironmentPanel = ({
   cancelDisabled
 }: CreateEnvironmentPanelProps) => {
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
+
+  const handleCancelButtonClick = () => {
+    setShowCancelConfirmation(true);
+  };
+
+  const handleOverlayClose = () => {
+    setShowCancelConfirmation(false);
+  };
+
   const handleConfirmationClose = () => {
     sendUserActionTrackingEvent(
       trackingEvents.CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CLOSE_CLICKED
@@ -60,12 +69,12 @@ export const CreateEnvironmentPanel = ({
         <s.CancelButton
           buttonType={"secondary"}
           label={"Cancel"}
-          onClick={() => setShowCancelConfirmation(true)}
+          onClick={handleCancelButtonClick}
           isDisabled={cancelDisabled}
         />
       </s.ContentContainer>
       {showCancelConfirmation && (
-        <Overlay onClose={() => setShowCancelConfirmation(false)} tabIndex={-1}>
+        <Overlay onClose={handleOverlayClose} tabIndex={-1}>
           <CancelConfirmation
             header={"Discard adding a new Environment?"}
             description={

@@ -33,10 +33,9 @@ import { SpanScalingByRootCauseInsightTicket } from "./insightTickets/SpanScalin
 import { SpanScalingInsightTicket } from "./insightTickets/SpanScalingInsightTicket";
 import type { InsightTicketRendererProps } from "./types";
 
-// TODO: Move to common
+// TODO: move to common
 export const InsightTicketRenderer = ({
   data,
-  refreshInsights,
   onClose,
   backendInfo
 }: InsightTicketRendererProps) => {
@@ -45,7 +44,6 @@ export const InsightTicketRenderer = ({
     return (
       <SpaNPlusOneInsightTicket
         data={ticketData}
-        refreshInsights={refreshInsights}
         onClose={onClose}
         backendInfo={backendInfo}
       />
@@ -57,7 +55,6 @@ export const InsightTicketRenderer = ({
     return (
       <EndpointSpanNPlusOneInsightTicket
         data={ticketData}
-        refreshInsights={refreshInsights}
         onClose={onClose}
         backendInfo={backendInfo}
       />
@@ -69,7 +66,6 @@ export const InsightTicketRenderer = ({
     return (
       <SpanEndpointBottleneckInsightTicket
         data={ticketData}
-        refreshInsights={refreshInsights}
         onClose={onClose}
         backendInfo={backendInfo}
       />
@@ -81,7 +77,6 @@ export const InsightTicketRenderer = ({
     return (
       <EndpointBottleneckInsightTicket
         data={ticketData}
-        refreshInsights={refreshInsights}
         onClose={onClose}
         backendInfo={backendInfo}
       />
@@ -93,7 +88,6 @@ export const InsightTicketRenderer = ({
     return (
       <SpanQueryOptimizationInsightTicket
         data={ticketData}
-        refreshInsights={refreshInsights}
         onClose={onClose}
         backendInfo={backendInfo}
       />
@@ -106,7 +100,6 @@ export const InsightTicketRenderer = ({
     return (
       <EndpointQueryOptimizationV2InsightTicket
         data={ticketData}
-        refreshInsights={refreshInsights}
         onClose={onClose}
         backendInfo={backendInfo}
       />
@@ -119,7 +112,6 @@ export const InsightTicketRenderer = ({
     return (
       <EndpointHighNumberOfQueriesInsightTicket
         data={ticketData}
-        refreshInsights={refreshInsights}
         onClose={onClose}
         backendInfo={backendInfo}
       />
@@ -136,7 +128,6 @@ export const InsightTicketRenderer = ({
         <SpanScalingByRootCauseInsightTicket
           rootCauseSpanInfo={selectedRootCause}
           data={ticketData}
-          refreshInsights={refreshInsights}
           onClose={onClose}
           backendInfo={backendInfo}
         />
@@ -145,7 +136,6 @@ export const InsightTicketRenderer = ({
       return (
         <SpanScalingInsightTicket
           data={ticketData}
-          refreshInsights={refreshInsights}
           onClose={onClose}
           backendInfo={backendInfo}
         />
@@ -158,7 +148,6 @@ export const InsightTicketRenderer = ({
     return (
       <SpanPerformanceAnomalyInsightTicket
         data={ticketData}
-        refreshInsights={refreshInsights}
         onClose={onClose}
         backendInfo={backendInfo}
       />

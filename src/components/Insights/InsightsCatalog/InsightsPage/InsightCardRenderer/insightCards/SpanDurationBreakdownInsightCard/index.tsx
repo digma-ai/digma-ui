@@ -62,8 +62,6 @@ const getDurationTitle = (breakdownEntry: SpanDurationBreakdownEntry) => {
 export const SpanDurationBreakdownInsightCard = ({
   insight,
   onAssetLinkClick,
-  onRecalculate,
-  onRefresh,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
@@ -344,8 +342,6 @@ export const SpanDurationBreakdownInsightCard = ({
           />
         </s.Container>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}

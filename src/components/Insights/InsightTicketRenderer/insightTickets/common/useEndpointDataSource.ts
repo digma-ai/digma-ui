@@ -8,7 +8,7 @@ export const useEndpointDataSource = <T extends GenericCodeObjectInsight>(
   insightType: InsightType,
   environmentId: string
 ) => {
-  const { data, isFetching, refetch } = useGetSpanInsightQuery(
+  const { data, isFetching } = useGetSpanInsightQuery(
     {
       spanCodeObjectId: spanInfo?.spanCodeObjectId ?? "",
       insightType,
@@ -25,15 +25,10 @@ export const useEndpointDataSource = <T extends GenericCodeObjectInsight>(
     commitInfos
   } = useSpanDataSource<T>(spanInfo, (data as T) ?? null, environmentId);
 
-  const handleReloadSpanInsight = () => {
-    void refetch();
-  };
-
   return {
     isLoading: isFetching || isInsightMetaIsLoading,
     codeLocations,
     spanInsight: (data as T) ?? null,
-    commitInfos,
-    onReloadSpanInsight: handleReloadSpanInsight
+    commitInfos
   };
 };

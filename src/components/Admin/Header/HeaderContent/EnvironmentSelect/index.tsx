@@ -2,19 +2,19 @@ import { useEffect, useMemo, useState } from "react";
 import {
   useAdminDispatch,
   useAdminSelector
-} from "../../../../containers/Admin/hooks";
-import { useGetEnvironmentsQuery } from "../../../../redux/services/digma";
-import { setSelectedEnvironmentId } from "../../../../redux/slices/issuesReportSlice";
-import { setEnvironmentId } from "../../../../redux/slices/scopeSlice";
-import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { EnvironmentIcon } from "../../../common/EnvironmentIcon";
-import { ChevronIcon } from "../../../common/icons/16px/ChevronIcon";
-import { Direction } from "../../../common/icons/types";
-import { sortEnvironments } from "../../../common/IssuesReport/utils";
-import { NewPopover } from "../../../common/NewPopover";
-import { Tooltip } from "../../../common/v3/Tooltip";
-import { EnvironmentMenu } from "../../../Navigation/EnvironmentBar/EnvironmentMenu";
-import { trackingEvents } from "../../tracking";
+} from "../../../../../containers/Admin/hooks";
+import { useGetEnvironmentsQuery } from "../../../../../redux/services/digma";
+import { setSelectedEnvironmentId } from "../../../../../redux/slices/issuesReportSlice";
+import { setEnvironmentId } from "../../../../../redux/slices/scopeSlice";
+import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
+import { EnvironmentIcon } from "../../../../common/EnvironmentIcon";
+import { ChevronIcon } from "../../../../common/icons/16px/ChevronIcon";
+import { Direction } from "../../../../common/icons/types";
+import { sortEnvironments } from "../../../../common/IssuesReport/utils";
+import { NewPopover } from "../../../../common/NewPopover";
+import { Tooltip } from "../../../../common/v3/Tooltip";
+import { EnvironmentMenu } from "../../../../Navigation/EnvironmentBar/EnvironmentMenu";
+import { trackingEvents } from "../../../tracking";
 import * as s from "./styles";
 
 export const EnvironmentSelect = () => {

@@ -20,10 +20,10 @@ import { TwoVerticalLinesIcon } from "../../../../common/icons/16px/TwoVerticalL
 import { Pagination } from "../../../../common/Pagination";
 import { NewButton } from "../../../../common/v3/NewButton";
 import { NewIconButton } from "../../../../common/v3/NewIconButton";
-import { actions } from "../../../../Insights/actions";
 import { EmptyState } from "../../../../Insights/EmptyState";
 import { EmptyState as InsightsPageEmptyState } from "../../../../Insights/InsightsCatalog/InsightsPage/EmptyState";
 import { InsightCardRenderer } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer";
+import { actions } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/hooks/useDismissal";
 import { ViewMode } from "../../../../Insights/InsightsCatalog/types";
 import { InsightTicketRenderer } from "../../../../Insights/InsightTicketRenderer";
 import {
@@ -265,7 +265,6 @@ export const IssuesSidebar = ({
                     !isTransitioning &&
                     i === getInsightToShowJiraHint(data.insights)
                   }
-                  onRefresh={refresh}
                   isMarkAsReadButtonEnabled={false}
                   viewMode={"full"}
                   onDismissalChange={handleDismissalChange}
@@ -328,7 +327,6 @@ export const IssuesSidebar = ({
           <s.PopupContainer>
             <InsightTicketRenderer
               data={infoToOpenJiraTicket}
-              refreshInsights={refresh}
               onClose={handleJiraTicketPopupClose}
               backendInfo={about ?? null}
             />

@@ -34,11 +34,7 @@ import {
   isSpanUsagesInsight
 } from "../../../typeGuards";
 import { InsightType, type Trace } from "../../../types";
-import type {
-  OpenHistogramPayload,
-  OpenLiveViewPayload,
-  RecalculatePayload
-} from "../types";
+import type { OpenHistogramPayload, OpenLiveViewPayload } from "../types";
 import { EndpointBottleneckInsightCard } from "./insightCards/EndpointBottleneckInsightCard";
 import { EndpointBreakdownInsightCard } from "./insightCards/EndpointBreakdownInsightCard";
 import { EndpointChattyApiV2InsightCard } from "./insightCards/EndpointChattyApiV2InsightCard";
@@ -60,12 +56,11 @@ import { SpanScalingInsightCard } from "./insightCards/SpanScalingInsightCard";
 import { SpanUsagesInsightCard } from "./insightCards/SpanUsagesInsightCard";
 import type { InsightCardRendererProps } from "./types";
 
-// TODO: move all Digma message/request sending to the parent component and move this one common
+// TODO: move to common
 export const InsightCardRenderer = ({
   insight,
   onJiraTicketCreate,
   isJiraHintEnabled,
-  onRefresh,
   isMarkAsReadButtonEnabled,
   viewMode,
   onDismissalChange,
@@ -126,7 +121,7 @@ export const InsightCardRenderer = ({
       action: actions.OPEN_HISTOGRAM,
       payload: {
         spanCodeObjectId,
-        // TODO: Remove after the plugin supports other insights types besides SpanDurations and SpanScaling
+        // TODO: remove after the plugin supports other insights types besides SpanDurations and SpanScaling
         insightType: [
           InsightType.SpanPerformanceAnomaly,
           InsightType.EndpointSlowdownSource
@@ -194,15 +189,6 @@ export const InsightCardRenderer = ({
     });
   };
 
-  const handleRecalculate = (insightId: string) => {
-    window.sendMessageToDigma<RecalculatePayload>({
-      action: actions.RECALCULATE,
-      payload: {
-        id: insightId
-      }
-    });
-  };
-
   const handleGoToSpan = (spanCodeObjectId: string) => {
     changeScope({
       span: { spanCodeObjectId },
@@ -220,8 +206,6 @@ export const InsightCardRenderer = ({
         insight={insight}
         onHistogramButtonClick={handleHistogramButtonClick}
         onLiveButtonClick={handleLiveButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
@@ -237,8 +221,6 @@ export const InsightCardRenderer = ({
         key={insight.id}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
@@ -255,8 +237,6 @@ export const InsightCardRenderer = ({
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
@@ -272,8 +252,6 @@ export const InsightCardRenderer = ({
         key={insight.id}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
@@ -292,8 +270,6 @@ export const InsightCardRenderer = ({
         key={insight.id}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
@@ -311,8 +287,6 @@ export const InsightCardRenderer = ({
       <SlowEndpointInsightCard
         key={insight.id}
         insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
@@ -331,8 +305,6 @@ export const InsightCardRenderer = ({
       <EndpointUsageInsightCard
         key={insight.id}
         insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
@@ -349,8 +321,6 @@ export const InsightCardRenderer = ({
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
@@ -369,8 +339,6 @@ export const InsightCardRenderer = ({
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
@@ -390,8 +358,6 @@ export const InsightCardRenderer = ({
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onHistogramButtonClick={handleHistogramButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
@@ -409,8 +375,6 @@ export const InsightCardRenderer = ({
         key={insight.id}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
@@ -426,8 +390,6 @@ export const InsightCardRenderer = ({
       <EndpointBreakdownInsightCard
         key={insight.id}
         insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
@@ -444,8 +406,6 @@ export const InsightCardRenderer = ({
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
@@ -462,8 +422,6 @@ export const InsightCardRenderer = ({
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
@@ -479,8 +437,6 @@ export const InsightCardRenderer = ({
         key={insight.id}
         insight={insight}
         onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
@@ -497,8 +453,6 @@ export const InsightCardRenderer = ({
       <SpanNexusInsightCard
         key={insight.id}
         insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
@@ -515,8 +469,6 @@ export const InsightCardRenderer = ({
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
@@ -536,8 +488,6 @@ export const InsightCardRenderer = ({
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
@@ -555,8 +505,6 @@ export const InsightCardRenderer = ({
       <SpanPerformanceAnomalyInsightCard
         key={insight.id}
         insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}

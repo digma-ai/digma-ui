@@ -38,7 +38,9 @@ import type {
   GetUserProfileResponse,
   LinkTicketResponse,
   LinkTicketToIssuePayload,
-  MarkInsightAsReadPayload,
+  MarkInsightReadPayload,
+  MarkScopeInsightsReadPayload,
+  RecheckInsightPayload,
   SetEndpointsIssuesPayload,
   SetMetricsReportDataPayload,
   SetServiceEndpointsPayload,
@@ -47,6 +49,7 @@ import type {
 } from "./types";
 
 export const digmaApi = createApi({
+  tagTypes: ["Insight"],
   reducerPath: "digmaApi",
   baseQuery: fetchBaseQuery({
     baseUrl: isString(window.digmaApiProxyPrefix)
@@ -78,7 +81,16 @@ export const digmaApi = createApi({
       query: (data) => ({
         url: "/CodeAnalytics/codeObjects/insight",
         params: data
-      })
+      }),
+      providesTags: ["Insight"]
+    }),
+    recheckInsight: builder.mutation<void, RecheckInsightPayload>({
+      query: (data) => ({
+        url: "CodeAnalytics/insights/start-time",
+        method: "PUT",
+        body: data
+      }),
+      invalidatesTags: ["Insight"]
     }),
     getEnvironments: builder.query<GetEnvironmentsResponse, void>({
       query: () => "Environments"
@@ -94,13 +106,6 @@ export const digmaApi = createApi({
         responseHandler: "text"
       })
     }),
-    markInsightAsRead: builder.mutation<void, MarkInsightAsReadPayload>({
-      query: (data) => ({
-        url: `Insights/markRead`,
-        method: "POST",
-        body: data
-      })
-    }),
     getInsights: builder.query<
       ExtendedGetInsightsResponse,
       ExtendedGetInsightsPayload
@@ -113,7 +118,8 @@ export const digmaApi = createApi({
           data: response,
           extra: arg.extra
         };
-      }
+      },
+      providesTags: ["Insight"]
     }),
     getInsightsStats: builder.query<
       ExtendedGetInsightsStatsResponse,
@@ -130,10 +136,12 @@ export const digmaApi = createApi({
             spanCodeObjectId: arg.scopedSpanCodeObjectId
           }
         };
-      }
+      },
+      providesTags: ["Insight"]
     }),
     getIssues: builder.query<GetIssuesResponse, GetIssuesPayload>({
-      query: (data) => ({ url: "Insights/issues", method: "POST", body: data })
+      query: (data) => ({ url: "Insights/issues", method: "POST", body: data }),
+      providesTags: ["Insight"]
     }),
     getIssuesFilters: builder.query<
       GetIssuesFiltersResponse,
@@ -144,6 +152,24 @@ export const digmaApi = createApi({
         params: data
       })
     }),
+    markInsightRead: builder.mutation<void, MarkInsightReadPayload>({
+      query: (data) => ({
+        url: `Insights/markRead`,
+        method: "POST",
+        body: data
+      }),
+      invalidatesTags: ["Insight"]
+    }),
+    markScopeInsightsRead: builder.mutation<void, MarkScopeInsightsReadPayload>(
+      {
+        query: (data) => ({
+          url: `Insights/markAllRead`,
+          method: "POST",
+          body: data
+        }),
+        invalidatesTags: ["Insight"]
+      }
+    ),
     linkTicketToIssue: builder.mutation<
       LinkTicketResponse,
       LinkTicketToIssuePayload
@@ -152,7 +178,8 @@ export const digmaApi = createApi({
         url: `/InsightsActions/link-ticket`,
         method: "PUT",
         body: data
-      })
+      }),
+      invalidatesTags: ["Insight"]
     }),
     unlinkTicketFromIssue: builder.mutation<
       LinkTicketResponse,
@@ -162,21 +189,24 @@ export const digmaApi = createApi({
         url: `/InsightsActions/unlink-ticket`,
         method: "PUT",
         body: data
-      })
+      }),
+      invalidatesTags: ["Insight"]
     }),
     dismissInsight: builder.mutation<void, DismissUndismissInsightPayload>({
       query: (data) => ({
         url: `InsightsActions/dismiss`,
         method: "PUT",
         body: data
-      })
+      }),
+      invalidatesTags: ["Insight"]
     }),
     undismissInsight: builder.mutation<void, DismissUndismissInsightPayload>({
       query: (data) => ({
         url: `InsightsActions/unDismiss`,
         method: "PUT",
         body: data
-      })
+      }),
+      invalidatesTags: ["Insight"]
     }),
     getServicesIssues: builder.query<
       SetMetricsReportDataPayload,
@@ -267,13 +297,15 @@ export const {
   useGetUserProfileQuery,
   useGetSpanCodeLocationsQuery,
   useGetSpanInsightQuery,
+  useRecheckInsightMutation,
   useGetEnvironmentsQuery,
   useLazyGetSpanPercentilesHistogramQuery,
-  useMarkInsightAsReadMutation,
   useGetInsightsQuery,
   useGetInsightsStatsQuery,
   useGetIssuesQuery,
   useGetIssuesFiltersQuery,
+  useMarkInsightReadMutation,
+  useMarkScopeInsightsReadMutation,
   useLinkTicketToIssueMutation,
   useUnlinkTicketFromIssueMutation,
   useDismissInsightMutation,

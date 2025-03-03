@@ -62,8 +62,15 @@ export const EnvironmentSelector = ({
   const { scope, environment } = useConfigSelector();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { observe, width } = useDimensions();
-  const sortedEnvironments = useMemo(
+  const sortedEnvironmentsByCriticalIssues = useMemo(
     () => [...environments].sort(sortEnvironmentsByCriticalIssues),
+    [environments]
+  );
+  const sortedEnvironmentsByName = useMemo(
+    () =>
+      [...environments].sort((a, b) =>
+        a.environment.name.localeCompare(b.environment.name)
+      ),
     [environments]
   );
 
@@ -99,24 +106,26 @@ export const EnvironmentSelector = ({
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const environmentIndex = sortedEnvironments.findIndex(
+  const environmentIndex = sortedEnvironmentsByCriticalIssues.findIndex(
     (x) => x.environment.id === environment?.id
   );
 
   const environmentsWithChips =
-    sortedEnvironments.length > ENVIRONMENT_CHIP_COUNT
+    sortedEnvironmentsByCriticalIssues.length > ENVIRONMENT_CHIP_COUNT
       ? getSlidingWindow(
-          sortedEnvironments,
+          sortedEnvironmentsByCriticalIssues,
           environmentIndex - 1,
           ENVIRONMENT_CHIP_COUNT
         )
-      : sortedEnvironments;
+      : sortedEnvironmentsByCriticalIssues;
 
   const renderEnvironmentMenuButton = () => (
     <NewButton
       buttonType={"secondary"}
       onClick={handleEnvironmentMenuButtonClick}
-      label={`+${sortedEnvironments.length - ENVIRONMENT_CHIP_COUNT}`}
+      label={`+${
+        sortedEnvironmentsByCriticalIssues.length - ENVIRONMENT_CHIP_COUNT
+      }`}
     />
   );
 
@@ -133,7 +142,7 @@ export const EnvironmentSelector = ({
           />
         ))}
       </s.EnvironmentsContainer>
-      {sortedEnvironments.length > ENVIRONMENT_CHIP_COUNT && (
+      {sortedEnvironmentsByName.length > ENVIRONMENT_CHIP_COUNT && (
         <>
           {/* // TODO: refactor this to use only popover */}
           {isMenuOpen ? (
@@ -141,7 +150,9 @@ export const EnvironmentSelector = ({
               content={
                 <EnvironmentMenu
                   selectedEnvironment={environment}
-                  environments={sortedEnvironments.map((x) => x.environment)}
+                  environments={sortedEnvironmentsByName.map(
+                    (x) => x.environment
+                  )}
                   onMenuItemClick={handleMenuItemClick}
                 />
               }

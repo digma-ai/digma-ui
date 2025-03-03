@@ -46,7 +46,7 @@ export const ErrorDetailsCardContent = ({
   const isPreviousFlowButtonDisabled = currentFlowStack === 0;
   const isNextFlowButtonDisabled = currentFlowStack === flows.length - 1;
 
-  const handleFlowPaginationButtonClick = (flowNumber: number) => {
+  const handleFlowPaginationButtonClick = (flowNumber: number) => () => {
     sendUserActionTrackingEvent(trackingEvents.FLOW_PAGINATION_BUTTON_CLICKED);
 
     setCurrentFlowStack(flowNumber);
@@ -87,9 +87,7 @@ export const ErrorDetailsCardContent = ({
       <s.FlowsContainer>
         <s.FlowPagination>
           <s.IconButton
-            onClick={() =>
-              handleFlowPaginationButtonClick(currentFlowStack - 1)
-            }
+            onClick={handleFlowPaginationButtonClick(currentFlowStack - 1)}
             disabled={isPreviousFlowButtonDisabled}
           >
             <ChevronIcon12px
@@ -106,9 +104,7 @@ export const ErrorDetailsCardContent = ({
             </s.FlowsCountNumber>
           </span>
           <s.IconButton
-            onClick={() =>
-              handleFlowPaginationButtonClick(currentFlowStack + 1)
-            }
+            onClick={handleFlowPaginationButtonClick(currentFlowStack + 1)}
             disabled={isNextFlowButtonDisabled}
           >
             <ChevronIcon12px

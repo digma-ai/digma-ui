@@ -1,10 +1,11 @@
 import { type ForwardedRef, forwardRef } from "react";
-import { FunnelIcon } from "../../../../common/icons/16px/FunnelIcon";
-import { NewIconButton } from "../../../../common/v3/NewIconButton";
-import { Tooltip } from "../../../../common/v3/Tooltip";
+import { FunnelIcon } from "../../../../../common/icons/16px/FunnelIcon";
+import { NewIconButton } from "../../../../../common/v3/NewIconButton";
+import { Tooltip } from "../../../../../common/v3/Tooltip";
+import type { FilterButtonProps } from "./types";
 
 const FilterButtonComponent = (
-  props: { onClick: () => void; disabled?: boolean },
+  props: FilterButtonProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => (
   <div ref={ref}>
@@ -13,7 +14,8 @@ const FilterButtonComponent = (
         buttonType={"secondary"}
         icon={FunnelIcon}
         size={"large"}
-        {...props}
+        isDisabled={props.disabled}
+        onClick={props.onClick}
       />
     </Tooltip>
   </div>

@@ -92,8 +92,6 @@ const columnHelper = createColumnHelper<Component>();
 
 export const EndpointBreakdownInsightCard = ({
   insight,
-  onRecalculate,
-  onRefresh,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
@@ -258,8 +256,6 @@ export const EndpointBreakdownInsightCard = ({
           {insight.hasAsyncSpans ? renderTable() : renderPieChart()}
         </s.Container>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       isAsync={insight.hasAsyncSpans}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}

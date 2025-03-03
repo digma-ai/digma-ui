@@ -282,12 +282,13 @@ export const AssetList = ({
     });
   };
 
-  const handleSortingOrderToggleOptionButtonClick = (order: SORTING_ORDER) => {
-    setSorting({
-      ...sorting,
-      order
-    });
-  };
+  const handleSortingOrderToggleOptionButtonClick =
+    (order: SORTING_ORDER) => () => {
+      setSorting({
+        ...sorting,
+        order
+      });
+    };
 
   const renderContent = () => {
     if (isInitialLoading) {
@@ -390,9 +391,7 @@ export const AssetList = ({
                 <s.SortingOrderToggleOptionButton
                   key={order}
                   $selected={isSelected}
-                  onClick={() =>
-                    handleSortingOrderToggleOptionButtonClick(order)
-                  }
+                  onClick={handleSortingOrderToggleOptionButtonClick(order)}
                 >
                   <s.SortingOrderIconContainer $sortingOrder={order}>
                     <SortIcon color={"currentColor"} size={14} />

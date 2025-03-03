@@ -11,11 +11,7 @@ import type { Option } from "../../../../../../common/AffectedEndpointsSelector/
 import { TraceIcon } from "../../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../../common/v3/Button";
 import { Tooltip } from "../../../../../../common/v3/Tooltip";
-import type {
-  BottleneckEndpointInfo,
-  InsightType,
-  Trace
-} from "../../../../../types";
+import type { BottleneckEndpointInfo, InsightType } from "../../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
@@ -41,8 +37,6 @@ export const SpanEndpointBottleneckInsightCard = ({
   onAssetLinkClick,
   onTraceButtonClick,
   isJiraHintEnabled,
-  onRecalculate,
-  onRefresh,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
@@ -97,13 +91,26 @@ export const SpanEndpointBottleneckInsightCard = ({
     }
   };
 
-  const handleTraceButtonClick = (
-    trace: Trace,
-    insightType: InsightType,
-    spanCodeObjectId?: string
-  ) => {
-    onTraceButtonClick(trace, insightType, spanCodeObjectId);
-  };
+  const handleTraceButtonClick =
+    (
+      endpoint: BottleneckEndpointInfo,
+      insightType: InsightType,
+      spanCodeObjectId?: string
+    ) =>
+    () => {
+      if (isNull(endpoint.traceId)) {
+        return;
+      }
+
+      onTraceButtonClick(
+        {
+          name: endpoint.endpointInfo.route,
+          id: endpoint.traceId
+        },
+        insightType,
+        spanCodeObjectId
+      );
+    };
 
   const handleAffectedEndpointsSelectorChange = (endpointKey: string) => {
     setSelectedEndpointKey(endpointKey);
@@ -145,20 +152,11 @@ export const SpanEndpointBottleneckInsightCard = ({
                 <Tooltip title={"Open Trace"}>
                   <Button
                     icon={TraceIcon}
-                    onClick={() => {
-                      if (isNull(selectedEndpoint.traceId)) {
-                        return;
-                      }
-
-                      handleTraceButtonClick(
-                        {
-                          name: selectedEndpoint.endpointInfo.route,
-                          id: selectedEndpoint.traceId
-                        },
-                        insight.type,
-                        insight.spanInfo?.spanCodeObjectId
-                      );
-                    }}
+                    onClick={handleTraceButtonClick(
+                      selectedEndpoint,
+                      insight.type,
+                      insight.spanInfo?.spanCodeObjectId
+                    )}
                   />
                 </Tooltip>
               )}
@@ -196,8 +194,6 @@ export const SpanEndpointBottleneckInsightCard = ({
           )}
         </ContentContainer>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}

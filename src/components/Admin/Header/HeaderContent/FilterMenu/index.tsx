@@ -1,12 +1,14 @@
+import { useEffect } from "react";
 import {
   useAdminDispatch,
   useAdminSelector
-} from "../../../../containers/Admin/hooks";
-import { useGetEnvironmentServicesQuery } from "../../../../redux/services/digma";
-import { setSelectedServices } from "../../../../redux/slices/issuesReportSlice";
-import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { Select } from "../../../common/v3/Select";
-import { trackingEvents } from "../../tracking";
+} from "../../../../../containers/Admin/hooks";
+import { usePrevious } from "../../../../../hooks/usePrevious";
+import { useGetEnvironmentServicesQuery } from "../../../../../redux/services/digma";
+import { setSelectedServices } from "../../../../../redux/slices/issuesReportSlice";
+import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
+import { Select } from "../../../../common/v3/Select";
+import { trackingEvents } from "../../../tracking";
 import { FilterButton } from "./FilterButton";
 
 export const FilterMenu = () => {
@@ -28,6 +30,16 @@ export const FilterMenu = () => {
       skip: !selectedEnvironmentId
     }
   );
+  const previousServices = usePrevious(services);
+
+  useEffect(() => {
+    if (services && previousServices !== services) {
+      const newSelectedServices = services.filter((x) =>
+        selectedServices.includes(x)
+      );
+      dispatch(setSelectedServices(newSelectedServices));
+    }
+  }, [services, previousServices, selectedServices, dispatch]);
 
   const handleSelectedServicesChange = (option: string | string[]) => {
     const newItem = Array.isArray(option) ? option : [option];

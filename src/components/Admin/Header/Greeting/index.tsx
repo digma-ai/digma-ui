@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import { useGetUserProfileQuery } from "../../../../redux/services/digma";
 import * as s from "./styles";
-import type { GreetingProps } from "./types";
+
+const REFRESH_INTERVAL = 60 * 1000; // in milliseconds
 
 const getGreetingText = (dateTime: number) => {
   const currentHour = new Date(dateTime).getHours();
@@ -16,9 +18,18 @@ const getGreetingText = (dateTime: number) => {
   return `Good ${timeOfDay}`;
 };
 
-export const Greeting = ({ currentDateTime }: GreetingProps) => {
+export const Greeting = () => {
   const { data: userProfile } = useGetUserProfileQuery();
+  const [currentDateTime, setCurrentDateTime] = useState(Date.now());
   const greetingText = getGreetingText(currentDateTime);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentDateTime(Date.now());
+    }, REFRESH_INTERVAL);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   if (!userProfile) {
     return null;

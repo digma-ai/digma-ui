@@ -44,8 +44,6 @@ const getDescription = (insightType: InsightType): string => {
 
 export const EndpointUsageInsightCard = ({
   insight,
-  onRecalculate,
-  onRefresh,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
@@ -69,8 +67,6 @@ export const EndpointUsageInsightCard = ({
           </ColumnsContainer>
         </s.ContentContainer>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}

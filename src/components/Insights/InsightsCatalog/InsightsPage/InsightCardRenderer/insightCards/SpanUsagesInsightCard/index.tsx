@@ -37,8 +37,6 @@ export const SpanUsagesInsightCard = ({
   insight,
   onAssetLinkClick,
   onTraceButtonClick,
-  onRecalculate,
-  onRefresh,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
@@ -68,19 +66,17 @@ export const SpanUsagesInsightCard = ({
     }
   }, [previousInsightId, insight, previousPage, page, pageItems]);
 
-  const handleServiceLinkClick = (spanCodeObjectId?: string) => {
+  const handleServiceLinkClick = (spanCodeObjectId?: string) => () => {
     if (spanCodeObjectId) {
       onAssetLinkClick(spanCodeObjectId, insight.type);
     }
   };
 
-  const handleTraceButtonClick = (
-    trace: Trace,
-    insightType: InsightType,
-    spanCodeObjectId?: string
-  ) => {
-    onTraceButtonClick(trace, insightType, spanCodeObjectId);
-  };
+  const handleTraceButtonClick =
+    (trace: Trace, insightType: InsightType, spanCodeObjectId?: string) =>
+    () => {
+      onTraceButtonClick(trace, insightType, spanCodeObjectId);
+    };
 
   const handleEmptyStateTraceButtonClick = () => {
     if (!insight.sampleTrace) {
@@ -139,9 +135,9 @@ export const SpanUsagesInsightCard = ({
                 <s.FullSpanName>
                   <s.SpanNamePart>{flow.firstService.service}</s.SpanNamePart>
                   <s.Link
-                    onClick={() =>
-                      handleServiceLinkClick(flow.firstService.spanCodeObjectId)
-                    }
+                    onClick={handleServiceLinkClick(
+                      flow.firstService.spanCodeObjectId
+                    )}
                   >
                     {flow.firstService.span}
                   </s.Link>
@@ -167,11 +163,9 @@ export const SpanUsagesInsightCard = ({
                   <s.FullSpanName>
                     <s.SpanNamePart>{flow.lastService.service}</s.SpanNamePart>
                     <s.Link
-                      onClick={() =>
-                        handleServiceLinkClick(
-                          flow.lastService?.spanCodeObjectId
-                        )
-                      }
+                      onClick={handleServiceLinkClick(
+                        flow.lastService?.spanCodeObjectId
+                      )}
                     >
                       {flow.lastService.span}
                     </s.Link>
@@ -213,16 +207,14 @@ export const SpanUsagesInsightCard = ({
                 <Button
                   buttonType={"primary"}
                   icon={TraceIcon}
-                  onClick={() =>
-                    handleTraceButtonClick(
-                      {
-                        name,
-                        id: traceId
-                      },
-                      insight.type,
-                      insight.spanInfo?.spanCodeObjectId
-                    )
-                  }
+                  onClick={handleTraceButtonClick(
+                    {
+                      name,
+                      id: traceId
+                    },
+                    insight.type,
+                    insight.spanInfo?.spanCodeObjectId
+                  )}
                 />
               </Tooltip>
             )}
@@ -328,8 +320,6 @@ export const SpanUsagesInsightCard = ({
           renderEmptyState()
         )
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}

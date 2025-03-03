@@ -13,7 +13,7 @@ import { useHistory } from "../../../Main/useHistory";
 import { TAB_IDS } from "../../../Navigation/Tabs/types";
 import type { Scope } from "../../../common/App/types";
 import { NewButton } from "../../../common/v3/NewButton";
-import { actions } from "../../actions";
+import { actions as insightsActions } from "../../actions";
 import { trackingEvents } from "../../tracking";
 import type {
   CodeObjectInsight,
@@ -23,6 +23,7 @@ import type {
 import { ViewMode } from "../types";
 import { EmptyState } from "./EmptyState";
 import { InsightCardRenderer } from "./InsightCardRenderer";
+import { actions } from "./InsightCardRenderer/insightCards/common/InsightCard/hooks/useDismissal";
 import * as s from "./styles";
 import type {
   InsightsPageProps,
@@ -193,7 +194,7 @@ export const InsightsPage = ({
 
   useEffect(() => {
     window.sendMessageToDigma<MarkInsightTypesAsViewedPayload>({
-      action: actions.MARK_INSIGHT_TYPES_AS_VIEWED,
+      action: insightsActions.MARK_INSIGHT_TYPES_AS_VIEWED,
       payload: {
         insightTypes: insights.map((x) => ({
           type: x.type,
@@ -241,7 +242,6 @@ export const InsightsPage = ({
                 !isInsightJiraTicketHintShown?.value &&
                 j === insightIndexWithJiraHint
               }
-              onRefresh={onRefresh}
               isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
               viewMode={isAtSpan ? "full" : "compact"}
               onDismissalChange={handleDismissalChange}
