@@ -1,10 +1,16 @@
 import type { Row } from "@tanstack/react-table";
 import { createColumnHelper } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
-import { usePrevious } from "../../../hooks/usePrevious";
+import { useMemo } from "react";
+import { getFeatureFlagValue } from "../../../featureFlags";
+import {
+  useGetAboutQuery,
+  useGetPerformanceHighlightsQuery,
+  useGetPerformanceHighlightsV2Query
+} from "../../../redux/services/digma";
+import type { EnvironmentPerformanceData } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isBoolean } from "../../../typeGuards/isBoolean";
-import { SCOPE_CHANGE_EVENTS } from "../../../types";
+import { FeatureFlag, SCOPE_CHANGE_EVENTS } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
@@ -20,24 +26,45 @@ import { Table } from "../common/Table";
 import { handleEnvironmentTableRowClick } from "../handleEnvironmentTableRowClick";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
-import type { EnvironmentPerformanceData } from "./types";
-import { usePerformanceData } from "./usePerformanceData";
 
 export const Performance = () => {
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const { data, getData } = usePerformanceData();
-  const previousData = usePrevious(data);
   const { scope, environments } = useConfigSelector();
 
-  useEffect(() => {
-    getData();
-  }, [getData]);
+  const { data: about } = useGetAboutQuery();
 
-  useEffect(() => {
-    if (!previousData && data) {
-      setIsInitialLoading(false);
-    }
-  }, [previousData, data]);
+  const areImpactHighlightsEnabled = Boolean(
+    about &&
+      getFeatureFlagValue(about, FeatureFlag.IS_HIGHLIGHTS_IMPACT_ENABLED)
+  );
+
+  const payload = useMemo(
+    () => ({
+      scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId,
+      environments: environments?.map((env) => env.id) ?? []
+    }),
+    [scope?.span?.spanCodeObjectId, environments]
+  );
+
+  const { data: dataV1 } = useGetPerformanceHighlightsQuery(payload, {
+    skip:
+      !about ||
+      areImpactHighlightsEnabled ||
+      !scope?.span?.spanCodeObjectId ||
+      !environments ||
+      environments.length === 0
+  });
+
+  const { data: dataV2 } = useGetPerformanceHighlightsV2Query(payload, {
+    skip:
+      !about ||
+      !areImpactHighlightsEnabled ||
+      !scope?.span?.spanCodeObjectId ||
+      !environments ||
+      environments.length === 0
+  });
+
+  const data = areImpactHighlightsEnabled ? dataV2 : dataV1;
+  const isInitialLoading = !data;
 
   const renderPerformanceCard = (data: EnvironmentPerformanceData[]) => {
     const columnHelper = createColumnHelper<EnvironmentPerformanceData>();

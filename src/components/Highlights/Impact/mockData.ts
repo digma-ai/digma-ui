@@ -1,6 +1,6 @@
-import type { ImpactData } from "./types";
+import type { GetImpactHighlightsResponse } from "../../../redux/services/types";
 
-export const mockedImpactData: ImpactData = {
+export const mockedImpactData: GetImpactHighlightsResponse = {
   impactHighlights: [
     {
       environmentName: "Production",

@@ -1,5 +1,8 @@
+import type {
+  EndpointSpanNPlusOneMetrics,
+  HighlightData
+} from "../../../../../redux/services/types";
 import { InsightStatus, InsightType } from "../../../../Insights/types";
-import type { EndpointSpanNPlusOneMetrics, HighlightData } from "../../types";
 
 export const mockedEndpointSpanNPlusOneMetrics: EndpointSpanNPlusOneMetrics = [
   { id: "Repeats", value: 50 },

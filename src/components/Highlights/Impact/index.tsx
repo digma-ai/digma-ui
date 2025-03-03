@@ -1,7 +1,11 @@
 import type { Row } from "@tanstack/react-table";
 import { createColumnHelper } from "@tanstack/react-table";
-import { useEffect } from "react";
 import { PERFORMANCE_IMPACT_DOCUMENTATION_URL } from "../../../constants";
+import {
+  useGetAboutQuery,
+  useGetImpactHighlightsQuery
+} from "../../../redux/services/digma";
+import type { EnvironmentImpactData } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { SCOPE_CHANGE_EVENTS } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
@@ -20,8 +24,6 @@ import { TableText } from "../common/TableText";
 import { handleEnvironmentTableRowClick } from "../handleEnvironmentTableRowClick";
 import { trackingEventNames, trackingEvents } from "../tracking";
 import * as s from "./styles";
-import type { EnvironmentImpactData } from "./types";
-import { useImpactData } from "./useImpactData";
 
 const demoData: EnvironmentImpactData[] = [
   {
@@ -76,12 +78,23 @@ const getRankTagType = (normalizedRank: number) => {
 };
 
 export const Impact = () => {
-  const { data, getData } = useImpactData();
-  const { scope, environments, backendInfo } = useConfigSelector();
+  const { scope, environments } = useConfigSelector();
 
-  useEffect(() => {
-    getData();
-  }, [getData]);
+  const { data: about } = useGetAboutQuery();
+
+  const { data } = useGetImpactHighlightsQuery(
+    {
+      scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId,
+      environments: environments?.map((env) => env.id) ?? []
+    },
+    {
+      skip:
+        !about?.isCentralize ||
+        !scope?.span?.spanCodeObjectId ||
+        !environments ||
+        environments.length === 0
+    }
+  );
 
   const renderImpactCard = (data: EnvironmentImpactData[]) => {
     const columnHelper = createColumnHelper<EnvironmentImpactData>();
@@ -169,7 +182,7 @@ export const Impact = () => {
       openURLInDefaultBrowser(PERFORMANCE_IMPACT_DOCUMENTATION_URL);
     };
 
-    if (!backendInfo?.centralize) {
+    if (!about?.isCentralize) {
       return (
         <EmptyStateCard
           icon={InfinityIcon}

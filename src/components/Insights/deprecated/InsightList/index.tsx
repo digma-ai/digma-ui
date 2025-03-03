@@ -192,19 +192,10 @@ const renderInsightCard = (
         insightType
       }
     );
-
-    window.sendMessageToDigma({
-      action: actions.GO_TO_ERROR,
-      payload: {
-        errorId
-      }
-    });
   };
 
   const handleErrorsExpandButtonClick = () => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_ERRORS
-    });
+    return undefined;
   };
 
   const handleHistogramButtonClick = (
@@ -226,13 +217,8 @@ const renderInsightCard = (
     return undefined;
   };
 
-  const handleRefresh = (insightType: InsightType) => {
-    window.sendMessageToDigma({
-      action: actions.REFRESH_ALL,
-      payload: {
-        insightType
-      }
-    });
+  const handleRefresh = () => {
+    return undefined;
   };
 
   const handleGoToSpan = (spanCodeObjectId: string) => {

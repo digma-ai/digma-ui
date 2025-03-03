@@ -1,5 +1,5 @@
 import { getFeatureFlagValue } from "../../featureFlags";
-import { useConfigSelector } from "../../store/config/useConfigSelector";
+import { useGetAboutQuery } from "../../redux/services/digma";
 import { FeatureFlag } from "../../types";
 import { Impact } from "./Impact";
 import { Performance } from "./Performance";
@@ -8,15 +8,15 @@ import { TopIssues } from "./TopIssues";
 import * as s from "./styles";
 
 export const Highlights = () => {
-  const { backendInfo } = useConfigSelector();
+  const { data: about } = useGetAboutQuery();
 
-  const areImpactHighlightsVisible = getFeatureFlagValue(
-    backendInfo,
-    FeatureFlag.IS_HIGHLIGHTS_IMPACT_ENABLED
+  const areImpactHighlightsVisible = Boolean(
+    about &&
+      getFeatureFlagValue(about, FeatureFlag.IS_HIGHLIGHTS_IMPACT_ENABLED)
   );
-  const areScalingHighlightsVisible = getFeatureFlagValue(
-    backendInfo,
-    FeatureFlag.IS_HIGHLIGHTS_SCALING_ENABLED
+  const areScalingHighlightsVisible = Boolean(
+    about &&
+      getFeatureFlagValue(about, FeatureFlag.IS_HIGHLIGHTS_SCALING_ENABLED)
   );
 
   return (

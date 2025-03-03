@@ -1,5 +1,9 @@
 import type { Row } from "@tanstack/react-table";
 import { createColumnHelper } from "@tanstack/react-table";
+import type {
+  EnvironmentData,
+  SpaNPlusOneMetrics
+} from "../../../../../redux/services/types";
 import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
 import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
@@ -10,7 +14,6 @@ import { TableText } from "../../../common/TableText";
 import { handleEnvironmentTableRowClick } from "../../../handleEnvironmentTableRowClick";
 import { trackingEvents } from "../../../tracking";
 import { HighlightCard } from "../../common/HighlightCard";
-import type { EnvironmentData, SpaNPlusOneMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
 import type { SpaNPlusOneHighlightCardProps } from "./types";
 

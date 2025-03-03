@@ -1,7 +1,12 @@
 import type { Row } from "@tanstack/react-table";
 import { createColumnHelper } from "@tanstack/react-table";
-import { useEffect } from "react";
 import { SCALING_ISSUE_DOCUMENTATION_URL } from "../../../constants";
+import { useGetScalingHighlightsQuery } from "../../../redux/services/digma";
+import type {
+  EnvironmentData,
+  EnvironmentScalingData,
+  ScalingMetrics
+} from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { SCOPE_CHANGE_EVENTS } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
@@ -19,15 +24,12 @@ import { NewButton } from "../../common/v3/NewButton";
 import { Tag } from "../../common/v3/Tag";
 import { EmptyStateCard } from "../EmptyStateCard";
 import { addEnvironmentColumns } from "../TopIssues/highlightCards/addEnvironmentColumns";
-import type { EnvironmentData } from "../TopIssues/types";
 import { Section } from "../common/Section";
 import { Table } from "../common/Table";
 import { TableText } from "../common/TableText";
 import { handleEnvironmentTableRowClick } from "../handleEnvironmentTableRowClick";
 import { trackingEventNames, trackingEvents } from "../tracking";
 import * as s from "./styles";
-import type { EnvironmentScalingData, ScalingMetrics } from "./types";
-import { useScalingData } from "./useScalingData";
 
 const demoData: EnvironmentScalingData[] = [
   {
@@ -75,13 +77,21 @@ const demoData: EnvironmentScalingData[] = [
 ];
 
 export const Scaling = () => {
-  const { data, getData } = useScalingData();
   const { scope, environments } = useConfigSelector();
   const { goTo } = useHistory();
 
-  useEffect(() => {
-    getData();
-  }, [getData]);
+  const { data } = useGetScalingHighlightsQuery(
+    {
+      environments: environments?.map((env) => env.id) ?? [],
+      scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId
+    },
+    {
+      skip:
+        !scope?.span?.spanCodeObjectId ||
+        !environments ||
+        environments.length === 0
+    }
+  );
 
   const renderScalingCard = (data: EnvironmentScalingData[]) => {
     const transformedData: EnvironmentData<ScalingMetrics>[] = data.map(
