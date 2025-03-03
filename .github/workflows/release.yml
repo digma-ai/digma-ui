@@ -27,6 +27,20 @@ jobs:
     with:
       artifact-name: ${{ needs.build-jetbrains.outputs.artifact-name }}
 
+  build-vs:
+    name: Build for Visual Studio
+    needs: lint-test
+    uses: ./.github/workflows/build.yml
+    with:
+      platform: "vs"
+
+  attach-release-vs-asset:
+    name: Attach release Visual Studio asset
+    needs: build-vs
+    uses: ./.github/workflows/release-asset.yml
+    with:
+      artifact-name: ${{ needs.build-vs.outputs.artifact-name }}
+
   build-web:
     name: Build for web
     needs: lint-test
@@ -43,7 +57,7 @@ jobs:
 
   build-push-docker-image:
     name: Build & push Docker image
-    needs: [build-jetbrains, build-web]
+    needs: [build-jetbrains, "build-vs", build-web]
     uses: ./.github/workflows/docker-image.yml
     secrets: inherit
     with:
@@ -55,6 +69,7 @@ jobs:
     needs:
       [
         attach-release-jetbrains-asset,
+        attach-release-vs-asset,
         attach-release-web-asset,
         build-push-docker-image
       ]
