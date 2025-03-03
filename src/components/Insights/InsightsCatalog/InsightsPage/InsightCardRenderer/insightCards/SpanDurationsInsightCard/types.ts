@@ -1,5 +1,5 @@
 import type { InsightType, SpanDurationsInsight } from "../../../../../types";
-import type { InsightCardCommonProps } from "../common/InsightCard/types";
+import type { InsightCardCommonProps } from "../types";
 
 export interface SpanDurationsInsightCardProps extends InsightCardCommonProps {
   insight: SpanDurationsInsight;

@@ -20,24 +20,18 @@ import type { InsightTicketProps } from "../types";
 
 export const EndpointQueryOptimizationV2InsightTicket = ({
   data,
-  refreshInsights,
   onClose
 }: InsightTicketProps<EndpointQueryOptimizationV2Insight>) => {
   const { jaegerApiPath } = useConfigSelector();
   const span = data.insight.span;
   const spanInfo = span?.spanInfo || null;
 
-  const {
-    commitInfos,
-    spanInsight,
-    isLoading,
-    codeLocations,
-    onReloadSpanInsight
-  } = useEndpointDataSource<SpanQueryOptimizationInsight>(
-    spanInfo,
-    InsightType.SpanQueryOptimization,
-    data.insight.environment
-  );
+  const { commitInfos, spanInsight, isLoading, codeLocations } =
+    useEndpointDataSource<SpanQueryOptimizationInsight>(
+      spanInfo,
+      InsightType.SpanQueryOptimization,
+      data.insight.environment
+    );
 
   const services = [
     ...new Set(
@@ -123,8 +117,6 @@ export const EndpointQueryOptimizationV2InsightTicket = ({
       insight={data.insight}
       relatedInsight={spanInsight}
       onClose={onClose}
-      onReloadSpanInsight={onReloadSpanInsight}
-      refreshInsights={refreshInsights}
     />
   );
 };

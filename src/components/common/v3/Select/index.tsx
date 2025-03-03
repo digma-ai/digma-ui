@@ -1,5 +1,5 @@
 import type { ChangeEvent } from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { isString } from "../../../../typeGuards/isString";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
@@ -11,6 +11,9 @@ import { Checkmark } from "../Checkmark";
 import { Tooltip } from "../Tooltip";
 import * as s from "./styles";
 import type { SelectItem, SelectProps } from "./types";
+
+const filterItemsBySearchValue = (value: string) => (item: SelectItem) =>
+  item.label.toLowerCase().includes(value.toLowerCase());
 
 const sortItemsBySelectedState = (a: SelectItem, b: SelectItem) => {
   if (a.selected && !b.selected) {
@@ -43,6 +46,28 @@ export const Select = ({
   const [searchValue, setSearchValue] = useState("");
   const optionListRef = useRef<HTMLUListElement | null>(null);
   const { observe } = useDimensions();
+  const [itemOrder, setItemOrder] = useState<string[]>([]);
+
+  const filteredItems = useMemo(
+    () => items.filter(filterItemsBySearchValue(searchValue)),
+    [items, searchValue]
+  );
+
+  const sortedItems = useMemo(() => {
+    if (multiselect) {
+      return [...filteredItems].sort((a, b) => {
+        const aIndex = itemOrder.indexOf(a.value);
+        const bIndex = itemOrder.indexOf(b.value);
+        if (aIndex !== -1 && bIndex === -1) {
+          return 1;
+        }
+
+        return aIndex - bIndex;
+      });
+    }
+
+    return filteredItems;
+  }, [filteredItems, multiselect, itemOrder]);
 
   const getOptionListRef = useCallback(
     (el: HTMLUListElement | null) => {
@@ -84,19 +109,20 @@ export const Select = ({
 
   useEffect(() => {
     if (!isOpen) {
+      const sortedItems = multiselect
+        ? [...items].sort(sortItemsBySelectedState)
+        : items;
+      setItemOrder(sortedItems.map((item) => item.value));
+    }
+  }, [isOpen, multiselect, items]);
+
+  useEffect(() => {
+    if (!isOpen) {
       setSearchValue("");
     }
   }, [isOpen]);
 
-  const selectedValues = items.filter((x) => x.selected).map((x) => x.value);
-
-  const filteredItems = items.filter((x) =>
-    x.label.toLocaleLowerCase().includes(searchValue)
-  );
-
-  const sortedItems = multiselect
-    ? filteredItems.sort(sortItemsBySelectedState)
-    : filteredItems;
+  const selectedValuesCount = sortedItems.filter((x) => x.selected).length;
 
   const isSelectedStateEnabled =
     isUndefined(showSelectedState) || showSelectedState;
@@ -109,7 +135,8 @@ export const Select = ({
     (Boolean(searchable) || (isUndefined(searchable) && items.length > 10)) &&
     (optionListHasVerticalScrollbar || searchValue.length > 0);
   const isActive =
-    isOpen || (isSelectedStateEnabled && selectedValues.length > 0);
+    isOpen || (isSelectedStateEnabled && selectedValuesCount > 0);
+
   return (
     <NewPopover
       sameWidth={sameWidth !== false}
@@ -187,11 +214,9 @@ export const Select = ({
               <s.ButtonLabel $isActive={isActive}>{placeholder}</s.ButtonLabel>
             </Tooltip>
           )}
-          {multiselect &&
-            isSelectedStateEnabled &&
-            selectedValues.length > 0 && (
-              <s.Number>{selectedValues.length}</s.Number>
-            )}
+          {multiselect && isSelectedStateEnabled && selectedValuesCount > 0 && (
+            <s.Number>{selectedValuesCount}</s.Number>
+          )}
           <s.ChevronIconContainer $disabled={disabled}>
             <ChevronIcon
               color={"currentColor"}

@@ -12,8 +12,6 @@ import type { EndpointSlowdownSourceInsightCardProps } from "./types";
 export const EndpointSlowdownSourceInsightCard = ({
   insight,
   onAssetLinkClick,
-  onRecalculate,
-  onRefresh,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
@@ -98,8 +96,6 @@ export const EndpointSlowdownSourceInsightCard = ({
           )}
         </ContentContainer>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}

@@ -3,7 +3,7 @@ import type {
   SpaNPlusOneInsight,
   Trace
 } from "../../../../../types";
-import type { InsightCardCommonProps } from "../common/InsightCard/types";
+import type { InsightCardCommonProps } from "../types";
 
 export interface SpaNPlusOneInsightCardProps extends InsightCardCommonProps {
   insight: SpaNPlusOneInsight;

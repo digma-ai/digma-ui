@@ -13,9 +13,7 @@ export const EndpointSpanNPlusOneInsightCard = ({
   onJiraTicketCreate,
   onTraceButtonClick,
   isJiraHintEnabled,
-  onRecalculate,
   onGoToSpan,
-  onRefresh,
   isMarkAsReadButtonEnabled,
   viewMode,
   onDismissalChange,
@@ -36,13 +34,11 @@ export const EndpointSpanNPlusOneInsightCard = ({
     }
   };
 
-  const handleTraceButtonClick = (
-    trace: Trace,
-    insightType: InsightType,
-    spanCodeObjectId: string
-  ) => {
-    onTraceButtonClick(trace, insightType, spanCodeObjectId);
-  };
+  const handleTraceButtonClick =
+    (trace: Trace, insightType: InsightType, spanCodeObjectId: string) =>
+    () => {
+      onTraceButtonClick(trace, insightType, spanCodeObjectId);
+    };
 
   const spanInfo = span.internalSpan ?? span.clientSpan;
   const spanName = spanInfo.displayName;
@@ -52,16 +48,14 @@ export const EndpointSpanNPlusOneInsightCard = ({
     <InsightCard
       insight={insight}
       onJiraButtonClick={handleTicketInfoButtonClick}
-      onGoToTrace={() =>
-        handleTraceButtonClick(
-          {
-            name: spanName,
-            id: span.traceId
-          },
-          insight.type,
-          spanInfo.spanCodeObjectId
-        )
-      }
+      onGoToTrace={handleTraceButtonClick(
+        {
+          name: spanName,
+          id: span.traceId
+        },
+        insight.type,
+        spanInfo.spanCodeObjectId
+      )}
       jiraTicketInfo={{
         ticketLink: span.ticketLink,
         isHintEnabled: isJiraHintEnabled
@@ -99,8 +93,6 @@ export const EndpointSpanNPlusOneInsightCard = ({
           </ColumnsContainer>
         </ContentContainer>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}

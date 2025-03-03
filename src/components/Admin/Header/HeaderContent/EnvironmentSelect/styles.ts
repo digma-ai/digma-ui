@@ -1,6 +1,5 @@
 import styled from "styled-components";
-
-import { subscriptBoldTypography } from "../../../common/App/typographies";
+import { subscriptBoldTypography } from "../../../../common/App/typographies";
 
 export const Button = styled.button`
   width: 180px;

@@ -55,7 +55,9 @@ export const IssuesReport = ({
   onTileTitleClick,
   onTileIssuesStatsClick,
   onSelectedServiceChange,
-  activeTileIds
+  activeTileIds,
+  showEnvironmentSelect = true,
+  showServicesSelect = true
 }: IssuesReportProps) => {
   const { data: about } = useGetAboutQuery();
   const { data: environments } = useGetEnvironmentsQuery();
@@ -271,6 +273,8 @@ export const IssuesReport = ({
         sortedEnvironments && sortedEnvironments.length > 0 ? (
           <>
             <Header
+              showEnvironmentSelect={showEnvironmentSelect}
+              showServicesSelect={showServicesSelect}
               viewMode={viewMode}
               viewLevel={viewLevel}
               timeMode={timeMode}

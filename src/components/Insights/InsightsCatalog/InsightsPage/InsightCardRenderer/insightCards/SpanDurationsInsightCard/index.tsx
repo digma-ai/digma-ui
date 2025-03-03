@@ -134,8 +134,6 @@ const calculateBars = (
 export const SpanDurationsInsightCard = ({
   insight,
   onLiveButtonClick,
-  onRecalculate,
-  onRefresh,
   onHistogramButtonClick,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
@@ -436,8 +434,6 @@ ${getDurationString(insight.average)}${
           )}
         </s.Container>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       isAsync={insight.isAsync}
       onGoToLive={handleGoToLive}
       onOpenHistogram={insight.spanInfo ? onHistogramButtonClick : undefined}

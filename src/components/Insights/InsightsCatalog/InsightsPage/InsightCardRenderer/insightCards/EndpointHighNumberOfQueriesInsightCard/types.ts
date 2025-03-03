@@ -3,7 +3,7 @@ import type {
   InsightType,
   Trace
 } from "../../../../../types";
-import type { InsightCardCommonProps } from "../common/InsightCard/types";
+import type { InsightCardCommonProps } from "../types";
 
 export interface EndpointHighNumberOfQueriesInsightCardProps
   extends InsightCardCommonProps {

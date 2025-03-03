@@ -12,7 +12,6 @@ import type { InsightTicketProps } from "../types";
 
 export const SpanEndpointBottleneckInsightTicket = ({
   data,
-  refreshInsights,
   onClose
 }: InsightTicketProps<SpanEndpointBottleneckInsight>) => {
   const { commitInfos, codeLocations, isLoading } =
@@ -69,7 +68,6 @@ export const SpanEndpointBottleneckInsightTicket = ({
       }}
       insight={data.insight}
       onClose={onClose}
-      refreshInsights={refreshInsights}
     />
   );
 };

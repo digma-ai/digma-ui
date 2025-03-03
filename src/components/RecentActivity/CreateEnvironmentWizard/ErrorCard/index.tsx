@@ -21,6 +21,18 @@ export const ErrorCard = ({ title, description }: ErrorCardProps) => {
     }, HIDE_INTERVAL);
   };
 
+  const handleMouseEnter = () => {
+    window.clearTimeout(hideTimerId.current);
+  };
+
+  const handleMouseLeave = () => {
+    startTimer();
+  };
+
+  const handleCrossButtonClick = () => {
+    setIsVisible(false);
+  };
+
   useEffect(() => {
     startTimer();
     return () => {
@@ -40,12 +52,8 @@ export const ErrorCard = ({ title, description }: ErrorCardProps) => {
         ref={containerRef}
         $transitionClassName={TRANSITION_CLASS_NAME}
         $transitionDuration={DEFAULT_TRANSITION_DURATION}
-        onMouseEnter={() => {
-          window.clearTimeout(hideTimerId.current);
-        }}
-        onMouseLeave={() => {
-          startTimer();
-        }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <s.ErrorIconContainer>
           <ErrorIcon size={16} color={"currentColor"} />
@@ -54,11 +62,10 @@ export const ErrorCard = ({ title, description }: ErrorCardProps) => {
           <s.Title>{title}</s.Title>
           <s.Description>{description}</s.Description>
         </s.ContentContainer>
-
         <s.CrossButton
           buttonType={"tertiary"}
           icon={CrossIcon}
-          onClick={() => setIsVisible(false)}
+          onClick={handleCrossButtonClick}
         />
       </s.Container>
     </CSSTransition>

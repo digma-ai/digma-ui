@@ -17,8 +17,6 @@ export const EndpointSessionInViewInsightCard = ({
   insight,
   onAssetLinkClick,
   onTraceButtonClick,
-  onRecalculate,
-  onRefresh,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
@@ -37,13 +35,11 @@ export const EndpointSessionInViewInsightCard = ({
     onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
-  const handleTraceButtonClick = (
-    trace: Trace,
-    insightType: InsightType,
-    spanCodeObjectId: string
-  ) => {
-    onTraceButtonClick(trace, insightType, spanCodeObjectId);
-  };
+  const handleTraceButtonClick =
+    (trace: Trace, insightType: InsightType, spanCodeObjectId: string) =>
+    () => {
+      onTraceButtonClick(trace, insightType, spanCodeObjectId);
+    };
 
   return (
     <InsightCard
@@ -64,16 +60,14 @@ export const EndpointSessionInViewInsightCard = ({
                       <Tooltip title={"Open Trace"} key={"openTrace"}>
                         <Button
                           icon={TraceIcon}
-                          onClick={() =>
-                            handleTraceButtonClick(
-                              {
-                                name: spanName,
-                                id: traceId
-                              },
-                              insight.type,
-                              spanCodeObjectId
-                            )
-                          }
+                          onClick={handleTraceButtonClick(
+                            {
+                              name: spanName,
+                              id: traceId
+                            },
+                            insight.type,
+                            spanCodeObjectId
+                          )}
                         />
                       </Tooltip>
                     ]
@@ -98,8 +92,6 @@ export const EndpointSessionInViewInsightCard = ({
           </s.List>
         </ContentContainer>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}

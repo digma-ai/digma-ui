@@ -8,7 +8,6 @@ export interface CodeLocationsData {
 
 export interface InsightTicketProps<T extends GenericCodeObjectInsight> {
   data: InsightTicketInfo<T>;
-  refreshInsights: () => void;
   onClose: () => void;
   backendInfo: BackendInfo | GetAboutResponse | null;
 }

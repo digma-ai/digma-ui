@@ -39,7 +39,7 @@ export const store = configureStore({
         version: STATE_VERSION
       })
     ),
-  // TODO: Fix types
+  // TODO: fix types
   // @ts-expect-error More info: https://github.com/zewish/redux-remember/issues/11
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(

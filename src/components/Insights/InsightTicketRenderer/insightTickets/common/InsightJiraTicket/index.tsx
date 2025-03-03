@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   useLinkTicketToIssueMutation,
   useUnlinkTicketFromIssueMutation
@@ -11,17 +11,25 @@ import type { InsightJiraTicketProps } from "./types";
 export const InsightJiraTicket = ({
   insight,
   relatedInsight,
-  onReloadSpanInsight,
   description,
   summary,
   attachments,
-  onClose,
-  refreshInsights
+  onClose
 }: InsightJiraTicketProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>();
-  const [ticketLink, setTicketLink] = useState<string | null>(
-    relatedInsight?.ticketLink ?? insight.ticketLink
+  const link = useMemo(
+    () => relatedInsight?.ticketLink ?? insight.ticketLink,
+    [relatedInsight?.ticketLink, insight.ticketLink]
   );
+  const [ticketLink, setTicketLink] = useState<string | null>(link);
+  const ticketLinkData = useMemo(
+    () => ({
+      link: ticketLink,
+      errorMessage
+    }),
+    [ticketLink, errorMessage]
+  );
+
   const [triggerLink] = useLinkTicketToIssueMutation();
   const [triggerUnlink] = useUnlinkTicketFromIssueMutation();
 
@@ -30,12 +38,6 @@ export const InsightJiraTicket = ({
       setTicketLink(response.ticketLink);
     } else {
       setErrorMessage(response.message);
-    }
-
-    refreshInsights();
-
-    if (onReloadSpanInsight) {
-      onReloadSpanInsight();
     }
   };
 
@@ -70,10 +72,8 @@ export const InsightJiraTicket = ({
   };
 
   useEffect(() => {
-    if (relatedInsight) {
-      setTicketLink(relatedInsight.ticketLink);
-    }
-  }, [relatedInsight]);
+    setTicketLink(link);
+  }, [link]);
 
   return (
     <JiraTicket
@@ -81,7 +81,7 @@ export const InsightJiraTicket = ({
       summary={summary}
       attachments={attachments ?? []}
       onClose={onClose}
-      ticketLink={{ link: ticketLink, errorMessage }}
+      ticketLink={ticketLinkData}
       unlinkTicket={unlinkTicket}
       linkTicket={linkTicket}
     />

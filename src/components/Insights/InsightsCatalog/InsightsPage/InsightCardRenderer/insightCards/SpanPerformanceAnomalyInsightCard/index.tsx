@@ -9,8 +9,6 @@ import type { SpanPerformanceAnomalyInsightCardProps } from "./types";
 
 export const SpanPerformanceAnomalyInsightCard = ({
   insight,
-  onRecalculate,
-  onRefresh,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
@@ -77,8 +75,6 @@ export const SpanPerformanceAnomalyInsightCard = ({
           </ColumnsContainer>
         </ContentContainer>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}

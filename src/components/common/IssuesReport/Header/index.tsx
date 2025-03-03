@@ -70,7 +70,9 @@ export const Header = ({
   onTimeModeChange,
   onViewModeChange,
   defaultTitle,
-  onGoBack
+  onGoBack,
+  showEnvironmentSelect = true,
+  showServicesSelect = true
 }: HeaderProps) => {
   const { data: about } = useGetAboutQuery();
 
@@ -224,25 +226,27 @@ export const Header = ({
       </s.Row>
       <s.Row>
         <s.Filters>
-          <s.FilterSelect
-            items={sortEnvironments(environmentsToSelect).map((x) => ({
-              label: x.name,
-              value: x.id,
-              enabled: true,
-              selected: x.id === selectedEnvironmentId
-            }))}
-            showSelectedState={true}
-            icon={(props) =>
-              selectedEnvironment?.type === "Public" ? (
-                <InfinityIcon {...props} size={12} />
-              ) : (
-                <CodeIcon {...props} size={12} />
-              )
-            }
-            onChange={handleSelectedEnvironmentChange}
-            placeholder={selectedEnvironment?.name ?? "Select Environments"}
-            disabled={environmentsToSelect.length === 0}
-          />
+          {showEnvironmentSelect && (
+            <s.FilterSelect
+              items={sortEnvironments(environmentsToSelect).map((x) => ({
+                label: x.name,
+                value: x.id,
+                enabled: true,
+                selected: x.id === selectedEnvironmentId
+              }))}
+              showSelectedState={true}
+              icon={(props) =>
+                selectedEnvironment?.type === "Public" ? (
+                  <InfinityIcon {...props} size={12} />
+                ) : (
+                  <CodeIcon {...props} size={12} />
+                )
+              }
+              onChange={handleSelectedEnvironmentChange}
+              placeholder={selectedEnvironment?.name ?? "Select Environments"}
+              disabled={environmentsToSelect.length === 0}
+            />
+          )}
           {viewLevel === "endpoints" ? (
             <s.FilterSelect
               items={(serviceEndpoints?.endpoints ?? [])
@@ -272,7 +276,7 @@ export const Header = ({
                 !serviceEndpoints || serviceEndpoints.endpoints.length === 0
               }
             />
-          ) : (
+          ) : showServicesSelect ? (
             <s.FilterSelect
               items={[...(services ?? [])].sort().map((service) => ({
                 label: service,
@@ -289,7 +293,7 @@ export const Header = ({
               }
               disabled={!services || services.length === 0}
             />
-          )}
+          ) : null}
           {timeMode === "changes" && (
             <s.FilterSelect
               items={[1, DEFAULT_PERIOD].map((x) => ({

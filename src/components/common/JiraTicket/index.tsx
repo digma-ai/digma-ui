@@ -107,6 +107,11 @@ export const JiraTicket = ({
       });
     };
 
+  const handleCopyButtonClick =
+    (field: string, value: HTMLElement | null | string) => () => {
+      copyToClipboard(field, value);
+    };
+
   const errorMessage = description.isLoading ? "" : description.errorMessage;
 
   return (
@@ -129,7 +134,7 @@ export const JiraTicket = ({
             <IconButton
               icon={CopyIcon}
               title={"Copy"}
-              onClick={() => copyToClipboard("summary", summary)}
+              onClick={handleCopyButtonClick("summary", summary)}
             />
           }
         >
@@ -149,9 +154,10 @@ export const JiraTicket = ({
               icon={CopyIcon}
               title={"Copy"}
               disabled={description.isLoading}
-              onClick={() =>
-                copyToClipboard("description", descriptionContentRef.current)
-              }
+              onClick={handleCopyButtonClick(
+                "description",
+                descriptionContentRef.current
+              )}
             />
           }
         >

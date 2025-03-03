@@ -11,8 +11,6 @@ import type { SlowEndpointInsightCardProps } from "./types";
 
 export const SlowEndpointInsightCard = ({
   insight,
-  onRecalculate,
-  onRefresh,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
@@ -45,8 +43,6 @@ export const SlowEndpointInsightCard = ({
           </ColumnsContainer>
         </s.ContentContainer>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}

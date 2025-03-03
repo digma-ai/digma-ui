@@ -42,6 +42,8 @@ export interface IssuesReportProps {
   ) => void;
   onSelectedServiceChange: (service: string | null) => void;
   activeTileIds?: string[];
+  showEnvironmentSelect?: boolean;
+  showServicesSelect?: boolean;
 }
 
 export type ScoreCriterion = "impact" | "criticality";

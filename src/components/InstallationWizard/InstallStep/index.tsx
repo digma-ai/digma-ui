@@ -243,6 +243,10 @@ export const InstallStep = ({
     }
   };
 
+  const handleLinkClick = (url: string) => () => {
+    openURLInDefaultBrowser(url);
+  };
+
   // const renderLoader = () => (
   //   <s.LoaderContainer>
   //     {connectionCheckStatus && (
@@ -408,13 +412,8 @@ export const InstallStep = ({
               </s.SectionTitle>
               <SectionDescription>
                 (You&apos;ll need{" "}
-                <Link onClick={() => openURLInDefaultBrowser(DOCKER_URL)}>
-                  Docker
-                </Link>{" "}
-                and{" "}
-                <Link
-                  onClick={() => openURLInDefaultBrowser(DOCKER_COMPOSE_URL)}
-                >
+                <Link onClick={handleLinkClick(DOCKER_URL)}>Docker</Link> and{" "}
+                <Link onClick={handleLinkClick(DOCKER_COMPOSE_URL)}>
                   Docker Compose
                 </Link>{" "}
                 installed)
@@ -454,7 +453,7 @@ export const InstallStep = ({
             Install Digma Docker extension
             <SectionDescription>
               (You&apos;ll need{" "}
-              <Link onClick={() => openURLInDefaultBrowser(DOCKER_DESKTOP_URL)}>
+              <Link onClick={handleLinkClick(DOCKER_DESKTOP_URL)}>
                 Docker Desktop
               </Link>{" "}
               4.10.0 or higher installed)

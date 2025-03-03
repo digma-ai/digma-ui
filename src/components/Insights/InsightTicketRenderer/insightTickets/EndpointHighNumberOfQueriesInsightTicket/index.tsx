@@ -9,7 +9,6 @@ import type { InsightTicketProps } from "../types";
 
 export const EndpointHighNumberOfQueriesInsightTicket = ({
   data,
-  refreshInsights,
   onClose
 }: InsightTicketProps<EndpointHighNumberOfQueriesInsight>) => {
   const { commitInfos, isLoading } =
@@ -70,7 +69,6 @@ export const EndpointHighNumberOfQueriesInsightTicket = ({
       }}
       insight={data.insight}
       onClose={onClose}
-      refreshInsights={refreshInsights}
     />
   );
 };

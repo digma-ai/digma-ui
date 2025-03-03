@@ -12,7 +12,6 @@ export interface InsightCardRendererProps {
     event?: string
   ) => void;
   isJiraHintEnabled: boolean;
-  onRefresh: () => void;
   isMarkAsReadButtonEnabled: boolean;
   viewMode: InsightCardViewMode;
   onDismissalChange: (action: string, insightId: string) => void;

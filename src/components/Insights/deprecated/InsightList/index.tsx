@@ -38,7 +38,6 @@ import { PerformanceAtScaleInsight } from "./insightCards/PerformanceAtScaleInsi
 import * as s from "./styles";
 import type {
   InsightListProps,
-  RecalculatePayload,
   isInsightJiraTicketHintShownPayload
 } from "./types";
 
@@ -223,13 +222,8 @@ const renderInsightCard = (
     });
   };
 
-  const handleRecalculate = (insightId: string) => {
-    window.sendMessageToDigma<RecalculatePayload>({
-      action: actions.RECALCULATE,
-      payload: {
-        id: insightId
-      }
-    });
+  const handleRecalculate = () => {
+    return undefined;
   };
 
   const handleRefresh = (insightType: InsightType) => {

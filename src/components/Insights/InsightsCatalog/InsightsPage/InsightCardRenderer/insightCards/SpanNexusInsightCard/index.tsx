@@ -12,8 +12,6 @@ const getTagType = (isHigh: boolean) => {
 
 export const SpanNexusInsightCard = ({
   insight,
-  onRecalculate,
-  onRefresh,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
@@ -29,6 +27,7 @@ export const SpanNexusInsightCard = ({
     isFlowsHigh,
     isServicesHigh
   } = insight;
+
   return (
     <InsightCard
       insight={insight}
@@ -67,8 +66,6 @@ export const SpanNexusInsightCard = ({
           </ColumnsContainer>
         </ContentContainer>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { RECENT_ACTIVITY_CONTAINER_ID } from "..";
 import { actions as globalActions } from "../../../actions";
@@ -45,6 +45,11 @@ export const EnvironmentPanel = ({
   const environmentListDimensions = useDimensions();
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
   const config = useContext(ConfigContext);
+
+  const sortedEnvironments = useMemo(
+    () => [...environments].sort((a, b) => a.name.localeCompare(b.name)),
+    [environments]
+  );
 
   useEffect(() => {
     const entry = environmentListContainerDimensions.entry;
@@ -269,7 +274,7 @@ export const EnvironmentPanel = ({
         ref={environmentListContainerDimensions.observe}
       >
         <s.EnvironmentList ref={environmentListDimensions.observe}>
-          {environments.map((environment) => (
+          {sortedEnvironments.map((environment) => (
             <EnvironmentTab
               key={environment.id}
               environment={environment}

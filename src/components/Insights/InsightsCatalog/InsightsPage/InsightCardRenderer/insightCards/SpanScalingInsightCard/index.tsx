@@ -29,8 +29,6 @@ export const SpanScalingInsightCard = ({
   onJiraTicketCreate,
   isJiraHintEnabled,
   onHistogramButtonClick,
-  onRecalculate,
-  onRefresh,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
@@ -49,13 +47,11 @@ export const SpanScalingInsightCard = ({
     onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
-  const handleTraceButtonClick = (
-    trace: Trace,
-    insightType: InsightType,
-    spanCodeObjectId: string
-  ) => {
-    onTraceButtonClick(trace, insightType, spanCodeObjectId);
-  };
+  const handleTraceButtonClick =
+    (trace: Trace, insightType: InsightType, spanCodeObjectId: string) =>
+    () => {
+      onTraceButtonClick(trace, insightType, spanCodeObjectId);
+    };
 
   const handleTicketInfoButtonClick = (
     spanCodeObjectId: string | undefined,
@@ -94,16 +90,14 @@ export const SpanScalingInsightCard = ({
                 <Button
                   key={"trace"}
                   icon={TraceIcon}
-                  onClick={() =>
-                    handleTraceButtonClick(
-                      {
-                        name: spanName,
-                        id: traceId
-                      },
-                      insight.type,
-                      spanCodeObjectId
-                    )
-                  }
+                  onClick={handleTraceButtonClick(
+                    {
+                      name: spanName,
+                      id: traceId
+                    },
+                    insight.type,
+                    spanCodeObjectId
+                  )}
                 />
               );
             }
@@ -181,8 +175,6 @@ export const SpanScalingInsightCard = ({
           : undefined
       }
       onOpenHistogram={insight.spanInfo ? onHistogramButtonClick : undefined}
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}

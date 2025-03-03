@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 import { getFeatureFlagValue } from "../../../featureFlags";
-import { usePrevious } from "../../../hooks/usePrevious";
-import { useGetSpanEnvironmentsQuery } from "../../../redux/services/digma";
+import {
+  useGetSpanEnvironmentsQuery,
+  useMarkScopeInsightsReadMutation
+} from "../../../redux/services/digma";
 import type { IssueCriticality } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
@@ -36,7 +38,6 @@ import { PromotionSection } from "./PromotionSection";
 import * as s from "./styles";
 import type { InsightFilterType, InsightsCatalogProps } from "./types";
 import { SORTING_CRITERION, ViewMode } from "./types";
-import { useMarkingAllAsRead } from "./useMarkingAllAsRead";
 
 const PAGE_SIZE = 10;
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
@@ -106,12 +107,7 @@ export const InsightsCatalog = ({
     ? filteredCriticalityLevelsInSpanScope
     : filteredCriticalityLevelsInGlobalScope;
   const theme = useTheme();
-  const { isMarkingAllAsReadInProgress, markAllAsRead } = useMarkingAllAsRead(
-    scope?.span ?? null
-  );
-  const previousIsMarkingAllAsReadInProgress = usePrevious(
-    isMarkingAllAsReadInProgress
-  );
+  const [markScopeInsightsRead] = useMarkScopeInsightsReadMutation();
   const [isFiltersToolbarVisible, setIsFiltersToolbarVisible] = useState(false);
   const { data: insightStats } = useGetInsightsStats();
 
@@ -196,7 +192,21 @@ export const InsightsCatalog = ({
   };
 
   const handleReadAllLinkClick = () => {
-    markAllAsRead();
+    if (!environment) {
+      return;
+    }
+
+    void markScopeInsightsRead({
+      environment: environment.id,
+      scope: scope?.span
+        ? {
+            spanCodeObject: scope.span.spanCodeObjectId,
+            methodCodeObjectId: scope.span?.methodId ?? undefined,
+            serviceName: scope.span?.serviceName ?? undefined,
+            role: scope.span?.role ?? undefined
+          }
+        : undefined
+    });
   };
 
   const handleBackToAllInsightsButtonClick = () => {
@@ -218,16 +228,6 @@ export const InsightsCatalog = ({
   useEffect(() => {
     setPage(0);
   }, [environment?.id, scopeSpanCodeObjectId, mode, setPage]);
-
-  useEffect(() => {
-    if (previousIsMarkingAllAsReadInProgress && !isMarkingAllAsReadInProgress) {
-      onRefresh();
-    }
-  }, [
-    isMarkingAllAsReadInProgress,
-    previousIsMarkingAllAsReadInProgress,
-    onRefresh
-  ]);
 
   const renderFilterPanel = () => {
     if (!isIssuesView) {
