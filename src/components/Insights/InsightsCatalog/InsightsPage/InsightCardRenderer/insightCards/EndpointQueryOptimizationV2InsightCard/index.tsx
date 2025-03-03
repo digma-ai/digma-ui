@@ -13,8 +13,6 @@ export const EndpointQueryOptimizationV2InsightCard = ({
   onTraceButtonClick,
   onJiraTicketCreate,
   isJiraHintEnabled,
-  onRecalculate,
-  onRefresh,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
@@ -35,13 +33,11 @@ export const EndpointQueryOptimizationV2InsightCard = ({
     }
   };
 
-  const handleTraceButtonClick = (
-    trace: Trace,
-    insightType: InsightType,
-    spanCodeObjectId: string
-  ) => {
-    onTraceButtonClick(trace, insightType, spanCodeObjectId);
-  };
+  const handleTraceButtonClick =
+    (trace: Trace, insightType: InsightType, spanCodeObjectId: string) =>
+    () => {
+      onTraceButtonClick(trace, insightType, spanCodeObjectId);
+    };
 
   const spanName = insight.span.spanInfo.displayName;
   const spanCodeObjectId = insight.span.spanInfo.spanCodeObjectId;
@@ -68,18 +64,14 @@ export const EndpointQueryOptimizationV2InsightCard = ({
           </ColumnsContainer>
         </ContentContainer>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
-      onGoToTrace={() =>
-        handleTraceButtonClick(
-          {
-            name: spanName,
-            id: insight.span.traceId
-          },
-          insight.type,
-          spanCodeObjectId
-        )
-      }
+      onGoToTrace={handleTraceButtonClick(
+        {
+          name: spanName,
+          id: insight.span.traceId
+        },
+        insight.type,
+        spanCodeObjectId
+      )}
       onJiraButtonClick={handleTicketInfoButtonClick}
       jiraTicketInfo={{
         ticketLink: insight.span.ticketLink,

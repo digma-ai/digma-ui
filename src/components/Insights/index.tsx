@@ -359,7 +359,6 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
             ) : (
               <InsightTicketRenderer
                 data={infoToOpenJiraTicket}
-                refreshInsights={refresh}
                 onClose={handleJiraTicketPopupClose}
                 backendInfo={backendInfo}
               />

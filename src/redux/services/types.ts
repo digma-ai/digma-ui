@@ -221,8 +221,27 @@ export interface GetIssuesResponse {
   unreadCount?: number;
 }
 
-export interface MarkInsightAsReadPayload {
+export interface RecheckInsightPayload {
+  environment: string;
+  codeObjectId?: string;
+  id: string;
+  insightType?: string;
+  sourceSpanCodeObjectId?: string;
+  time: string;
+}
+
+export interface MarkInsightReadPayload {
   insightIds: string[];
+}
+
+export interface MarkScopeInsightsReadPayload {
+  environment: string;
+  scope?: {
+    spanCodeObject?: string;
+    methodCodeObjectId?: string;
+    serviceName?: string;
+    role?: string;
+  };
 }
 
 export interface DismissUndismissInsightPayload {

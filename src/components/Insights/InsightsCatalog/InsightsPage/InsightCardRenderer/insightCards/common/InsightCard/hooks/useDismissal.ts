@@ -4,8 +4,18 @@ import {
   useDismissInsightMutation,
   useUndismissInsightMutation
 } from "../../../../../../../../../redux/services/digma";
-import { actions } from "../../../../../../../actions";
-import type { DismissUndismissResponsePayload } from "../types";
+
+export interface DismissUndismissResponsePayload {
+  insightId: string;
+  id: string;
+  status: "success" | "failure";
+  error?: string;
+}
+
+export const actions = {
+  DISMISS: "DISMISS",
+  UNDISMISS: "UNDISMISS"
+};
 
 export const useDismissal = (insightId: string) => {
   const [data, setData] = useState<{

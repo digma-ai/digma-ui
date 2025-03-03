@@ -10,8 +10,6 @@ export const EndpointHighNumberOfQueriesInsightCard = ({
   insight,
   onTraceButtonClick,
   onJiraTicketCreate,
-  onRecalculate,
-  onRefresh,
   isJiraHintEnabled,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
@@ -66,8 +64,6 @@ export const EndpointHighNumberOfQueriesInsightCard = ({
           </ColumnsContainer>
         </ContentContainer>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       onJiraButtonClick={handleTicketInfoButtonClick}
       jiraTicketInfo={{
         ticketLink: insight.ticketLink,

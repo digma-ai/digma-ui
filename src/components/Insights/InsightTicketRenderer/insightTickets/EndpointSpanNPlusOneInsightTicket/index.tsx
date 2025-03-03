@@ -20,24 +20,18 @@ import type { InsightTicketProps } from "../types";
 
 export const EndpointSpanNPlusOneInsightTicket = ({
   data,
-  refreshInsights,
   onClose
 }: InsightTicketProps<EndpointSpanNPlusOneInsight>) => {
   const { jaegerApiPath } = useConfigSelector();
   const span = data.insight.span;
   const spanInfo = span?.internalSpan ?? span?.clientSpan;
 
-  const {
-    commitInfos,
-    spanInsight,
-    isLoading,
-    codeLocations,
-    onReloadSpanInsight
-  } = useEndpointDataSource<SpaNPlusOneInsight>(
-    spanInfo,
-    InsightType.SpaNPlusOne,
-    data.insight.environment
-  );
+  const { commitInfos, spanInsight, isLoading, codeLocations } =
+    useEndpointDataSource<SpaNPlusOneInsight>(
+      spanInfo,
+      InsightType.SpaNPlusOne,
+      data.insight.environment
+    );
 
   const services = [
     ...new Set(
@@ -106,8 +100,6 @@ export const EndpointSpanNPlusOneInsightTicket = ({
       insight={data.insight}
       relatedInsight={spanInsight}
       onClose={onClose}
-      onReloadSpanInsight={onReloadSpanInsight}
-      refreshInsights={refreshInsights}
     />
   );
 };

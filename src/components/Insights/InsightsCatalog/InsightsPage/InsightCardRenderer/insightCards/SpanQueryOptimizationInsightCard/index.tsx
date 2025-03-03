@@ -19,8 +19,6 @@ export const SpanQueryOptimizationInsightCard = ({
   insight,
   onAssetLinkClick,
   onTraceButtonClick,
-  onRecalculate,
-  onRefresh,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   isJiraHintEnabled,
@@ -117,8 +115,6 @@ export const SpanQueryOptimizationInsightCard = ({
           )}
         </ContentContainer>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       onJiraButtonClick={handleTicketInfoButtonClick}
       jiraTicketInfo={{
         ticketLink: insight.ticketLink,

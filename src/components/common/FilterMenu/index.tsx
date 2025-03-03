@@ -66,9 +66,7 @@ export const FilterMenu = ({
               <Checkbox
                 label={item.label}
                 value={Boolean(item.selected)}
-                onChange={() => {
-                  handleMenuItemClick(item.value);
-                }}
+                onChange={handleMenuItemClick(item.value)}
               />
             </s.ListItem>
           ))}

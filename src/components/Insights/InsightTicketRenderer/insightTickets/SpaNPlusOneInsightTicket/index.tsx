@@ -16,7 +16,6 @@ import type { InsightTicketProps } from "../types";
 
 export const SpaNPlusOneInsightTicket = ({
   data,
-  refreshInsights,
   onClose
 }: InsightTicketProps<SpaNPlusOneInsight>) => {
   const spanInsight = data.insight;
@@ -93,7 +92,6 @@ export const SpaNPlusOneInsightTicket = ({
       attachments={attachments}
       insight={data.insight}
       onClose={onClose}
-      refreshInsights={refreshInsights}
     />
   );
 };

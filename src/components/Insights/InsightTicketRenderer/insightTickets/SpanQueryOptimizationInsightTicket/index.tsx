@@ -15,7 +15,6 @@ import type { InsightTicketProps } from "../types";
 
 export const SpanQueryOptimizationInsightTicket = ({
   data,
-  refreshInsights,
   onClose
 }: InsightTicketProps<SpanQueryOptimizationInsight>) => {
   const { isLoading, commitInfos } = useCommitInfos(data.insight);
@@ -98,7 +97,6 @@ export const SpanQueryOptimizationInsightTicket = ({
       attachments={attachments}
       insight={data.insight}
       onClose={onClose}
-      refreshInsights={refreshInsights}
     />
   );
 };

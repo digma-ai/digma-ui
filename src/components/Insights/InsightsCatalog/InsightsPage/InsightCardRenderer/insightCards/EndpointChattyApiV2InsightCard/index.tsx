@@ -11,8 +11,6 @@ export const EndpointChattyApiV2InsightCard = ({
   insight,
   onAssetLinkClick,
   onTraceButtonClick,
-  onRecalculate,
-  onRefresh,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
@@ -56,8 +54,6 @@ export const EndpointChattyApiV2InsightCard = ({
           </ColumnsContainer>
         </s.Container>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       onGoToTrace={
         traceId

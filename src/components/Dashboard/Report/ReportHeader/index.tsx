@@ -80,9 +80,7 @@ export const ReportHeader = ({
         onDownload={() => {
           // TODO: implement
         }}
-        onRefresh={() => {
-          handleRefresh();
-        }}
+        onRefresh={handleRefresh}
       />
       <s.FiltersContainer>
         <s.Background>

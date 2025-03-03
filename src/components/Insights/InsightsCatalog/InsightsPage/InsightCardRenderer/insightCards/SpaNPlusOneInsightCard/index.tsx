@@ -36,8 +36,6 @@ export const SpaNPlusOneInsightCard = ({
   onAssetLinkClick,
   onTraceButtonClick,
   onJiraTicketCreate,
-  onRecalculate,
-  onRefresh,
   isJiraHintEnabled,
   onGoToSpan,
   isMarkAsReadButtonEnabled,
@@ -81,13 +79,11 @@ export const SpaNPlusOneInsightCard = ({
     }
   };
 
-  const handleTraceButtonClick = (
-    trace: Trace,
-    insightType: InsightType,
-    spanCodeObjectId?: string
-  ) => {
-    onTraceButtonClick(trace, insightType, spanCodeObjectId);
-  };
+  const handleTraceButtonClick =
+    (trace: Trace, insightType: InsightType, spanCodeObjectId?: string) =>
+    () => {
+      onTraceButtonClick(trace, insightType, spanCodeObjectId);
+    };
 
   const handleTicketInfoButtonClick = (
     spanCodeObjectId: string | undefined,
@@ -144,16 +140,14 @@ export const SpaNPlusOneInsightCard = ({
                 <Tooltip title={"Open Trace"}>
                   <Button
                     icon={TraceIcon}
-                    onClick={() =>
-                      handleTraceButtonClick(
-                        {
-                          name: selectedEndpoint.endpointInfo.route,
-                          id: selectedEndpoint.traceId
-                        },
-                        insight.type,
-                        insight.spanInfo?.spanCodeObjectId
-                      )
-                    }
+                    onClick={handleTraceButtonClick(
+                      {
+                        name: selectedEndpoint.endpointInfo.route,
+                        id: selectedEndpoint.traceId
+                      },
+                      insight.type,
+                      insight.spanInfo?.spanCodeObjectId
+                    )}
                   />
                 </Tooltip>
               )}
@@ -187,8 +181,6 @@ export const SpaNPlusOneInsightCard = ({
           )}
         </ContentContainer>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       onJiraButtonClick={handleTicketInfoButtonClick}
       jiraTicketInfo={{
         ticketLink: insight.ticketLink,

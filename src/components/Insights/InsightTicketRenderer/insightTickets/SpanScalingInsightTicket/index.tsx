@@ -22,7 +22,6 @@ import type { InsightTicketProps } from "../types";
 
 export const SpanScalingInsightTicket = ({
   data,
-  refreshInsights,
   onClose,
   backendInfo
 }: InsightTicketProps<SpanScalingInsight>) => {
@@ -107,7 +106,6 @@ export const SpanScalingInsightTicket = ({
       attachments={attachments}
       insight={data.insight}
       onClose={onClose}
-      refreshInsights={refreshInsights}
     />
   );
 };

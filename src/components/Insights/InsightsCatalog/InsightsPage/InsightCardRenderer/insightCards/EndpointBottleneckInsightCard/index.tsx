@@ -12,9 +12,7 @@ export const EndpointBottleneckInsightCard = ({
   onJiraTicketCreate,
   onTraceButtonClick,
   isJiraHintEnabled,
-  onRecalculate,
   onGoToSpan,
-  onRefresh,
   isMarkAsReadButtonEnabled,
   viewMode,
   onDismissalChange,
@@ -91,8 +89,6 @@ export const EndpointBottleneckInsightCard = ({
           </ColumnsContainer>
         </ContentContainer>
       }
-      onRecalculate={onRecalculate}
-      onRefresh={onRefresh}
       onJiraButtonClick={handleTicketInfoButtonClick}
       onGoToSpan={onGoToSpan}
       onGoToTrace={span.traceId ? handleTraceButtonClick : undefined}

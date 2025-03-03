@@ -17,7 +17,6 @@ import type { InsightTicketProps } from "../types";
 
 export const SpanPerformanceAnomalyInsightTicket = ({
   data,
-  refreshInsights,
   onClose,
   backendInfo
 }: InsightTicketProps<SpanPerformanceAnomalyInsight>) => {
@@ -105,7 +104,6 @@ export const SpanPerformanceAnomalyInsightTicket = ({
       attachments={attachments}
       insight={data.insight}
       onClose={onClose}
-      refreshInsights={refreshInsights}
     />
   );
 };

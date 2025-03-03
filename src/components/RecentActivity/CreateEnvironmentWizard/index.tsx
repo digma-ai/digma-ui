@@ -195,23 +195,31 @@ export const CreateEnvironmentWizard = ({
     return stepIndex === currentStep;
   };
 
+  const handleGoBack = () => {
+    const nextStep = getBackStep();
+    if (nextStep === -1) {
+      return;
+    }
+    handleGoToStep(nextStep);
+  };
+
+  const handleCancel = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.CANCEL_BUTTON_CLICKED_ON_ENVIRONMENT_CREATION_WIZARD
+    );
+    onClose(null);
+  };
+
+  const handleGoToEnvironment = () => {
+    onClose(newEnvironment.id);
+  };
+
   return (
     <s.Container>
       <CreateEnvironmentPanel
         backDisabled={currentStep === 0 || getBackStep() === -1 || completed}
-        onBack={() => {
-          const nextStep = getBackStep();
-          if (nextStep === -1) {
-            return;
-          }
-          handleGoToStep(nextStep);
-        }}
-        onCancel={() => {
-          sendUserActionTrackingEvent(
-            trackingEvents.CANCEL_BUTTON_CLICKED_ON_ENVIRONMENT_CREATION_WIZARD
-          );
-          onClose(null);
-        }}
+        onBack={handleGoBack}
+        onCancel={handleCancel}
         cancelDisabled={completed}
         tabs={getSteps().map((step, index) => ({
           name: step.name,
@@ -260,11 +268,7 @@ export const CreateEnvironmentWizard = ({
           </>
         ) : (
           <s.Step key={"finish"} $isVisible={completed}>
-            <EnvironmentCreated
-              goToEnvironment={() => {
-                onClose(newEnvironment.id);
-              }}
-            />
+            <EnvironmentCreated goToEnvironment={handleGoToEnvironment} />
           </s.Step>
         )}
         {errors.length > 0 && <ErrorsPanel errors={errors} />}

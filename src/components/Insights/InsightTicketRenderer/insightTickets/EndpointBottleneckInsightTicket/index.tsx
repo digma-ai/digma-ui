@@ -16,22 +16,16 @@ import type { InsightTicketProps } from "../types";
 
 export const EndpointBottleneckInsightTicket = ({
   data,
-  refreshInsights,
   onClose
 }: InsightTicketProps<EndpointBottleneckInsight>) => {
   const span = data.insight.span;
 
-  const {
-    commitInfos,
-    isLoading,
-    spanInsight,
-    onReloadSpanInsight,
-    codeLocations
-  } = useEndpointDataSource<SpanEndpointBottleneckInsight>(
-    span?.spanInfo || null,
-    InsightType.SpanEndpointBottleneck,
-    data.insight.environment
-  );
+  const { commitInfos, isLoading, spanInsight, codeLocations } =
+    useEndpointDataSource<SpanEndpointBottleneckInsight>(
+      span?.spanInfo || null,
+      InsightType.SpanEndpointBottleneck,
+      data.insight.environment
+    );
 
   const services = [
     ...new Set(
@@ -83,9 +77,7 @@ export const EndpointBottleneckInsightTicket = ({
       }}
       insight={data.insight}
       relatedInsight={spanInsight}
-      onReloadSpanInsight={onReloadSpanInsight}
       onClose={onClose}
-      refreshInsights={refreshInsights}
     />
   );
 };

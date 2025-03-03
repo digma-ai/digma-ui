@@ -1,8 +1,11 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { NOT_SUPPORTED_IN_SANDBOX_MODE_MESSAGE } from "../../../../../../../../constants";
-import { dispatcher } from "../../../../../../../../dispatcher";
 import { usePrevious } from "../../../../../../../../hooks/usePrevious";
 import { platform } from "../../../../../../../../platform";
+import {
+  useMarkInsightReadMutation,
+  useRecheckInsightMutation
+} from "../../../../../../../../redux/services/digma";
 import { useConfigSelector } from "../../../../../../../../store/config/useConfigSelector";
 import { isString } from "../../../../../../../../typeGuards/isString";
 import { openURLInDefaultBrowser } from "../../../../../../../../utils/actions/openURLInDefaultBrowser";
@@ -21,7 +24,6 @@ import { QuestionMarkIcon } from "../../../../../../../common/icons/16px/Questio
 import { RecheckIcon } from "../../../../../../../common/icons/16px/RecheckIcon";
 import { JiraButton } from "../../../../../../../common/v3/JiraButton";
 import { Tooltip } from "../../../../../../../common/v3/Tooltip";
-import { actions } from "../../../../../../actions";
 import { trackingEvents } from "../../../../../../tracking";
 import { isEndpointInsight, isSpanInsight } from "../../../../../../typeGuards";
 import { InsightStatus } from "../../../../../../types";
@@ -33,16 +35,13 @@ import { InsightsInfo } from "./InsightsInfo";
 import { ProductionAffectionBar } from "./ProductionAffectionBar";
 import { RecalculateBar } from "./RecalculateBar";
 import { useDismissal } from "./hooks/useDismissal";
-import { useMarkingAsRead } from "./hooks/useMarkingAsRead";
 import * as s from "./styles";
-import type { Action, InsightCardProps, RecalculateResponse } from "./types";
+import type { Action, InsightCardProps } from "./types";
 
 const HIGH_CRITICALITY_THRESHOLD = 0.8;
 
 export const InsightCard = ({
   insight,
-  onRefresh,
-  onRecalculate,
   onOpenHistogram,
   onGoToSpan,
   onJiraButtonClick,
@@ -68,18 +67,13 @@ export const InsightCard = ({
     data: dismissalData
   } = useDismissal(insight.id);
   const previousDismissalData = usePrevious(dismissalData);
-  const { isMarkingAsReadInProgress, markAsRead } = useMarkingAsRead(
-    insight.id
-  );
-  const previousIsMarkingAsReadInProgress = usePrevious(
-    isMarkingAsReadInProgress
-  );
+  const [markRead, markReadResult] = useMarkInsightReadMutation();
+  const [recheck] = useRecheckInsightMutation();
   const {
     isJaegerEnabled,
     areInsightSuggestionsEnabled,
     isSandboxModeEnabled
   } = useConfigSelector();
-  const [insightStatus, setInsightStatus] = useState(insight.status);
   const cardRef = useRef<HTMLDivElement>(null);
   const [showInfo, setShowInfo] = useState(false);
   const [isIdeSandboxTooltipVisible, setIsIdeSandboxTooltipVisible] =
@@ -87,45 +81,6 @@ export const InsightCard = ({
 
   const isCritical = insight.criticality > HIGH_CRITICALITY_THRESHOLD;
 
-  // reset internal state after recalculate
-  useEffect(() => {
-    setInsightStatus(insight.status);
-  }, [insight.status]);
-
-  useEffect(() => {
-    const handleRecalculatedSet = (data: unknown) => {
-      const recalculateResponse = data as RecalculateResponse;
-      if (recalculateResponse && insight.id === recalculateResponse.insightId) {
-        setInsightStatus(InsightStatus.InEvaluation);
-        onRefresh(insight.type);
-      }
-    };
-
-    dispatcher.addActionListener(
-      actions.SET_RECALCULATED,
-      handleRecalculatedSet
-    );
-
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_RECALCULATED,
-        handleRecalculatedSet
-      );
-    };
-  }, [insight.id, insight.type, onRefresh]);
-
-  useEffect(() => {
-    if (previousIsMarkingAsReadInProgress && !isMarkingAsReadInProgress) {
-      onRefresh(insight.type);
-    }
-  }, [
-    previousIsMarkingAsReadInProgress,
-    isMarkingAsReadInProgress,
-    onRefresh,
-    insight.type
-  ]);
-
-  // TODO: replace with RTK query cache invalidation (via tags)
   useEffect(() => {
     if (
       previousDismissalData !== dismissalData &&
@@ -136,9 +91,11 @@ export const InsightCard = ({
   }, [dismissalData, previousDismissalData, onDismissalChange]);
 
   const handleRecheckButtonClick = () => {
-    if (onRecalculate) {
-      onRecalculate(insight.id);
-    }
+    void recheck({
+      environment: insight.environment,
+      id: insight.id,
+      time: new Date().toISOString()
+    });
   };
 
   const handleIdeButtonClick = () => {
@@ -181,7 +138,7 @@ export const InsightCard = ({
 
     return {
       showTimer: areStartTimesEqual,
-      showBanner: insightStatus === InsightStatus.InEvaluation
+      showBanner: insight.status === InsightStatus.InEvaluation
     };
   };
 
@@ -228,6 +185,12 @@ export const InsightCard = ({
     }
   };
 
+  const markAsRead = () => {
+    void markRead({
+      insightIds: [insight.id]
+    });
+  };
+
   const handleMarkAsReadButtonClick = () => {
     sendUserActionTrackingEvent(
       trackingEvents.INSIGHT_CARD_MARK_AS_READ_BUTTON_CLICKED,
@@ -264,11 +227,53 @@ export const InsightCard = ({
     if (
       !isMarkAsReadButtonEnabled &&
       insight.isReadable &&
-      insight.isRead === false &&
-      platform !== "Web"
+      insight.isRead === false
     ) {
       markAsRead();
     }
+  };
+
+  const handleTicketMenuItemClick = () => {
+    openTicketInfo(
+      jiraTicketInfo?.spanCodeObjectId,
+      "ticket menu item clicked"
+    );
+  };
+
+  const handleP50TraceButtonClick = () => {
+    if (onGoToP50Trace) {
+      onGoToP50Trace();
+    }
+  };
+
+  const handleP95TraceButtonClick = () => {
+    if (onGoToP95Trace) {
+      onGoToP95Trace();
+    }
+  };
+
+  const handleTraceButtonClick = () => {
+    if (onGoToTrace) {
+      onGoToTrace();
+    }
+  };
+
+  const handleLiveButtonClick = () => {
+    if (onGoToLive) {
+      onGoToLive();
+    }
+  };
+
+  const handlePinButtonClick = () => {
+    // TODO: implement
+  };
+
+  const handleInfoCloseButtonClick = () => {
+    setShowInfo(false);
+  };
+
+  const handleInfoButtonClick = () => {
+    setShowInfo(!showInfo);
   };
 
   const handleSuggestionButtonClick = () => {
@@ -286,14 +291,9 @@ export const InsightCard = ({
         onGoToTrace={onGoToTrace}
         onDismiss={dismiss}
         onShow={show}
-        onRecheck={() => onRecalculate(insight.id)}
+        onRecheck={handleRecheckButtonClick}
         onMarkAsRead={markAsRead}
-        onTicketOpen={() =>
-          openTicketInfo(
-            jiraTicketInfo?.spanCodeObjectId,
-            "ticket menu item clicked"
-          )
-        }
+        onTicketOpen={handleTicketMenuItemClick}
         isCritical={isCritical}
       />
     );
@@ -309,7 +309,7 @@ export const InsightCard = ({
             icon={CheckmarkCircleIcon}
             label={"Mark as read"}
             title={"Mark as read"}
-            isDisabled={isMarkingAsReadInProgress}
+            isDisabled={markReadResult.isLoading}
             onClick={handleMarkAsReadButtonClick}
           />
         );
@@ -378,7 +378,7 @@ export const InsightCard = ({
             )}
             label={"Trace"}
             title={"Open Median Trace"}
-            onClick={() => onGoToP50Trace && onGoToP50Trace()}
+            onClick={handleP50TraceButtonClick}
           />
         );
       case "openP95Trace":
@@ -393,7 +393,7 @@ export const InsightCard = ({
             )}
             label={"Trace"}
             title={"Open %5 Trace"}
-            onClick={() => onGoToP95Trace && onGoToP95Trace()}
+            onClick={handleP95TraceButtonClick}
           />
         );
       case "openTrace":
@@ -403,7 +403,7 @@ export const InsightCard = ({
             icon={TraceIcon}
             label={"Trace"}
             title={"Open Trace"}
-            onClick={() => onGoToTrace && onGoToTrace()}
+            onClick={handleTraceButtonClick}
           />
         );
       case "openLiveView":
@@ -413,7 +413,7 @@ export const InsightCard = ({
             icon={DoubleCircleIcon}
             label={"Live"}
             title={"Open live view"}
-            onClick={() => onGoToLive && onGoToLive()}
+            onClick={handleLiveButtonClick}
           />
         );
       case "pin":
@@ -423,12 +423,7 @@ export const InsightCard = ({
             icon={PinIcon}
             label={"Pin"}
             title={"Pin"}
-            onClick={() =>
-              // TODO: implement
-              {
-                return undefined;
-              }
-            }
+            onClick={handlePinButtonClick}
           />
         );
       case "info":
@@ -437,16 +432,12 @@ export const InsightCard = ({
             isOpen={showInfo}
             description={insightTypeInfo?.description}
             documentationLink={insightTypeInfo?.documentationLink}
-            onClose={() => {
-              setShowInfo(false);
-            }}
+            onClose={handleInfoCloseButtonClick}
           >
             <s.InfoActionButton
               icon={QuestionMarkIcon}
               buttonType={"secondaryBorderless"}
-              onClick={() => {
-                setShowInfo(!showInfo);
-              }}
+              onClick={handleInfoButtonClick}
             />
           </InsightsInfo>
         );
@@ -482,7 +473,7 @@ export const InsightCard = ({
       actions.push("openHistogram");
     }
 
-    if (insight.isRecalculateEnabled && platform !== "Web") {
+    if (insight.isRecalculateEnabled) {
       actions.push("recheck");
     }
 

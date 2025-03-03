@@ -23,7 +23,6 @@ import type { InsightTicketProps } from "../types";
 
 export const SpanScalingByRootCauseInsightTicket = ({
   data,
-  refreshInsights,
   onClose,
   rootCauseSpanInfo,
   backendInfo
@@ -34,17 +33,12 @@ export const SpanScalingByRootCauseInsightTicket = ({
 
   const spanInfo = rootCauseSpanInfo;
 
-  const {
-    commitInfos,
-    spanInsight,
-    isLoading,
-    codeLocations,
-    onReloadSpanInsight
-  } = useEndpointDataSource<SpanScalingInsight>(
-    spanInfo,
-    InsightType.SpanScaling,
-    data.insight.environment
-  );
+  const { commitInfos, spanInsight, isLoading, codeLocations } =
+    useEndpointDataSource<SpanScalingInsight>(
+      spanInfo,
+      InsightType.SpanScaling,
+      data.insight.environment
+    );
 
   const renderDescription = () => {
     return (
@@ -116,8 +110,6 @@ export const SpanScalingByRootCauseInsightTicket = ({
       insight={data.insight}
       relatedInsight={spanInsight}
       onClose={onClose}
-      onReloadSpanInsight={onReloadSpanInsight}
-      refreshInsights={refreshInsights}
     />
   );
 };

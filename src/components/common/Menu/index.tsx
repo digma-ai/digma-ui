@@ -1,9 +1,13 @@
 import * as s from "./styles";
-import type { MenuProps } from "./types";
+import type { MenuItem, MenuProps } from "./types";
 
 export const Menu = ({ onSelect, title, width, items }: MenuProps) => {
-  const handleMenuItemClick = (value: string) => {
-    onSelect(value);
+  const handleMenuItemClick = (item: MenuItem) => () => {
+    if (item.onClick) {
+      item.onClick(item.value);
+    } else {
+      onSelect(item.value);
+    }
   };
 
   return (
@@ -11,14 +15,7 @@ export const Menu = ({ onSelect, title, width, items }: MenuProps) => {
       {title && <s.Header>{title}</s.Header>}
       <s.List width={width}>
         {items.map((item) => (
-          <s.ListItem
-            key={item.value}
-            onClick={() =>
-              item.onClick
-                ? item.onClick(item.value)
-                : handleMenuItemClick(item.value)
-            }
-          >
+          <s.ListItem key={item.value} onClick={handleMenuItemClick(item)}>
             {item.icon && (
               <item.icon.component
                 size={item.icon.size ?? 14}

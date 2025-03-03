@@ -110,11 +110,11 @@ export const RecentActivityTable = ({
   headerHeight
 }: RecentActivityTableProps) => {
   const { backendInfo } = useConfigSelector();
-  const handleSpanLinkClick = (span: EntrySpan) => {
+  const handleSpanLinkClick = (span: EntrySpan) => () => {
     onSpanLinkClick(span);
   };
 
-  const handleTraceButtonClick = (traceId: string, span: EntrySpan) => {
+  const handleTraceButtonClick = (traceId: string, span: EntrySpan) => () => {
     onTraceButtonClick(traceId, span);
   };
 
@@ -126,11 +126,7 @@ export const RecentActivityTable = ({
   const renderSpanLink = (span: EntrySpan) => (
     <s.SpanLinkContainer>
       <Tooltip title={span.displayText}>
-        <s.SpanLink
-          onClick={() => {
-            handleSpanLinkClick(span);
-          }}
-        >
+        <s.SpanLink onClick={handleSpanLinkClick(span)}>
           {span.displayText}
         </s.SpanLink>
       </Tooltip>
@@ -147,9 +143,10 @@ export const RecentActivityTable = ({
 
   const renderTraceButton = (entry: ActivityEntry) => (
     <NewButton
-      onClick={() => {
-        handleTraceButtonClick(entry.latestTraceId, entry.firstEntrySpan);
-      }}
+      onClick={handleTraceButtonClick(
+        entry.latestTraceId,
+        entry.firstEntrySpan
+      )}
       icon={TraceIcon}
       label={"Trace"}
     />
