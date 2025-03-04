@@ -398,6 +398,8 @@ export const CodeIssues = () => {
         onViewModeChange={handleViewModeChange}
         onSelectedServiceChange={handleSelectedServiceChange}
         activeTileIds={activeTileIds}
+        showEnvironmentSelect={false}
+        showServicesSelect={false}
       />
       <IssuesSidebarOverlay
         isSidebarOpen={isIssuesSidebarOpen}
