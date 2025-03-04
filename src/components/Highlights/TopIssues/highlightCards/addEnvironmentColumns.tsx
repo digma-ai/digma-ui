@@ -1,7 +1,7 @@
 import type { ColumnDef, ColumnHelper } from "@tanstack/react-table";
+import type { EnvironmentData } from "../../../../redux/services/types";
 import { EnvironmentName } from "../../common/EnvironmentName";
 import { TableInsightStatusBadge } from "../../common/TableInsightStatusBadge";
-import type { EnvironmentData } from "../types";
 
 export const addEnvironmentColumns = <T,>(
   columnHelper: ColumnHelper<EnvironmentData<T>>,

@@ -34,7 +34,7 @@ export const CursorFollower = ({ children }: CursorFollowerProps) => {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  });
+  }, []);
 
   return (
     <div style={{ perspective: PERSPECTIVE }}>

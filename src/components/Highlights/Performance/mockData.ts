@@ -1,6 +1,6 @@
-import type { PerformanceData } from "./types";
+import type { GetPerformanceHighlightsResponse } from "../../../redux/services/types";
 
-export const mockedPerformanceData: PerformanceData = {
+export const mockedPerformanceData: GetPerformanceHighlightsResponse = {
   performance: [
     {
       environment: {

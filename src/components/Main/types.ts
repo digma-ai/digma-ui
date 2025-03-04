@@ -1,10 +1,3 @@
-export interface GetHighlightsTopIssuesDataPayload {
-  query: {
-    scopedCodeObjectId: string | null;
-    environments: string[];
-  };
-}
-
 export interface LoginPayload {
   email: string;
   password: string;
