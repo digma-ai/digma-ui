@@ -1,14 +1,13 @@
 import { createSlice } from "zustand-slices";
-import type {
-  AssetsData,
-  Sorting
-} from "../../components/Assets/AssetList/types";
-import {
-  SORTING_CRITERION,
-  SORTING_ORDER
-} from "../../components/Assets/AssetList/types";
 import type { AssetCategoriesData } from "../../components/Assets/AssetTypeList/types";
 import type { ViewMode } from "../../components/Assets/AssetsViewScopeConfiguration/types";
+import type { AssetsData } from "../../redux/services/types";
+import { SORTING_CRITERION, SORTING_ORDER } from "../../redux/services/types";
+
+export interface Sorting {
+  criterion: SORTING_CRITERION;
+  order: SORTING_ORDER;
+}
 
 export interface AssetsFilters {
   services: string[];

@@ -1,4 +1,4 @@
-import type { Duration } from "../../../../globals";
+import type { Duration } from "../../../../redux/services/types";
 
 export interface SlowQueryEntry {
   spanCodeObjectId: string;

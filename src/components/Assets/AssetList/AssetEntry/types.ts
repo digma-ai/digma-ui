@@ -1,4 +1,7 @@
-import type { AssetEntry, SORTING_CRITERION } from "../types";
+import type {
+  AssetEntry,
+  SORTING_CRITERION
+} from "../../../../redux/services/types";
 
 export interface AssetEntryProps {
   entry: AssetEntry;

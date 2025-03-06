@@ -1,4 +1,4 @@
-import type { SpanInfo } from "../../../../../types";
+import type { SpanInfo } from "../../../../../redux/services/types";
 
 export interface AssetLinkProps {
   asset: SpanInfo;

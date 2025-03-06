@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePagination } from "../../../hooks/usePagination";
 import {
-  useGetAboutQuery,
   useGetTopIssuesHighlightsQuery,
   useGetTopIssuesHighlightsV2Query
 } from "../../../redux/services/digma";
@@ -20,13 +19,11 @@ import { HighlightCardRenderer } from "./HighlightCardRenderer";
 const PAGE_SIZE = 2;
 
 export const TopIssues = () => {
-  const { scope, environments } = useConfigSelector();
-
-  const { data: about } = useGetAboutQuery();
+  const { scope, environments, backendInfo } = useConfigSelector();
 
   const areImpactHighlightsEnabled = Boolean(
-    about &&
-      getFeatureFlagValue(about, FeatureFlag.IS_HIGHLIGHTS_IMPACT_ENABLED)
+    backendInfo &&
+      getFeatureFlagValue(backendInfo, FeatureFlag.IS_HIGHLIGHTS_IMPACT_ENABLED)
   );
 
   const { data: dataV1 } = useGetTopIssuesHighlightsQuery(
@@ -36,7 +33,7 @@ export const TopIssues = () => {
     },
     {
       skip:
-        !about ||
+        !backendInfo ||
         areImpactHighlightsEnabled ||
         !scope?.span?.spanCodeObjectId ||
         !environments ||
@@ -51,7 +48,7 @@ export const TopIssues = () => {
     },
     {
       skip:
-        !about ||
+        !backendInfo ||
         !areImpactHighlightsEnabled ||
         !scope?.span?.spanCodeObjectId ||
         !environments ||

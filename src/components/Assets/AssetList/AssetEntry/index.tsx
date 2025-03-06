@@ -1,4 +1,5 @@
 import { getFeatureFlagValue } from "../../../../featureFlags";
+import { SORTING_CRITERION } from "../../../../redux/services/types";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isString } from "../../../../typeGuards/isString";
@@ -12,7 +13,6 @@ import { Tag } from "../../../common/Tag";
 import { Tooltip } from "../../../common/Tooltip";
 import { GlobeIcon } from "../../../common/icons/GlobeIcon";
 import { getAssetTypeInfo } from "../../utils";
-import { SORTING_CRITERION } from "../types";
 import * as s from "./styles";
 import type { AssetEntryProps } from "./types";
 

@@ -9,7 +9,7 @@ import {
   getCoreRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import type { Duration } from "../../../../../../globals";
+import type { Duration } from "../../../../../../redux/services/types";
 import { formatUnit } from "../../../../../../utils/formatUnit";
 import type { Concurrency } from "../../../../types";
 import * as s from "./styles";

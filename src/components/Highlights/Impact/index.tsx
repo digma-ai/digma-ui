@@ -1,10 +1,7 @@
 import type { Row } from "@tanstack/react-table";
 import { createColumnHelper } from "@tanstack/react-table";
 import { PERFORMANCE_IMPACT_DOCUMENTATION_URL } from "../../../constants";
-import {
-  useGetAboutQuery,
-  useGetImpactHighlightsQuery
-} from "../../../redux/services/digma";
+import { useGetImpactHighlightsQuery } from "../../../redux/services/digma";
 import type { EnvironmentImpactData } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { SCOPE_CHANGE_EVENTS } from "../../../types";
@@ -80,7 +77,7 @@ const getRankTagType = (normalizedRank: number) => {
 export const Impact = () => {
   const { scope, environments } = useConfigSelector();
 
-  const { data: about } = useGetAboutQuery();
+  const { backendInfo } = useConfigSelector();
 
   const { data } = useGetImpactHighlightsQuery(
     {
@@ -89,7 +86,7 @@ export const Impact = () => {
     },
     {
       skip:
-        !about?.isCentralize ||
+        !backendInfo?.centralize ||
         !scope?.span?.spanCodeObjectId ||
         !environments ||
         environments.length === 0
@@ -182,7 +179,7 @@ export const Impact = () => {
       openURLInDefaultBrowser(PERFORMANCE_IMPACT_DOCUMENTATION_URL);
     };
 
-    if (!about?.isCentralize) {
+    if (!backendInfo?.centralize) {
       return (
         <EmptyStateCard
           icon={InfinityIcon}

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import type { InsightType, SpanInfo } from "../../../../../types";
+import type { SpanInfo } from "../../../../../redux/services/types";
+import type { InsightType } from "../../../../../types";
 import type {
   GenericCodeObjectInsight,
   InsightImportance

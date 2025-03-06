@@ -1,4 +1,4 @@
-import type { Duration } from "./globals";
+import type { Duration } from "./redux/services/types";
 
 export enum FeatureFlag {
   IS_HIGHLIGHTS_IMPACT_ENABLED,
@@ -91,16 +91,6 @@ export enum SCOPE_CHANGE_EVENTS {
 }
 
 export type PercentileKey = "p50" | "p95";
-
-export interface SpanInfo {
-  name: string;
-  displayName: string;
-  instrumentationLibrary: string;
-  spanCodeObjectId: string;
-  methodCodeObjectId: string | null;
-  kind: string | null;
-  uid?: string;
-}
 
 export interface SpanInstanceInfo {
   traceId: string;

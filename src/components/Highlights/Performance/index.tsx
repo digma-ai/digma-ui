@@ -3,7 +3,6 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import {
-  useGetAboutQuery,
   useGetPerformanceHighlightsQuery,
   useGetPerformanceHighlightsV2Query
 } from "../../../redux/services/digma";
@@ -28,13 +27,11 @@ import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 
 export const Performance = () => {
-  const { scope, environments } = useConfigSelector();
-
-  const { data: about } = useGetAboutQuery();
+  const { scope, environments, backendInfo } = useConfigSelector();
 
   const areImpactHighlightsEnabled = Boolean(
-    about &&
-      getFeatureFlagValue(about, FeatureFlag.IS_HIGHLIGHTS_IMPACT_ENABLED)
+    backendInfo &&
+      getFeatureFlagValue(backendInfo, FeatureFlag.IS_HIGHLIGHTS_IMPACT_ENABLED)
   );
 
   const payload = useMemo(
@@ -47,7 +44,7 @@ export const Performance = () => {
 
   const { data: dataV1 } = useGetPerformanceHighlightsQuery(payload, {
     skip:
-      !about ||
+      !backendInfo ||
       areImpactHighlightsEnabled ||
       !scope?.span?.spanCodeObjectId ||
       !environments ||
@@ -56,7 +53,7 @@ export const Performance = () => {
 
   const { data: dataV2 } = useGetPerformanceHighlightsV2Query(payload, {
     skip:
-      !about ||
+      !backendInfo ||
       !areImpactHighlightsEnabled ||
       !scope?.span?.spanCodeObjectId ||
       !environments ||

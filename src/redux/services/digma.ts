@@ -7,6 +7,12 @@ import type {
   ExtendedGetInsightsStatsResponse,
   ExtendedGetSpanEnvironmentsResponse,
   GetAboutResponse,
+  GetAssetsCategoriesPayload,
+  GetAssetsCategoriesResponse,
+  GetAssetsFiltersPayload,
+  GetAssetsFiltersResponse,
+  GetAssetsPayload,
+  GetAssetsResponse,
   GetEndpointsIssuesPayload,
   GetEnvironmentServicesPayload,
   GetEnvironmentServicesResponse,
@@ -69,6 +75,30 @@ export const digmaApi = createApi({
   endpoints: (builder) => ({
     getAbout: builder.query<GetAboutResponse, void>({
       query: () => "About"
+    }),
+    getAssetsFilters: builder.query<
+      GetAssetsFiltersResponse,
+      GetAssetsFiltersPayload
+    >({
+      query: (data) => ({
+        url: `/Assets/get_filter`,
+        params: data
+      })
+    }),
+    getAssetsCategories: builder.query<
+      GetAssetsCategoriesResponse,
+      GetAssetsCategoriesPayload
+    >({
+      query: (data) => ({
+        url: `/Assets/get_categories`,
+        params: data
+      })
+    }),
+    getAssets: builder.query<GetAssetsResponse, GetAssetsPayload>({
+      query: (data) => ({
+        url: `/Assets/get_assets`,
+        params: data
+      })
     }),
     getUserProfile: builder.query<GetUserProfileResponse, void>({
       query: () => "Authentication/logged-in-user"
@@ -361,6 +391,9 @@ export const digmaApi = createApi({
 
 export const {
   useGetAboutQuery,
+  useGetAssetsCategoriesQuery,
+  useGetAssetsFiltersQuery,
+  useGetAssetsQuery,
   useGetUserProfileQuery,
   useGetSpanCodeLocationsQuery,
   useGetSpanInsightQuery,

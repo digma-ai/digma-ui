@@ -4,6 +4,13 @@ import { useTheme } from "styled-components";
 import type { DataFetcherConfiguration } from "../../../hooks/useFetchData";
 import { useFetchData } from "../../../hooks/useFetchData";
 import { useMount } from "../../../hooks/useMount";
+import {
+  type AssetEntry,
+  type AssetsData,
+  type GetAssetsListDataPayload,
+  SORTING_CRITERION,
+  SORTING_ORDER
+} from "../../../redux/services/types";
 import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useStore } from "../../../store/useStore";
@@ -24,13 +31,7 @@ import { trackingEvents } from "../tracking";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
 import * as s from "./styles";
-import type {
-  AssetEntry,
-  AssetListProps,
-  AssetsData,
-  GetAssetsListDataPayload
-} from "./types";
-import { SORTING_CRITERION, SORTING_ORDER } from "./types";
+import type { AssetListProps } from "./types";
 
 const PAGE_SIZE = 10;
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds

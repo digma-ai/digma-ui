@@ -1,4 +1,4 @@
-import type { AssetsData } from "./types";
+import type { AssetsData } from "../../../redux/services/types";
 
 export const mockedAssetsData: AssetsData = {
   data: [
