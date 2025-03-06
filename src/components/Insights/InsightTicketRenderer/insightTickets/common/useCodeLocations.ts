@@ -95,9 +95,12 @@ export const useCodeLocations = (
   }, [spanInfo, setIsLoading]);
 
   return {
-    isLoading: platform === "Web" ? areCodeLocationsLoading : isLoading,
+    isLoading:
+      platform && ["Web", "Visual Studio"].includes(platform)
+        ? areCodeLocationsLoading
+        : isLoading,
     codeLocations:
-      platform === "Web"
+      platform && ["Web", "Visual Studio"].includes(platform)
         ? getCodeLocations(data, spanInfo?.methodCodeObjectId)
         : codeLocations
   };
