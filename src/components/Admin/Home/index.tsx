@@ -9,6 +9,7 @@ import {
   setSelectedEnvironmentId,
   setSelectedServices
 } from "../../../redux/slices/issuesReportSlice";
+import { SORTING_CRITERION } from "../../Insights/InsightsCatalog/types";
 import { IssuesSidebarOverlay } from "../common/IssuesSidebarOverlay";
 import type { IssuesSidebarQuery } from "../common/IssuesSidebarOverlay/types";
 import { Environments } from "./Environments";
@@ -40,7 +41,7 @@ export const Home = () => {
       "top-criticality": {
         query: {
           environment: environmentId ?? undefined,
-          sortBy: "criticality",
+          sortBy: SORTING_CRITERION.CRITICALITY,
           services: selectedServices
         },
         limit: ISSUES_LIMIT,
@@ -49,7 +50,7 @@ export const Home = () => {
       "top-severity": {
         query: {
           environment: environmentId ?? undefined,
-          sortBy: "severity",
+          sortBy: SORTING_CRITERION.SEVERITY,
           services: selectedServices
         },
         limit: ISSUES_LIMIT,

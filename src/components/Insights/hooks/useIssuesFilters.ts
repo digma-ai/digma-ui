@@ -57,18 +57,28 @@ export const useIssuesFilters = () => {
       )
   );
 
-  const query: GetIssuesFiltersPayload = useMemo(
-    () => ({
-      displayName: search,
-      filters: [
+  const queryFilters = useMemo(
+    () =>
+      [
         ...(!isCriticalityLevelsFilterEnabled && filters.includes("criticality")
           ? ["criticality"]
           : []),
         ...(filters.includes("unread") ? ["unread"] : [])
       ] as InsightFilterType[],
-      insightTypes: filteredInsightTypes,
+    [isCriticalityLevelsFilterEnabled, filters]
+  );
+
+  const query: GetIssuesFiltersPayload = useMemo(
+    () => ({
+      displayName: search.length > 0 ? search : undefined,
+      filters: queryFilters.length > 0 ? queryFilters : undefined,
+      insightTypes:
+        filteredInsightTypes.length > 0 ? filteredInsightTypes : undefined,
       showDismissed: viewMode === ViewMode.OnlyDismissed,
-      services: selectedServices ?? undefined,
+      services:
+        selectedServices && selectedServices.length > 0
+          ? selectedServices
+          : undefined,
       environment: environmentId,
       scopedSpanCodeObjectId: spanCodeObjectId,
       ...(isCriticalityLevelsFilterEnabled
@@ -77,7 +87,7 @@ export const useIssuesFilters = () => {
     }),
     [
       search,
-      filters,
+      queryFilters,
       filteredInsightTypes,
       viewMode,
       spanCodeObjectId,

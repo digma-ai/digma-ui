@@ -9,13 +9,15 @@ import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../store/useStore";
 import { FeatureFlag } from "../../../types";
-import { ViewMode } from "../InsightsCatalog/types";
-import { useGetInsightsStats } from "./useGetInsightsStats";
+import { SORTING_ORDER } from "../../common/SortingSelector/types";
+import { SORTING_CRITERION, ViewMode } from "../InsightsCatalog/types";
+import { useInsightsStats } from "./useInsightsStats";
 
 interface UseInsightsDataProps {
   areFiltersRehydrated: boolean;
 }
 
+export const PAGE_SIZE = 10;
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 export const useInsightsData = ({
@@ -40,14 +42,14 @@ export const useInsightsData = ({
   const { setInsightsData: setData, setIsInsightsDataLoading: setIsLoading } =
     useStore.getState();
   const isInitialLoading = !data && isLoading;
-  const { refresh: refreshInsightStats } = useGetInsightsStats();
+  const { refresh: refreshInsightStats } = useInsightsStats();
   const environmentId = environment?.id;
+  const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
 
   const filteredServices = useMemo(
-    () => selectedServices ?? [],
-    [selectedServices]
+    () => (spanCodeObjectId ? [] : selectedServices ?? []),
+    [selectedServices, spanCodeObjectId]
   );
-  const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
   const filteredInsightTypes = spanCodeObjectId
     ? filteredInsightTypesInSpanScope
     : filteredInsightTypesInGlobalScope;
@@ -102,15 +104,33 @@ export const useInsightsData = ({
   } = useGetInsightsQuery(
     {
       data: {
-        displayName: search,
+        displayName: search.length > 0 ? search : undefined,
         page,
-        sortBy: sorting.criterion,
-        sortOrder: sorting.order,
-        filters,
-        showDismissed,
+        pageSize: PAGE_SIZE,
         scopedSpanCodeObjectId: spanCodeObjectId ?? undefined,
-        showUnreadOnly: filters.length === 1 && filters[0] === "unread",
-        environment: environmentId
+        environment: environmentId,
+        ...(insightViewType === "Issues"
+          ? {
+              filters: filters.length > 0 ? filters : undefined,
+              showDismissed,
+              // TODO: check if this field needed
+              showUnreadOnly: filters.length === 1 && filters[0] === "unread",
+              showDismissedOnly: viewMode === ViewMode.OnlyDismissed,
+              services:
+                filteredServices.length > 0
+                  ? filteredServices.join(",")
+                  : undefined,
+              insights:
+                filteredInsightTypes.length > 0
+                  ? filteredInsightTypes.join(",")
+                  : undefined,
+              sortBy: sorting.criterion as SORTING_CRITERION,
+              sortOrder: sorting.order
+            }
+          : {
+              sortBy: SORTING_CRITERION.CRITICALITY,
+              sortOrder: SORTING_ORDER.DESC
+            })
       },
       extra: {
         insightViewType: insightViewType ?? undefined
@@ -128,9 +148,10 @@ export const useInsightsData = ({
     isUninitialized: areIssuesUninitialized
   } = useGetIssuesQuery(
     {
-      displayName: search,
+      displayName: search.length > 0 ? search : undefined,
       page,
-      sortBy: sorting.criterion,
+      pageSize: PAGE_SIZE,
+      sortBy: sorting.criterion as SORTING_CRITERION,
       sortOrder: sorting.order,
       filters: isCriticalityLevelsFilterEnabled
         ? filters.filter((x) => x !== "criticality")
