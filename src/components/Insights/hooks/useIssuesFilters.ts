@@ -81,9 +81,10 @@ export const useIssuesFilters = () => {
           : undefined,
       environment: environmentId,
       scopedSpanCodeObjectId: spanCodeObjectId,
-      ...(isCriticalityLevelsFilterEnabled
-        ? { criticalityFilter: filteredCriticalityLevels }
-        : {})
+      criticalityFilter:
+        isCriticalityLevelsFilterEnabled && filteredCriticalityLevels.length > 0
+          ? filteredCriticalityLevels
+          : undefined
     }),
     [
       search,

@@ -140,9 +140,24 @@ export const InsightsCatalog = ({
 
   const isIssuesView = insightViewType === "Issues";
 
+  const isCriticalityLevelsFilterEnabled = Boolean(
+    backendInfo &&
+      getFeatureFlagValue(
+        backendInfo,
+        FeatureFlag.IS_ISSUES_CRITICALITY_LEVELS_FILTER_ENABLED
+      )
+  );
+
   const appliedFilterCount =
     (isIssuesView
-      ? filters.length +
+      ? (filters.includes("unread") ? 1 : 0) +
+        (isCriticalityLevelsFilterEnabled
+          ? filteredCriticalityLevels.length > 0
+            ? 1
+            : 0
+          : filters.includes("criticality")
+          ? 1
+          : 0) +
         (filteredInsightTypes.length > 0 ? 1 : 0) +
         (isServicesFilterEnabled &&
         selectedServices &&
@@ -175,13 +190,7 @@ export const InsightsCatalog = ({
     isIssuesView && data && (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
   const isMarkingAsReadOptionsEnabled =
     isIssuesView && isNumber(unreadCount) && unreadCount > 0;
-  const isCriticalityLevelsFilterEnabled = Boolean(
-    backendInfo &&
-      getFeatureFlagValue(
-        backendInfo,
-        FeatureFlag.IS_ISSUES_CRITICALITY_LEVELS_FILTER_ENABLED
-      )
-  );
+
   const isUnreadOnlyViewMode = isShowUnreadOnly(filters);
   const isCriticalOnlyViewMode = isShowCriticalOnly(
     filters,
