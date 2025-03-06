@@ -81,10 +81,6 @@ export const useCodeLocations = (
   }, [setIsLoading]);
 
   useEffect(() => {
-    if (platform !== "JetBrains") {
-      return;
-    }
-
     const spanCodeObjectId = spanInfo?.spanCodeObjectId;
     const methodCodeObjectId = spanInfo?.methodCodeObjectId ?? undefined;
 
