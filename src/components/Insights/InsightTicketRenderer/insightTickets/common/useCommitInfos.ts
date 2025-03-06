@@ -34,6 +34,10 @@ export const useCommitInfos = <T extends GenericCodeObjectInsight>(
   }, [setIsLoading]);
 
   useEffect(() => {
+    if (platform !== "JetBrains") {
+      return;
+    }
+
     const commits = getInsightCommits(insight);
     if (insight && commits.length > 0) {
       setIsLoading(true);
@@ -47,7 +51,7 @@ export const useCommitInfos = <T extends GenericCodeObjectInsight>(
   }, [insight, setIsLoading]);
 
   return {
-    isLoading: platform === "Web" ? false : isLoading,
+    isLoading,
     commitInfos
   };
 };

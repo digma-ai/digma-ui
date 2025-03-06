@@ -240,6 +240,7 @@ export const InsightsPage = ({
               insight={insight}
               onJiraTicketCreate={handleShowJiraTicket}
               isJiraHintEnabled={
+                platform !== "Visual Studio" &&
                 !isUndefined(isInsightJiraTicketHintShown) &&
                 !isInsightJiraTicketHintShown?.value &&
                 j === insightIndexWithJiraHint

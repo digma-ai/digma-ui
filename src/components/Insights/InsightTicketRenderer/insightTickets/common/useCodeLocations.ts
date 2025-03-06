@@ -81,6 +81,10 @@ export const useCodeLocations = (
   }, [setIsLoading]);
 
   useEffect(() => {
+    if (platform !== "JetBrains") {
+      return;
+    }
+
     const spanCodeObjectId = spanInfo?.spanCodeObjectId;
     const methodCodeObjectId = spanInfo?.methodCodeObjectId ?? undefined;
 
@@ -95,13 +99,10 @@ export const useCodeLocations = (
   }, [spanInfo, setIsLoading]);
 
   return {
-    isLoading:
-      platform && ["Web", "Visual Studio"].includes(platform)
-        ? areCodeLocationsLoading
-        : isLoading,
+    isLoading: platform === "JetBrains" ? isLoading : areCodeLocationsLoading,
     codeLocations:
-      platform && ["Web", "Visual Studio"].includes(platform)
-        ? getCodeLocations(data, spanInfo?.methodCodeObjectId)
-        : codeLocations
+      platform === "JetBrains"
+        ? codeLocations
+        : getCodeLocations(data, spanInfo?.methodCodeObjectId)
   };
 };
