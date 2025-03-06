@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { actions as globalActions } from "../../../../actions";
 import { usePersistence } from "../../../../hooks/usePersistence";
+import { platform } from "../../../../platform";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../../store/useStore";
@@ -93,7 +94,8 @@ const renderEmptyState = (
   if (
     scope &&
     isNumber(scope.analyticsInsightsCount) &&
-    scope.analyticsInsightsCount > 0
+    scope.analyticsInsightsCount > 0 &&
+    platform !== "Visual Studio"
   ) {
     return (
       <EmptyState
