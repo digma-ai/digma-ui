@@ -197,7 +197,6 @@ export interface GetIssuesPayload {
   pageSize?: number;
 }
 
-// TODO: check how array params should be formatted
 export interface GetIssuesFiltersPayload {
   filters?: InsightFilterType[];
   services?: string[];

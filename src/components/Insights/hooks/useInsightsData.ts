@@ -113,8 +113,6 @@ export const useInsightsData = ({
           ? {
               filters: filters.length > 0 ? filters : undefined,
               showDismissed,
-              // TODO: check if this field needed
-              showUnreadOnly: filters.length === 1 && filters[0] === "unread",
               showDismissedOnly: viewMode === ViewMode.OnlyDismissed,
               services:
                 filteredServices.length > 0
