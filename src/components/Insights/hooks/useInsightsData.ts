@@ -5,12 +5,15 @@ import {
   useGetIssuesQuery,
   useGetSpanEnvironmentsQuery
 } from "../../../redux/services/digma";
+import {
+  INSIGHTS_SORTING_CRITERION,
+  SORTING_ORDER
+} from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../store/useStore";
 import { FeatureFlag } from "../../../types";
-import { SORTING_ORDER } from "../../common/SortingSelector/types";
-import { SORTING_CRITERION, ViewMode } from "../InsightsCatalog/types";
+import { ViewMode } from "../InsightsCatalog/types";
 import { useInsightsStats } from "./useInsightsStats";
 
 interface UseInsightsDataProps {
@@ -122,11 +125,11 @@ export const useInsightsData = ({
                 filteredInsightTypes.length > 0
                   ? filteredInsightTypes.join(",")
                   : undefined,
-              sortBy: sorting.criterion as SORTING_CRITERION,
+              sortBy: sorting.criterion as INSIGHTS_SORTING_CRITERION,
               sortOrder: sorting.order
             }
           : {
-              sortBy: SORTING_CRITERION.CRITICALITY,
+              sortBy: INSIGHTS_SORTING_CRITERION.CRITICALITY,
               sortOrder: SORTING_ORDER.DESC
             })
       },
@@ -149,7 +152,7 @@ export const useInsightsData = ({
       displayName: search.length > 0 ? search : undefined,
       page,
       pageSize: PAGE_SIZE,
-      sortBy: sorting.criterion as SORTING_CRITERION,
+      sortBy: sorting.criterion as INSIGHTS_SORTING_CRITERION,
       sortOrder: sorting.order,
       filters: isCriticalityLevelsFilterEnabled
         ? filters.filter((x) => x !== "criticality")

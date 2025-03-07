@@ -1,5 +1,5 @@
 import { getFeatureFlagValue } from "../../../../featureFlags";
-import { SORTING_CRITERION } from "../../../../redux/services/types";
+import { ASSETS_SORTING_CRITERION } from "../../../../redux/services/types";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isString } from "../../../../typeGuards/isString";
@@ -177,7 +177,8 @@ export const AssetEntry = ({
                 <ImpactScore
                   score={impactScore}
                   showIndicator={
-                    sortingCriterion === SORTING_CRITERION.PERFORMANCE_IMPACT
+                    sortingCriterion ===
+                    ASSETS_SORTING_CRITERION.PERFORMANCE_IMPACT
                   }
                 />
               </s.ValueContainer>

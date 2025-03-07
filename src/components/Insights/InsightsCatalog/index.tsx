@@ -5,7 +5,11 @@ import {
   useGetSpanEnvironmentsQuery,
   useMarkScopeInsightsReadMutation
 } from "../../../redux/services/digma";
-import type { IssueCriticality } from "../../../redux/services/types";
+import {
+  INSIGHTS_SORTING_CRITERION,
+  SORTING_ORDER,
+  type IssueCriticality
+} from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../store/useStore";
@@ -25,7 +29,6 @@ import type {
   Sorting,
   SortingOption
 } from "../../common/SortingSelector/types";
-import { SORTING_ORDER } from "../../common/SortingSelector/types";
 import { NewButton } from "../../common/v3/NewButton";
 import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
@@ -42,7 +45,7 @@ import { InsightsPage } from "./InsightsPage";
 import { PromotionSection } from "./PromotionSection";
 import * as s from "./styles";
 import type { InsightFilterType, InsightsCatalogProps } from "./types";
-import { SORTING_CRITERION, ViewMode } from "./types";
+import { ViewMode } from "./types";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
@@ -52,12 +55,12 @@ const getSortingOptions = (
   if (insightViewType === "Issues") {
     return [
       {
-        value: SORTING_CRITERION.CRITICALITY,
+        value: INSIGHTS_SORTING_CRITERION.CRITICALITY,
         label: "Criticality",
         defaultOrder: SORTING_ORDER.DESC
       },
       {
-        value: SORTING_CRITERION.LATEST,
+        value: INSIGHTS_SORTING_CRITERION.LATEST,
         label: "Latest",
         defaultOrder: SORTING_ORDER.DESC
       }

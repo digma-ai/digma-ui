@@ -4,11 +4,7 @@ import type {
   Environment,
   EnvironmentType
 } from "../../components/common/App/types";
-import type { SORTING_ORDER } from "../../components/common/SortingSelector/types";
-import type {
-  InsightFilterType,
-  SORTING_CRITERION
-} from "../../components/Insights/InsightsCatalog/types";
+import type { InsightFilterType } from "../../components/Insights/InsightsCatalog/types";
 import type {
   GenericCodeObjectInsight,
   InsightStatus,
@@ -89,7 +85,7 @@ export interface GetAssetsCategoriesResponse {
   environments?: AssetsEnvironment[] | null;
 }
 
-export enum SORTING_CRITERION {
+export enum ASSETS_SORTING_CRITERION {
   CRITICAL_INSIGHTS = "criticalinsights",
   PERFORMANCE = "p50",
   SLOWEST_FIVE_PERCENT = "p95",
@@ -107,7 +103,7 @@ export interface GetAssetsPayload extends GetAssetsFiltersPayload {
   assetType: string;
   page?: number;
   pageSize?: number;
-  sortBy?: SORTING_CRITERION;
+  sortBy?: ASSETS_SORTING_CRITERION;
   sortOrder?: SORTING_ORDER;
 }
 
@@ -121,7 +117,7 @@ export interface GetAssetListDataQuery extends AssetFilterQuery {
   assetType: string;
   page: number;
   pageSize: number;
-  sortBy: SORTING_CRITERION;
+  sortBy: ASSETS_SORTING_CRITERION;
   sortOrder: SORTING_ORDER;
 }
 
@@ -522,9 +518,15 @@ export interface GetScalingHighlightsResponse {
   scaling: EnvironmentScalingData[];
 }
 
+export enum INSIGHTS_SORTING_CRITERION {
+  CRITICALITY = "criticality",
+  SEVERITY = "severity",
+  LATEST = "latest"
+}
+
 export interface GetInsightsPayload {
   filters?: string[];
-  sortBy?: SORTING_CRITERION;
+  sortBy?: INSIGHTS_SORTING_CRITERION;
   sortOrder?: SORTING_ORDER;
   page?: number;
   pageSize?: number;
@@ -594,7 +596,7 @@ export interface GetIssuesPayload {
   filters?: InsightFilterType[];
   services?: string[];
   insightTypes?: InsightType[];
-  sortBy?: SORTING_CRITERION;
+  sortBy?: INSIGHTS_SORTING_CRITERION;
   sortOrder?: SORTING_ORDER;
   page?: number;
   pageSize?: number;

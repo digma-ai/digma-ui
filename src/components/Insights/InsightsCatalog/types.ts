@@ -17,12 +17,6 @@ export enum ViewMode {
   OnlyDismissed = "OnlyDismissed"
 }
 
-export enum SORTING_CRITERION {
-  CRITICALITY = "criticality",
-  SEVERITY = "severity",
-  LATEST = "latest"
-}
-
 export interface PagedData<TData> {
   items: TData;
   totalCount: number;

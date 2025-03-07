@@ -2,10 +2,13 @@ import { createSlice } from "zustand-slices";
 import type { AssetCategoriesData } from "../../components/Assets/AssetTypeList/types";
 import type { ViewMode } from "../../components/Assets/AssetsViewScopeConfiguration/types";
 import type { AssetsData } from "../../redux/services/types";
-import { SORTING_CRITERION, SORTING_ORDER } from "../../redux/services/types";
+import {
+  ASSETS_SORTING_CRITERION,
+  SORTING_ORDER
+} from "../../redux/services/types";
 
 export interface Sorting {
-  criterion: SORTING_CRITERION;
+  criterion: ASSETS_SORTING_CRITERION;
   order: SORTING_ORDER;
 }
 
@@ -46,7 +49,7 @@ const allFiltersInitialState: {
   search: "",
   page: 0,
   sorting: {
-    criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
+    criterion: ASSETS_SORTING_CRITERION.CRITICAL_INSIGHTS,
     order: SORTING_ORDER.DESC
   }
 };

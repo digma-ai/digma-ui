@@ -1,3 +1,5 @@
+import type { SORTING_ORDER } from "../../../redux/services/types";
+
 export interface SortingSelectorProps {
   options: SortingOption[];
   defaultSorting: Sorting;
@@ -16,11 +18,6 @@ export interface SortingMenuButtonProps {
 
 export interface SortingOrderOptionProps {
   $selected: boolean;
-}
-
-export enum SORTING_ORDER {
-  ASC = "asc",
-  DESC = "desc"
 }
 
 export interface SortingMenuButtonProps {
