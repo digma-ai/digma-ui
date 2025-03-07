@@ -42,7 +42,7 @@ export const initialState: InsightsState = {
   search: "",
   page: 0,
   sorting: {
-    criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
+    criterion: SORTING_CRITERION.CRITICALITY,
     order: SORTING_ORDER.DESC
   },
   viewMode: ViewMode.All,

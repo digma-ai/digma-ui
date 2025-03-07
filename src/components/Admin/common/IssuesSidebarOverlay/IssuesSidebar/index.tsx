@@ -18,13 +18,17 @@ import { CrossIcon } from "../../../../common/icons/16px/CrossIcon";
 import { EyeIcon } from "../../../../common/icons/16px/EyeIcon";
 import { TwoVerticalLinesIcon } from "../../../../common/icons/16px/TwoVerticalLinesIcon";
 import { Pagination } from "../../../../common/Pagination";
+import { SORTING_ORDER } from "../../../../common/SortingSelector/types";
 import { NewButton } from "../../../../common/v3/NewButton";
 import { NewIconButton } from "../../../../common/v3/NewIconButton";
 import { EmptyState } from "../../../../Insights/EmptyState";
 import { EmptyState as InsightsPageEmptyState } from "../../../../Insights/InsightsCatalog/InsightsPage/EmptyState";
 import { InsightCardRenderer } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer";
 import { actions } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/hooks/useDismissal";
-import { ViewMode } from "../../../../Insights/InsightsCatalog/types";
+import {
+  SORTING_CRITERION,
+  ViewMode
+} from "../../../../Insights/InsightsCatalog/types";
 import { InsightTicketRenderer } from "../../../../Insights/InsightTicketRenderer";
 import {
   InsightType,
@@ -94,8 +98,8 @@ export const IssuesSidebar = ({
   const pageSize = query?.pageSize ?? PAGE_SIZE;
   const { data, isFetching, refetch } = useGetIssuesQuery({
     showDismissed: viewMode === ViewMode.OnlyDismissed,
-    sortBy: "criticalinsights",
-    sortOrder: "desc",
+    sortBy: SORTING_CRITERION.CRITICALITY,
+    sortOrder: SORTING_ORDER.DESC,
     ...query,
     page,
     pageSize

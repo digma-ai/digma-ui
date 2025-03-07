@@ -126,6 +126,11 @@ export const IssuesFilter = () => {
     setSelectedCriticalityLevels(filteredCriticalityLevels);
   }, [filteredCriticalityLevels]);
 
+  useEffect(() => {
+    setIsCriticalOnly(filters.includes("criticality"));
+    setIsUnreadOnly(filters.includes("unread"));
+  }, [filters]);
+
   const discardChanges = useCallback(() => {
     const newServices = globallySelectedServices ?? [];
     setSelectedServices(newServices);
@@ -195,10 +200,8 @@ export const IssuesFilter = () => {
 
     setSelectedServices([]);
     setSelectedInsightTypes([]);
-
     setSelectedCriticalityLevels([]);
     setIsCriticalOnly(false);
-
     setIsUnreadOnly(false);
   };
 
