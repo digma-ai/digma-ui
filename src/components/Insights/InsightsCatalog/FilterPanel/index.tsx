@@ -6,7 +6,7 @@ import { useInsightsSelector } from "../../../../store/insights/useInsightsSelec
 import { useStore } from "../../../../store/useStore";
 import { FeatureFlag } from "../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import type { InsightFilterType } from "../types";
+import { trackingEvents } from "../../tracking";
 import { FilterChip } from "./FilterChip";
 import * as s from "./styles";
 import type { FilterPanelProps } from "./types";
@@ -50,37 +50,78 @@ export const FilterPanel = ({
       )
   );
 
-  const handleFilterChipClick = (selectedFilter?: InsightFilterType) => () => {
-    const newFilters = new Set(filters);
-
-    if (selectedFilter) {
-      if (newFilters.has(selectedFilter)) {
-        newFilters.delete(selectedFilter);
-      } else {
-        newFilters.add(selectedFilter);
+  const handleCriticalFilterChipClick = () => () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ISSUES_FILTER_PRESET_BUTTON_CLICKED,
+      {
+        button: "Critical"
       }
+    );
+    const newFilters = new Set(filters);
+    const filterName = "criticality";
+
+    if (newFilters.has(filterName)) {
+      newFilters.delete(filterName);
     } else {
-      newFilters.clear();
+      newFilters.add(filterName);
     }
 
     const selection = Array.from(newFilters);
 
     setFilters(selection);
 
-    if (
-      isCriticalityLevelsFilterEnabled &&
-      selectedFilter === "criticality" &&
-      newFilters.has("criticality")
-    ) {
-      const newCriticalityLevels: IssueCriticality[] = ["High"];
+    if (isCriticalityLevelsFilterEnabled) {
+      const newCriticalityLevels: IssueCriticality[] = newFilters.has(
+        filterName
+      )
+        ? ["High"]
+        : [];
       if (scopeSpanCodeObjectId) {
         setFilteredCriticalityLevelsInSpanScope(newCriticalityLevels);
       } else {
         setInsightsFilteredCriticalityLevelsInGlobalScope(newCriticalityLevels);
       }
     }
+  };
 
-    sendUserActionTrackingEvent("issues filter changed", { selection });
+  const handleUnreadFilterChipClick = () => () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ISSUES_FILTER_PRESET_BUTTON_CLICKED,
+      {
+        button: "Unread"
+      }
+    );
+    const newFilters = new Set(filters);
+    const filterName = "unread";
+
+    if (newFilters.has(filterName)) {
+      newFilters.delete(filterName);
+    } else {
+      newFilters.add(filterName);
+    }
+
+    const selection = Array.from(newFilters);
+
+    setFilters(selection);
+  };
+
+  const handleAllFilterChipClick = () => () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ISSUES_FILTER_PRESET_BUTTON_CLICKED,
+      {
+        button: "All"
+      }
+    );
+
+    setFilters([]);
+
+    if (isCriticalityLevelsFilterEnabled) {
+      if (scopeSpanCodeObjectId) {
+        setFilteredCriticalityLevelsInSpanScope([]);
+      } else {
+        setInsightsFilteredCriticalityLevelsInGlobalScope([]);
+      }
+    }
   };
 
   const isCriticalSelected = isCriticalityLevelsFilterEnabled
@@ -94,20 +135,20 @@ export const FilterPanel = ({
       <FilterChip
         disabled={!criticalCount && !isCriticalSelected}
         selected={isCriticalSelected}
-        onClick={handleFilterChipClick("criticality")}
+        onClick={handleCriticalFilterChipClick()}
         count={criticalCount}
         type={"critical"}
       />
       <FilterChip
         disabled={!unreadCount && !isUnreadSelected}
         selected={filters.includes("unread")}
-        onClick={handleFilterChipClick("unread")}
+        onClick={handleUnreadFilterChipClick()}
         count={unreadCount}
         type={"unread"}
       />
       <FilterChip
         selected={filters.length === 0}
-        onClick={handleFilterChipClick()}
+        onClick={handleAllFilterChipClick()}
         count={allIssuesCount}
         type={"all"}
       />

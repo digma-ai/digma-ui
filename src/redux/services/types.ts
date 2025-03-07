@@ -3,7 +3,11 @@ import type {
   Environment,
   EnvironmentType
 } from "../../components/common/App/types";
-import type { InsightFilterType } from "../../components/Insights/InsightsCatalog/types";
+import type { SORTING_ORDER } from "../../components/common/SortingSelector/types";
+import type {
+  InsightFilterType,
+  SORTING_CRITERION
+} from "../../components/Insights/InsightsCatalog/types";
 import type {
   GenericCodeObjectInsight,
   InsightType,
@@ -117,8 +121,8 @@ export type GetEnvironmentServicesResponse = string[];
 
 export interface GetInsightsPayload {
   filters?: string[];
-  sortBy?: string;
-  sortOrder?: string;
+  sortBy?: SORTING_CRITERION;
+  sortOrder?: SORTING_ORDER;
   page?: number;
   pageSize?: number;
   showDismissed?: boolean;
@@ -187,8 +191,8 @@ export interface GetIssuesPayload {
   filters?: InsightFilterType[];
   services?: string[];
   insightTypes?: InsightType[];
-  sortBy?: string;
-  sortOrder?: string;
+  sortBy?: SORTING_CRITERION;
+  sortOrder?: SORTING_ORDER;
   page?: number;
   pageSize?: number;
 }

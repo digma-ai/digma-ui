@@ -18,7 +18,8 @@ export enum ViewMode {
 }
 
 export enum SORTING_CRITERION {
-  CRITICAL_INSIGHTS = "criticalinsights",
+  CRITICALITY = "criticality",
+  SEVERITY = "severity",
   LATEST = "latest"
 }
 

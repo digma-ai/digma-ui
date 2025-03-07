@@ -5,23 +5,23 @@ import { useInsightsSelector } from "../../../store/insights/useInsightsSelector
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
-export const useGetInsightsStats = () => {
+export const useInsightsStats = () => {
   const { scope, environment, selectedServices } = useConfigSelector();
   const {
     filteredInsightTypes: filteredInsightTypesInSpanScope,
-    filteredInsightTypesInGlobalScope
+    filteredInsightTypesInGlobalScope,
+    search
   } = useInsightsSelector();
 
   const environmentId = environment?.id;
-
-  const filteredServices = useMemo(
-    () => selectedServices ?? [],
-    [selectedServices]
-  );
   const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
   const filteredInsightTypes = spanCodeObjectId
     ? filteredInsightTypesInSpanScope
     : filteredInsightTypesInGlobalScope;
+  const filteredServices = useMemo(
+    () => (spanCodeObjectId ? [] : selectedServices ?? []),
+    [selectedServices, spanCodeObjectId]
+  );
 
   const { data, refetch, isUninitialized } = useGetInsightsStatsQuery(
     {
@@ -32,9 +32,8 @@ export const useGetInsightsStats = () => {
           ? filteredInsightTypes.join(",")
           : undefined,
       services:
-        spanCodeObjectId && filteredServices.length > 0
-          ? filteredInsightTypes.join(",")
-          : undefined
+        filteredServices.length > 0 ? filteredServices.join(",") : undefined,
+      displayName: search.length > 0 ? search : undefined
     },
     {
       skip: !environmentId,
