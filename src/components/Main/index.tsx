@@ -7,6 +7,7 @@ import type { HistoryEntryLocation } from "../../history/History";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { logger } from "../../logging";
+import { platform } from "../../platform";
 import { PLUGIN_EVENTS } from "../../pluginEvents";
 import type { IssueCriticality } from "../../redux/services/types";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
@@ -181,6 +182,11 @@ export const Main = () => {
 
   useEffect(() => {
     const defaultGoTo = (scope: Scope, state: HistoryState) => {
+      if (platform === "Visual Studio") {
+        goTo(`/${TAB_IDS.ISSUES}`, { state });
+        return;
+      }
+
       if (scope.issuesInsightsCount > 0) {
         goTo(`/${TAB_IDS.ISSUES}`, { state });
       } else {

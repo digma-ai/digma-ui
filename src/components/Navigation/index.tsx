@@ -16,6 +16,7 @@ import { ThreeDotsVerticalIcon } from "../common/icons/ThreeDotsVerticalIcon";
 // import { CodeButtonMenu } from "./CodeButtonMenu";
 import useDimensions from "react-cool-dimensions";
 import { getFeatureFlagValue } from "../../featureFlags";
+import { platform } from "../../platform";
 import { useGetSpanInfoQuery } from "../../redux/services/digma";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { EnvironmentBar } from "./EnvironmentBar";
@@ -371,6 +372,7 @@ export const Navigation = () => {
                 (x) => x.environment === environment?.id
               ) ?? []
             }
+            isTargetButtonMenuVisible={platform === "JetBrains"}
           />
         ) : (
           <EnvironmentBar
