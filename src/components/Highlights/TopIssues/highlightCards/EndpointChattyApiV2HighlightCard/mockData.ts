@@ -1,5 +1,8 @@
+import type {
+  EndpointChattyApiV2Metrics,
+  HighlightData
+} from "../../../../../redux/services/types";
 import { InsightStatus, InsightType } from "../../../../Insights/types";
-import type { EndpointChattyApiV2Metrics, HighlightData } from "../../types";
 
 export const mockedEndpointChattyApiV2Metrics: EndpointChattyApiV2Metrics = [
   {

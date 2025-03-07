@@ -1,5 +1,6 @@
 import { useGetSpanInsightQuery } from "../../../../../redux/services/digma";
-import type { InsightType, SpanInfo } from "../../../../../types";
+import type { SpanInfo } from "../../../../../redux/services/types";
+import type { InsightType } from "../../../../../types";
 import type { GenericCodeObjectInsight } from "../../../types";
 import { useSpanDataSource } from "./useSpanDataSource";
 

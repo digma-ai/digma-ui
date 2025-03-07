@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
-import type { Duration } from "../../../globals";
+import type { Duration } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { FeatureFlag } from "../../../types";

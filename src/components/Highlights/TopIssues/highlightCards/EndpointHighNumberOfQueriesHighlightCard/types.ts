@@ -1,7 +1,7 @@
 import type {
   EndpointHighNumberOfQueriesMetrics,
   HighlightData
-} from "../../types";
+} from "../../../../../redux/services/types";
 
 export interface EndpointHighNumberOfQueriesHighlightCardProps {
   data: HighlightData<EndpointHighNumberOfQueriesMetrics>;

@@ -1,7 +1,7 @@
 import type {
   EndpointQueryOptimizationV2Metrics,
   HighlightData
-} from "../../types";
+} from "../../../../../redux/services/types";
 
 export interface EndpointQueryOptimizationV2HighlightCardProps {
   data: HighlightData<EndpointQueryOptimizationV2Metrics>;

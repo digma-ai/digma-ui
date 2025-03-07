@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import type { Duration } from "../../globals";
+import type { Duration } from "../../redux/services/types";
 import type { InsightType } from "../Insights/types";
 import type { EnvironmentType } from "../common/App/types";
 import type { IconProps } from "../common/icons/types";

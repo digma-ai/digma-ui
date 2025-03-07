@@ -1,7 +1,7 @@
+import type { GetScalingHighlightsResponse } from "../../../redux/services/types";
 import { InsightStatus } from "../../Insights/types";
-import type { ScalingData } from "./types";
 
-export const mockedScalingData: ScalingData = {
+export const mockedScalingData: GetScalingHighlightsResponse = {
   dataState: "ScalingBadly",
   scaling: [
     {

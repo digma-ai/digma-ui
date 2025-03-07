@@ -1,4 +1,5 @@
-import type { InsightType, SpanInfo } from "../../types";
+import type { SpanInfo } from "../../redux/services/types";
+import type { InsightType } from "../../types";
 import type { InsightScope } from "../Insights/types";
 
 export type NotificationsViewMode = "popup" | "full";

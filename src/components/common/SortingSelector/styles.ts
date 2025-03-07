@@ -1,10 +1,10 @@
 import styled from "styled-components";
+import { SORTING_ORDER } from "../../../redux/services/types";
 import type {
   SortingMenuButtonProps,
   SortingOrderIconContainerProps,
   SortingOrderOptionProps
 } from "./types";
-import { SORTING_ORDER } from "./types";
 
 export const PopoverContainer = styled.div`
   margin-left: auto;

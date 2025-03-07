@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { DefaultTheme } from "styled-components";
 import { useTheme } from "styled-components";
+import { SORTING_ORDER } from "../../../redux/services/types";
 import { Menu } from "../Menu";
 import { Popover } from "../Popover";
 import { PopoverContent } from "../Popover/PopoverContent";
@@ -10,7 +11,6 @@ import { SortIcon } from "../icons/SortIcon";
 import { Direction } from "../icons/types";
 import * as s from "./styles";
 import type { Sorting, SortingSelectorProps } from "./types";
-import { SORTING_ORDER } from "./types";
 
 const getSortingMenuChevronColor = (theme: DefaultTheme) => {
   switch (theme.mode) {

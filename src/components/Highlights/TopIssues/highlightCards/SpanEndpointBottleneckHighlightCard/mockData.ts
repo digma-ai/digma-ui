@@ -1,5 +1,8 @@
+import type {
+  HighlightData,
+  SpanEndpointBottleneckMetrics
+} from "../../../../../redux/services/types";
 import { InsightStatus, InsightType } from "../../../../Insights/types";
-import type { HighlightData, SpanEndpointBottleneckMetrics } from "../../types";
 
 export const mockedSpanEndpointBottleneckMetrics: SpanEndpointBottleneckMetrics =
   [

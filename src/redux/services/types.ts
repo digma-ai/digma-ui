@@ -1,15 +1,13 @@
+import type { AssetFilterQuery } from "../../components/Assets/AssetsFilter/types";
 import type {
   DeploymentType,
   Environment,
   EnvironmentType
 } from "../../components/common/App/types";
-import type { SORTING_ORDER } from "../../components/common/SortingSelector/types";
-import type {
-  InsightFilterType,
-  SORTING_CRITERION
-} from "../../components/Insights/InsightsCatalog/types";
+import type { InsightFilterType } from "../../components/Insights/InsightsCatalog/types";
 import type {
   GenericCodeObjectInsight,
+  InsightStatus,
   InsightType,
   InsightViewType
 } from "../../components/Insights/types";
@@ -21,6 +19,174 @@ export interface GetAboutResponse {
   deploymentType: DeploymentType;
   isCentralize: boolean;
   site?: string;
+}
+
+export interface GetAssetsFiltersPayload {
+  displayName?: string;
+  services?: string;
+  insights?: string;
+  operations?: string;
+  scopedSpanCodeObjectId?: string;
+  directOnly?: boolean;
+  environment?: string;
+}
+
+export interface FilterEntry {
+  enabled: boolean;
+  selected: boolean;
+  name: string | null;
+  id: string | null;
+}
+export interface CategoryFilter {
+  categoryName: string | null;
+  entries: FilterEntry[] | null;
+  categories: CategoryFilter[] | null;
+}
+export interface GetAssetsFiltersResponse {
+  categories?: CategoryFilter[] | null;
+}
+
+export interface GetAssetsCategoriesPayload {
+  displayName?: string;
+  services?: string;
+  insights?: string;
+  operations?: string;
+  scopedSpanCodeObjectId?: string;
+  directOnly?: boolean;
+  environment?: string;
+  accountId?: string;
+}
+
+export interface AssetCategory {
+  name: string | null;
+  count: number;
+}
+
+export interface SpanInfo {
+  name: string;
+  displayName: string;
+  instrumentationLibrary: string;
+  spanCodeObjectId: string;
+  methodCodeObjectId: string | null;
+  kind: string | null;
+  uid?: string;
+}
+
+export interface AssetsEnvironment {
+  environmentId: string | null;
+  environmentName: string | null;
+  environmentType: string | null;
+  assetsCount: number;
+}
+
+export interface GetAssetsCategoriesResponse {
+  assetCategories?: AssetCategory[] | null;
+  parents?: SpanInfo[] | null;
+  environments?: AssetsEnvironment[] | null;
+}
+
+export enum ASSETS_SORTING_CRITERION {
+  CRITICAL_INSIGHTS = "criticalinsights",
+  PERFORMANCE = "p50",
+  SLOWEST_FIVE_PERCENT = "p95",
+  LATEST = "latest",
+  NAME = "displayname",
+  PERFORMANCE_IMPACT = "performanceimpact"
+}
+
+export enum SORTING_ORDER {
+  ASC = "asc",
+  DESC = "desc"
+}
+
+export interface GetAssetsPayload extends GetAssetsFiltersPayload {
+  assetType: string;
+  page?: number;
+  pageSize?: number;
+  sortBy?: ASSETS_SORTING_CRITERION;
+  sortOrder?: SORTING_ORDER;
+}
+
+export interface AssetInsightInfo {
+  type: string | null;
+  importance: number;
+  criticality: number;
+}
+
+export interface GetAssetListDataQuery extends AssetFilterQuery {
+  assetType: string;
+  page: number;
+  pageSize: number;
+  sortBy: ASSETS_SORTING_CRITERION;
+  sortOrder: SORTING_ORDER;
+}
+
+export interface GetAssetsListDataPayload {
+  query: GetAssetListDataQuery;
+}
+
+export interface Duration {
+  value: number;
+  unit: string;
+  raw: number;
+}
+
+export interface AssetRecordItemRead {
+  /** @deprecated */
+  service: string | null;
+  services: string[] | null;
+  displayName: string | null;
+  spanCodeObjectId: string | null;
+  assetType: string | null;
+  latestSpanTimestamp: string;
+  firstDetected: string;
+  instrumentationLibrary: string | null;
+  p50: Duration;
+  p95: Duration;
+  insights: AssetInsightInfo[] | null;
+  impactScores: Record<string, number> | null;
+  impactScore: number;
+}
+
+export interface Insight {
+  type: string;
+  importance: number;
+  criticality: number;
+}
+
+export interface ImpactScores {
+  ScoreExp25: number;
+  ScoreExp1000: number;
+}
+
+export interface AssetEntry {
+  assetType: string;
+  p50: Duration | null;
+  p95: Duration | null;
+  displayName: string;
+  instrumentationLibrary?: string;
+  insights: Insight[];
+  latestSpanTimestamp: string;
+  /** @deprecated */
+  impactScores?: ImpactScores;
+  impactScore: number;
+  service: string;
+  services: string[];
+  spanCodeObjectId: string;
+  firstDetected?: string;
+}
+
+export interface AssetsData {
+  data: AssetEntry[];
+  totalCount: number;
+  filteredCount: number;
+}
+
+export interface GetAssetsResponse {
+  data?: AssetRecordItemRead[] | null;
+  totalCount?: number;
+  filteredCount?: number;
+  environments?: AssetsEnvironment[] | null;
 }
 
 export interface GetUserProfileResponse {
@@ -119,9 +285,248 @@ export interface GetEnvironmentServicesPayload {
 
 export type GetEnvironmentServicesResponse = string[];
 
+export interface GetTopIssuesHighlightsPayload {
+  environments: string[];
+  scopedCodeObjectId?: string;
+}
+
+export interface GetTopIssuesHighlightsV2Payload {
+  environments: string[];
+  scopedSpanCodeObjectId?: string;
+}
+
+export interface EnvironmentData<T> {
+  environmentId: string;
+  environmentName: string;
+  insightStatus: InsightStatus;
+  insightCriticality: number;
+  metrics: T;
+}
+
+export interface HighlightData<T> {
+  insightType: InsightType;
+  insightSubType?: string;
+  asset: SpanInfo | null;
+  environments: EnvironmentData<T>[];
+}
+
+export type EndpointBottleneckMetrics = [
+  {
+    id: "PercentageWhenBottleneck";
+    value: number;
+  },
+  {
+    id: "RequestPercentage";
+    value: number;
+  },
+  {
+    id: "DurationWhenBottleneck";
+    value: Duration;
+  }
+];
+
+export type SpanEndpointBottleneckMetrics = [
+  {
+    id: "AffectedEndpoints";
+    value: number;
+  },
+  { id: "RequestPercentage"; value: number },
+  { id: "DurationWhenBottleneck"; value: Duration }
+];
+
+export type EndpointChattyApiV2Metrics = [
+  {
+    id: "Repeats";
+    value: number;
+  }
+];
+
+export type EndpointHighNumberOfQueriesMetrics = [
+  {
+    id: "QueriesCount";
+    value: number;
+  },
+  {
+    id: "TypicalQueriesCount";
+    value: number;
+  }
+];
+
+export type EndpointQueryOptimizationV2Metrics = [
+  {
+    id: "Duration";
+    value: Duration;
+  }
+];
+
+export type SpanQueryOptimizationMetrics = [
+  {
+    id: "AffectedEndpoints";
+    value: number;
+  },
+  {
+    id: "Duration";
+    value: Duration;
+  },
+  {
+    id: "TypicalDuration";
+    value: Duration;
+  },
+  {
+    id: "Database";
+    value: string;
+  }
+];
+
+export type EndpointSessionInViewMetrics = [];
+
+export type EndpointSlowdownSourceMetrics = [
+  {
+    id: "DifferenceDelta";
+    value: Duration;
+  }
+];
+
+export type EndpointSpanNPlusOneMetrics = [
+  {
+    id: "Repeats";
+    value: number;
+  },
+  {
+    id: "RequestPercentage";
+    value: number;
+  },
+  {
+    id: "Duration";
+    value: Duration;
+  }
+];
+
+export type SpaNPlusOneMetrics = [
+  {
+    id: "AffectedEndpoints";
+    value: number;
+  },
+  {
+    id: "Repeats";
+    value: number;
+  },
+  {
+    id: "RequestPercentage";
+    value: number;
+  },
+  {
+    id: "Duration";
+    value: Duration;
+  }
+];
+
+export type HotSpotMetrics = [
+  {
+    id: "Score";
+    value: number;
+  }
+];
+
+export type SpanScalingMetrics = [
+  {
+    id: "IncreasePercentage";
+    value: number;
+  }
+];
+
+export type GenericMetrics =
+  | EndpointBottleneckMetrics
+  | SpanEndpointBottleneckMetrics
+  | EndpointChattyApiV2Metrics
+  | EndpointHighNumberOfQueriesMetrics
+  | EndpointQueryOptimizationV2Metrics
+  | SpanQueryOptimizationMetrics
+  | EndpointSessionInViewMetrics
+  | EndpointSlowdownSourceMetrics
+  | EndpointSpanNPlusOneMetrics
+  | SpaNPlusOneMetrics
+  | HotSpotMetrics
+  | SpanScalingMetrics;
+
+export interface GetTopIssuesHighlightsResponse {
+  topInsights: HighlightData<GenericMetrics>[];
+}
+
+export interface GetPerformanceHighlightsPayload {
+  environments: string[];
+  scopedSpanCodeObjectId?: string;
+}
+
+interface PerformancePercentileData {
+  duration: Duration;
+  isCritical?: boolean;
+}
+
+export interface EnvironmentPerformanceData {
+  environment: {
+    name: string;
+    id: string;
+    type: EnvironmentType;
+  };
+  p50: PerformancePercentileData;
+  p95: PerformancePercentileData;
+  lastCallTimeStamp: string | null;
+}
+
+export interface GetPerformanceHighlightsResponse {
+  performance: EnvironmentPerformanceData[];
+}
+
+export interface GetImpactHighlightsPayload {
+  environments: string[];
+  scopedSpanCodeObjectId?: string;
+}
+
+export interface EnvironmentImpactData {
+  environmentName: string;
+  environmentId: string;
+  rank: number;
+  rankNormalized: number;
+  impact: number;
+}
+
+export interface GetImpactHighlightsResponse {
+  impactHighlights: EnvironmentImpactData[];
+}
+
+export interface GetScalingHighlightsPayload {
+  environments: string[];
+  scopedSpanCodeObjectId?: string;
+}
+
+export interface ScalingMetrics {
+  concurrency: number;
+  duration: Duration;
+}
+
+export interface EnvironmentScalingData {
+  environmentId: string;
+  environmentName: string;
+  insightStatus: InsightStatus;
+  criticality: number;
+  metrics: ScalingMetrics;
+}
+
+export interface GetScalingHighlightsResponse {
+  dataState: "NoData" | "Partial" | "ScalingWell" | "ScalingBadly";
+  scaling: EnvironmentScalingData[];
+}
+
+export enum INSIGHTS_SORTING_CRITERION {
+  CRITICALITY = "criticality",
+  SEVERITY = "severity",
+  LATEST = "latest"
+}
+
 export interface GetInsightsPayload {
   filters?: string[];
-  sortBy?: SORTING_CRITERION;
+  sortBy?: INSIGHTS_SORTING_CRITERION;
   sortOrder?: SORTING_ORDER;
   page?: number;
   pageSize?: number;
@@ -191,7 +596,7 @@ export interface GetIssuesPayload {
   filters?: InsightFilterType[];
   services?: string[];
   insightTypes?: InsightType[];
-  sortBy?: SORTING_CRITERION;
+  sortBy?: INSIGHTS_SORTING_CRITERION;
   sortOrder?: SORTING_ORDER;
   page?: number;
   pageSize?: number;
@@ -248,10 +653,6 @@ export interface MarkScopeInsightsReadPayload {
   };
 }
 
-export interface DismissUndismissInsightPayload {
-  uid: string;
-}
-
 export interface LinkTicketToIssuePayload {
   environment: string;
   insightId: string;
@@ -261,6 +662,10 @@ export interface LinkTicketToIssuePayload {
 export interface UnlinkTicketFromIssuePayload {
   environment: string;
   insightId: string;
+}
+
+export interface DismissUndismissInsightPayload {
+  uid: string;
 }
 
 export interface GetSpanPercentilesHistogramPayload {

@@ -1,6 +1,6 @@
 import type { MemoExoticComponent } from "react";
-import type { Duration } from "../../globals";
-import type { SpanInfo, SpanInstanceInfo } from "../../types";
+import type { Duration, SpanInfo } from "../../redux/services/types";
+import type { SpanInstanceInfo } from "../../types";
 import { InsightType } from "../../types";
 import type { Sorting } from "../common/SortingSelector/types";
 import type { IconProps } from "../common/icons/types";

@@ -1,5 +1,8 @@
+import type {
+  EndpointSessionInViewMetrics,
+  HighlightData
+} from "../../../../../redux/services/types";
 import { InsightStatus, InsightType } from "../../../../Insights/types";
-import type { EndpointSessionInViewMetrics, HighlightData } from "../../types";
 
 export const mockedEndpointSessionInViewMetrics: EndpointSessionInViewMetrics =
   [];

@@ -1,11 +1,7 @@
 import { createSlice } from "zustand-slices";
 import type { Sorting } from "../../components/common/SortingSelector/types";
-import { SORTING_ORDER } from "../../components/common/SortingSelector/types";
 import type { InsightFilterType } from "../../components/Insights/InsightsCatalog/types";
-import {
-  SORTING_CRITERION,
-  ViewMode
-} from "../../components/Insights/InsightsCatalog/types";
+import { ViewMode } from "../../components/Insights/InsightsCatalog/types";
 import type {
   InsightType,
   InsightViewType
@@ -15,6 +11,10 @@ import type {
   GetIssuesFiltersResponse,
   GetIssuesResponse,
   IssueCriticality
+} from "../../redux/services/types";
+import {
+  INSIGHTS_SORTING_CRITERION,
+  SORTING_ORDER
 } from "../../redux/services/types";
 
 export type InsightsData = GetIssuesResponse | GetInsightsResponse;
@@ -42,7 +42,7 @@ export const initialState: InsightsState = {
   search: "",
   page: 0,
   sorting: {
-    criterion: SORTING_CRITERION.CRITICALITY,
+    criterion: INSIGHTS_SORTING_CRITERION.CRITICALITY,
     order: SORTING_ORDER.DESC
   },
   viewMode: ViewMode.All,

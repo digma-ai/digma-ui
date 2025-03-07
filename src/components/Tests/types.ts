@@ -1,5 +1,4 @@
-import type { Duration } from "../../globals";
-import type { SpanInfo } from "../../types";
+import type { Duration, SpanInfo } from "../../redux/services/types";
 import type { Scope } from "../common/App/types";
 
 export interface Test {

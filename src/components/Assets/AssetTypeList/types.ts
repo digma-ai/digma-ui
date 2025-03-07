@@ -1,5 +1,5 @@
 import type { MemoExoticComponent } from "react";
-import type { SpanInfo } from "../../../types";
+import type { SpanInfo } from "../../../redux/services/types";
 import type { IconProps } from "../../common/icons/types";
 
 export interface AssetTypeListProps {

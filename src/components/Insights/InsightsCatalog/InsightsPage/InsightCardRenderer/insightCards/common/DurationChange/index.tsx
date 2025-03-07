@@ -1,5 +1,5 @@
 import { formatDuration, intervalToDuration } from "date-fns";
-import type { Duration } from "../../../../../../../../globals";
+import type { Duration } from "../../../../../../../../redux/services/types";
 import { formatTimeDistance } from "../../../../../../../../utils/formatTimeDistance";
 import { roundTo } from "../../../../../../../../utils/roundTo";
 import { ArrowIcon } from "../../../../../../../common/icons/ArrowIcon";

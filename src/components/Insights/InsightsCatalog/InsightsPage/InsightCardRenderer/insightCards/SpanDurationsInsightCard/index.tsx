@@ -11,7 +11,7 @@ import {
 import type { DefaultTheme } from "styled-components";
 import { useTheme } from "styled-components";
 import { PERCENTILES } from "../../../../../../../constants";
-import type { Duration } from "../../../../../../../globals";
+import type { Duration } from "../../../../../../../redux/services/types";
 import { isNumber } from "../../../../../../../typeGuards/isNumber";
 import { convertToDuration } from "../../../../../../../utils/convertToDuration";
 import { formatTimeDistance } from "../../../../../../../utils/formatTimeDistance";

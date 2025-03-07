@@ -50,6 +50,7 @@ export const GlobalErrorsList = () => {
   const [latestPinChangedId, setLatestPinChangedId] = useState<string>();
   const [areAnimationsEnabled, setAreAnimationsEnabled] = useState(false);
   const { environment, backendInfo, selectedServices } = useConfigSelector();
+  const animationDelayTimerId = useRef<number>();
   const isDismissEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.IS_GLOBAL_ERROR_DISMISS_ENABLED
@@ -191,6 +192,7 @@ export const GlobalErrorsList = () => {
   useMount(() => {
     return () => {
       resetGlobalErrors();
+      window.clearTimeout(animationDelayTimerId.current);
     };
   });
 
@@ -213,7 +215,7 @@ export const GlobalErrorsList = () => {
       );
 
       if (isLatestChangedIdInList) {
-        setTimeout(() => {
+        animationDelayTimerId.current = window.setTimeout(() => {
           setAreAnimationsEnabled(false);
         }, PIN_UNPIN_ANIMATION_DURATION);
       } else {

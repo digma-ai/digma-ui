@@ -3,8 +3,10 @@ import { dispatcher } from "../../../../../dispatcher";
 import { useLoading } from "../../../../../hooks/useLoading";
 import { platform } from "../../../../../platform";
 import { useGetSpanCodeLocationsQuery } from "../../../../../redux/services/digma";
-import type { GetSpanCodeLocationsResponse } from "../../../../../redux/services/types";
-import type { SpanInfo } from "../../../../../types";
+import type {
+  GetSpanCodeLocationsResponse,
+  SpanInfo
+} from "../../../../../redux/services/types";
 import { groupBy } from "../../../../../utils/groupBy";
 import { actions } from "../../../actions";
 import type { CodeLocationsData } from "../types";

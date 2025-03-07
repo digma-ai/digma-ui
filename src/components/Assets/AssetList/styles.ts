@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { SORTING_ORDER } from "../../../redux/services/types";
 import { bodyRegularTypography } from "../../common/App/typographies";
 import { Link } from "../../common/v3/Link";
 import type {
@@ -6,7 +7,6 @@ import type {
   SortingOrderIconContainerProps,
   SortingOrderOptionProps
 } from "./types";
-import { SORTING_ORDER } from "./types";
 
 export const Container = styled.div`
   display: flex;

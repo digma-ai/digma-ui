@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
 import { SortingSelector } from ".";
-import { SORTING_ORDER } from "./types";
+import { SORTING_ORDER } from "../../../redux/services/types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof SortingSelector> = {

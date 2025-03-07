@@ -4,6 +4,13 @@ import { useTheme } from "styled-components";
 import type { DataFetcherConfiguration } from "../../../hooks/useFetchData";
 import { useFetchData } from "../../../hooks/useFetchData";
 import { useMount } from "../../../hooks/useMount";
+import {
+  type AssetEntry,
+  type AssetsData,
+  type GetAssetsListDataPayload,
+  ASSETS_SORTING_CRITERION,
+  SORTING_ORDER
+} from "../../../redux/services/types";
 import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useStore } from "../../../store/useStore";
@@ -24,13 +31,7 @@ import { trackingEvents } from "../tracking";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
 import * as s from "./styles";
-import type {
-  AssetEntry,
-  AssetListProps,
-  AssetsData,
-  GetAssetsListDataPayload
-} from "./types";
-import { SORTING_CRITERION, SORTING_ORDER } from "./types";
+import type { AssetListProps } from "./types";
 
 const PAGE_SIZE = 10;
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
@@ -56,33 +57,33 @@ const getSortingMenuChevronColor = (theme: DefaultTheme) => {
 };
 
 const getSortingCriterionInfo = (
-  sortingCriterion: SORTING_CRITERION
+  sortingCriterion: ASSETS_SORTING_CRITERION
 ): {
   label: string;
   defaultOrder: SORTING_ORDER;
 } => {
   const sortingCriterionInfoMap = {
-    [SORTING_CRITERION.CRITICAL_INSIGHTS]: {
+    [ASSETS_SORTING_CRITERION.CRITICAL_INSIGHTS]: {
       label: "Critical issues",
       defaultOrder: SORTING_ORDER.DESC
     },
-    [SORTING_CRITERION.PERFORMANCE]: {
+    [ASSETS_SORTING_CRITERION.PERFORMANCE]: {
       label: "Performance",
       defaultOrder: SORTING_ORDER.DESC
     },
-    [SORTING_CRITERION.SLOWEST_FIVE_PERCENT]: {
+    [ASSETS_SORTING_CRITERION.SLOWEST_FIVE_PERCENT]: {
       label: "Slowest 5%",
       defaultOrder: SORTING_ORDER.DESC
     },
-    [SORTING_CRITERION.LATEST]: {
+    [ASSETS_SORTING_CRITERION.LATEST]: {
       label: "Latest",
       defaultOrder: SORTING_ORDER.DESC
     },
-    [SORTING_CRITERION.NAME]: {
+    [ASSETS_SORTING_CRITERION.NAME]: {
       label: "Name",
       defaultOrder: SORTING_ORDER.ASC
     },
-    [SORTING_CRITERION.PERFORMANCE_IMPACT]: {
+    [ASSETS_SORTING_CRITERION.PERFORMANCE_IMPACT]: {
       label: "Performance impact",
       defaultOrder: SORTING_ORDER.DESC
     }
@@ -92,8 +93,9 @@ const getSortingCriterionInfo = (
 };
 
 const getSortingCriteria = (isImpactHidden: boolean) =>
-  Object.values(SORTING_CRITERION).filter(
-    (x) => !(isImpactHidden && x === SORTING_CRITERION.PERFORMANCE_IMPACT)
+  Object.values(ASSETS_SORTING_CRITERION).filter(
+    (x) =>
+      !(isImpactHidden && x === ASSETS_SORTING_CRITERION.PERFORMANCE_IMPACT)
   );
 
 export const AssetList = ({
@@ -208,10 +210,10 @@ export const AssetList = ({
   useEffect(() => {
     if (
       isImpactHidden &&
-      sorting.criterion === SORTING_CRITERION.PERFORMANCE_IMPACT
+      sorting.criterion === ASSETS_SORTING_CRITERION.PERFORMANCE_IMPACT
     ) {
       setSorting({
-        criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
+        criterion: ASSETS_SORTING_CRITERION.CRITICAL_INSIGHTS,
         order: SORTING_ORDER.DESC
       });
     }
@@ -264,8 +266,9 @@ export const AssetList = ({
       });
     } else {
       setSorting({
-        criterion: value as SORTING_CRITERION,
-        order: getSortingCriterionInfo(value as SORTING_CRITERION).defaultOrder
+        criterion: value as ASSETS_SORTING_CRITERION,
+        order: getSortingCriterionInfo(value as ASSETS_SORTING_CRITERION)
+          .defaultOrder
       });
     }
     handleSortingMenuToggle();
