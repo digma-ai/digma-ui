@@ -6,7 +6,7 @@ import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
-import { useGetInsightsStats } from "../../Insights/hooks/useGetInsightsStats";
+import { useInsightsStats } from "../../Insights/hooks/useInsightsStats";
 import { useHistory } from "../../Main/useHistory";
 import type { Scope } from "../../common/App/types";
 import { MagicWandIcon } from "../../common/icons/16px/MagicWandIcon";
@@ -89,7 +89,7 @@ const getIsNewIndicatorVisible = (
 
 export const Tabs = () => {
   const { scope } = useConfigSelector();
-  const { data: insightStats } = useGetInsightsStats();
+  const { data: insightStats } = useInsightsStats();
 
   const location = useLocation();
   const { goTo } = useHistory();

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "styled-components";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { platform } from "../../../platform";
@@ -15,20 +15,25 @@ import { isUndefined } from "../../../typeGuards/isUndefined";
 import { FeatureFlag } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
-import { Pagination } from "../../common/Pagination";
-import { SearchInput } from "../../common/SearchInput";
-import { SortingSelector } from "../../common/SortingSelector";
-import type { Sorting } from "../../common/SortingSelector/types";
-import { SORTING_ORDER } from "../../common/SortingSelector/types";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { EyeIcon } from "../../common/icons/16px/EyeIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { Direction } from "../../common/icons/types";
+import { Pagination } from "../../common/Pagination";
+import { SearchInput } from "../../common/SearchInput";
+import { SortingSelector } from "../../common/SortingSelector";
+import type {
+  Sorting,
+  SortingOption
+} from "../../common/SortingSelector/types";
+import { SORTING_ORDER } from "../../common/SortingSelector/types";
 import { NewButton } from "../../common/v3/NewButton";
 import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
-import { useGetInsightsStats } from "../hooks/useGetInsightsStats";
+import { PAGE_SIZE } from "../hooks/useInsightsData";
+import { useInsightsStats } from "../hooks/useInsightsStats";
 import { trackingEvents } from "../tracking";
+import type { InsightViewType } from "../types";
 import { EnvironmentSelector } from "./EnvironmentSelector";
 import type { SelectorEnvironment } from "./EnvironmentSelector/types";
 import { FilterButton } from "./FilterButton";
@@ -40,8 +45,28 @@ import * as s from "./styles";
 import type { InsightFilterType, InsightsCatalogProps } from "./types";
 import { SORTING_CRITERION, ViewMode } from "./types";
 
-const PAGE_SIZE = 10;
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+
+const getSortingOptions = (
+  insightViewType: InsightViewType | null
+): SortingOption[] => {
+  if (insightViewType === "Issues") {
+    return [
+      {
+        value: SORTING_CRITERION.CRITICALITY,
+        label: "Criticality",
+        defaultOrder: SORTING_ORDER.DESC
+      },
+      {
+        value: SORTING_CRITERION.LATEST,
+        label: "Latest",
+        defaultOrder: SORTING_ORDER.DESC
+      }
+    ];
+  }
+
+  return [];
+};
 
 const isShowCriticalOnly = (
   filters: InsightFilterType[],
@@ -110,26 +135,37 @@ export const InsightsCatalog = ({
   const theme = useTheme();
   const [markScopeInsightsRead] = useMarkScopeInsightsReadMutation();
   const [isFiltersToolbarVisible, setIsFiltersToolbarVisible] = useState(false);
-  const { data: insightStats } = useGetInsightsStats();
+  const { data: insightStats } = useInsightsStats();
 
   const isServicesFilterEnabled = !scopeSpanCodeObjectId;
 
   const isIssuesView = insightViewType === "Issues";
 
+  const isCriticalityLevelsFilterEnabled = Boolean(
+    backendInfo &&
+      getFeatureFlagValue(
+        backendInfo,
+        FeatureFlag.IS_ISSUES_CRITICALITY_LEVELS_FILTER_ENABLED
+      )
+  );
+
   const appliedFilterCount =
     (isIssuesView
-      ? filters.length +
+      ? (filters.includes("unread") ? 1 : 0) +
+        (isCriticalityLevelsFilterEnabled
+          ? filteredCriticalityLevels.length > 0
+            ? 1
+            : 0
+          : filters.includes("criticality")
+          ? 1
+          : 0) +
         (filteredInsightTypes.length > 0 ? 1 : 0) +
         (isServicesFilterEnabled &&
         selectedServices &&
         selectedServices.length > 0
           ? 1
           : 0)
-      : 0) +
-      searchInputValue.length >
-    0
-      ? 1
-      : 0;
+      : 0) + (searchInputValue.length > 0 ? 1 : 0);
 
   const areSpanEnvironmentsEnabled = getFeatureFlagValue(
     backendInfo,
@@ -155,13 +191,7 @@ export const InsightsCatalog = ({
     isIssuesView && data && (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
   const isMarkingAsReadOptionsEnabled =
     isIssuesView && isNumber(unreadCount) && unreadCount > 0;
-  const isCriticalityLevelsFilterEnabled = Boolean(
-    backendInfo &&
-      getFeatureFlagValue(
-        backendInfo,
-        FeatureFlag.IS_ISSUES_CRITICALITY_LEVELS_FILTER_ENABLED
-      )
-  );
+
   const isUnreadOnlyViewMode = isShowUnreadOnly(filters);
   const isCriticalOnlyViewMode = isShowCriticalOnly(
     filters,
@@ -176,6 +206,10 @@ export const InsightsCatalog = ({
   const isIssuesFilterVisible = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.ARE_ISSUES_FILTERS_ENABLED
+  );
+  const sortingOptions = useMemo(
+    () => getSortingOptions(insightViewType),
+    [insightViewType]
   );
 
   const handleRefreshButtonClick = () => {
@@ -220,6 +254,10 @@ export const InsightsCatalog = ({
 
   const handleSearchInputChange = (val: string | null) => {
     setSearch(val ?? "");
+  };
+
+  const handleSortingChange = (value: Sorting) => {
+    setSorting(value);
   };
 
   useEffect(() => {
@@ -280,23 +318,10 @@ export const InsightsCatalog = ({
                 onChange={handleSearchInputChange}
                 value={searchInputValue}
               />
-              {isIssuesView && (
+              {sortingOptions.length > 0 && (
                 <SortingSelector
-                  onChange={(val: Sorting) => {
-                    setSorting(val);
-                  }}
-                  options={[
-                    {
-                      value: SORTING_CRITERION.CRITICAL_INSIGHTS,
-                      label: "Critical issues",
-                      defaultOrder: SORTING_ORDER.DESC
-                    },
-                    {
-                      value: SORTING_CRITERION.LATEST,
-                      label: "Latest",
-                      defaultOrder: SORTING_ORDER.DESC
-                    }
-                  ]}
+                  onChange={handleSortingChange}
+                  options={sortingOptions}
                   defaultSorting={sorting}
                 />
               )}
