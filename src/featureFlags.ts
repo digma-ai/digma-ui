@@ -38,15 +38,15 @@ export const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
 };
 
 export const getFeatureFlagValue = (
-  backendInfo: BackendInfo | GetAboutResponse | null,
+  backendInfo: BackendInfo | GetAboutResponse | null | undefined,
   featureFlag: FeatureFlag
 ) => {
   const backendVersion = backendInfo?.applicationVersion;
 
-  return (
+  return Boolean(
     backendVersion &&
-    (backendVersion === "unknown" ||
-      (valid(backendVersion) &&
-        gte(backendVersion, featureFlagMinBackendVersions[featureFlag])))
+      (backendVersion === "unknown" ||
+        (valid(backendVersion) &&
+          gte(backendVersion, featureFlagMinBackendVersions[featureFlag])))
   );
 };
