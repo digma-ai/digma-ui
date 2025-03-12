@@ -21,6 +21,7 @@ import {
   type IssuesReportViewLevel,
   type IssuesReportViewMode
 } from "../../../redux/slices/issuesReportSlice";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isString } from "../../../typeGuards/isString";
 import { SCOPE_CHANGE_EVENTS } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
@@ -31,6 +32,8 @@ import { actions } from "../actions";
 import * as s from "./styles";
 
 export const MetricsReport = () => {
+  const { backendInfo, environments } = useConfigSelector();
+
   const selectedEnvironmentId = useDashboardSelector(
     (state) => state.metricsReport.selectedEnvironmentId
   );
@@ -178,6 +181,8 @@ export const MetricsReport = () => {
       <s.ContainerBackgroundGradient />
       <s.ContentContainer>
         <IssuesReport
+          backendInfo={backendInfo}
+          environments={environments}
           selectedEnvironmentId={selectedEnvironmentId}
           criticalityLevels={criticalityLevels}
           periodInDays={periodInDays}

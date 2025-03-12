@@ -195,6 +195,7 @@ export interface GetIssuesPayload {
   sortOrder?: SORTING_ORDER;
   page?: number;
   pageSize?: number;
+  criticalityFilter?: IssueCriticality[];
 }
 
 export interface GetIssuesFiltersPayload {
