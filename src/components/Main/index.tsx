@@ -172,9 +172,10 @@ export const Main = () => {
     if (
       !environments ||
       environments.length === 0 ||
-      Boolean(
+      (Boolean(
         environment && !environments?.find((x) => x.id == environment?.id)
-      )
+      ) &&
+        history.historyStack.length > 0)
     ) {
       history.clear();
     }
