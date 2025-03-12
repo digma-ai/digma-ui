@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
-import { InsightType, SCOPE_CHANGE_EVENTS } from "../../../../types";
+import { InsightType, ScopeChangeEvent } from "../../../../types";
 import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
@@ -227,8 +227,7 @@ const renderInsightCard = (
         spanCodeObjectId
       },
       context: {
-        event:
-          SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_TITLE_ASSET_LINK_CLICKED
+        event: ScopeChangeEvent.InsightsInsightCardTitleAssetLinkClicked
       }
     });
   };

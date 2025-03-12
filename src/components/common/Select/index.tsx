@@ -165,7 +165,7 @@ export const Select = ({
           <ChevronIcon
             color={"currentColor"}
             size={14}
-            direction={isOpen ? Direction.UP : Direction.DOWN}
+            direction={isOpen ? Direction.Up : Direction.Down}
           />
         </s.ChevronIconContainer>
       </s.Button>

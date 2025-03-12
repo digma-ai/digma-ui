@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useConfigSelector } from "../../../../../../../store/config/useConfigSelector";
 import { isNull } from "../../../../../../../typeGuards/isNull";
+import type { InsightType } from "../../../../../../../types";
 import { getDurationString } from "../../../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../../../utils/trimEndpointScheme";
 import {
@@ -11,7 +12,7 @@ import type { Option } from "../../../../../../common/AffectedEndpointsSelector/
 import { TraceIcon } from "../../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../../common/v3/Button";
 import { Tooltip } from "../../../../../../common/v3/Tooltip";
-import type { BottleneckEndpointInfo, InsightType } from "../../../../../types";
+import type { BottleneckEndpointInfo } from "../../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";

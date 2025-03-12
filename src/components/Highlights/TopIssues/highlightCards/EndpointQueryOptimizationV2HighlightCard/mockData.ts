@@ -2,7 +2,8 @@ import type {
   EndpointQueryOptimizationV2Metrics,
   HighlightData
 } from "../../../../../redux/services/types";
-import { InsightStatus, InsightType } from "../../../../Insights/types";
+import { InsightType } from "../../../../../types";
+import { InsightStatus } from "../../../../Insights/types";
 
 export const mockedEndpointQueryOptimizationV2Metrics: EndpointQueryOptimizationV2Metrics =
   [

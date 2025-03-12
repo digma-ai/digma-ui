@@ -120,7 +120,7 @@ export const RecentActivityTable = ({
 
   const spansCountEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.RECENT_ACTIVITY_SPANS_COUNT_ENABLED
+    FeatureFlag.RecentActivitySpansCountEnabled
   );
 
   const renderSpanLink = (span: EntrySpan) => (

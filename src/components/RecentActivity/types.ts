@@ -1,8 +1,12 @@
 import type { ComponentType } from "react";
-import type { Duration } from "../../redux/services/types";
-import type { InsightType } from "../Insights/types";
-import type { EnvironmentType } from "../common/App/types";
+import type {
+  Duration,
+  Environment,
+  EnvironmentType
+} from "../../redux/services/types";
+import type { InsightType } from "../../types";
 import type { IconProps } from "../common/icons/types";
+import type { AddToRunConfigState } from "./EnvironmentInstructionsPanel/types";
 import type { ViewMode } from "./EnvironmentPanel/types";
 
 export interface RecentActivityThemeColors {
@@ -61,22 +65,27 @@ export interface ActivityEntry {
   spansCount?: number;
 }
 
-export interface Environment {
-  name: string;
-  id: string;
-  isPending: boolean;
-  type: EnvironmentType | null;
-  token: string | null;
+export interface ActivityEnvironment extends Environment {
+  /** @deprecated */
+
+  additionToConfigResult: AddToRunConfigState | null;
+  /** @deprecated */
+
+  token?: string | null;
+  /** @deprecated */
+
   serverApiUrl: string | null;
+  /** @deprecated */
+
   isOrgDigmaSetupFinished: boolean;
 }
 
-export interface ExtendedEnvironment extends Environment {
+export interface ExtendedEnvironment extends ActivityEnvironment {
   hasRecentActivity: boolean;
 }
 
 export interface RecentActivityData {
-  environments: Environment[];
+  environments: ActivityEnvironment[];
   entries: ActivityEntry[];
 }
 

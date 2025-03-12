@@ -7,8 +7,7 @@ import {
   useGetTopIssuesHighlightsV2Query
 } from "../../../redux/services/digma";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
-import { FeatureFlag } from "../../../types";
-import { InsightType } from "../../Insights/types";
+import { FeatureFlag, InsightType } from "../../../types";
 import { CheckmarkCircleIcon } from "../../common/icons/16px/CheckmarkCircleIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { EmptyStateCard } from "../EmptyStateCard";
@@ -21,9 +20,9 @@ const PAGE_SIZE = 2;
 export const TopIssues = () => {
   const { scope, environments, backendInfo } = useConfigSelector();
 
-  const areImpactHighlightsEnabled = Boolean(
-    backendInfo &&
-      getFeatureFlagValue(backendInfo, FeatureFlag.IS_HIGHLIGHTS_IMPACT_ENABLED)
+  const areImpactHighlightsEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IsHighlightsImpactEnabled
   );
 
   const { data: dataV1 } = useGetTopIssuesHighlightsQuery(

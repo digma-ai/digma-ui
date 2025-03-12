@@ -52,7 +52,7 @@ export const IssuesFilter = () => {
   const [isUnreadOnly, setIsUnreadOnly] = useState<boolean>(
     filters.includes("unread")
   );
-  const { data } = useIssuesFilters();
+  const { data } = useIssuesFilters({ isEnabled: isPopupOpen });
   const previousData = usePrevious(data);
   const environmentId = environment?.id;
   const previousEnvironmentId = usePrevious(environmentId);
@@ -64,9 +64,8 @@ export const IssuesFilter = () => {
   const [selectedInsightTypes, setSelectedInsightTypes] =
     useState<InsightType[]>(filteredInsightTypes);
   const isServicesFilterEnabled =
-    Boolean(
-      getFeatureFlagValue(backendInfo, FeatureFlag.ARE_ISSUES_FILTERS_ENABLED)
-    ) && !scopeSpanCodeObjectId;
+    getFeatureFlagValue(backendInfo, FeatureFlag.AreIssuesFiltersEnabled) &&
+    !scopeSpanCodeObjectId;
   const [selectedServices, setSelectedServices] = useState<string[]>(
     globallySelectedServices ?? []
   );
@@ -76,12 +75,9 @@ export const IssuesFilter = () => {
   const [selectedCriticalityLevels, setSelectedCriticalityLevels] = useState<
     IssueCriticality[]
   >(filteredCriticalityLevels);
-  const isCriticalityLevelsFilterEnabled = Boolean(
-    backendInfo &&
-      getFeatureFlagValue(
-        backendInfo,
-        FeatureFlag.IS_ISSUES_CRITICALITY_LEVELS_FILTER_ENABLED
-      )
+  const isCriticalityLevelsFilterEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled
   );
 
   // Update selected filters when data is fetched
@@ -91,7 +87,7 @@ export const IssuesFilter = () => {
         const newSelection = selectedInsightTypes.filter((insightType) =>
           Boolean(
             data?.issueTypeFilters.find(
-              (x) => (x.name as InsightType) === insightType && x.enabled
+              (x) => x.name === insightType && x.enabled
             )
           )
         );
@@ -285,12 +281,8 @@ export const IssuesFilter = () => {
     data?.issueTypeFilters?.map((entry) => ({
       value: entry.name,
       label: getInsightTypeInfo(entry.name)?.label ?? entry.name,
-      enabled:
-        entry.enabled ||
-        selectedInsightTypes.includes(entry.name as InsightType),
-      selected:
-        selectedInsightTypes.includes(entry.name as InsightType) &&
-        entry.enabled
+      enabled: entry.enabled || selectedInsightTypes.includes(entry.name),
+      selected: selectedInsightTypes.includes(entry.name) && entry.enabled
     })) ?? [];
 
   const criticalityLevelsFilterOptions: SelectItem[] = [

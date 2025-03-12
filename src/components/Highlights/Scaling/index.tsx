@@ -8,7 +8,7 @@ import type {
   ScalingMetrics
 } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
-import { SCOPE_CHANGE_EVENTS } from "../../../types";
+import { ScopeChangeEvent } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../utils/getDurationString";
@@ -139,7 +139,7 @@ export const Scaling = () => {
         scope,
         environments,
         row.original.environmentId,
-        SCOPE_CHANGE_EVENTS.HIGHLIGHTS_SCALING_CARD_ITEM_CLICKED
+        ScopeChangeEvent.HighlightsScalingCardItemClicked
       );
     };
 

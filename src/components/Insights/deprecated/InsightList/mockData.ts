@@ -1,5 +1,6 @@
+import { InsightType } from "../../../../types";
 import type { CodeObjectHotSpotInsight } from "../../types";
-import { InsightCategory, InsightScope, InsightType } from "../../types";
+import { InsightCategory, InsightScope } from "../../types";
 
 export const mockedHotSpotInsight: CodeObjectHotSpotInsight = {
   sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",

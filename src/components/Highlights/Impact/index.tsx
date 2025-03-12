@@ -4,7 +4,7 @@ import { PERFORMANCE_IMPACT_DOCUMENTATION_URL } from "../../../constants";
 import { useGetImpactHighlightsQuery } from "../../../redux/services/digma";
 import type { EnvironmentImpactData } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
-import { SCOPE_CHANGE_EVENTS } from "../../../types";
+import { ScopeChangeEvent } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { InfinityIcon } from "../../common/icons/16px/InfinityIcon";
@@ -139,7 +139,7 @@ export const Impact = () => {
         scope,
         environments,
         row.original.environmentId,
-        SCOPE_CHANGE_EVENTS.HIGHLIGHTS_IMPACT_CARD_ITEM_CLICKED
+        ScopeChangeEvent.HighlightsImpactCardItemClicked
       );
     };
 

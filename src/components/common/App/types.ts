@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import type { Theme } from "../../../globals";
+import type { Environment } from "../../../redux/services/types";
+import type { ScopeChangeEvent } from "../../../types";
 import type { InsightFilterType } from "../../Insights/InsightsCatalog/types";
 import type { InsightViewType } from "../../Insights/types";
 
@@ -30,17 +32,9 @@ export interface BackendInfo {
 }
 
 export enum DeploymentType {
-  HELM = "Helm",
-  DOCKER_COMPOSE = "DockerCompose",
-  DOCKER_EXTENSION = "DockerExtension"
-}
-
-export type EnvironmentType = "Public" | "Private";
-
-export interface Environment {
-  id: string;
-  name: string;
-  type: EnvironmentType | null;
+  Helm = "Helm",
+  DockerCompose = "DockerCompose",
+  DockerExtension = "DockerExtension"
 }
 
 export interface CodeDetails {
@@ -48,23 +42,14 @@ export interface CodeDetails {
   codeObjectId: string;
 }
 
+export type ScopeSpanRole = "Entry" | "Internal" | "Unknown";
+
 export interface ScopeSpan {
   displayName: string;
   spanCodeObjectId: string;
   methodId: string | null;
   serviceName: string | null;
-  role: "Entry" | "Internal" | "Unknown" | null;
-}
-
-export interface EnvironmentIssueCounts {
-  highCriticality: number;
-  mediumCriticality: number;
-  lowCriticality: number;
-}
-
-export interface SpanEnvironment {
-  environment: Environment;
-  issueCounts: EnvironmentIssueCounts;
+  role: ScopeSpanRole | null;
 }
 
 export interface Scope {
@@ -79,7 +64,7 @@ export interface Scope {
   unreadInsightsCount: number;
   environmentId?: string;
   context?: {
-    event: string;
+    event: ScopeChangeEvent;
     payload?: Record<string, unknown>;
   };
 }
@@ -94,7 +79,7 @@ export interface CodeLens {
 
 export interface ScopeWithCodeLensContext extends Omit<Scope, "context"> {
   context: {
-    event: string;
+    event: ScopeChangeEvent;
     payload: {
       codeLens: CodeLens;
     };
@@ -104,7 +89,7 @@ export interface ScopeWithCodeLensContext extends Omit<Scope, "context"> {
 export interface ScopeWithCustomProtocolLinkContext
   extends Omit<Scope, "context"> {
   context: {
-    event: string;
+    event: ScopeChangeEvent;
     payload: {
       targetTab?: string;
     };
@@ -113,7 +98,7 @@ export interface ScopeWithCustomProtocolLinkContext
 
 export interface ScopeWithErrorDetailsId extends Omit<Scope, "context"> {
   context: {
-    event: string;
+    event: ScopeChangeEvent;
     payload: {
       id?: string;
     };

@@ -1,4 +1,4 @@
-import { SCOPE_CHANGE_EVENTS } from "../../../../types";
+import { ScopeChangeEvent } from "../../../../types";
 import { changeScope } from "../../../../utils/actions/changeScope";
 import { getDurationString } from "../../../../utils/getDurationString";
 import { getPercentileKey } from "../../../../utils/getPercentileKey";
@@ -28,8 +28,7 @@ const renderSlowQueryEntry = (
       },
       environmentId: environment,
       context: {
-        event:
-          SCOPE_CHANGE_EVENTS.DASHBOARD_SLOW_QUERIES_WIDGET_ITEM_LINK_CLICKED
+        event: ScopeChangeEvent.DashboardSlowQueriesWidgetItemLinkClicked
       }
     });
   };
@@ -50,7 +49,7 @@ const renderSlowQueryEntry = (
 export const SlowQueries = ({ environment }: SlowQueriesProps) => (
   <ListWidget<SlowQueryEntry>
     title={"Slow queries"}
-    type={WidgetType.SLOW_QUERIES}
+    type={WidgetType.SlowQueries}
     icon={SnailIcon}
     environment={environment}
     renderListItem={renderSlowQueryEntry}

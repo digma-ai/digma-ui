@@ -29,83 +29,74 @@ const data: RecentActivityData = {
     {
       name: "ENV_RENDER",
       id: "ENV_RENDER#ID#1",
-      isPending: false,
       type: "Public",
       token: null,
       serverApiUrl: null,
-      isOrgDigmaSetupFinished: false
+      isOrgDigmaSetupFinished: false,
+      additionToConfigResult: null
     },
     {
       name: "ENV_RENDER",
       id: "ENV_RENDER1",
-      isPending: false,
       type: "Public",
       token: null,
       serverApiUrl: null,
-      isOrgDigmaSetupFinished: false
+      isOrgDigmaSetupFinished: false,
+      additionToConfigResult: null
     },
     {
       name: "UNSET_ENV",
       id: "UNSET_ENV#ID#1",
-      isPending: false,
       type: "Public",
       token: null,
       serverApiUrl: null,
-      isOrgDigmaSetupFinished: false
-    },
-    {
-      name: "PENDING_NO_TYPE",
-      id: "PENDING_NO_TYPE",
-      isPending: true,
-      type: null,
-      token: null,
-      serverApiUrl: null,
-      isOrgDigmaSetupFinished: false
+      isOrgDigmaSetupFinished: false,
+      additionToConfigResult: null
     },
     {
       name: "PENDING_LOCAL",
       id: "PENDING_LOCAL",
-      isPending: true,
       type: "Private",
       token: null,
       serverApiUrl: null,
-      isOrgDigmaSetupFinished: false
+      isOrgDigmaSetupFinished: false,
+      additionToConfigResult: null
     },
     {
       name: "PENDING_SHARED",
       id: "PENDING_SHARED",
-      isPending: true,
       type: "Public",
       token: null,
       serverApiUrl: null,
-      isOrgDigmaSetupFinished: false
+      isOrgDigmaSetupFinished: false,
+      additionToConfigResult: null
     },
     {
       name: "PENDING_SHARED_LOCALHOST",
       id: "PENDING_SHARED_LOCALHOST",
-      isPending: true,
       type: "Public",
       token: null,
       serverApiUrl: "https://localhost:5051",
-      isOrgDigmaSetupFinished: false
+      isOrgDigmaSetupFinished: false,
+      additionToConfigResult: null
     },
     {
       name: "PENDING_SHARED_CUSTOM_DOMAIN",
       id: "PENDING_SHARED_CUSTOM_DOMAIN",
-      isPending: true,
       type: "Public",
       token: "token_string",
       serverApiUrl: "https://example.com",
-      isOrgDigmaSetupFinished: false
+      isOrgDigmaSetupFinished: false,
+      additionToConfigResult: null
     },
     {
       name: "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
-      id: "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
-      isPending: false,
+      id: "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
       type: "Private",
       token: null,
       serverApiUrl: null,
-      isOrgDigmaSetupFinished: false
+      isOrgDigmaSetupFinished: false,
+      additionToConfigResult: null
     }
   ],
   entries: [

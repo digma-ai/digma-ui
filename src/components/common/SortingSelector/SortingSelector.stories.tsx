@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
 import { SortingSelector } from ".";
-import { SORTING_ORDER } from "../../../redux/services/types";
+import { SortingOrder } from "../../../redux/services/types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof SortingSelector> = {
@@ -21,18 +21,18 @@ export const Default: Story = {
   args: {
     defaultSorting: {
       criterion: "date",
-      order: SORTING_ORDER.ASC
+      order: SortingOrder.Asc
     },
     onChange: fn(),
     options: [
       {
         label: "Date",
-        defaultOrder: SORTING_ORDER.ASC,
+        defaultOrder: SortingOrder.Asc,
         value: "date"
       },
       {
         label: "Name",
-        defaultOrder: SORTING_ORDER.DESC,
+        defaultOrder: SortingOrder.Desc,
         value: "name"
       }
     ]

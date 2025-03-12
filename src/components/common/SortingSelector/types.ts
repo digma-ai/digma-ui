@@ -1,15 +1,15 @@
-import type { SORTING_ORDER } from "../../../redux/services/types";
+import type { SortingOrder } from "../../../redux/services/types";
 
-export interface SortingSelectorProps {
-  options: SortingOption[];
-  defaultSorting: Sorting;
-  onChange: (val: Sorting) => void;
+export interface SortingSelectorProps<T> {
+  options: SortingOption<T>[];
+  defaultSorting: Sorting<T>;
+  onChange: (val: Sorting<T>) => void;
 }
 
-export interface SortingOption {
+export interface SortingOption<T> {
   label: string;
-  defaultOrder: SORTING_ORDER;
-  value: string;
+  defaultOrder: SortingOrder;
+  value: T;
 }
 
 export interface SortingMenuButtonProps {
@@ -29,10 +29,10 @@ export interface SortingOrderOptionProps {
 }
 
 export interface SortingOrderIconContainerProps {
-  $sortingOrder: SORTING_ORDER;
+  $sortingOrder: SortingOrder;
 }
 
-export interface Sorting {
-  criterion: string;
-  order: SORTING_ORDER;
+export interface Sorting<T> {
+  criterion: T;
+  order: SortingOrder;
 }

@@ -30,7 +30,7 @@ export const SuggestionBar = ({ insightId, onClose }: SuggestionBarProps) => {
   const [page, setPage] = useState<number>(0);
   const { data, isFetching, isError } = useGetIssueRecommendationsQuery(
     {
-      IssueId: insightId ?? ""
+      issueId: insightId ?? ""
     },
     {
       skip: !insightId

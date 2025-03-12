@@ -23,12 +23,9 @@ export const getInsightHistogramUrl = (
     case InsightType.EndpointSlowdownSource:
     case InsightType.SpanDurations:
     case InsightType.SpanPerformanceAnomaly: {
-      const isSpanPercentilesHistogramIsEnabled = Boolean(
-        backendInfo &&
-          getFeatureFlagValue(
-            backendInfo,
-            FeatureFlag.IS_HTTP_GET_METHOD_SPAN_PERCENTILES_HISTOGRAM_ENABLED
-          )
+      const isSpanPercentilesHistogramIsEnabled = getFeatureFlagValue(
+        backendInfo,
+        FeatureFlag.IsHttpGetMethodSpanPercentilesHistogramEnabled
       );
 
       if (!isSpanPercentilesHistogramIsEnabled) {

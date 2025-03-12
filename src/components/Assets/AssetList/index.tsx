@@ -1,20 +1,18 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { DefaultTheme } from "styled-components";
 import { useTheme } from "styled-components";
-import type { DataFetcherConfiguration } from "../../../hooks/useFetchData";
-import { useFetchData } from "../../../hooks/useFetchData";
 import { useMount } from "../../../hooks/useMount";
+import { useGetAssetsQuery } from "../../../redux/services/digma";
 import {
-  type AssetEntry,
-  type AssetsData,
-  type GetAssetsListDataPayload,
-  ASSETS_SORTING_CRITERION,
-  SORTING_ORDER
+  type AssetRecordItemRead,
+  AssetsSortingCriterion,
+  type GetAssetsPayload,
+  SortingOrder
 } from "../../../redux/services/types";
 import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useStore } from "../../../store/useStore";
-import { SCOPE_CHANGE_EVENTS } from "../../../types";
+import { ScopeChangeEvent } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { Menu } from "../../common/Menu";
@@ -26,25 +24,14 @@ import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { SortIcon } from "../../common/icons/SortIcon";
 import { Direction } from "../../common/icons/types";
 import { EmptyState } from "../EmptyState";
-import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
-import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
+import { AssetEntry } from "./AssetEntry";
 import * as s from "./styles";
 import type { AssetListProps } from "./types";
 
 const PAGE_SIZE = 10;
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
-const requestConfig: DataFetcherConfiguration = {
-  requestAction: actions.GET_DATA,
-  responseAction: actions.SET_DATA,
-  refreshOnPayloadChange: true,
-  refreshInterval: REFRESH_INTERVAL,
-  refreshWithInterval: true,
-  debounceDelay: 10,
-  refreshWithDebounce: true,
-  fetchOnMount: true
-};
 
 const getSortingMenuChevronColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
@@ -57,35 +44,35 @@ const getSortingMenuChevronColor = (theme: DefaultTheme) => {
 };
 
 const getSortingCriterionInfo = (
-  sortingCriterion: ASSETS_SORTING_CRITERION
+  sortingCriterion: AssetsSortingCriterion
 ): {
   label: string;
-  defaultOrder: SORTING_ORDER;
+  defaultOrder: SortingOrder;
 } => {
   const sortingCriterionInfoMap = {
-    [ASSETS_SORTING_CRITERION.CRITICAL_INSIGHTS]: {
+    [AssetsSortingCriterion.CriticalInsights]: {
       label: "Critical issues",
-      defaultOrder: SORTING_ORDER.DESC
+      defaultOrder: SortingOrder.Desc
     },
-    [ASSETS_SORTING_CRITERION.PERFORMANCE]: {
+    [AssetsSortingCriterion.Performance]: {
       label: "Performance",
-      defaultOrder: SORTING_ORDER.DESC
+      defaultOrder: SortingOrder.Desc
     },
-    [ASSETS_SORTING_CRITERION.SLOWEST_FIVE_PERCENT]: {
+    [AssetsSortingCriterion.SlowestFivePercent]: {
       label: "Slowest 5%",
-      defaultOrder: SORTING_ORDER.DESC
+      defaultOrder: SortingOrder.Desc
     },
-    [ASSETS_SORTING_CRITERION.LATEST]: {
+    [AssetsSortingCriterion.Latest]: {
       label: "Latest",
-      defaultOrder: SORTING_ORDER.DESC
+      defaultOrder: SortingOrder.Desc
     },
-    [ASSETS_SORTING_CRITERION.NAME]: {
+    [AssetsSortingCriterion.Name]: {
       label: "Name",
-      defaultOrder: SORTING_ORDER.ASC
+      defaultOrder: SortingOrder.Asc
     },
-    [ASSETS_SORTING_CRITERION.PERFORMANCE_IMPACT]: {
+    [AssetsSortingCriterion.PerformanceImpact]: {
       label: "Performance impact",
-      defaultOrder: SORTING_ORDER.DESC
+      defaultOrder: SortingOrder.Desc
     }
   };
 
@@ -93,16 +80,11 @@ const getSortingCriterionInfo = (
 };
 
 const getSortingCriteria = (isImpactHidden: boolean) =>
-  Object.values(ASSETS_SORTING_CRITERION).filter(
-    (x) =>
-      !(isImpactHidden && x === ASSETS_SORTING_CRITERION.PERFORMANCE_IMPACT)
+  Object.values(AssetsSortingCriterion).filter(
+    (x) => !(isImpactHidden && x === AssetsSortingCriterion.PerformanceImpact)
   );
 
-export const AssetList = ({
-  assetTypeId,
-  setRefresher,
-  onGoToAllAssets
-}: AssetListProps) => {
+export const AssetList = ({ assetTypeId, onGoToAllAssets }: AssetListProps) => {
   const {
     assets: data,
     sorting,
@@ -138,50 +120,56 @@ export const AssetList = ({
   const isServicesFilterEnabled = !scopeSpanCodeObjectId;
   const isInitialLoading = !data;
 
-  const payload = useMemo<GetAssetsListDataPayload>(
-    () => ({
-      query: {
-        assetType: assetTypeId,
-        page,
-        pageSize: PAGE_SIZE,
-        sortBy: sorting.criterion,
-        sortOrder: sorting.order,
-        scopedSpanCodeObjectId: scopeSpanCodeObjectId,
-        ...(search.length > 0 ? { displayName: search } : {}),
-        insights: filters?.insights ?? [],
-        operations: [
-          ...(filters?.endpoints ?? []),
-          ...(filters?.consumers ?? []),
-          ...(filters?.internals ?? [])
-        ],
-        services: scopeSpanCodeObjectId ? [] : globallySelectedServices ?? [],
-        directOnly: viewMode === "children"
-      }
-    }),
-    [
-      page,
-      assetTypeId,
-      filters,
-      globallySelectedServices,
-      viewMode,
-      scopeSpanCodeObjectId,
-      search,
-      sorting
-    ]
-  );
+  const payload: GetAssetsPayload = useMemo(() => {
+    const operations = [
+      ...(filters?.endpoints ?? []),
+      ...(filters?.consumers ?? []),
+      ...(filters?.internals ?? [])
+    ];
+    const services = globallySelectedServices ?? [];
 
-  const { data: fetchedData, getData: refreshData } = useFetchData<
-    GetAssetsListDataPayload,
-    AssetsData
-  >(requestConfig, payload);
+    return {
+      assetType: assetTypeId,
+      page,
+      pageSize: PAGE_SIZE,
+      sortBy: sorting.criterion,
+      sortOrder: sorting.order,
+      scopedSpanCodeObjectId: scopeSpanCodeObjectId,
+      displayName: search.length > 0 ? search : undefined,
+      insights:
+        filters?.insights && filters.insights.length > 0
+          ? filters.insights.join(",")
+          : undefined,
+      operations: operations.length > 0 ? operations.join(",") : undefined,
+      services: scopeSpanCodeObjectId
+        ? undefined
+        : services.length > 0
+        ? services.join(",")
+        : undefined,
+      directOnly: viewMode === "children",
+      environment: environment?.id
+    };
+  }, [
+    assetTypeId,
+    page,
+    sorting.criterion,
+    sorting.order,
+    scopeSpanCodeObjectId,
+    globallySelectedServices,
+    search,
+    filters,
+    viewMode,
+    environment
+  ]);
+
+  const { data: fetchedData } = useGetAssetsQuery(payload, {
+    skip: !environment,
+    pollingInterval: REFRESH_INTERVAL
+  });
 
   useMount(() => {
     setShowAssetsHeaderToolBox(true);
   });
-
-  useEffect(() => {
-    setRefresher(refreshData);
-  }, [refreshData, setRefresher]);
 
   useEffect(() => {
     if (fetchedData) {
@@ -210,11 +198,11 @@ export const AssetList = ({
   useEffect(() => {
     if (
       isImpactHidden &&
-      sorting.criterion === ASSETS_SORTING_CRITERION.PERFORMANCE_IMPACT
+      sorting.criterion === AssetsSortingCriterion.PerformanceImpact
     ) {
       setSorting({
-        criterion: ASSETS_SORTING_CRITERION.CRITICAL_INSIGHTS,
-        order: SORTING_ORDER.DESC
+        criterion: AssetsSortingCriterion.CriticalInsights,
+        order: SortingOrder.Desc
       });
     }
   }, [isImpactHidden, sorting, setSorting]);
@@ -253,40 +241,37 @@ export const AssetList = ({
     setIsSortingMenuOpen(!isSortingMenuOpen);
   };
 
-  const handleSortingMenuItemSelect = (value: string) => {
-    // TODO: fix types
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+  const handleSortingMenuItemSelect = (value: AssetsSortingCriterion) => {
     if (sorting.criterion === value) {
       setSorting({
         ...sorting,
         order:
-          sorting.order === SORTING_ORDER.DESC
-            ? SORTING_ORDER.ASC
-            : SORTING_ORDER.DESC
+          sorting.order === SortingOrder.Desc
+            ? SortingOrder.Asc
+            : SortingOrder.Desc
       });
     } else {
       setSorting({
-        criterion: value as ASSETS_SORTING_CRITERION,
-        order: getSortingCriterionInfo(value as ASSETS_SORTING_CRITERION)
-          .defaultOrder
+        criterion: value,
+        order: getSortingCriterionInfo(value).defaultOrder
       });
     }
     handleSortingMenuToggle();
   };
 
-  const handleAssetLinkClick = (entry: AssetEntry) => {
+  const handleAssetLinkClick = (entry: AssetRecordItemRead) => {
     changeScope({
       span: {
         spanCodeObjectId: entry.spanCodeObjectId
       },
       context: {
-        event: SCOPE_CHANGE_EVENTS.ASSETS_ASSET_CARD_TITLE_LINK_CLICKED
+        event: ScopeChangeEvent.AssetsAssetCardTitleLinkClicked
       }
     });
   };
 
   const handleSortingOrderToggleOptionButtonClick =
-    (order: SORTING_ORDER) => () => {
+    (order: SortingOrder) => () => {
       setSorting({
         ...sorting,
         order
@@ -305,7 +290,7 @@ export const AssetList = ({
             const id = `${entry.spanCodeObjectId}__${entry.services.join(",")}`;
 
             return (
-              <AssetEntryComponent
+              <AssetEntry
                 key={id}
                 entry={entry}
                 onAssetLinkClick={handleAssetLinkClick}
@@ -368,7 +353,7 @@ export const AssetList = ({
                   </s.SortingLabel>
                   <ChevronIcon
                     direction={
-                      isSortingMenuOpen ? Direction.UP : Direction.DOWN
+                      isSortingMenuOpen ? Direction.Up : Direction.Down
                     }
                     color={sortingMenuChevronColor}
                   />
@@ -387,7 +372,7 @@ export const AssetList = ({
             </Popover>
           </s.PopoverContainer>
           <s.SortingOrderToggle>
-            {[SORTING_ORDER.DESC, SORTING_ORDER.ASC].map((order) => {
+            {[SortingOrder.Desc, SortingOrder.Asc].map((order) => {
               const isSelected = sorting.order === order;
 
               return (

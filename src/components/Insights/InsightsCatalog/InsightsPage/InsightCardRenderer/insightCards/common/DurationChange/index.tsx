@@ -14,12 +14,12 @@ const DURATION_DIFF_MIN_LIMIT = 10 * 1000; // in nanoseconds
 
 const getTagType = (direction?: Direction): TagType => {
   switch (direction) {
-    case Direction.DOWN:
+    case Direction.Down:
       return "success";
-    case Direction.UP:
+    case Direction.Up:
       return "highSeverity";
-    case Direction.LEFT:
-    case Direction.RIGHT:
+    case Direction.Left:
+    case Direction.Right:
     default:
       return "default";
   }
@@ -82,8 +82,8 @@ export const DurationChange = ({
 
   const direction =
     previousDuration && previousDuration.raw > currentDuration.raw
-      ? Direction.DOWN
-      : Direction.UP;
+      ? Direction.Down
+      : Direction.Up;
 
   return (
     <>

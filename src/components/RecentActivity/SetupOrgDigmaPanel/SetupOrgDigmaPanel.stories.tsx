@@ -21,12 +21,12 @@ export const Default: Story = {
     environment: {
       name: "MY_ENV",
       id: "MY_ENV",
-      isPending: true,
       hasRecentActivity: false,
       type: "Public",
       token: "token_string",
       serverApiUrl: "https://example.com:80",
-      isOrgDigmaSetupFinished: false
+      isOrgDigmaSetupFinished: false,
+      additionToConfigResult: null
     }
   }
 };

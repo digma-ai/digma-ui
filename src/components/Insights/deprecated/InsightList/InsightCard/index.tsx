@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { PERCENTILES } from "../../../../../constants";
 import { isString } from "../../../../../typeGuards/isString";
-import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
+import { ScopeChangeEvent } from "../../../../../types";
 import { changeScope } from "../../../../../utils/actions/changeScope";
 import { formatTimeDistance } from "../../../../../utils/formatTimeDistance";
 import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
@@ -141,7 +141,7 @@ export const InsightCard = ({
           spanCodeObjectId: spanInfo.spanCodeObjectId
         },
         context: {
-          event: SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_ASSET_LINK_CLICKED
+          event: ScopeChangeEvent.InsightsInsightCardAssetLinkClicked
         }
       });
     }
@@ -217,7 +217,7 @@ export const InsightCard = ({
                 <s.ExpandButton onClick={handleExpandButtonClick}>
                   <ChevronIcon
                     color={"currentColor"}
-                    direction={isExpanded ? Direction.UP : Direction.DOWN}
+                    direction={isExpanded ? Direction.Up : Direction.Down}
                     size={14}
                   />
                 </s.ExpandButton>

@@ -1,7 +1,5 @@
-import type {
-  InsightType,
-  SpanDurationBreakdownInsight
-} from "../../../../../types";
+import type { InsightType } from "../../../../../../../types";
+import type { SpanDurationBreakdownInsight } from "../../../../../types";
 import type { InsightCardCommonProps } from "../types";
 
 export interface SpanDurationBreakdownInsightCardProps

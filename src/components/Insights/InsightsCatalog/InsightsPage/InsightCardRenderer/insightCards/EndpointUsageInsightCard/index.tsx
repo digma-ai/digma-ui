@@ -1,6 +1,6 @@
+import { InsightType } from "../../../../../../../types";
 import { roundTo } from "../../../../../../../utils/roundTo";
 import { Tag } from "../../../../../../common/v3/Tag";
-import { InsightType } from "../../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";

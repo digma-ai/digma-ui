@@ -11,7 +11,7 @@ import {
 import { useInsightsSelector } from "../../store/insights/useInsightsSelector";
 import { useStore } from "../../store/useStore";
 import { isUndefined } from "../../typeGuards/isUndefined";
-import { SCOPE_CHANGE_EVENTS } from "../../types";
+import { ScopeChangeEvent, type InsightType } from "../../types";
 import { areBackendInfosEqual } from "../../utils/areBackendInfosEqual";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import type { RegistrationFormValues } from "../common/RegistrationDialog/types";
@@ -24,7 +24,6 @@ import * as s from "./styles";
 import type {
   GenericCodeObjectInsight,
   InsightTicketInfo,
-  InsightType,
   InsightsProps
 } from "./types";
 
@@ -225,9 +224,9 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
       if (
         scope?.context?.event &&
         ![
-          SCOPE_CHANGE_EVENTS.METRICS_SERVICE_SELECTED,
-          SCOPE_CHANGE_EVENTS.METRICS_ENDPOINT_SELECTED
-        ].includes(scope?.context?.event as SCOPE_CHANGE_EVENTS)
+          ScopeChangeEvent.MetricsServiceSelected,
+          ScopeChangeEvent.MetricsEndpointSelected
+        ].includes(scope?.context?.event)
       ) {
         setFilteredCriticalityLevels(
           insightsInitialState.filteredCriticalityLevels

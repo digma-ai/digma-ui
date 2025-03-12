@@ -1,14 +1,14 @@
 import type {
   ErrorCriticality,
   ErrorHandlingType,
-  GLOBAL_ERROR_SORTING_CRITERION
+  GlobalErrorsSortingCriterion
 } from "../../../store/errors/errorsSlice";
 
 export interface GetGlobalErrorsDataPayload {
   environment: string;
   codeObjectId?: string;
   searchCriteria?: string;
-  sortBy?: GLOBAL_ERROR_SORTING_CRITERION;
+  sortBy?: GlobalErrorsSortingCriterion;
   page?: number;
   pageSize?: number;
   services?: string[];

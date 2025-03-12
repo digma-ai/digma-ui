@@ -8,16 +8,16 @@ interface ArrowIconProps extends RotatableIconProps {
 }
 
 const directionRotateMap: Record<Direction, string> = {
-  [Direction.UP]: "0",
-  [Direction.LEFT]: "0",
-  [Direction.RIGHT]: "0",
-  [Direction.DOWN]: "90"
+  [Direction.Up]: "0",
+  [Direction.Left]: "0",
+  [Direction.Right]: "0",
+  [Direction.Down]: "90"
 };
 
 const ArrowIconComponent = (props: ArrowIconProps) => {
   const { size, color } = useIconProps(props);
   const transform = {
-    transform: `rotate(${directionRotateMap[props.direction ?? Direction.UP]})`
+    transform: `rotate(${directionRotateMap[props.direction ?? Direction.Up]})`
   };
 
   return (

@@ -1,15 +1,13 @@
 import { useContext } from "react";
 import { INSTRUMENTATION_DOCUMENTATION_URL } from "../../../constants";
 import { getFeatureFlagValue } from "../../../featureFlags";
+import type { EnvironmentType } from "../../../redux/services/types";
 import { isString } from "../../../typeGuards/isString";
 import { FeatureFlag } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import type {
-  ConfigContextData,
-  EnvironmentType
-} from "../../common/App/types";
+import type { ConfigContextData } from "../../common/App/types";
 import { CheckmarkIcon } from "../../common/icons/12px/CheckmarkIcon";
 import { InfinityIcon } from "../../common/icons/32px/InfinityIcon";
 import { Link } from "../../common/v3/Link";
@@ -32,9 +30,11 @@ const getIsActiveRunConfigSet = (
   }
 
   const isCentralizedDeployment = config.backendInfo?.centralize;
-  const areNewInstrumentationAttributesEnabled = getFeatureFlagValue(
-    config.backendInfo ?? null,
-    FeatureFlag.ARE_NEW_INSTRUMENTATION_ATTRIBUTES_ENABLED
+  const areNewInstrumentationAttributesEnabled = Boolean(
+    getFeatureFlagValue(
+      config.backendInfo,
+      FeatureFlag.AreNewInstrumentationAttributesEnabled
+    )
   );
 
   if (areNewInstrumentationAttributesEnabled) {

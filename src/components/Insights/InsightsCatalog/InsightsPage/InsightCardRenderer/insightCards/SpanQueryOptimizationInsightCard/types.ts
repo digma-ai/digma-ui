@@ -1,8 +1,5 @@
-import type {
-  InsightType,
-  SpanQueryOptimizationInsight,
-  Trace
-} from "../../../../../types";
+import type { InsightType } from "../../../../../../../types";
+import type { SpanQueryOptimizationInsight, Trace } from "../../../../../types";
 import type { InsightCardCommonProps } from "../types";
 
 export interface SpanQueryOptimizationInsightCardProps

@@ -8,10 +8,10 @@ import type { CurrentOperation, EngineState, FailedOperation } from "./types";
 import { Operation } from "./types";
 
 const operationActions = {
-  [Operation.INSTALL]: actions.INSTALL_DIGMA_ENGINE,
-  [Operation.UNINSTALL]: actions.UNINSTALL_DIGMA_ENGINE,
-  [Operation.START]: actions.START_DIGMA_ENGINE,
-  [Operation.STOP]: actions.STOP_DIGMA_ENGINE
+  [Operation.Install]: actions.INSTALL_DIGMA_ENGINE,
+  [Operation.Uninstall]: actions.UNINSTALL_DIGMA_ENGINE,
+  [Operation.Start]: actions.START_DIGMA_ENGINE,
+  [Operation.Stop]: actions.STOP_DIGMA_ENGINE
 };
 
 export const useEngine = (
@@ -57,23 +57,23 @@ export const useEngine = (
     const handleInstallDigmaResultData = (data: unknown) => {
       handleOperationResultData(
         data as AsyncActionResultData,
-        Operation.INSTALL
+        Operation.Install
       );
     };
 
     const handleUninstallDigmaResultData = (data: unknown) => {
       handleOperationResultData(
         data as AsyncActionResultData,
-        Operation.UNINSTALL
+        Operation.Uninstall
       );
     };
 
     const handleStartDigmaResultData = (data: unknown) => {
-      handleOperationResultData(data as AsyncActionResultData, Operation.START);
+      handleOperationResultData(data as AsyncActionResultData, Operation.Start);
     };
 
     const handleStopDigmaResultData = (data: unknown) => {
-      handleOperationResultData(data as AsyncActionResultData, Operation.STOP);
+      handleOperationResultData(data as AsyncActionResultData, Operation.Stop);
     };
 
     dispatcher.addActionListener(

@@ -1,9 +1,8 @@
-import type { SORTING_ORDER } from "../../../redux/services/types";
+import type { AssetType, SortingOrder } from "../../../redux/services/types";
 
 export interface AssetListProps {
   onGoToAllAssets: () => void;
-  assetTypeId: string;
-  setRefresher: (refresher: () => void) => void;
+  assetTypeId: AssetType;
 }
 
 export interface SortingMenuButtonProps {
@@ -15,5 +14,5 @@ export interface SortingOrderOptionProps {
 }
 
 export interface SortingOrderIconContainerProps {
-  $sortingOrder: SORTING_ORDER;
+  $sortingOrder: SortingOrder;
 }

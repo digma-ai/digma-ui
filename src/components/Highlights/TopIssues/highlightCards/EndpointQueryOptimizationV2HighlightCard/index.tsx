@@ -5,7 +5,7 @@ import type {
   EnvironmentData
 } from "../../../../../redux/services/types";
 import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
-import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
+import { ScopeChangeEvent } from "../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { Tag } from "../../../../common/v3/Tag";
@@ -52,7 +52,7 @@ export const EndpointQueryOptimizationV2HighlightCard = ({
       scope,
       environments,
       row.original.environmentId,
-      SCOPE_CHANGE_EVENTS.HIGHLIGHTS_TOP_ISSUES_CARD_ITEM_CLICKED
+      ScopeChangeEvent.HighlightsTopIssuesCardItemClicked
     );
   };
 

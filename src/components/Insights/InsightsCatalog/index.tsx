@@ -6,8 +6,8 @@ import {
   useMarkScopeInsightsReadMutation
 } from "../../../redux/services/digma";
 import {
-  INSIGHTS_SORTING_CRITERION,
-  SORTING_ORDER,
+  InsightsSortingCriterion,
+  SortingOrder,
   type IssueCriticality
 } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
@@ -51,18 +51,18 @@ const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 const getSortingOptions = (
   insightViewType: InsightViewType | null
-): SortingOption[] => {
+): SortingOption<InsightsSortingCriterion>[] => {
   if (insightViewType === "Issues") {
     return [
       {
-        value: INSIGHTS_SORTING_CRITERION.CRITICALITY,
+        value: InsightsSortingCriterion.Criticality,
         label: "Criticality",
-        defaultOrder: SORTING_ORDER.DESC
+        defaultOrder: SortingOrder.Desc
       },
       {
-        value: INSIGHTS_SORTING_CRITERION.LATEST,
+        value: InsightsSortingCriterion.Latest,
         label: "Latest",
-        defaultOrder: SORTING_ORDER.DESC
+        defaultOrder: SortingOrder.Desc
       }
     ];
   }
@@ -143,12 +143,9 @@ export const InsightsCatalog = ({
 
   const isIssuesView = insightViewType === "Issues";
 
-  const isCriticalityLevelsFilterEnabled = Boolean(
-    backendInfo &&
-      getFeatureFlagValue(
-        backendInfo,
-        FeatureFlag.IS_ISSUES_CRITICALITY_LEVELS_FILTER_ENABLED
-      )
+  const isCriticalityLevelsFilterEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled
   );
 
   const appliedFilterCount =
@@ -171,7 +168,7 @@ export const InsightsCatalog = ({
 
   const areSpanEnvironmentsEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.ARE_SPAN_ENVIRONMENTS_ENABLED
+    FeatureFlag.AreSpanEnvironmentsEnabled
   );
 
   const { data: spanEnvironments } = useGetSpanEnvironmentsQuery(
@@ -203,11 +200,11 @@ export const InsightsCatalog = ({
   const isFilteredViewMode = isUnreadOnlyViewMode || isCriticalOnlyViewMode;
   const areInsightStatsEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.ARE_INSIGHT_STATS_ENABLED
+    FeatureFlag.AreInsightStatsEnabled
   );
   const isIssuesFilterVisible = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.ARE_ISSUES_FILTERS_ENABLED
+    FeatureFlag.AreIssuesFiltersEnabled
   );
   const sortingOptions = useMemo(
     () => getSortingOptions(insightViewType),
@@ -258,7 +255,7 @@ export const InsightsCatalog = ({
     setSearch(val ?? "");
   };
 
-  const handleSortingChange = (value: Sorting) => {
+  const handleSortingChange = (value: Sorting<InsightsSortingCriterion>) => {
     setSorting(value);
   };
 
@@ -358,7 +355,7 @@ export const InsightsCatalog = ({
             >
               <s.BackToAllInsightsButtonIconContainer>
                 <ChevronIcon
-                  direction={Direction.LEFT}
+                  direction={Direction.Left}
                   size={16}
                   color={"currentColor"}
                 />

@@ -4,10 +4,10 @@ import type { RotatableIconProps } from "../types";
 import { Direction } from "../types";
 
 const directionRotateMap: Record<Direction, string> = {
-  [Direction.DOWN]: "0",
-  [Direction.LEFT]: "0",
-  [Direction.RIGHT]: "0",
-  [Direction.UP]: "180"
+  [Direction.Down]: "0",
+  [Direction.Left]: "0",
+  [Direction.Right]: "0",
+  [Direction.Up]: "180"
 };
 
 const SortIconComponent = (props: RotatableIconProps) => {
@@ -15,7 +15,7 @@ const SortIconComponent = (props: RotatableIconProps) => {
 
   const transform = {
     transform: `rotate(${
-      directionRotateMap[props.direction ?? Direction.DOWN]
+      directionRotateMap[props.direction ?? Direction.Down]
     })`
   };
 

@@ -1,8 +1,5 @@
-import type {
-  EndpointChattyApiV2Insight,
-  InsightType,
-  Trace
-} from "../../../../../types";
+import type { InsightType } from "../../../../../../../types";
+import type { EndpointChattyApiV2Insight, Trace } from "../../../../../types";
 import type { InsightCardCommonProps } from "../types";
 
 export interface EndpointChattyApiV2InsightCardProps

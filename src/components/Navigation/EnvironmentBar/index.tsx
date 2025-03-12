@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
+import type { Environment } from "../../../redux/services/types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
-import type { Environment } from "../../common/App/types";
 import { EnvironmentIcon } from "../../common/EnvironmentIcon";
 import { NewPopover } from "../../common/NewPopover";
 import { ChevronIcon } from "../../common/icons/12px/ChevronIcon";
@@ -68,7 +68,7 @@ export const EnvironmentBar = ({
         <s.ChevronIconContainer>
           <ChevronIcon
             color={"currentColor"}
-            direction={isMenuOpen ? Direction.UP : Direction.DOWN}
+            direction={isMenuOpen ? Direction.Up : Direction.Down}
           />
         </s.ChevronIconContainer>
       </s.EnvironmentBar>

@@ -1,8 +1,14 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useMainDispatch } from "../../containers/Main/hooks";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
+import { digmaApi } from "../../redux/services/digma";
+import type {
+  AssetType,
+  GetAssetsCategoriesResponse
+} from "../../redux/services/types";
 import type { AssetsFilters } from "../../store/assets/assetsSlice";
 import { useAssetsSelector } from "../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
@@ -16,19 +22,17 @@ import { NewIconButton } from "../common/v3/NewIconButton";
 import { Tooltip } from "../common/v3/Tooltip";
 import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
-import type { AssetCategoriesData } from "./AssetTypeList/types";
 import { AssetsFilter } from "./AssetsFilter";
 import { AssetsViewScopeConfiguration } from "./AssetsViewScopeConfiguration";
 import { EmptyState } from "./EmptyState";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import type { DataRefresher } from "./types";
 
 const PERSISTENCE_KEY = "assetsFiltersV2";
 const SEARCH_INPUT_DEBOUNCE_DELAY = 1000; // in milliseconds
 
 const getAssetCategoryCount = (
-  assetCategoriesData: AssetCategoriesData | null
+  assetCategoriesData: GetAssetsCategoriesResponse | null
 ) =>
   assetCategoriesData?.assetCategories.reduce(
     (acc, cur) => acc + cur.count,
@@ -41,7 +45,6 @@ export const Assets = () => {
     "project"
   );
   const previousPersistedFilters = usePrevious(persistedFilters);
-  const [assetsCount, setAssetsCount] = useState<number>();
   const params = useParams();
   const selectedAssetTypeId = useMemo(() => params.typeId, [params]);
   const { search, filters, assets, assetCategoriesData } = useAssetsSelector();
@@ -55,14 +58,11 @@ export const Assets = () => {
   const { scope, environments } = useConfigSelector();
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
-  const [assetTypeListDataRefresher, setAssetTypeListRefresher] =
-    useState<DataRefresher | null>(null);
-  const [assetListDataRefresher, setAssetListRefresher] =
-    useState<DataRefresher | null>(null);
   const { goTo } = useHistory();
   const isBackendUpgradeMessageVisible = false;
   const { showAssetsHeaderToolBox } = useAssetsSelector();
   const isInitialized = Boolean(filters);
+  const dispatch = useMainDispatch();
 
   useEffect(() => {
     if (previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId) {
@@ -115,35 +115,19 @@ export const Assets = () => {
       view: !selectedAssetTypeId ? "asset categories" : "assets"
     });
 
-    const currentRefresher = !selectedAssetTypeId
-      ? assetTypeListDataRefresher
-      : assetListDataRefresher;
-
-    if (currentRefresher) {
-      currentRefresher.refresh();
+    if (selectedAssetTypeId) {
+      dispatch(digmaApi.util.invalidateTags(["Asset"]));
+    } else {
+      dispatch(digmaApi.util.invalidateTags(["AssetCategory"]));
     }
   };
 
-  useEffect(() => {
-    setAssetsCount(
+  const assetsCount = useMemo(
+    () =>
       !selectedAssetTypeId
         ? getAssetCategoryCount(assetCategoriesData)
-        : assets?.filteredCount
-    );
-  }, [assetCategoriesData, assets, selectedAssetTypeId]);
-
-  const handleAssetTypeListRefresherChange = useCallback(
-    (refresher: () => void) => {
-      setAssetTypeListRefresher({ refresh: refresher });
-    },
-    []
-  );
-
-  const handleAssetListRefresherChange = useCallback(
-    (refresher: () => void) => {
-      setAssetListRefresher({ refresh: refresher });
-    },
-    []
+        : assets?.filteredCount,
+    [assetCategoriesData, assets, selectedAssetTypeId]
   );
 
   const renderContent = () => {
@@ -160,19 +144,13 @@ export const Assets = () => {
     }
 
     if (!selectedAssetTypeId) {
-      return (
-        <AssetTypeList
-          onAssetTypeSelect={handleAssetTypeSelect}
-          setRefresher={handleAssetTypeListRefresherChange}
-        />
-      );
+      return <AssetTypeList onAssetTypeSelect={handleAssetTypeSelect} />;
     }
 
     return (
       <AssetList
         onGoToAllAssets={handleGoToAllAssets}
-        assetTypeId={selectedAssetTypeId}
-        setRefresher={handleAssetListRefresherChange}
+        assetTypeId={selectedAssetTypeId as AssetType}
       />
     );
   };

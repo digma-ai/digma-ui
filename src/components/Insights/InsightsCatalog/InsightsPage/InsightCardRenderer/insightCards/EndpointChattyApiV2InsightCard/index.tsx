@@ -1,5 +1,6 @@
+import type { InsightType } from "../../../../../../../types";
 import { Tag } from "../../../../../../common/v3/Tag";
-import type { InsightType, Trace } from "../../../../../types";
+import type { Trace } from "../../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";

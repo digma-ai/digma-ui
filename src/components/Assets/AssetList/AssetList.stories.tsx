@@ -1,11 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
 import { AssetList } from ".";
+import { AssetType } from "../../../redux/services/types";
 import { ConfigContext, initialState } from "../../common/App/ConfigContext";
 import type { ConfigContextData } from "../../common/App/types";
 import { DeploymentType } from "../../common/App/types";
-import { actions } from "../actions";
-import { mockedAssetsData } from "./mockedData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof AssetList> = {
@@ -27,7 +25,7 @@ const mockedConfig: ConfigContextData = {
   ...initialState,
   backendInfo: {
     applicationVersion: "unknown",
-    deploymentType: DeploymentType.HELM,
+    deploymentType: DeploymentType.Helm,
     centralize: true
   },
   environment: {
@@ -39,17 +37,7 @@ const mockedConfig: ConfigContextData = {
 
 export const Default: Story = {
   args: {
-    setRefresher: fn(),
-    assetTypeId: "Endpoint"
-  },
-  play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_DATA,
-        payload: mockedAssetsData
-      });
-    }, 500);
+    assetTypeId: AssetType.Endpoint
   }
 };
 
@@ -62,16 +50,6 @@ export const WithPerformanceImpact: Story = {
     )
   ],
   args: {
-    setRefresher: fn(),
-    assetTypeId: "Endpoint"
-  },
-  play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_DATA,
-        payload: mockedAssetsData
-      });
-    }, 500);
+    assetTypeId: AssetType.Endpoint
   }
 };

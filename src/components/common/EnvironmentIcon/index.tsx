@@ -6,10 +6,6 @@ export const EnvironmentIcon = ({
   environment,
   size = 12
 }: EnvironmentIconProps) => {
-  if (!environment.type) {
-    return null;
-  }
-
   return environment.type === "Public" ? (
     <InfinityIcon size={size} color={"currentColor"} />
   ) : (

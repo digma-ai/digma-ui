@@ -1,4 +1,4 @@
-import { InsightType } from "../../components/Insights/types";
+import { InsightType } from "../../types";
 import type {
   EndpointBottleneckMetrics,
   EndpointChattyApiV2Metrics,

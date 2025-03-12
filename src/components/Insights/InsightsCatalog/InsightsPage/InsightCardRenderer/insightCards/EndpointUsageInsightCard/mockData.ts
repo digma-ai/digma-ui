@@ -1,11 +1,6 @@
+import { InsightType } from "../../../../../../../types";
 import type { EndpointNormalUsageInsight } from "../../../../../types";
-import {
-  InsightCategory,
-  InsightImportance,
-  InsightScope,
-  InsightSpecificity,
-  InsightType
-} from "../../../../../types";
+import { InsightCategory, InsightScope } from "../../../../../types";
 
 export const mockedEndpointNormalUsageInsight: EndpointNormalUsageInsight = {
   sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
@@ -55,8 +50,8 @@ export const mockedEndpointNormalUsageInsight: EndpointNormalUsageInsight = {
   ],
   category: InsightCategory.Usage,
   type: InsightType.NormalUsage,
-  importance: InsightImportance.NotInteresting,
+  importance: 7,
   name: "Normal Usage",
   maxCallsIn1Min: 0,
-  specifity: InsightSpecificity.OwnInsight
+  specifity: 4
 };

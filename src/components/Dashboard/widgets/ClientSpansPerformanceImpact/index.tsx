@@ -1,4 +1,4 @@
-import { SCOPE_CHANGE_EVENTS } from "../../../../types";
+import { ScopeChangeEvent } from "../../../../types";
 import { changeScope } from "../../../../utils/actions/changeScope";
 import { ImpactScore } from "../../../common/ImpactScore";
 import { Tooltip } from "../../../common/Tooltip";
@@ -23,7 +23,7 @@ const renderClientSpanOverallImpactEntry = (
       environmentId: environment,
       context: {
         event:
-          SCOPE_CHANGE_EVENTS.DASHBOARD_CLIENT_SPANS_PERFORMANCE_IMPACT_WIDGET_ITEM_LINK_CLICKED
+          ScopeChangeEvent.DashboardClientSpansPerformanceImpactWidgetItemLinkClicked
       }
     });
   };
@@ -52,7 +52,7 @@ export const ClientSpansPerformanceImpact = ({
 }: ClientSpansPerformanceImpactProps) => (
   <ListWidget<ClientSpanOverallImpactEntry>
     title={"Client Spans Performance Impact"}
-    type={WidgetType.CLIENT_SPANS_PERFORMANCE_IMPACT}
+    type={WidgetType.ClientSpansPerformanceImpact}
     icon={AlarmClockIcon}
     environment={environment}
     renderListItem={renderClientSpanOverallImpactEntry}

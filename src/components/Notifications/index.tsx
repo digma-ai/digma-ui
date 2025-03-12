@@ -3,7 +3,7 @@ import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isBoolean } from "../../typeGuards/isBoolean";
 import { isNumber } from "../../typeGuards/isNumber";
-import { SCOPE_CHANGE_EVENTS } from "../../types";
+import { ScopeChangeEvent } from "../../types";
 import { changeScope } from "../../utils/actions/changeScope";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
@@ -163,8 +163,7 @@ export const Notifications = ({ viewMode }: NotificationsProps) => {
           spanCodeObjectId: codeObjectData.spanCodeObjectId
         },
         context: {
-          event:
-            SCOPE_CHANGE_EVENTS.NOTIFICATIONS_NOTIFICATION_CARD_ASSET_LINK_CLICKED
+          event: ScopeChangeEvent.NotificationsNotificationCardAssetLinkClicked
         }
       });
     }

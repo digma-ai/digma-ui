@@ -1,4 +1,4 @@
-import type { EnvironmentType } from "../../../common/App/types";
+import type { EnvironmentType } from "../../../../redux/services/types";
 
 export interface EnvironmentTypeStepProps {
   handleEnvironmentTypeSelect: (type: EnvironmentType) => void;

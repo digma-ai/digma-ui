@@ -1,8 +1,5 @@
-import type {
-  EndpointSpanNPlusOneInsight,
-  InsightType,
-  Trace
-} from "../../../../../types";
+import type { InsightType } from "../../../../../../../types";
+import type { EndpointSpanNPlusOneInsight, Trace } from "../../../../../types";
 import type { InsightCardCommonProps } from "../types";
 
 export interface EndpointSpanNPlusOneInsightCardProps

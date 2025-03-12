@@ -22,7 +22,7 @@ import {
   type IssuesReportViewMode
 } from "../../../redux/slices/issuesReportSlice";
 import { isString } from "../../../typeGuards/isString";
-import { SCOPE_CHANGE_EVENTS } from "../../../types";
+import { ScopeChangeEvent } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { IssuesReport } from "../../common/IssuesReport";
 import type { TargetScope } from "../../common/IssuesReport/types";
@@ -86,7 +86,7 @@ export const MetricsReport = () => {
       environmentId,
       openMainPanel: true,
       context: {
-        event: SCOPE_CHANGE_EVENTS.METRICS_ENDPOINT_SELECTED,
+        event: ScopeChangeEvent.MetricsEndpointSelected,
         payload: {
           service,
           criticalityLevels
@@ -118,7 +118,7 @@ export const MetricsReport = () => {
         openMainPanel: true,
         environmentId: selectedEnvironmentId ?? undefined,
         context: {
-          event: SCOPE_CHANGE_EVENTS.METRICS_SERVICE_SELECTED,
+          event: ScopeChangeEvent.MetricsServiceSelected,
           payload: {
             service: target.value,
             criticalityLevels

@@ -82,7 +82,7 @@ export const EnvironmentSelect = () => {
             <s.EnvironmentName>{selectedEnvironment?.name}</s.EnvironmentName>
             <s.ChevronIconContainer>
               <ChevronIcon
-                direction={isMenuOpen ? Direction.UP : Direction.DOWN}
+                direction={isMenuOpen ? Direction.Up : Direction.Down}
                 color={"currentColor"}
                 size={16}
               />

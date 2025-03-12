@@ -3,7 +3,7 @@ import { footnoteRegularTypography } from "../../../../common/App/typographies";
 import { Chip } from "../../../../common/Chip";
 import { activeStyles } from "../../../../common/Chip/styles";
 import type { CounterProps, StyledChipProps } from "./types";
-import { ISSUE_CRITICALITY } from "./types";
+import { IssueCriticality } from "./types";
 
 export const StyledChip = styled(Chip)<StyledChipProps>`
   gap: 4px;
@@ -42,15 +42,15 @@ export const Counter = styled.div<CounterProps>`
 
   ${({ $criticality }) => {
     switch ($criticality) {
-      case ISSUE_CRITICALITY.HIGH:
+      case IssueCriticality.High:
         return css`
           background: ${({ theme }) => theme.colors.v3.status.high};
         `;
-      case ISSUE_CRITICALITY.MEDIUM:
+      case IssueCriticality.Medium:
         return css`
           background: ${({ theme }) => theme.colors.v3.status.medium};
         `;
-      case ISSUE_CRITICALITY.LOW:
+      case IssueCriticality.Low:
       default:
         return css`
           background: ${({ theme }) => theme.colors.v3.status.backgroundLow};

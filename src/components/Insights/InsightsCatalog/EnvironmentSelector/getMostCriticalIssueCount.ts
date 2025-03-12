@@ -1,12 +1,12 @@
-import type { EnvironmentIssueCounts } from "../../../common/App/types";
-import { ISSUE_CRITICALITY } from "./EnvironmentChip/types";
+import type { EnvironmentIssueCounts } from "../../../../redux/services/types";
+import { IssueCriticality } from "./EnvironmentChip/types";
 
 export const getMostCriticalIssueCount = (
   counts?: EnvironmentIssueCounts
 ):
   | {
       count: number;
-      criticality: ISSUE_CRITICALITY;
+      criticality: IssueCriticality;
     }
   | undefined => {
   if (!counts) {
@@ -16,19 +16,19 @@ export const getMostCriticalIssueCount = (
   if (counts.highCriticality) {
     return {
       count: counts.highCriticality,
-      criticality: ISSUE_CRITICALITY.HIGH
+      criticality: IssueCriticality.High
     };
   }
 
   if (counts.mediumCriticality) {
     return {
       count: counts.mediumCriticality,
-      criticality: ISSUE_CRITICALITY.MEDIUM
+      criticality: IssueCriticality.Medium
     };
   }
 
   if (counts.lowCriticality) {
-    return { count: counts.lowCriticality, criticality: ISSUE_CRITICALITY.LOW };
+    return { count: counts.lowCriticality, criticality: IssueCriticality.Low };
   }
 
   return undefined;

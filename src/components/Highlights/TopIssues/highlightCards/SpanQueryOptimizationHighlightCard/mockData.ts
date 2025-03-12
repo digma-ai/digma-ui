@@ -2,7 +2,8 @@ import type {
   HighlightData,
   SpanQueryOptimizationMetrics
 } from "../../../../../redux/services/types";
-import { InsightStatus, InsightType } from "../../../../Insights/types";
+import { InsightType } from "../../../../../types";
+import { InsightStatus } from "../../../../Insights/types";
 
 export const mockedSpanQueryOptimizationMetrics: SpanQueryOptimizationMetrics =
   [

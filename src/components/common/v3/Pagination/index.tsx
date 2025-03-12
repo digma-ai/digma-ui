@@ -61,7 +61,7 @@ export const Pagination = ({
                 onClick={handleButtonClick(0)}
               >
                 <DoubleChevronIcon
-                  direction={Direction.LEFT}
+                  direction={Direction.Left}
                   color={"currentColor"}
                   size={14}
                 />
@@ -72,7 +72,7 @@ export const Pagination = ({
               onClick={handleButtonClick(page - 1)}
             >
               <ChevronIcon
-                direction={Direction.LEFT}
+                direction={Direction.Left}
                 color={"currentColor"}
                 size={14}
               />
@@ -87,7 +87,7 @@ export const Pagination = ({
               onClick={handleButtonClick(page + 1)}
             >
               <ChevronIcon
-                direction={Direction.RIGHT}
+                direction={Direction.Right}
                 color={"currentColor"}
                 size={14}
               />
@@ -98,7 +98,7 @@ export const Pagination = ({
                 onClick={handleButtonClick(pageCount - 1)}
               >
                 <DoubleChevronIcon
-                  direction={Direction.RIGHT}
+                  direction={Direction.Right}
                   color={"currentColor"}
                   size={14}
                 />

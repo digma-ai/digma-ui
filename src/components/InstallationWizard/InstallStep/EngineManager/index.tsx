@@ -35,19 +35,19 @@ const getLoaderStatus = (
 };
 
 const operationsInfo: Record<Operation, OperationInfo> = {
-  [Operation.INSTALL]: {
+  [Operation.Install]: {
     button: { label: "Start", icon: PlayCircleIcon },
     titleSuffix: "Starting"
   },
-  [Operation.UNINSTALL]: {
+  [Operation.Uninstall]: {
     button: { label: "Remove", icon: CrossCircleIcon },
     titleSuffix: "Removing"
   },
-  [Operation.START]: {
+  [Operation.Start]: {
     button: { label: "Start", icon: PlayCircleIcon },
     titleSuffix: "Starting"
   },
-  [Operation.STOP]: {
+  [Operation.Stop]: {
     button: { label: "Stop", icon: StopCircleIcon },
     titleSuffix: "Stopping"
   }
@@ -118,8 +118,8 @@ export const EngineManager = ({
 
   const handleStartButtonClick = () => {
     const operation = config.isDigmaEngineInstalled
-      ? Operation.START
-      : Operation.INSTALL;
+      ? Operation.Start
+      : Operation.Install;
     const operationInfo = operationsInfo[operation];
     sendActionButtonTrackingEvent(operationInfo.button.label);
     engine.startOperation(operation);
@@ -180,10 +180,10 @@ export const EngineManager = ({
     } else {
       if (config.isDigmaEngineInstalled && !isAutoInstallationFlow) {
         if (isEngineRunning) {
-          buttons.push(renderOperationButton(Operation.STOP));
+          buttons.push(renderOperationButton(Operation.Stop));
         }
 
-        buttons.push(renderOperationButton(Operation.UNINSTALL));
+        buttons.push(renderOperationButton(Operation.Uninstall));
       }
     }
 

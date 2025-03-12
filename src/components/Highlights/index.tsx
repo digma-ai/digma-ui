@@ -10,16 +10,13 @@ import * as s from "./styles";
 export const Highlights = () => {
   const { backendInfo } = useConfigSelector();
 
-  const areImpactHighlightsVisible = Boolean(
-    backendInfo &&
-      getFeatureFlagValue(backendInfo, FeatureFlag.IS_HIGHLIGHTS_IMPACT_ENABLED)
+  const areImpactHighlightsVisible = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IsHighlightsImpactEnabled
   );
-  const areScalingHighlightsVisible = Boolean(
-    backendInfo &&
-      getFeatureFlagValue(
-        backendInfo,
-        FeatureFlag.IS_HIGHLIGHTS_SCALING_ENABLED
-      )
+  const areScalingHighlightsVisible = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IsHighlightsScalingEnabled
   );
 
   return (

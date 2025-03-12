@@ -108,7 +108,7 @@ export const InstallStep = ({
     setIsEngineOperationInProgress(false);
 
     if (isAutoInstallationFlow) {
-      if (operation === Operation.INSTALL) {
+      if (operation === Operation.Install) {
         setIsAutoInstallationFinished(true);
         sendTrackingEvent(trackingEvents.AUTO_INSTALLATION_FLOW_FINISHED, {
           result: resultData.result
@@ -120,7 +120,7 @@ export const InstallStep = ({
         }
       }
 
-      if (operation === Operation.UNINSTALL) {
+      if (operation === Operation.Uninstall) {
         setIsAutoInstallationFlow(false);
       }
     }
@@ -144,7 +144,7 @@ export const InstallStep = ({
         setIsAutoInstallationFlow(isAutoInstallationFlow);
 
         sendTrackingEvent(trackingEvents.AUTO_INSTALLATION_FLOW_STARTED);
-        engine.startOperation(Operation.INSTALL);
+        engine.startOperation(Operation.Install);
       } else {
         sendTrackingEvent(
           trackingEvents.AUTO_INSTALLATION_PREREQUISITES_WERE_NOT_MET,

@@ -9,7 +9,7 @@ import {
 import type { EnvironmentPerformanceData } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isBoolean } from "../../../typeGuards/isBoolean";
-import { FeatureFlag, SCOPE_CHANGE_EVENTS } from "../../../types";
+import { FeatureFlag, ScopeChangeEvent } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
@@ -29,9 +29,9 @@ import * as s from "./styles";
 export const Performance = () => {
   const { scope, environments, backendInfo } = useConfigSelector();
 
-  const areImpactHighlightsEnabled = Boolean(
-    backendInfo &&
-      getFeatureFlagValue(backendInfo, FeatureFlag.IS_HIGHLIGHTS_IMPACT_ENABLED)
+  const areImpactHighlightsEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IsHighlightsImpactEnabled
   );
 
   const payload = useMemo(
@@ -147,7 +147,7 @@ export const Performance = () => {
         scope,
         environments,
         row.original.environment.id,
-        SCOPE_CHANGE_EVENTS.HIGHLIGHTS_PERFORMANCE_CARD_ITEM_CLICKED
+        ScopeChangeEvent.HighlightsPerformanceCardItemClicked
       );
     };
 

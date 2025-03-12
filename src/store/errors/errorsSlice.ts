@@ -8,14 +8,14 @@ import type {
 export const PAGE_SIZE = 10;
 export const DAYS_FILTER_DEFAULT_VALUE = 7;
 
-export enum GLOBAL_ERROR_SORTING_CRITERION {
-  CRITICALITY = "Criticality",
-  LATEST = "Latest"
+export enum GlobalErrorsSortingCriterion {
+  Criticality = "Criticality",
+  Latest = "Latest"
 }
 
 export enum ViewMode {
-  All = "All",
-  OnlyDismissed = "OnlyDismissed"
+  All,
+  OnlyDismissed
 }
 
 export type ErrorFilter = "Services" | "Endpoints" | "ErrorTypes";
@@ -42,7 +42,7 @@ export interface ErrorsState {
   globalErrorsSearch: string;
   globalErrorsPage: number;
   globalErrorsPageSize: number;
-  globalErrorsSorting: GLOBAL_ERROR_SORTING_CRITERION;
+  globalErrorsSorting: GlobalErrorsSortingCriterion;
   globalErrorsFilters: GlobalErrorsFiltersState;
   globalErrorsSelectedFilters: GlobalErrorsSelectedFiltersState | null;
   globalErrorsViewMode: ViewMode;
@@ -60,7 +60,7 @@ const globalErrorsWithoutFiltersInitialState: Omit<
   globalErrorsSearch: "",
   globalErrorsPage: 0,
   globalErrorsPageSize: PAGE_SIZE,
-  globalErrorsSorting: GLOBAL_ERROR_SORTING_CRITERION.CRITICALITY,
+  globalErrorsSorting: GlobalErrorsSortingCriterion.Criticality,
   globalErrorsFilters: {
     services: null,
     endpoints: null,
@@ -104,7 +104,7 @@ export const errorsSlice = createSlice({
     setGlobalErrorsPage: (page: number) => set({ globalErrorsPage: page }),
     setGlobalErrorsPageSize: (pageSize: number) =>
       set({ globalErrorsPageSize: pageSize }),
-    setGlobalErrorsSorting: (sorting: GLOBAL_ERROR_SORTING_CRITERION) =>
+    setGlobalErrorsSorting: (sorting: GlobalErrorsSortingCriterion) =>
       set({ globalErrorsSorting: sorting }),
     setGlobalErrorsFilters: (filters: ErrorsState["globalErrorsFilters"]) =>
       set({ globalErrorsFilters: filters }),

@@ -5,7 +5,7 @@ import {
   useAdminSelector
 } from "../../../containers/Admin/hooks";
 import { useMount } from "../../../hooks/useMount";
-import { INSIGHTS_SORTING_CRITERION } from "../../../redux/services/types";
+import { InsightsSortingCriterion } from "../../../redux/services/types";
 import {
   setSelectedEnvironmentId,
   setSelectedServices
@@ -41,7 +41,7 @@ export const Home = () => {
       "top-criticality": {
         query: {
           environment: environmentId ?? undefined,
-          sortBy: INSIGHTS_SORTING_CRITERION.CRITICALITY,
+          sortBy: InsightsSortingCriterion.Criticality,
           services: selectedServices
         },
         limit: ISSUES_LIMIT,
@@ -50,7 +50,7 @@ export const Home = () => {
       "top-severity": {
         query: {
           environment: environmentId ?? undefined,
-          sortBy: INSIGHTS_SORTING_CRITERION.SEVERITY,
+          sortBy: InsightsSortingCriterion.Severity,
           services: selectedServices
         },
         limit: ISSUES_LIMIT,

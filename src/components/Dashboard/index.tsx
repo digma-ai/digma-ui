@@ -112,12 +112,10 @@ export const Dashboard = () => {
         </s.Title>
         {platform !== "Web" &&
           config.backendInfo &&
-          !(
-            [
-              DeploymentType.DOCKER_COMPOSE,
-              DeploymentType.DOCKER_EXTENSION
-            ] as string[]
-          ).includes(config.backendInfo.deploymentType) && (
+          ![
+            DeploymentType.DockerCompose,
+            DeploymentType.DockerExtension
+          ].includes(config.backendInfo.deploymentType) && (
             <s.OpenInBrowserLink onClick={handleOpenInBrowserLinkClick}>
               Open in browser
               <s.IconContainer>

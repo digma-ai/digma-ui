@@ -1,5 +1,5 @@
 import { getFeatureFlagValue } from "../../../../featureFlags";
-import { ASSETS_SORTING_CRITERION } from "../../../../redux/services/types";
+import { AssetsSortingCriterion } from "../../../../redux/services/types";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isString } from "../../../../typeGuards/isString";
@@ -27,7 +27,7 @@ export const AssetEntry = ({
   const { backendInfo } = useConfigSelector();
   const isNewImpactScoreCalculationEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.IS_NEW_IMPACT_SCORE_CALCULATION_ENABLED
+    FeatureFlag.IsNewImpactScoreCalculationEnabled
   );
   const impactScore = isNewImpactScoreCalculationEnabled
     ? entry.impactScore
@@ -43,18 +43,14 @@ export const AssetEntry = ({
   const slowestFivePercentDuration = entry.p95;
   const lastSeenDateTime = entry.latestSpanTimestamp;
 
-  // Do not show unimplemented insights
-  const filteredInsights = entry.insights
-    .filter(
-      (x) =>
-        ![
-          InsightType.SpanScalingWell,
-          InsightType.SpanScalingInsufficientData
-        ].includes(x.type as InsightType)
-    )
-    // TODO: fix types
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-    .filter((x) => x.importance < InsightImportance.Info);
+  const filteredInsights = entry.insights.filter(
+    (x) =>
+      // Do not show unimplemented insights
+      ![
+        InsightType.SpanScalingWell,
+        InsightType.SpanScalingInsufficientData
+      ].includes(x.type) && x.importance < InsightImportance.Info
+  );
 
   const sortedInsights = [...filteredInsights].sort(
     (a, b) =>
@@ -178,7 +174,7 @@ export const AssetEntry = ({
                   score={impactScore}
                   showIndicator={
                     sortingCriterion ===
-                    ASSETS_SORTING_CRITERION.PERFORMANCE_IMPACT
+                    AssetsSortingCriterion.PerformanceImpact
                   }
                 />
               </s.ValueContainer>

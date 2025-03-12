@@ -57,7 +57,7 @@ export const EnvironmentFilter = ({
           <ChevronIcon
             color={"currentColor"}
             size={14}
-            direction={isMenuOpen ? Direction.UP : Direction.DOWN}
+            direction={isMenuOpen ? Direction.Up : Direction.Down}
           />
         </s.MenuChevronIconContainer>
       </s.MenuButton>

@@ -1,9 +1,9 @@
+import { InsightType } from "../../../../../../../types";
 import type { EndpointSpanNPlusOneInsight } from "../../../../../types";
 import {
   InsightCategory,
   InsightScope,
-  InsightStatus,
-  InsightType
+  InsightStatus
 } from "../../../../../types";
 
 export const mockedEndpointSpanNPlusOneInsight: EndpointSpanNPlusOneInsight = {

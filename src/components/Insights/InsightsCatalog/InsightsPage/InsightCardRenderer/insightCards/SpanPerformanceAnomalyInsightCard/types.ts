@@ -1,5 +1,5 @@
+import type { InsightType } from "../../../../../../../types";
 import type {
-  InsightType,
   SpanPerformanceAnomalyInsight,
   Trace
 } from "../../../../../types";

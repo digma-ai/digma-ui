@@ -13,8 +13,8 @@ export interface FilterButtonContainerProps {
 }
 
 export enum ViewMode {
-  All = "All",
-  OnlyDismissed = "OnlyDismissed"
+  All,
+  OnlyDismissed
 }
 
 export interface PagedData<TData> {

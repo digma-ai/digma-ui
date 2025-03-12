@@ -1,6 +1,6 @@
+import type { InsightType } from "../../../../../../../types";
 import type {
   EndpointQueryOptimizationV2Insight,
-  InsightType,
   Trace
 } from "../../../../../types";
 import type { InsightCardCommonProps } from "../types";

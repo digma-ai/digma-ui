@@ -7,7 +7,7 @@ import { useMount } from "../../../hooks/useMount";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import {
-  GLOBAL_ERROR_SORTING_CRITERION,
+  GlobalErrorsSortingCriterion,
   PAGE_SIZE,
   ViewMode
 } from "../../../store/errors/errorsSlice";
@@ -15,7 +15,7 @@ import { useErrorsSelector } from "../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../store/useStore";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isUndefined } from "../../../typeGuards/isUndefined";
-import { FeatureFlag, SCOPE_CHANGE_EVENTS } from "../../../types";
+import { FeatureFlag, ScopeChangeEvent } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
@@ -53,7 +53,7 @@ export const GlobalErrorsList = () => {
   const animationDelayTimerId = useRef<number>();
   const isDismissEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.IS_GLOBAL_ERROR_DISMISS_ENABLED
+    FeatureFlag.IsGlobalErrorDismissEnabled
   );
 
   const {
@@ -84,24 +84,24 @@ export const GlobalErrorsList = () => {
 
   const areGlobalErrorsFiltersEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.ARE_GLOBAL_ERRORS_FILTERS_ENABLED
+    FeatureFlag.AreGlobalErrorsFiltersEnabled
   );
 
   const isGlobalErrorsLastDaysFilterEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.IS_GLOBAL_ERROR_LAST_DAYS_FILTER_ENABLED
+    FeatureFlag.IsGlobalErrorsLastDaysFilterEnabled
   );
 
   const areGlobalErrorsCriticalityAndUnhandledFiltersEnabled =
     getFeatureFlagValue(
       backendInfo,
-      FeatureFlag.ARE_GLOBAL_ERRORS_CRITICALITY_AND_UNHANDLED_FILTERS_ENABLED
+      FeatureFlag.AreGlobalErrorsCriticalityAndUnhandledFiltersEnabled
     );
 
   const environmentId = environment?.id;
   const previousEnvironmentId = usePrevious(environmentId);
 
-  const sortingMenuItems = Object.values(GLOBAL_ERROR_SORTING_CRITERION).map(
+  const sortingMenuItems = Object.values(GlobalErrorsSortingCriterion).map(
     (x) => ({
       id: x,
       label: x,
@@ -263,7 +263,7 @@ export const GlobalErrorsList = () => {
           spanCodeObjectId: spanCodeObjectId
         },
         context: {
-          event: SCOPE_CHANGE_EVENTS.ERROR_CARD_LINK_CLICKED,
+          event: ScopeChangeEvent.ErrorCardLinkClicked,
           payload: {
             id: errorId
           }
@@ -296,7 +296,7 @@ export const GlobalErrorsList = () => {
     sendUserActionTrackingEvent(
       trackingEvents.GLOBAL_ERRORS_VIEW_SORTING_CHANGE
     );
-    setGlobalErrorsSorting(sorting as GLOBAL_ERROR_SORTING_CRITERION);
+    setGlobalErrorsSorting(sorting as GlobalErrorsSortingCriterion);
     setIsSortingMenuOpen(false);
   };
 
@@ -369,7 +369,7 @@ export const GlobalErrorsList = () => {
           <s.BackToAllErrorsButton onClick={handleBackToAllInsightsButtonClick}>
             <s.BackToAllErrorsButtonIconContainer>
               <ChevronIcon
-                direction={Direction.LEFT}
+                direction={Direction.Left}
                 size={16}
                 color={"currentColor"}
               />

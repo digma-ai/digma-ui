@@ -12,6 +12,6 @@ export interface AddToConfigResult {
 }
 
 export enum AddToRunConfigState {
-  success = "success",
-  failure = "failure"
+  Success = "success",
+  Failure = "failure"
 }

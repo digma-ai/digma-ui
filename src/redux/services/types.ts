@@ -1,18 +1,36 @@
-import type { AssetFilterQuery } from "../../components/Assets/AssetsFilter/types";
 import type {
   DeploymentType,
-  Environment,
-  EnvironmentType
+  ScopeSpanRole
 } from "../../components/common/App/types";
 import type { InsightFilterType } from "../../components/Insights/InsightsCatalog/types";
 import type {
   GenericCodeObjectInsight,
+  InsightImportance,
   InsightStatus,
-  InsightType,
   InsightViewType
 } from "../../components/Insights/types";
+import type { InsightType } from "../../types";
 
 export type IssueCriticality = "Low" | "Medium" | "High";
+
+export enum AssetType {
+  Endpoint = "Endpoint",
+  Consumer = "Consumer",
+  InternalOperation = "InternalOperation",
+  DatabaseQueries = "DatabaseQueries",
+  CodeLocation = "CodeLocation",
+  EndpointClient = "EndpointClient",
+  Cache = "Cache",
+  Other = "Other"
+}
+
+export type EnvironmentType = "Public" | "Private";
+
+export interface Environment {
+  id: string;
+  name: string;
+  type: EnvironmentType;
+}
 
 export interface GetAboutResponse {
   applicationVersion: string;
@@ -34,16 +52,16 @@ export interface GetAssetsFiltersPayload {
 export interface FilterEntry {
   enabled: boolean;
   selected: boolean;
-  name: string | null;
-  id: string | null;
+  name: string;
+  id?: string;
 }
 export interface CategoryFilter {
-  categoryName: string | null;
-  entries: FilterEntry[] | null;
-  categories: CategoryFilter[] | null;
+  categoryName?: string;
+  entries?: FilterEntry[];
+  categories?: CategoryFilter[];
 }
 export interface GetAssetsFiltersResponse {
-  categories?: CategoryFilter[] | null;
+  categories: CategoryFilter[];
 }
 
 export interface GetAssetsCategoriesPayload {
@@ -54,11 +72,10 @@ export interface GetAssetsCategoriesPayload {
   scopedSpanCodeObjectId?: string;
   directOnly?: boolean;
   environment?: string;
-  accountId?: string;
 }
 
 export interface AssetCategory {
-  name: string | null;
+  name: AssetType;
   count: number;
 }
 
@@ -73,56 +90,44 @@ export interface SpanInfo {
 }
 
 export interface AssetsEnvironment {
-  environmentId: string | null;
-  environmentName: string | null;
-  environmentType: string | null;
+  environmentId: string;
+  environmentName: string;
+  environmentType: string;
   assetsCount: number;
 }
 
 export interface GetAssetsCategoriesResponse {
-  assetCategories?: AssetCategory[] | null;
-  parents?: SpanInfo[] | null;
-  environments?: AssetsEnvironment[] | null;
+  assetCategories: AssetCategory[];
+  parents?: SpanInfo[];
+  environments: AssetsEnvironment[];
 }
 
-export enum ASSETS_SORTING_CRITERION {
-  CRITICAL_INSIGHTS = "criticalinsights",
-  PERFORMANCE = "p50",
-  SLOWEST_FIVE_PERCENT = "p95",
-  LATEST = "latest",
-  NAME = "displayname",
-  PERFORMANCE_IMPACT = "performanceimpact"
+export enum AssetsSortingCriterion {
+  CriticalInsights = "criticalinsights",
+  Performance = "p50",
+  SlowestFivePercent = "p95",
+  Latest = "latest",
+  Name = "displayname",
+  PerformanceImpact = "performanceimpact"
 }
 
-export enum SORTING_ORDER {
-  ASC = "asc",
-  DESC = "desc"
+export enum SortingOrder {
+  Asc = "asc",
+  Desc = "desc"
 }
 
 export interface GetAssetsPayload extends GetAssetsFiltersPayload {
-  assetType: string;
+  assetType: AssetType;
   page?: number;
   pageSize?: number;
-  sortBy?: ASSETS_SORTING_CRITERION;
-  sortOrder?: SORTING_ORDER;
+  sortBy?: AssetsSortingCriterion;
+  sortOrder?: SortingOrder;
 }
 
 export interface AssetInsightInfo {
-  type: string | null;
-  importance: number;
+  type: InsightType;
+  importance: InsightImportance;
   criticality: number;
-}
-
-export interface GetAssetListDataQuery extends AssetFilterQuery {
-  assetType: string;
-  page: number;
-  pageSize: number;
-  sortBy: ASSETS_SORTING_CRITERION;
-  sortOrder: SORTING_ORDER;
-}
-
-export interface GetAssetsListDataPayload {
-  query: GetAssetListDataQuery;
 }
 
 export interface Duration {
@@ -131,62 +136,34 @@ export interface Duration {
   raw: number;
 }
 
-export interface AssetRecordItemRead {
-  /** @deprecated */
-  service: string | null;
-  services: string[] | null;
-  displayName: string | null;
-  spanCodeObjectId: string | null;
-  assetType: string | null;
-  latestSpanTimestamp: string;
-  firstDetected: string;
-  instrumentationLibrary: string | null;
-  p50: Duration;
-  p95: Duration;
-  insights: AssetInsightInfo[] | null;
-  impactScores: Record<string, number> | null;
-  impactScore: number;
-}
-
-export interface Insight {
-  type: string;
-  importance: number;
-  criticality: number;
-}
-
 export interface ImpactScores {
   ScoreExp25: number;
   ScoreExp1000: number;
 }
 
-export interface AssetEntry {
-  assetType: string;
+export interface AssetRecordItemRead {
+  /** @deprecated */
+  service: string;
+  services: string[];
+  displayName: string;
+  spanCodeObjectId: string;
+  assetType: AssetType;
+  latestSpanTimestamp: string;
+  firstDetected?: string;
+  instrumentationLibrary?: string;
   p50: Duration | null;
   p95: Duration | null;
-  displayName: string;
-  instrumentationLibrary?: string;
-  insights: Insight[];
-  latestSpanTimestamp: string;
+  insights: AssetInsightInfo[];
   /** @deprecated */
   impactScores?: ImpactScores;
   impactScore: number;
-  service: string;
-  services: string[];
-  spanCodeObjectId: string;
-  firstDetected?: string;
-}
-
-export interface AssetsData {
-  data: AssetEntry[];
-  totalCount: number;
-  filteredCount: number;
 }
 
 export interface GetAssetsResponse {
-  data?: AssetRecordItemRead[] | null;
-  totalCount?: number;
-  filteredCount?: number;
-  environments?: AssetsEnvironment[] | null;
+  data: AssetRecordItemRead[];
+  totalCount: number;
+  filteredCount: number;
+  environments: AssetsEnvironment[];
 }
 
 export interface GetUserProfileResponse {
@@ -266,18 +243,10 @@ export interface GetServiceEnvironmentsPayload {
 }
 
 export interface SetServiceEnvironmentsPayload {
-  environments: {
-    id: string;
-    name: string;
-    type: EnvironmentType;
-  }[];
+  environments: Environment[];
 }
 
-export type GetEnvironmentsResponse = {
-  type: "Private" | "Public";
-  id: string;
-  name: string;
-}[];
+export type GetEnvironmentsResponse = Environment[];
 
 export interface GetEnvironmentServicesPayload {
   environment: string | null;
@@ -464,11 +433,7 @@ interface PerformancePercentileData {
 }
 
 export interface EnvironmentPerformanceData {
-  environment: {
-    name: string;
-    id: string;
-    type: EnvironmentType;
-  };
+  environment: Environment;
   p50: PerformancePercentileData;
   p95: PerformancePercentileData;
   lastCallTimeStamp: string | null;
@@ -518,16 +483,16 @@ export interface GetScalingHighlightsResponse {
   scaling: EnvironmentScalingData[];
 }
 
-export enum INSIGHTS_SORTING_CRITERION {
-  CRITICALITY = "criticality",
-  SEVERITY = "severity",
-  LATEST = "latest"
+export enum InsightsSortingCriterion {
+  Criticality = "criticality",
+  Severity = "severity",
+  Latest = "latest"
 }
 
 export interface GetInsightsPayload {
   filters?: string[];
-  sortBy?: INSIGHTS_SORTING_CRITERION;
-  sortOrder?: SORTING_ORDER;
+  sortBy?: InsightsSortingCriterion;
+  sortOrder?: SortingOrder;
   page?: number;
   pageSize?: number;
   showDismissed?: boolean;
@@ -596,8 +561,8 @@ export interface GetIssuesPayload {
   filters?: InsightFilterType[];
   services?: string[];
   insightTypes?: InsightType[];
-  sortBy?: INSIGHTS_SORTING_CRITERION;
-  sortOrder?: SORTING_ORDER;
+  sortBy?: InsightsSortingCriterion;
+  sortOrder?: SortingOrder;
   page?: number;
   pageSize?: number;
 }
@@ -614,7 +579,7 @@ export interface GetIssuesFiltersPayload {
 }
 
 export interface IssueTypeFilter {
-  name: string;
+  name: InsightType;
   enabled: boolean;
 }
 
@@ -634,7 +599,7 @@ export interface RecheckInsightPayload {
   environment: string;
   codeObjectId?: string;
   id: string;
-  insightType?: string;
+  insightType?: InsightType;
   sourceSpanCodeObjectId?: string;
   time: string;
 }
@@ -649,7 +614,7 @@ export interface MarkScopeInsightsReadPayload {
     spanCodeObject?: string;
     methodCodeObjectId?: string;
     serviceName?: string;
-    role?: string;
+    role?: ScopeSpanRole;
   };
 }
 
@@ -715,7 +680,7 @@ export interface GetSpanCodeLocationsResponse {
 
 export interface GetSpanInsightPayload {
   spanCodeObjectId: string;
-  insightType: string;
+  insightType: InsightType;
   environment: string;
 }
 
@@ -728,7 +693,7 @@ export interface LinkTicketResponse {
 }
 
 export interface GetIssueRecommendationsPayload {
-  IssueId: string;
+  issueId: string;
 }
 
 export interface IssueRecommendationSource {
@@ -775,7 +740,7 @@ export interface GetSpanInfoResponse {
   displayName: string;
   services: string[];
   environments: Environment[];
-  assetTypeId: string;
+  assetTypeId: AssetType;
   firstSeen?: string;
   lastSeen?: string;
   linkedEndpoints?: LinkedEndpoint[];

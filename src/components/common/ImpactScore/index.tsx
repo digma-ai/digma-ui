@@ -14,7 +14,7 @@ const getImpactScoreLabel = (
 ) => {
   const isNewImpactScoreCalculationEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.IS_NEW_IMPACT_SCORE_CALCULATION_ENABLED
+    FeatureFlag.IsNewImpactScoreCalculationEnabled
   );
 
   if (isNewImpactScoreCalculationEnabled) {

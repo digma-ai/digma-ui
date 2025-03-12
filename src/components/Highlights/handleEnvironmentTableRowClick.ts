@@ -1,11 +1,13 @@
+import type { Environment } from "../../redux/services/types";
+import type { ScopeChangeEvent } from "../../types";
 import { changeScope } from "../../utils/actions/changeScope";
-import type { Environment, Scope } from "../common/App/types";
+import type { Scope } from "../common/App/types";
 
 export const handleEnvironmentTableRowClick = (
   scope: Scope | null,
   environments: Environment[] | null,
   environmentIdToSelect: string,
-  changeScopeEvent: string
+  changeScopeEvent: ScopeChangeEvent
 ) => {
   const environmentChangeTo = environments?.find(
     (x) => x.id === environmentIdToSelect

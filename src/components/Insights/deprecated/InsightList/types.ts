@@ -1,10 +1,7 @@
 import type { RefObject } from "react";
+import type { InsightType } from "../../../../types";
 import type { InsightCardViewMode } from "../../InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/types";
-import type {
-  GenericCodeObjectInsight,
-  InsightType,
-  MethodSpan
-} from "../../types";
+import type { GenericCodeObjectInsight, MethodSpan } from "../../types";
 
 /** @deprecated */
 export interface InsightListProps {

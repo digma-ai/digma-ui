@@ -64,7 +64,7 @@ import type {
 } from "./types";
 
 export const digmaApi = createApi({
-  tagTypes: ["Insight"],
+  tagTypes: ["Asset", "AssetCategory", "Insight"],
   reducerPath: "digmaApi",
   baseQuery: fetchBaseQuery({
     baseUrl: isString(window.digmaApiProxyPrefix)
@@ -92,13 +92,15 @@ export const digmaApi = createApi({
       query: (data) => ({
         url: `/Assets/get_categories`,
         params: data
-      })
+      }),
+      providesTags: ["AssetCategory"]
     }),
     getAssets: builder.query<GetAssetsResponse, GetAssetsPayload>({
       query: (data) => ({
         url: `/Assets/get_assets`,
         params: data
-      })
+      }),
+      providesTags: ["Asset"]
     }),
     getUserProfile: builder.query<GetUserProfileResponse, void>({
       query: () => "Authentication/logged-in-user"

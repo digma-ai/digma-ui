@@ -14,7 +14,7 @@ import { useStore } from "../../store/useStore";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isUndefined } from "../../typeGuards/isUndefined";
 import type { SendPluginEventPayload } from "../../types";
-import { SCOPE_CHANGE_EVENTS } from "../../types";
+import { ScopeChangeEvent } from "../../types";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { areBackendInfosEqual } from "../../utils/areBackendInfosEqual";
 import { Navigation } from "../Navigation";
@@ -207,13 +207,13 @@ export const Main = () => {
 
       if (scope?.context) {
         switch (scope.context.event) {
-          case SCOPE_CHANGE_EVENTS.HISTORY_NAVIGATED as string: {
+          case ScopeChangeEvent.HistoryNavigated: {
             updateBrowserLocation(
               scope.context.payload?.location as HistoryEntryLocation
             );
             break;
           }
-          case SCOPE_CHANGE_EVENTS.HISTORY_CLEARED as string:
+          case ScopeChangeEvent.HistoryCleared:
             goTo(`/${TAB_IDS.ISSUES}`, {
               state: {
                 environmentId: (
@@ -226,30 +226,30 @@ export const Main = () => {
               }
             });
             break;
-          case SCOPE_CHANGE_EVENTS.JAEGER_SPAN_LINK_CLICKED as string:
-          case SCOPE_CHANGE_EVENTS.ASSETS_ASSET_CARD_TITLE_LINK_CLICKED as string:
+          case ScopeChangeEvent.JaegerSpanLinkClicked:
+          case ScopeChangeEvent.AssetsAssetCardTitleLinkClicked:
             goTo(`/${TAB_IDS.HIGHLIGHTS}`, { state });
             break;
-          case SCOPE_CHANGE_EVENTS.HIGHLIGHTS_TOP_ISSUES_CARD_ITEM_CLICKED as string:
-          case SCOPE_CHANGE_EVENTS.HIGHLIGHTS_SCALING_CARD_ITEM_CLICKED as string:
+          case ScopeChangeEvent.HighlightsTopIssuesCardItemClicked:
+          case ScopeChangeEvent.HighlightsScalingCardItemClicked:
             goTo(`/${TAB_IDS.ISSUES}`, { state });
             break;
-          case SCOPE_CHANGE_EVENTS.HIGHLIGHTS_PERFORMANCE_CARD_ITEM_CLICKED as string:
-          case SCOPE_CHANGE_EVENTS.HIGHLIGHTS_IMPACT_CARD_ITEM_CLICKED as string:
+          case ScopeChangeEvent.HighlightsPerformanceCardItemClicked:
+          case ScopeChangeEvent.HighlightsImpactCardItemClicked:
             goTo(`/${TAB_IDS.ANALYTICS}`, { state });
             break;
-          case SCOPE_CHANGE_EVENTS.NAVIGATION_HOME_BUTTON_CLICKED as string:
+          case ScopeChangeEvent.NavigationHomeButtonClicked:
             if (matchPath(window.location.pathname, TAB_IDS.ASSETS)) {
               goTo(`/${TAB_IDS.ASSETS}`, { state });
               break;
             }
             goTo(`/${TAB_IDS.ISSUES}`, { state });
             break;
-          case SCOPE_CHANGE_EVENTS.ASSETS_EMPTY_CATEGORY_PARENT_LINK_CLICKED as string:
+          case ScopeChangeEvent.AssetsEmptyCategoryParentLinkClicked:
             goTo(`/${TAB_IDS.ASSETS}`, { state });
             break;
-          case SCOPE_CHANGE_EVENTS.METRICS_SERVICE_SELECTED as string:
-          case SCOPE_CHANGE_EVENTS.METRICS_ENDPOINT_SELECTED as string: {
+          case ScopeChangeEvent.MetricsServiceSelected:
+          case ScopeChangeEvent.MetricsEndpointSelected: {
             const serviceToSelect = scope.context.payload?.service as string;
             setSelectedServices(serviceToSelect ? [serviceToSelect] : []);
             const criticalityLevels = scope.context.payload
@@ -266,7 +266,7 @@ export const Main = () => {
             goTo(`/${TAB_IDS.ISSUES}`, { state });
             break;
           }
-          case SCOPE_CHANGE_EVENTS.IDE_CODE_LENS_CLICKED as string: {
+          case ScopeChangeEvent.IdeCodeLensClicked: {
             const url = getURLToNavigateOnCodeLensClick(scope);
             if (url) {
               goTo(url, { state });
@@ -275,7 +275,7 @@ export const Main = () => {
             defaultGoTo(scope, state);
             break;
           }
-          case SCOPE_CHANGE_EVENTS.ERROR_CARD_LINK_CLICKED as string: {
+          case ScopeChangeEvent.ErrorCardLinkClicked: {
             const errorId = isScopeWithErrorDetailsIdContext(scope)
               ? "/" + scope.context.payload.id
               : "";
@@ -283,7 +283,7 @@ export const Main = () => {
             goTo(`/${TAB_IDS.ERRORS}${errorId}`, { state });
             break;
           }
-          case SCOPE_CHANGE_EVENTS.IDE_REST_API_CALL as string: {
+          case ScopeChangeEvent.IdeRestApiCall: {
             const url = getUrlToNavigateFromRestApiCall(scope);
             if (url) {
               goTo(url, { state });
@@ -292,15 +292,15 @@ export const Main = () => {
             defaultGoTo(scope, state);
             break;
           }
-          case SCOPE_CHANGE_EVENTS.DASHBOARD_SLOW_QUERIES_WIDGET_ITEM_LINK_CLICKED as string:
-          case SCOPE_CHANGE_EVENTS.DASHBOARD_CLIENT_SPANS_PERFORMANCE_IMPACT_WIDGET_ITEM_LINK_CLICKED as string:
-          case SCOPE_CHANGE_EVENTS.NAVIGATION_CODE_BUTTON_CLICKED as string:
-          case SCOPE_CHANGE_EVENTS.HIGHLIGHTS_TOP_ISSUES_CARD_ASSET_LINK_CLICKED as string:
-          case SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_TITLE_ASSET_LINK_CLICKED as string:
-          case SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_ASSET_LINK_CLICKED as string:
-          case SCOPE_CHANGE_EVENTS.TESTS_TEST_CARD_TITLE_LINK_CLICKED as string:
-          case SCOPE_CHANGE_EVENTS.NOTIFICATIONS_NOTIFICATION_CARD_ASSET_LINK_CLICKED as string:
-          case SCOPE_CHANGE_EVENTS.RECENT_ACTIVITY_SPAN_LINK_CLICKED as string:
+          case ScopeChangeEvent.DashboardSlowQueriesWidgetItemLinkClicked:
+          case ScopeChangeEvent.DashboardClientSpansPerformanceImpactWidgetItemLinkClicked:
+          case ScopeChangeEvent.NavigationCodeButtonClicked:
+          case ScopeChangeEvent.HighlightsTopIssuesCardAssetLinkClicked:
+          case ScopeChangeEvent.InsightsInsightCardTitleAssetLinkClicked:
+          case ScopeChangeEvent.InsightsInsightCardAssetLinkClicked:
+          case ScopeChangeEvent.TestsTestCardTitleLinkClicked:
+          case ScopeChangeEvent.NotificationsNotificationCardAssetLinkClicked:
+          case ScopeChangeEvent.RecentActivitySpanLinkClicked:
           default: {
             defaultGoTo(scope, state);
           }

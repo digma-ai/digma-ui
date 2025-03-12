@@ -45,7 +45,7 @@ const NavigationLink = ({
       {text}
       {withChevron && (
         <ChevronIcon
-          direction={Direction.RIGHT}
+          direction={Direction.Right}
           color={"currentColor"}
           size={20}
         />
@@ -260,7 +260,7 @@ export const Table = ({
                             <SortIcon
                               color={"currentColor"}
                               size={16}
-                              direction={Direction.UP}
+                              direction={Direction.Up}
                             />
                           </s.SortingOrderIconContainer>
                         ),
@@ -269,7 +269,7 @@ export const Table = ({
                             <SortIcon
                               color={"currentColor"}
                               size={16}
-                              direction={Direction.DOWN}
+                              direction={Direction.Down}
                             />
                           </s.SortingOrderIconContainer>
                         )

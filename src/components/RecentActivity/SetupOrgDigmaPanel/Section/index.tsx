@@ -42,7 +42,7 @@ export const Section = ({
         </s.Header>
         <ChevronIcon
           color={getChevronIconColor(theme)}
-          direction={isSectionExpanded ? Direction.UP : Direction.DOWN}
+          direction={isSectionExpanded ? Direction.Up : Direction.Down}
           size={14}
         />
       </s.HeaderButton>

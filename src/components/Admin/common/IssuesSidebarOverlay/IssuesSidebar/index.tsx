@@ -11,11 +11,12 @@ import {
   useGetSpanInfoQuery
 } from "../../../../../redux/services/digma";
 import {
-  INSIGHTS_SORTING_CRITERION,
-  SORTING_ORDER
+  InsightsSortingCriterion,
+  SortingOrder
 } from "../../../../../redux/services/types";
 import { setIsInsightJiraTicketHintShown } from "../../../../../redux/slices/persistSlice";
 import { isUndefined } from "../../../../../typeGuards/isUndefined";
+import { InsightType } from "../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import type { Scope } from "../../../../common/App/types";
 import { CrossIcon } from "../../../../common/icons/16px/CrossIcon";
@@ -31,7 +32,6 @@ import { actions } from "../../../../Insights/InsightsCatalog/InsightsPage/Insig
 import { ViewMode } from "../../../../Insights/InsightsCatalog/types";
 import { InsightTicketRenderer } from "../../../../Insights/InsightTicketRenderer";
 import {
-  InsightType,
   type CodeObjectInsight,
   type GenericCodeObjectInsight,
   type InsightTicketInfo
@@ -98,8 +98,8 @@ export const IssuesSidebar = ({
   const pageSize = query?.pageSize ?? PAGE_SIZE;
   const { data, isFetching, refetch } = useGetIssuesQuery({
     showDismissed: viewMode === ViewMode.OnlyDismissed,
-    sortBy: INSIGHTS_SORTING_CRITERION.CRITICALITY,
-    sortOrder: SORTING_ORDER.DESC,
+    sortBy: InsightsSortingCriterion.Criticality,
+    sortOrder: SortingOrder.Desc,
     ...query,
     page,
     pageSize

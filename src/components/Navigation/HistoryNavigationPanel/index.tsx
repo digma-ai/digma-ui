@@ -5,7 +5,7 @@ import { useTheme } from "styled-components";
 import { history } from "../../../containers/Main/history";
 import type { HistoryEntry } from "../../../history/History";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
-import { SCOPE_CHANGE_EVENTS } from "../../../types";
+import { ScopeChangeEvent } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import type { HistoryState, ReactRouterLocationState } from "../../Main/types";
@@ -74,7 +74,7 @@ export const HistoryNavigationPanel = () => {
       changeScope({
         span: null,
         context: {
-          event: SCOPE_CHANGE_EVENTS.HISTORY_CLEARED,
+          event: ScopeChangeEvent.HistoryCleared,
           payload: {
             environmentId: environmentNavigateTo?.id
           }
@@ -108,7 +108,7 @@ export const HistoryNavigationPanel = () => {
           : null,
         environmentId: e.detail.state?.environmentId,
         context: {
-          event: SCOPE_CHANGE_EVENTS.HISTORY_NAVIGATED,
+          event: ScopeChangeEvent.HistoryNavigated,
           payload: {
             location: e.detail.location
           }
@@ -144,7 +144,7 @@ export const HistoryNavigationPanel = () => {
     changeScope({
       span: null,
       context: {
-        event: SCOPE_CHANGE_EVENTS.NAVIGATION_HOME_BUTTON_CLICKED
+        event: ScopeChangeEvent.NavigationHomeButtonClicked
       }
     });
   };
@@ -156,7 +156,7 @@ export const HistoryNavigationPanel = () => {
       <Tooltip title={"Go back"}>
         <s.Button onClick={handleBackButtonClick} disabled={!canGoBack}>
           <ChevronIcon
-            direction={Direction.LEFT}
+            direction={Direction.Left}
             size={16}
             color={"currentColor"}
           />
@@ -165,7 +165,7 @@ export const HistoryNavigationPanel = () => {
       <Tooltip title={"Go forward"}>
         <s.Button onClick={handleForwardButtonClick} disabled={!canGoForward}>
           <ChevronIcon
-            direction={Direction.RIGHT}
+            direction={Direction.Right}
             size={16}
             color={"currentColor"}
           />

@@ -1,6 +1,7 @@
+import type { InsightType } from "../../../../../../../types";
 import { getDurationString } from "../../../../../../../utils/getDurationString";
 import { Tooltip } from "../../../../../../common/v3/Tooltip";
-import type { InsightType, Trace } from "../../../../../types";
+import type { Trace } from "../../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";

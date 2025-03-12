@@ -8,9 +8,11 @@ import { useStore } from "../../../store/useStore";
 import { FeatureFlag } from "../../../types";
 import { ViewMode, type InsightFilterType } from "../InsightsCatalog/types";
 
-const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+interface UseIssuesFiltersProps {
+  isEnabled: boolean;
+}
 
-export const useIssuesFilters = () => {
+export const useIssuesFilters = ({ isEnabled }: UseIssuesFiltersProps) => {
   const {
     issuesFilters: data,
     search,
@@ -26,52 +28,31 @@ export const useIssuesFilters = () => {
     useConfigSelector();
   const environmentId = environment?.id;
   const spanCodeObjectId = scope?.span?.spanCodeObjectId;
-  const filteredInsightTypes = useMemo(
-    () =>
-      spanCodeObjectId
-        ? filteredInsightTypesInSpanScope
-        : filteredInsightTypesInGlobalScope,
-    [
-      spanCodeObjectId,
-      filteredInsightTypesInSpanScope,
-      filteredInsightTypesInGlobalScope
-    ]
-  );
-  const filteredCriticalityLevels = useMemo(
-    () =>
-      spanCodeObjectId
-        ? filteredCriticalityLevelsInSpanScope
-        : filteredCriticalityLevelsInGlobalScope,
-    [
-      spanCodeObjectId,
-      filteredCriticalityLevelsInSpanScope,
-      filteredCriticalityLevelsInGlobalScope
-    ]
+
+  const isCriticalityLevelsFilterEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled
   );
 
-  const isCriticalityLevelsFilterEnabled = Boolean(
-    backendInfo &&
-      getFeatureFlagValue(
-        backendInfo,
-        FeatureFlag.IS_ISSUES_CRITICALITY_LEVELS_FILTER_ENABLED
-      )
-  );
+  const payload: GetIssuesFiltersPayload = useMemo(() => {
+    const filteredInsightTypes = spanCodeObjectId
+      ? filteredInsightTypesInSpanScope
+      : filteredInsightTypesInGlobalScope;
 
-  const queryFilters = useMemo(
-    () =>
-      [
-        ...(!isCriticalityLevelsFilterEnabled && filters.includes("criticality")
-          ? ["criticality"]
-          : []),
-        ...(filters.includes("unread") ? ["unread"] : [])
-      ] as InsightFilterType[],
-    [isCriticalityLevelsFilterEnabled, filters]
-  );
+    const filteredCriticalityLevels = spanCodeObjectId
+      ? filteredCriticalityLevelsInSpanScope
+      : filteredCriticalityLevelsInGlobalScope;
 
-  const query: GetIssuesFiltersPayload = useMemo(
-    () => ({
+    const payloadFilters = [
+      ...(!isCriticalityLevelsFilterEnabled && filters.includes("criticality")
+        ? ["criticality"]
+        : []),
+      ...(filters.includes("unread") ? ["unread"] : [])
+    ] as InsightFilterType[];
+
+    return {
       displayName: search.length > 0 ? search : undefined,
-      filters: queryFilters.length > 0 ? queryFilters : undefined,
+      filters: payloadFilters.length > 0 ? payloadFilters : undefined,
       insightTypes:
         filteredInsightTypes.length > 0 ? filteredInsightTypes : undefined,
       showDismissed: viewMode === ViewMode.OnlyDismissed,
@@ -85,22 +66,23 @@ export const useIssuesFilters = () => {
         isCriticalityLevelsFilterEnabled && filteredCriticalityLevels.length > 0
           ? filteredCriticalityLevels
           : undefined
-    }),
-    [
-      search,
-      queryFilters,
-      filteredInsightTypes,
-      viewMode,
-      spanCodeObjectId,
-      filteredCriticalityLevels,
-      environmentId,
-      selectedServices,
-      isCriticalityLevelsFilterEnabled
-    ]
-  );
+    };
+  }, [
+    search,
+    filters,
+    viewMode,
+    spanCodeObjectId,
+    environmentId,
+    selectedServices,
+    isCriticalityLevelsFilterEnabled,
+    filteredInsightTypesInSpanScope,
+    filteredInsightTypesInGlobalScope,
+    filteredCriticalityLevelsInSpanScope,
+    filteredCriticalityLevelsInGlobalScope
+  ]);
 
-  const { data: issuesFiltersData } = useGetIssuesFiltersQuery(query, {
-    pollingInterval: REFRESH_INTERVAL
+  const { data: issuesFiltersData } = useGetIssuesFiltersQuery(payload, {
+    skip: !isEnabled
   });
 
   useEffect(() => {

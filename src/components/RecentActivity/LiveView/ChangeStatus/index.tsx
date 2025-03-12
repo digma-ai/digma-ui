@@ -25,7 +25,7 @@ const getStatusString = (percentile: LiveDataDurationPercentile) => {
 };
 
 const getArrowIconColor = (direction: Direction, theme: DefaultTheme) => {
-  if (direction === Direction.UP) {
+  if (direction === Direction.Up) {
     switch (theme.mode) {
       case "light":
         return "#e00036";
@@ -57,8 +57,8 @@ const renderArrowIcon = (
 
   const direction =
     percentile.previousDuration.raw > percentile.currentDuration.raw
-      ? Direction.DOWN
-      : Direction.UP;
+      ? Direction.Down
+      : Direction.Up;
 
   return (
     <ArrowIcon

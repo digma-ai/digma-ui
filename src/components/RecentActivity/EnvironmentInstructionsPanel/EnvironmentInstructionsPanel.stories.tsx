@@ -23,7 +23,7 @@ const mockedConfig: ConfigContextData = {
   ...initialState,
   backendInfo: {
     applicationVersion: "0.3.15",
-    deploymentType: DeploymentType.DOCKER_COMPOSE,
+    deploymentType: DeploymentType.DockerCompose,
     centralize: false
   },
   runConfig: {
@@ -48,12 +48,12 @@ const mockedConfig: ConfigContextData = {
 const mockedEnvironment: ExtendedEnvironment = {
   name: "Development",
   id: "123",
-  isPending: false,
   hasRecentActivity: false,
   type: "Private",
   token: null,
   serverApiUrl: null,
-  isOrgDigmaSetupFinished: false
+  isOrgDigmaSetupFinished: false,
+  additionToConfigResult: null
 };
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args

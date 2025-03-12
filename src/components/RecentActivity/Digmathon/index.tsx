@@ -48,7 +48,7 @@ export const Digmathon = ({
           <ChevronIcon
             size={16}
             color={"currentColor"}
-            direction={Direction.LEFT}
+            direction={Direction.Left}
           />
           Back
         </s.BackButton>
