@@ -73,14 +73,8 @@ const getUrlToNavigateFromRestApiCall = (scope: Scope): string | undefined => {
 
 export const Main = () => {
   const location = useLocation();
-  const {
-    environments,
-    environment,
-    scope,
-    userInfo,
-    backendInfo,
-    selectedServices
-  } = useConfigSelector();
+  const { environments, environment, userInfo, backendInfo, selectedServices } =
+    useConfigSelector();
   const {
     setSelectedServices,
     setInsightsFilteredCriticalityLevels:
@@ -170,16 +164,21 @@ export const Main = () => {
     // 1) there are no environments
     // 2) selected environment is not exist in the list of environments
     if (
-      !environments ||
-      environments.length === 0 ||
-      (Boolean(
-        environment && !environments?.find((x) => x.id == environment?.id)
-      ) &&
-        history.historyStack.length > 0)
+      history.historyStack.length > 0 &&
+      (!environments ||
+        environments.length === 0 ||
+        Boolean(
+          environment && !environments?.find((x) => x.id == environment?.id)
+        ))
     ) {
+      // eslint-disable-next-line no-console
+      console.log(
+        "clearing history, historyStack.length",
+        history.historyStack.length
+      );
       history.clear();
     }
-  }, [environments, environment, scope?.span]);
+  }, [environments, environment]);
 
   useEffect(() => {
     const defaultGoTo = (scope: Scope, state: HistoryState) => {

@@ -71,6 +71,8 @@ export const HistoryNavigationPanel = () => {
       const environmentNavigateTo = environment?.id
         ? environments?.find((x) => x.id === environment?.id)
         : environments?.[0];
+      // eslint-disable-next-line no-console
+      console.log("clearing history: changing scope to", environmentNavigateTo);
       changeScope({
         span: null,
         context: {
@@ -93,7 +95,7 @@ export const HistoryNavigationPanel = () => {
         handleHistoryClear as EventListener
       );
     };
-  }, []);
+  }, [environments, environment?.id]);
 
   useEffect(() => {
     const handleHistoryNavigate = (
