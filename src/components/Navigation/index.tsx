@@ -455,9 +455,11 @@ export const Navigation = () => {
           )}
         </Tooltip>
       </s.Row> */}
-      <s.TabsContainer>
-        <Tabs />
-      </s.TabsContainer>
+      {platform === "JetBrains" && (
+        <s.TabsContainer>
+          <Tabs />
+        </s.TabsContainer>
+      )}
     </s.Container>
   );
 };
