@@ -8,6 +8,7 @@ import { useMount } from "../../../../hooks/useMount";
 import { useStableSearchParams } from "../../../../hooks/useStableSearchParams";
 import {
   useGetAboutQuery,
+  useGetEnvironmentsQuery,
   useGetServiceEndpointsQuery
 } from "../../../../redux/services/digma";
 import type {
@@ -127,6 +128,7 @@ export const CodeIssues = () => {
   );
 
   const { data: about } = useGetAboutQuery();
+  const { data: environments } = useGetEnvironmentsQuery();
 
   const { data: serviceEndpoints } = useGetServiceEndpointsQuery(
     {
@@ -394,6 +396,8 @@ export const CodeIssues = () => {
   return (
     <s.Container>
       <IssuesReport
+        backendInfo={about}
+        environments={environments}
         selectedEnvironmentId={selectedEnvironmentId}
         criticalityLevels={criticalityLevels}
         periodInDays={periodInDays}
