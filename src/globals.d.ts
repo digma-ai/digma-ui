@@ -1,4 +1,5 @@
 import type { DigmaOutgoingMessageData } from "./api/types";
+import type { HistoryEntry } from "./history/History";
 
 export {};
 
@@ -9,6 +10,11 @@ export type IDE = "IDEA" | "Rider" | "PyCharm";
 export type Theme = "light" | "dark" | "dark-jetbrains";
 
 declare global {
+  interface WindowEventMap extends CustomEventMap {
+    "history:navigate": CustomEvent<HistoryEntry<unknown>>;
+    "history:change": CustomEvent<HistoryEntry<unknown>>;
+    "history:clear": CustomEvent<void>;
+  }
   interface Window {
     sendMessageToVSCode?: (message) => void;
     cefQuery?: (query: {

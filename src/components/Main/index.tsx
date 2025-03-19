@@ -96,6 +96,18 @@ export const Main = () => {
     () => !isUndefined(persistedServices),
     [persistedServices]
   );
+  const isNoEnvironments = useMemo(
+    () => Boolean(!environments || environments.length === 0),
+    [environments]
+  );
+
+  const isSelectedEnvironmentExist = useMemo(
+    () =>
+      Boolean(
+        environment && environments?.find((x) => x.id == environment?.id)
+      ),
+    [environment, environments]
+  );
 
   useEffect(() => {
     const handlePluginEvent = (data: unknown) => {
@@ -160,17 +172,7 @@ export const Main = () => {
   ]);
 
   useEffect(() => {
-    // clear the history in following cases:
-    // 1) there are no environments
-    // 2) selected environment is not exist in the list of environments
-    if (
-      history.historyStack.length > 0 &&
-      (!environments ||
-        environments.length === 0 ||
-        Boolean(
-          environment && !environments?.find((x) => x.id == environment?.id)
-        ))
-    ) {
+    if (isNoEnvironments || !isSelectedEnvironmentExist) {
       // eslint-disable-next-line no-console
       console.log(
         "clearing history, historyStack.length",
@@ -178,7 +180,7 @@ export const Main = () => {
       );
       history.clear();
     }
-  }, [environments, environment]);
+  }, [isNoEnvironments, isSelectedEnvironmentExist]);
 
   useEffect(() => {
     const defaultGoTo = (scope: Scope, state: HistoryState) => {

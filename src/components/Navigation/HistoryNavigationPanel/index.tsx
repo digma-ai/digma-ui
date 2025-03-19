@@ -5,6 +5,10 @@ import { useTheme } from "styled-components";
 import { history } from "../../../containers/Main/history";
 import type { HistoryEntry } from "../../../history/History";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { isBoolean } from "../../../typeGuards/isBoolean";
+import { isObject } from "../../../typeGuards/isObject";
+import { isString } from "../../../typeGuards/isString";
+import { isUndefined } from "../../../typeGuards/isUndefined";
 import { SCOPE_CHANGE_EVENTS } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -17,6 +21,23 @@ import { Direction } from "../../common/icons/types";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
+
+const isHistoryState = (obj: unknown): obj is HistoryState =>
+  isObject(obj) &&
+  (isString(obj.environmentId) || isUndefined(obj.environmentId)) &&
+  (isString(obj.spanCodeObjectId) || isUndefined(obj.spanCodeObjectId)) &&
+  (isString(obj.spanDisplayName) || isUndefined(obj.spanDisplayName)) &&
+  (isBoolean(obj.navigatedWithCustomHistory) ||
+    isUndefined(obj.navigatedWithCustomHistory));
+
+const isHistoryEntryWithHistoryState = (
+  obj: unknown
+): obj is HistoryEntry<HistoryState> =>
+  isObject(obj) &&
+  isObject(obj.location) &&
+  isString(obj.location.pathname) &&
+  (isString(obj.location.search) || isUndefined(obj.location.search)) &&
+  (isHistoryState(obj.state) || isUndefined(obj.state));
 
 export const HistoryNavigationPanel = () => {
   const { goBack, goForward, goTo, canGoBack, canGoForward } = useHistory();
@@ -47,22 +68,19 @@ export const HistoryNavigationPanel = () => {
   }, [location, goTo, environment?.id, scope?.span]);
 
   useEffect(() => {
-    const handleHistoryChange = (
-      e: CustomEvent<HistoryEntry<HistoryState>>
-    ) => {
-      updateBrowserLocation(e.detail.location);
+    const handleHistoryChange = (e: Event) => {
+      if (
+        e instanceof CustomEvent &&
+        isHistoryEntryWithHistoryState(e.detail)
+      ) {
+        updateBrowserLocation(e.detail.location);
+      }
     };
 
-    window.addEventListener(
-      "history:change",
-      handleHistoryChange as EventListener
-    );
+    window.addEventListener("history:change", handleHistoryChange);
 
     return () => {
-      window.removeEventListener(
-        "history:change",
-        handleHistoryChange as EventListener
-      );
+      window.removeEventListener("history:change", handleHistoryChange);
     };
   }, [updateBrowserLocation]);
 
@@ -71,8 +89,6 @@ export const HistoryNavigationPanel = () => {
       const environmentNavigateTo = environment?.id
         ? environments?.find((x) => x.id === environment?.id)
         : environments?.[0];
-      // eslint-disable-next-line no-console
-      console.log("clearing history: changing scope to", environmentNavigateTo);
       changeScope({
         span: null,
         context: {
@@ -84,50 +100,42 @@ export const HistoryNavigationPanel = () => {
       });
     };
 
-    window.addEventListener(
-      "history:clear",
-      handleHistoryClear as EventListener
-    );
+    window.addEventListener("history:clear", handleHistoryClear);
 
     return () => {
-      window.removeEventListener(
-        "history:clear",
-        handleHistoryClear as EventListener
-      );
+      window.removeEventListener("history:clear", handleHistoryClear);
     };
   }, [environments, environment?.id]);
 
   useEffect(() => {
-    const handleHistoryNavigate = (
-      e: CustomEvent<HistoryEntry<HistoryState>>
-    ) => {
-      const spanCodeObjectId = e.detail.state?.spanCodeObjectId;
-      changeScope({
-        span: spanCodeObjectId
-          ? {
-              spanCodeObjectId
+    const handleHistoryNavigate = (e: Event) => {
+      if (
+        e instanceof CustomEvent &&
+        isHistoryEntryWithHistoryState(e.detail)
+      ) {
+        const spanCodeObjectId = e.detail.state?.spanCodeObjectId;
+
+        changeScope({
+          span: spanCodeObjectId
+            ? {
+                spanCodeObjectId
+              }
+            : null,
+          environmentId: e.detail.state?.environmentId,
+          context: {
+            event: SCOPE_CHANGE_EVENTS.HISTORY_NAVIGATED,
+            payload: {
+              location: e.detail.location
             }
-          : null,
-        environmentId: e.detail.state?.environmentId,
-        context: {
-          event: SCOPE_CHANGE_EVENTS.HISTORY_NAVIGATED,
-          payload: {
-            location: e.detail.location
           }
-        }
-      });
+        });
+      }
     };
 
-    window.addEventListener(
-      "history:navigate",
-      handleHistoryNavigate as EventListener
-    );
+    window.addEventListener("history:navigate", handleHistoryNavigate);
 
     return () => {
-      window.removeEventListener(
-        "history:navigate",
-        handleHistoryNavigate as EventListener
-      );
+      window.removeEventListener("history:navigate", handleHistoryNavigate);
     };
   }, [navigate]);
 
