@@ -37,6 +37,12 @@ export const HeaderTitleRow = styled.div`
   align-items: center;
 `;
 
+export const ToolbarRow = styled.div`
+  display: flex;
+  gap: 4px;
+  align-items: center;
+`;
+
 export const ResizeHandle = styled.div`
   width: 16px;
   cursor: ew-resize;

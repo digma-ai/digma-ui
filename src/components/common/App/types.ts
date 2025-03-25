@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { Theme } from "../../../globals";
+import type { IssueCriticality } from "../../../redux/services/types";
 import type { InsightFilterType } from "../../Insights/InsightsCatalog/types";
 import type { InsightViewType } from "../../Insights/types";
 
@@ -116,6 +117,16 @@ export interface ScopeWithErrorDetailsId extends Omit<Scope, "context"> {
     event: string;
     payload: {
       id?: string;
+    };
+  };
+}
+
+export interface ScopeWithMetricsReportContext extends Omit<Scope, "context"> {
+  context: {
+    event: string;
+    payload: {
+      service: string;
+      criticalityLevels: IssueCriticality[];
     };
   };
 }

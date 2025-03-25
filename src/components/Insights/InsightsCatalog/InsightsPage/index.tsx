@@ -8,6 +8,7 @@ import { trackingEvents as globalEvents } from "../../../../trackingEvents";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { InsightType } from "../../../../types";
+import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { useHistory } from "../../../Main/useHistory";
 import { TAB_IDS } from "../../../Navigation/Tabs/types";
@@ -247,6 +248,7 @@ export const InsightsPage = ({
               onDismissalChange={handleDismissalChange}
               tooltipBoundaryRef={listRef}
               backendInfo={backendInfo}
+              onScopeChange={changeScope}
             />
           ))
         : renderEmptyState(
