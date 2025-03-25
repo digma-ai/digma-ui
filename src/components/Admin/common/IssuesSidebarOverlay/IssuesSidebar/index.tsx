@@ -202,8 +202,18 @@ export const IssuesSidebar = ({
   }, []);
 
   useEffect(() => {
+    const newSpanCodeObjectId = query?.scopedSpanCodeObjectId;
+    setCurrentSpanCodeObjectId(newSpanCodeObjectId);
     history.clear();
-    setCurrentSpanCodeObjectId(query?.scopedSpanCodeObjectId);
+    history.pushEntry(
+      {
+        pathname: window.location.pathname,
+        search: window.location.search
+      },
+      {
+        spanCodeObjectId: newSpanCodeObjectId
+      }
+    );
   }, [history, query?.scopedSpanCodeObjectId]);
 
   const refresh = () => {
@@ -280,14 +290,28 @@ export const IssuesSidebar = ({
   };
 
   const handleGoBack = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ISSUES_SIDEBAR_BACK_BUTTON_CLICKED
+    );
     history.goBack();
   };
 
   const handleGoForward = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ISSUES_SIDEBAR_FORWARD_BUTTON_CLICKED
+    );
     history.goForward();
   };
 
   const handleGoHome = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ISSUES_SIDEBAR_HOME_BUTTON_CLICKED
+    );
+
+    if (!currentSpanCodeObjectId) {
+      return;
+    }
+
     history.pushEntry(
       {
         pathname: window.location.pathname,
@@ -300,6 +324,10 @@ export const IssuesSidebar = ({
   };
 
   const handleScopeChange = (payload: ChangeScopePayload) => {
+    if (payload.span?.spanCodeObjectId === currentSpanCodeObjectId) {
+      return;
+    }
+
     history.pushEntry(
       {
         pathname: window.location.pathname,

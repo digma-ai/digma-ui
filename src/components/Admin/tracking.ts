@@ -28,6 +28,10 @@ export const trackingEvents = addPrefix(
       "issues sidebar show only dismissed button clicked",
     ISSUES_SIDEBAR_SHOW_ALL_BUTTON_CLICKED:
       "issues sidebar show all button clicked",
+    ISSUES_SIDEBAR_BACK_BUTTON_CLICKED: "issues sidebar back button clicked",
+    ISSUES_SIDEBAR_FORWARD_BUTTON_CLICKED:
+      "issues sidebar forward button clicked",
+    ISSUES_SIDEBAR_HOME_BUTTON_CLICKED: "issues sidebar home button clicked",
     SUGGESTION_BAR_CLOSE_BUTTON_CLICKED: "suggestion bar close button clicked",
     SUGGESTION_BAR_ASSETS_TOGGLE_VALUE_CHANGED:
       "suggestion bar assets toggle value changed",
