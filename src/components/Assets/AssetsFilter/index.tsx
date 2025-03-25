@@ -185,9 +185,6 @@ export const AssetsFilter = () => {
         insights: []
       };
       setFilters(defaultFilters);
-      if (isServicesFilterEnabled) {
-        setGloballySelectedServices(defaultFilters.services);
-      }
       getData({
         ...query,
         ...defaultFilters
