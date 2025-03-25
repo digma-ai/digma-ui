@@ -1,6 +1,6 @@
 import { actions } from "../../actions";
 
-interface ChangeScopePayload {
+export interface ChangeScopePayload {
   span: {
     spanCodeObjectId: string;
   } | null;
