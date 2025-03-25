@@ -206,7 +206,7 @@ export const MetricsReport = () => {
         />
         <s.Footer>
           <DigmaLogoIcon size={14} />
-          <span>© {new Date().getFullYear()} digma.ai</span>
+          <span>&copy; {new Date().getFullYear()} digma.ai</span>
         </s.Footer>
       </s.ContentContainer>
     </s.Container>

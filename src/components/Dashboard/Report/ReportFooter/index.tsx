@@ -4,6 +4,6 @@ import * as s from "./styles";
 export const ReportFooter = () => (
   <s.LogoContainer>
     <DigmaLogoIcon />
-    <span>© {new Date().getFullYear()} digma.ai</span>
+    <span>&copy; {new Date().getFullYear()} digma.ai</span>
   </s.LogoContainer>
 );
