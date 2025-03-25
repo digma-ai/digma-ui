@@ -3,7 +3,6 @@ import { platform } from "../../../../../platform";
 import { useLazyGetSpanPercentilesHistogramQuery } from "../../../../../redux/services/digma";
 import { isString } from "../../../../../typeGuards/isString";
 import { FeatureFlag, SCOPE_CHANGE_EVENTS } from "../../../../../types";
-import { changeScope } from "../../../../../utils/actions/changeScope";
 import { openURLInDefaultBrowser } from "../../../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { openBrowserTabWithContent } from "../../../../../utils/openBrowserTabWithContent";
@@ -66,7 +65,8 @@ export const InsightCardRenderer = ({
   onDismissalChange,
   onOpenSuggestion,
   tooltipBoundaryRef,
-  backendInfo
+  backendInfo,
+  onScopeChange
 }: InsightCardRendererProps) => {
   const [triggerSpanPercentilesHistogramFetch] =
     useLazyGetSpanPercentilesHistogramQuery();
@@ -181,7 +181,7 @@ export const InsightCardRenderer = ({
         insightType
       }
     );
-    changeScope({
+    onScopeChange({
       span: { spanCodeObjectId },
       context: {
         event: SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_ASSET_LINK_CLICKED
@@ -190,7 +190,7 @@ export const InsightCardRenderer = ({
   };
 
   const handleGoToSpan = (spanCodeObjectId: string) => {
-    changeScope({
+    onScopeChange({
       span: { spanCodeObjectId },
       context: {
         event:

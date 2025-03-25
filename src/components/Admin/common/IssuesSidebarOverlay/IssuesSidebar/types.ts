@@ -21,3 +21,7 @@ export interface DrawerContainerProps {
 export interface ContainerProps {
   $isResizing?: boolean;
 }
+
+export interface IssuesSidebarHistoryState {
+  spanCodeObjectId?: string;
+}
