@@ -1,5 +1,6 @@
 import type { RefObject } from "react";
 import type { GetAboutResponse } from "../../../../../redux/services/types";
+import type { ChangeScopePayload } from "../../../../../utils/actions/changeScope";
 import type { BackendInfo } from "../../../../common/App/types";
 import type { GenericCodeObjectInsight } from "../../../types";
 import type { InsightCardViewMode } from "./insightCards/common/InsightCard/types";
@@ -18,4 +19,5 @@ export interface InsightCardRendererProps {
   onOpenSuggestion?: (insightId: string) => void;
   tooltipBoundaryRef?: RefObject<HTMLElement>;
   backendInfo: BackendInfo | GetAboutResponse | null;
+  onScopeChange: (payload: ChangeScopePayload) => void;
 }

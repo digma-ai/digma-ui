@@ -3,7 +3,8 @@ import type {
   Scope,
   ScopeWithCodeLensContext,
   ScopeWithCustomProtocolLinkContext,
-  ScopeWithErrorDetailsId
+  ScopeWithErrorDetailsId,
+  ScopeWithMetricsReportContext
 } from "../common/App/types";
 
 export const isScopeWithCodeLensContext = (
@@ -20,3 +21,14 @@ export const isScopeWithErrorDetailsIdContext = (
   x: Scope
 ): x is ScopeWithErrorDetailsId =>
   x.context?.event === SCOPE_CHANGE_EVENTS.ERROR_CARD_LINK_CLICKED;
+
+export const isScopeWithMetricsReportContext = (
+  x: Scope
+): x is ScopeWithMetricsReportContext =>
+  Boolean(
+    x.context?.event &&
+      [
+        SCOPE_CHANGE_EVENTS.METRICS_SERVICE_SELECTED,
+        SCOPE_CHANGE_EVENTS.METRICS_ENDPOINT_SELECTED
+      ].includes(x.context?.event as SCOPE_CHANGE_EVENTS)
+  );

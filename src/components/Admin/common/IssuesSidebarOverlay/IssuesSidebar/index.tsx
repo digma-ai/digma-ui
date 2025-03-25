@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import { CSSTransition } from "react-transition-group";
 import { useTheme } from "styled-components";
 import {
   useAdminDispatch,
   useAdminSelector
 } from "../../../../../containers/Admin/hooks";
+import History, { type HistoryEntry } from "../../../../../history/History";
 import {
   useGetAboutQuery,
   useGetIssuesQuery,
@@ -12,8 +13,10 @@ import {
 } from "../../../../../redux/services/digma";
 import { setIsInsightJiraTicketHintShown } from "../../../../../redux/slices/persistSlice";
 import { isUndefined } from "../../../../../typeGuards/isUndefined";
+import type { ChangeScopePayload } from "../../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import type { Scope } from "../../../../common/App/types";
+import { HistoryNavigationPanel } from "../../../../common/HistoryNavigationPanel";
 import { CrossIcon } from "../../../../common/icons/16px/CrossIcon";
 import { EyeIcon } from "../../../../common/icons/16px/EyeIcon";
 import { TwoVerticalLinesIcon } from "../../../../common/icons/16px/TwoVerticalLinesIcon";
@@ -40,7 +43,7 @@ import { ScopeBar } from "../../../../Navigation/ScopeBar";
 import { trackingEvents } from "../../../tracking";
 import * as s from "./styles";
 import { SuggestionBar } from "./SuggestionBar";
-import type { IssuesSidebarProps } from "./types";
+import type { IssuesSidebarHistoryState, IssuesSidebarProps } from "./types";
 
 const PAGE_SIZE = 10;
 
@@ -86,14 +89,29 @@ export const IssuesSidebar = ({
   const isDrawerOpen = Boolean(insightIdToOpenSuggestion);
   const issuesListRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
+  const [currentSpanCodeObjectId, setCurrentSpanCodeObjectId] = useState(
+    query?.scopedSpanCodeObjectId
+  );
+  const [history] = useState(
+    () =>
+      new History<IssuesSidebarHistoryState>([
+        {
+          location: window.location,
+          state: {
+            spanCodeObjectId: query?.scopedSpanCodeObjectId
+          }
+        }
+      ])
+  );
+
   const { data: about } = useGetAboutQuery();
-  const { data: spanInfo, isLoading: isSpanInfoLoading } = useGetSpanInfoQuery(
-    { spanCodeObjectId: query?.scopedSpanCodeObjectId ?? "" },
+  const { data: spanInfo } = useGetSpanInfoQuery(
+    { spanCodeObjectId: currentSpanCodeObjectId ?? "" },
     {
-      skip: !query?.scopedSpanCodeObjectId
+      skip: !currentSpanCodeObjectId
     }
   );
-  const scopeBarDisplayName = spanInfo?.displayName ?? scopeDisplayName;
+
   const page = query?.page ?? 0;
   const pageSize = query?.pageSize ?? PAGE_SIZE;
   const { data, isFetching, refetch } = useGetIssuesQuery({
@@ -101,9 +119,36 @@ export const IssuesSidebar = ({
     sortBy: SORTING_CRITERION.CRITICALITY,
     sortOrder: SORTING_ORDER.DESC,
     ...query,
+    scopedSpanCodeObjectId: currentSpanCodeObjectId,
     page,
     pageSize
   });
+
+  const scopeBarDisplayName = currentSpanCodeObjectId
+    ? spanInfo?.displayName
+    : scopeDisplayName ?? "Home";
+
+  const extendedScope: Scope = useMemo(
+    () => ({
+      span: {
+        displayName: scopeBarDisplayName ?? currentSpanCodeObjectId ?? "",
+        spanCodeObjectId: currentSpanCodeObjectId ?? "",
+        methodId: null,
+        serviceName: null,
+        role: null
+      },
+      code: {
+        relatedCodeDetailsList: [],
+        codeDetailsList: []
+      },
+      hasErrors: false,
+      issuesInsightsCount: 0,
+      analyticsInsightsCount: 0,
+      unreadInsightsCount: 0
+    }),
+    [scopeBarDisplayName, currentSpanCodeObjectId]
+  );
+  const linkedEndpoints = useMemo(() => [], []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -127,6 +172,49 @@ export const IssuesSidebar = ({
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [infoToOpenJiraTicket, insightIdToOpenSuggestion, onClose]);
+
+  useEffect(() => {
+    const handleHistoryChangeOrNavigate = (
+      e: CustomEvent<HistoryEntry<IssuesSidebarHistoryState>>
+    ) => {
+      setCurrentSpanCodeObjectId(e.detail.state?.spanCodeObjectId);
+    };
+
+    window.addEventListener(
+      "history:change",
+      handleHistoryChangeOrNavigate as EventListener
+    );
+    window.addEventListener(
+      "history:navigate",
+      handleHistoryChangeOrNavigate as EventListener
+    );
+
+    return () => {
+      window.removeEventListener(
+        "history:change",
+        handleHistoryChangeOrNavigate as EventListener
+      );
+      window.removeEventListener(
+        "history:navigate",
+        handleHistoryChangeOrNavigate as EventListener
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    const newSpanCodeObjectId = query?.scopedSpanCodeObjectId;
+    setCurrentSpanCodeObjectId(newSpanCodeObjectId);
+    history.clear();
+    history.pushEntry(
+      {
+        pathname: window.location.pathname,
+        search: window.location.search
+      },
+      {
+        spanCodeObjectId: newSpanCodeObjectId
+      }
+    );
+  }, [history, query?.scopedSpanCodeObjectId]);
 
   const refresh = () => {
     void refetch();
@@ -201,6 +289,56 @@ export const IssuesSidebar = ({
     setIsDrawerTransitioning(false);
   };
 
+  const handleGoBack = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ISSUES_SIDEBAR_BACK_BUTTON_CLICKED
+    );
+    history.goBack();
+  };
+
+  const handleGoForward = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ISSUES_SIDEBAR_FORWARD_BUTTON_CLICKED
+    );
+    history.goForward();
+  };
+
+  const handleGoHome = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ISSUES_SIDEBAR_HOME_BUTTON_CLICKED
+    );
+
+    if (!currentSpanCodeObjectId) {
+      return;
+    }
+
+    history.pushEntry(
+      {
+        pathname: window.location.pathname,
+        search: window.location.search
+      },
+      {
+        spanCodeObjectId: undefined
+      }
+    );
+  };
+
+  const handleScopeChange = (payload: ChangeScopePayload) => {
+    if (payload.span?.spanCodeObjectId === currentSpanCodeObjectId) {
+      return;
+    }
+
+    history.pushEntry(
+      {
+        pathname: window.location.pathname,
+        search: window.location.search
+      },
+      {
+        spanCodeObjectId: payload.span?.spanCodeObjectId
+      }
+    );
+  };
+
   const dismissedCount = data?.dismissedCount;
   const totalCount = data?.totalCount ?? 0;
   const pageStartItemNumber = page * pageSize + 1;
@@ -210,24 +348,7 @@ export const IssuesSidebar = ({
   );
   const isDismissalViewModeButtonVisible =
     data && (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
-
-  const extendedScope: Scope = {
-    span: {
-      displayName: scopeBarDisplayName ?? query?.scopedSpanCodeObjectId ?? "",
-      spanCodeObjectId: query?.scopedSpanCodeObjectId ?? "",
-      methodId: null,
-      serviceName: null,
-      role: null
-    },
-    code: {
-      relatedCodeDetailsList: [],
-      codeDetailsList: []
-    },
-    hasErrors: false,
-    issuesInsightsCount: 0,
-    analyticsInsightsCount: 0,
-    unreadInsightsCount: 0
-  };
+  const isAtHome = !currentSpanCodeObjectId;
 
   return (
     <s.Container $isResizing={isResizing} className={"issues-sidebar"}>
@@ -240,21 +361,31 @@ export const IssuesSidebar = ({
             onClick={handleSidebarCloseButtonClick}
           />
         </s.HeaderTitleRow>
-        {!isSpanInfoLoading && scopeBarDisplayName && (
+        <s.ToolbarRow>
+          <HistoryNavigationPanel
+            isAtHome={isAtHome}
+            onGoBack={handleGoBack}
+            onGoForward={handleGoForward}
+            canGoBack={history.canGoBack()}
+            canGoForward={history.canGoForward()}
+            onGoHome={handleGoHome}
+          />
           <ScopeBar
             isExpanded={false}
             isSpanInfoEnabled={false}
-            linkedEndpoints={[]}
+            linkedEndpoints={linkedEndpoints}
             scope={extendedScope}
             isTargetButtonMenuVisible={false}
           />
-        )}
+        </s.ToolbarRow>
       </s.Header>
       <s.ContentContainer>
         <s.ResizeHandle onMouseDown={handleSidebarResizeHandleMouseDown}>
           <TwoVerticalLinesIcon size={16} color={"currentColor"} />
         </s.ResizeHandle>
-        {data ? (
+        {isFetching ? (
+          <EmptyState preset={"loading"} />
+        ) : data ? (
           data.insights.length > 0 ? (
             <s.IssuesList ref={issuesListRef}>
               {data.insights.map((insight, i) => (
@@ -270,11 +401,12 @@ export const IssuesSidebar = ({
                     i === getInsightToShowJiraHint(data.insights)
                   }
                   isMarkAsReadButtonEnabled={false}
-                  viewMode={"full"}
+                  viewMode={isAtHome ? "compact" : "full"}
                   onDismissalChange={handleDismissalChange}
                   onOpenSuggestion={handleOpenSuggestion}
                   tooltipBoundaryRef={issuesListRef}
                   backendInfo={about ?? null}
+                  onScopeChange={handleScopeChange}
                 />
               ))}
             </s.IssuesList>
@@ -285,9 +417,7 @@ export const IssuesSidebar = ({
               }
             />
           )
-        ) : (
-          isFetching && <EmptyState preset={"loading"} />
-        )}
+        ) : null}
       </s.ContentContainer>
       <s.Footer>
         {isPaginationEnabled && totalCount > 0 && (

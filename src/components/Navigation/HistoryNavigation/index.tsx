@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import type { Location } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useTheme } from "styled-components";
 import { history } from "../../../containers/Main/history";
 import type { HistoryEntry } from "../../../history/History";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
@@ -12,15 +11,11 @@ import { isUndefined } from "../../../typeGuards/isUndefined";
 import { SCOPE_CHANGE_EVENTS } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { HistoryNavigationPanel } from "../../common/HistoryNavigationPanel";
 import type { HistoryState, ReactRouterLocationState } from "../../Main/types";
 import { useBrowserLocationUpdater } from "../../Main/updateBrowserLocationUpdater";
 import { useHistory } from "../../Main/useHistory";
-import { HomeIcon } from "../../common/icons/16px/HomeIcon";
-import { ChevronIcon } from "../../common/icons/20px/ChevronIcon";
-import { Direction } from "../../common/icons/types";
-import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
-import * as s from "./styles";
 
 const isHistoryState = (obj: unknown): obj is HistoryState =>
   isObject(obj) &&
@@ -39,12 +34,11 @@ const isHistoryEntryWithHistoryState = (
   (isString(obj.location.search) || isUndefined(obj.location.search)) &&
   (isHistoryState(obj.state) || isUndefined(obj.state));
 
-export const HistoryNavigationPanel = () => {
+export const HistoryNavigation = () => {
   const { goBack, goForward, goTo, canGoBack, canGoForward } = useHistory();
   const navigate = useNavigate();
   const { environments, environment, scope } = useConfigSelector();
   const location = useLocation() as Location<ReactRouterLocationState | null>;
-  const theme = useTheme();
   const updateBrowserLocation = useBrowserLocationUpdater();
 
   useEffect(() => {
@@ -159,41 +153,16 @@ export const HistoryNavigationPanel = () => {
     });
   };
 
-  const isAtSpan = Boolean(scope?.span);
+  const isAtHome = !scope?.span;
 
   return (
-    <s.Container $isActive={isAtSpan}>
-      <Tooltip title={"Go back"}>
-        <s.Button onClick={handleBackButtonClick} disabled={!canGoBack}>
-          <ChevronIcon
-            direction={Direction.LEFT}
-            size={16}
-            color={"currentColor"}
-          />
-        </s.Button>
-      </Tooltip>
-      <Tooltip title={"Go forward"}>
-        <s.Button onClick={handleForwardButtonClick} disabled={!canGoForward}>
-          <ChevronIcon
-            direction={Direction.RIGHT}
-            size={16}
-            color={"currentColor"}
-          />
-        </s.Button>
-      </Tooltip>
-      <Tooltip title={"Go home"}>
-        <s.Button onClick={handleHomeButtonClick} disabled={!isAtSpan}>
-          <HomeIcon
-            color={
-              isAtSpan ? "currentColor" : theme.colors.v3.icon.brandPrimary
-            }
-            size={16}
-            fillColor={
-              isAtSpan ? undefined : theme.colors.v3.surface.brandPrimary
-            }
-          />
-        </s.Button>
-      </Tooltip>
-    </s.Container>
+    <HistoryNavigationPanel
+      isAtHome={isAtHome}
+      canGoBack={canGoBack}
+      canGoForward={canGoForward}
+      onGoBack={handleBackButtonClick}
+      onGoForward={handleForwardButtonClick}
+      onGoHome={handleHomeButtonClick}
+    />
   );
 };

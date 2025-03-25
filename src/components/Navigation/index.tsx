@@ -20,7 +20,7 @@ import { platform } from "../../platform";
 import { useGetSpanInfoQuery } from "../../redux/services/digma";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { EnvironmentBar } from "./EnvironmentBar";
-import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
+import { HistoryNavigation } from "./HistoryNavigation";
 import { KebabMenu } from "./KebabMenu";
 import { ScopeBar } from "./ScopeBar";
 import { SpanInfo } from "./SpanInfo";
@@ -359,7 +359,7 @@ export const Navigation = () => {
   return (
     <s.Container $isActive={isAtSpan} ref={observe}>
       <s.Row>
-        <HistoryNavigationPanel />
+        <HistoryNavigation />
         {isAtSpan ? (
           <ScopeBar
             codeContext={codeContext}
