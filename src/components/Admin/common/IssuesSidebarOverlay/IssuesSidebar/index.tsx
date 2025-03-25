@@ -216,12 +216,6 @@ export const IssuesSidebar = ({
     );
   }, [history, query?.scopedSpanCodeObjectId]);
 
-  useEffect(() => {
-    if (isTransitioning) {
-      setViewMode(ViewMode.All);
-    }
-  }, [isTransitioning]);
-
   const refresh = () => {
     void refetch();
   };
