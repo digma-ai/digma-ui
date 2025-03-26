@@ -146,7 +146,6 @@ export const App = ({ theme, children, id }: AppProps) => {
 
         handleSetBackendInfo(data.backendInfo);
         handleSetUserInfo(data.userInfo);
-        handleSetScope(data.scope);
       }
     };
 
