@@ -11,7 +11,7 @@ import {
 import { useInsightsSelector } from "../../store/insights/useInsightsSelector";
 import { useStore } from "../../store/useStore";
 import { isUndefined } from "../../typeGuards/isUndefined";
-import { ScopeChangeEvent, type InsightType } from "../../types";
+import { type InsightType } from "../../types";
 import { areBackendInfosEqual } from "../../utils/areBackendInfosEqual";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import type { RegistrationFormValues } from "../common/RegistrationDialog/types";
@@ -42,13 +42,8 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   });
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
     useState<InsightTicketInfo<GenericCodeObjectInsight>>();
-  const {
-    backendInfo,
-    environment,
-    userRegistrationEmail,
-    environments,
-    scope
-  } = useConfigSelector();
+  const { backendInfo, userRegistrationEmail, environments, scope } =
+    useConfigSelector();
   const previousUserRegistrationEmail = usePrevious(userRegistrationEmail);
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
@@ -87,10 +82,6 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   );
   const previousFilters = usePrevious(filters);
   const previousBackendInfo = usePrevious(backendInfo);
-  const previousScope = usePrevious(scope);
-  const previousScopeSpanCodeObjectId = previousScope?.span?.spanCodeObjectId;
-  const environmentId = environment?.id;
-  const previousEnvironmentId = usePrevious(environmentId);
 
   useEffect(() => {
     return () => {
@@ -181,15 +172,14 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     scopeSpanCodeObjectId
   ]);
 
-  // Reset insight type and criticality filters (for span and global scopes) on backend instance, environment change
+  // Reset insight type, criticality and unread filters (for span and global scopes) on backend instance change
   useEffect(() => {
     if (
-      (areFiltersRehydrated &&
-        Boolean(
-          previousBackendInfo &&
-            !areBackendInfosEqual(previousBackendInfo, backendInfo)
-        )) ||
-      Boolean(previousEnvironmentId && previousEnvironmentId !== environmentId)
+      areFiltersRehydrated &&
+      Boolean(
+        previousBackendInfo &&
+          !areBackendInfosEqual(previousBackendInfo, backendInfo)
+      )
     ) {
       setFilteredInsightTypes([]);
       setFilteredInsightTypesInGlobalScope([]);
@@ -199,6 +189,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
       setFilteredCriticalityLevelsInGlobalScope(
         insightsInitialState.filteredCriticalityLevelsInGlobalScope
       );
+      setFilters([]);
     }
   }, [
     previousBackendInfo,
@@ -208,67 +199,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     setFilteredInsightTypesInGlobalScope,
     setFilteredCriticalityLevels,
     setFilteredCriticalityLevelsInGlobalScope,
-    previousEnvironmentId,
-    environmentId
-  ]);
-
-  // Reset insight type and criticality filters (for span scope) on scope change from span to global and vice versa
-  useEffect(() => {
-    if (
-      (previousScopeSpanCodeObjectId && !scopeSpanCodeObjectId) ||
-      (!previousScopeSpanCodeObjectId && scopeSpanCodeObjectId)
-    ) {
-      setFilteredInsightTypes([]);
-
-      // Reset criticality levels filter if the scope change event is not related to Metrics report
-      if (
-        scope?.context?.event &&
-        ![
-          ScopeChangeEvent.MetricsServiceSelected,
-          ScopeChangeEvent.MetricsEndpointSelected
-        ].includes(scope?.context?.event)
-      ) {
-        setFilteredCriticalityLevels(
-          insightsInitialState.filteredCriticalityLevels
-        );
-      }
-    }
-  }, [
-    previousScopeSpanCodeObjectId,
-    scopeSpanCodeObjectId,
-    setFilteredInsightTypes,
-    setFilteredCriticalityLevels,
-    scope?.context?.event
-  ]);
-
-  // Reset filters on backend instance, scope or environment change
-  useEffect(() => {
-    if (
-      (areFiltersRehydrated &&
-        Boolean(
-          previousBackendInfo &&
-            !areBackendInfosEqual(previousBackendInfo, backendInfo)
-        )) ||
-      Boolean(
-        previousScope && previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId
-      ) ||
-      Boolean(previousEnvironmentId && previousEnvironmentId !== environmentId)
-    ) {
-      setFilters([]);
-    }
-  }, [
-    previousBackendInfo,
-    backendInfo,
-    previousScope,
-    previousScopeSpanCodeObjectId,
-    scopeSpanCodeObjectId,
-    areFiltersRehydrated,
-    persistedFilters,
-    setFilteredInsightTypes,
-    setFilteredInsightTypesInGlobalScope,
-    setFilters,
-    previousEnvironmentId,
-    environmentId
+    setFilters
   ]);
 
   const handleJiraTicketPopupOpen = useCallback(

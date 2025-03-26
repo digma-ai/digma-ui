@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "styled-components";
 import { getFeatureFlagValue } from "../../../featureFlags";
+import { platform } from "../../../platform";
 import {
   useGetSpanEnvironmentsQuery,
   useMarkScopeInsightsReadMutation
@@ -327,7 +328,7 @@ export const InsightsCatalog = ({
             </s.ToolbarRow>
           </>
         )}
-        {isIssuesView && <PromotionSection />}
+        {platform === "JetBrains" && isIssuesView && <PromotionSection />}
         {mode === ViewMode.All ? (
           <>
             {isFilteredViewMode && (

@@ -1,5 +1,7 @@
 import type {
   EndpointData,
+  Environment,
+  GetAboutResponse,
   IssueCriticality
 } from "../../../../redux/services/types";
 import type {
@@ -7,8 +9,11 @@ import type {
   IssuesReportViewLevel,
   IssuesReportViewMode
 } from "../../../../redux/slices/issuesReportSlice";
+import type { BackendInfo } from "../../App/types";
 
 export interface HeaderProps {
+  backendInfo?: BackendInfo | GetAboutResponse | null;
+  environments?: Environment[] | null;
   viewMode: IssuesReportViewMode;
   viewLevel: IssuesReportViewLevel;
   timeMode: IssuesReportTimeMode;

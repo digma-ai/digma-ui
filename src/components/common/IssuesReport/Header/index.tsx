@@ -1,9 +1,7 @@
 import { useMemo } from "react";
 import { getFeatureFlagValue } from "../../../../featureFlags";
 import {
-  useGetAboutQuery,
   useGetEnvironmentServicesQuery,
-  useGetEnvironmentsQuery,
   useGetServiceEndpointsQuery,
   useGetServiceEnvironmentsQuery
 } from "../../../../redux/services/digma";
@@ -53,6 +51,8 @@ const criticalityOptions: {
 const DEFAULT_PERIOD = 7;
 
 export const Header = ({
+  backendInfo,
+  environments,
   viewMode,
   viewLevel,
   timeMode,
@@ -74,12 +74,6 @@ export const Header = ({
   showEnvironmentSelect = true,
   showServicesSelect = true
 }: HeaderProps) => {
-  const { data: about } = useGetAboutQuery();
-
-  const { data: environments } = useGetEnvironmentsQuery(undefined, {
-    skip: viewLevel !== "services"
-  });
-
   const { data: serviceEnvironments } = useGetServiceEnvironmentsQuery(
     {
       service: selectedService ?? ""
@@ -105,7 +99,7 @@ export const Header = ({
   );
 
   const isDataFilterEnabled = getFeatureFlagValue(
-    about,
+    backendInfo,
     FeatureFlag.IsMetricsReportDataFilterEnabled
   );
 

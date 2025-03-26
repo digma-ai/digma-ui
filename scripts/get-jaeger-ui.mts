@@ -9,6 +9,7 @@ dotenv.config();
 
 interface DependenciesJson {
   jetBrainsPluginVersion: string;
+  visualStudioExtensionVersion: string;
   jaegerUIVersion: string;
   jaegerVersion: string;
 }

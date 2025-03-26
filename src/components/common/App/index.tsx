@@ -9,12 +9,14 @@ import { useColorScheme } from "../../../hooks/useColorScheme";
 import { logger } from "../../../logging";
 import { platform } from "../../../platform";
 import type { Environment } from "../../../redux/services/types";
+import { initialState as insightsInitialState } from "../../../store/insights/insightsSlice";
 import { useStore } from "../../../store/useStore";
 import { isBoolean } from "../../../typeGuards/isBoolean";
 import { isNull } from "../../../typeGuards/isNull";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
 import { sendErrorTrackingEvent } from "../../../utils/actions/sendErrorTrackingEvent";
+import { isScopeWithMetricsReportContext } from "../../Main/typeGuards";
 import { ErrorScreen } from "../ErrorScreen";
 import { ConfigContext } from "./ConfigContext";
 import { getStyledComponentsTheme } from "./getTheme";
@@ -91,7 +93,14 @@ export const App = ({ theme, children, id }: AppProps) => {
     setUserInfo,
     setRunConfig,
     setIsDigmathonGameFinished,
-    setIsMicrometerProject
+    setIsMicrometerProject,
+    setSelectedServices,
+    setInsightsFilters,
+    setInsightsFilteredInsightTypes: setInsightsFilteredInsightTypesInSpanScope,
+    setInsightsFilteredInsightTypesInGlobalScope,
+    setInsightsFilteredCriticalityLevels:
+      setInsightsFilteredCriticalityLevelsInSpanScope,
+    setInsightsFilteredCriticalityLevelsInGlobalScope
   } = useStore.getState();
 
   const handleError = (error: Error, info: ErrorInfo) => {
@@ -306,6 +315,87 @@ export const App = ({ theme, children, id }: AppProps) => {
 
         setScope(scope);
         setEnvironment(environment ?? null);
+
+        const isEnvironmentChanged =
+          config.environment?.id !== scope.environmentId;
+        const isScopeChanged =
+          config.scope?.span?.spanCodeObjectId !== scope.span?.spanCodeObjectId;
+        const scopeTypeChanged =
+          Boolean(
+            config.scope?.span?.spanCodeObjectId &&
+              !scope.span?.spanCodeObjectId
+          ) ||
+          Boolean(
+            !config.scope?.span?.spanCodeObjectId &&
+              scope.span?.spanCodeObjectId
+          );
+
+        // Reset insight filters on scope or environment change
+        if (isScopeChanged || isEnvironmentChanged) {
+          setInsightsFilters([]);
+        }
+
+        // Reset insight type filter (for span scope) on scope change from span to global and vice versa
+        if (scopeTypeChanged) {
+          setInsightsFilteredInsightTypesInSpanScope([]);
+        }
+
+        // Reset insight type filter (for span and global scopes) on environment change
+        if (isEnvironmentChanged) {
+          setInsightsFilteredInsightTypesInSpanScope([]);
+          setInsightsFilteredInsightTypesInGlobalScope([]);
+        }
+
+        const serviceToSelect = isScopeWithMetricsReportContext(scope)
+          ? scope.context.payload.service
+          : undefined;
+
+        // Select services from scope context
+        if (serviceToSelect) {
+          setSelectedServices([serviceToSelect]);
+        } else {
+          // Reset selected services on environment change
+          if (isEnvironmentChanged) {
+            setSelectedServices([]);
+          }
+        }
+
+        const criticalityLevelsToSelect = isScopeWithMetricsReportContext(scope)
+          ? scope.context.payload.criticalityLevels
+          : undefined;
+
+        // Select insight criticality levels from scope context
+        if (criticalityLevelsToSelect) {
+          if (scope.span?.spanCodeObjectId) {
+            setInsightsFilteredCriticalityLevelsInSpanScope(
+              criticalityLevelsToSelect
+            );
+          } else {
+            setInsightsFilteredCriticalityLevelsInGlobalScope(
+              criticalityLevelsToSelect
+            );
+          }
+        } else {
+          // Reset insight criticality filter (for span scope) on scope change from span to global and vice versa
+          if (scopeTypeChanged) {
+            setInsightsFilteredCriticalityLevelsInSpanScope(
+              insightsInitialState.filteredCriticalityLevels
+            );
+          }
+
+          // Reset insight criticality filter (for span and global scopes) on environment change
+          if (isEnvironmentChanged) {
+            if (scope.span?.spanCodeObjectId) {
+              setInsightsFilteredCriticalityLevelsInSpanScope(
+                insightsInitialState.filteredCriticalityLevels
+              );
+            } else {
+              setInsightsFilteredCriticalityLevelsInGlobalScope(
+                insightsInitialState.filteredCriticalityLevels
+              );
+            }
+          }
+        }
 
         return {
           ...config,
@@ -535,7 +625,13 @@ export const App = ({ theme, children, id }: AppProps) => {
     setUserInfo,
     setRunConfig,
     setIsDigmathonGameFinished,
-    setIsMicrometerProject
+    setIsMicrometerProject,
+    setSelectedServices,
+    setInsightsFilters,
+    setInsightsFilteredInsightTypesInSpanScope,
+    setInsightsFilteredInsightTypesInGlobalScope,
+    setInsightsFilteredCriticalityLevelsInSpanScope,
+    setInsightsFilteredCriticalityLevelsInGlobalScope
   ]);
 
   const styledComponentsTheme = getStyledComponentsTheme(

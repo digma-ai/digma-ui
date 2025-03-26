@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { actions as globalActions } from "../../../../actions";
 import { usePersistence } from "../../../../hooks/usePersistence";
+import { platform } from "../../../../platform";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../../store/useStore";
@@ -8,6 +9,7 @@ import { trackingEvents as globalEvents } from "../../../../trackingEvents";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { InsightType } from "../../../../types";
+import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { useHistory } from "../../../Main/useHistory";
 import { TAB_IDS } from "../../../Navigation/Tabs/types";
@@ -93,7 +95,8 @@ const renderEmptyState = (
   if (
     scope &&
     isNumber(scope.analyticsInsightsCount) &&
-    scope.analyticsInsightsCount > 0
+    scope.analyticsInsightsCount > 0 &&
+    platform !== "Visual Studio"
   ) {
     return (
       <EmptyState
@@ -238,6 +241,7 @@ export const InsightsPage = ({
               insight={insight}
               onJiraTicketCreate={handleShowJiraTicket}
               isJiraHintEnabled={
+                platform !== "Visual Studio" &&
                 !isUndefined(isInsightJiraTicketHintShown) &&
                 !isInsightJiraTicketHintShown?.value &&
                 j === insightIndexWithJiraHint
@@ -247,6 +251,7 @@ export const InsightsPage = ({
               onDismissalChange={handleDismissalChange}
               tooltipBoundaryRef={listRef}
               backendInfo={backendInfo}
+              onScopeChange={changeScope}
             />
           ))
         : renderEmptyState(

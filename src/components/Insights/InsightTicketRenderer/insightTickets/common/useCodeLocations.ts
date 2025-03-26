@@ -97,10 +97,10 @@ export const useCodeLocations = (
   }, [spanInfo, setIsLoading]);
 
   return {
-    isLoading: platform === "Web" ? areCodeLocationsLoading : isLoading,
+    isLoading: platform === "JetBrains" ? isLoading : areCodeLocationsLoading,
     codeLocations:
-      platform === "Web"
-        ? getCodeLocations(data, spanInfo?.methodCodeObjectId)
-        : codeLocations
+      platform === "JetBrains"
+        ? codeLocations
+        : getCodeLocations(data, spanInfo?.methodCodeObjectId)
   };
 };

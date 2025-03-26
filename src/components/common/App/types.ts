@@ -1,6 +1,9 @@
 import type { ReactNode } from "react";
 import type { Theme } from "../../../globals";
-import type { Environment } from "../../../redux/services/types";
+import type {
+  Environment,
+  IssueCriticality
+} from "../../../redux/services/types";
 import type { ScopeChangeEvent } from "../../../types";
 import type { InsightFilterType } from "../../Insights/InsightsCatalog/types";
 import type { InsightViewType } from "../../Insights/types";
@@ -101,6 +104,16 @@ export interface ScopeWithErrorDetailsId extends Omit<Scope, "context"> {
     event: ScopeChangeEvent;
     payload: {
       id?: string;
+    };
+  };
+}
+
+export interface ScopeWithMetricsReportContext extends Omit<Scope, "context"> {
+  context: {
+    event: ScopeChangeEvent;
+    payload: {
+      service: string;
+      criticalityLevels: IssueCriticality[];
     };
   };
 }

@@ -168,9 +168,6 @@ export const AssetsFilter = () => {
       };
 
       setFilters(defaultFilters);
-      if (isServicesFilterEnabled) {
-        setGloballySelectedServices(defaultFilters.services);
-      }
     }
   }, [
     setFilters,

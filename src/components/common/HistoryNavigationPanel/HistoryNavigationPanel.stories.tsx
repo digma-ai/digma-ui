@@ -3,7 +3,7 @@ import { HistoryNavigationPanel } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof HistoryNavigationPanel> = {
-  title: "Navigation/HistoryNavigationPanel",
+  title: "common/HistoryNavigationPanel",
   component: HistoryNavigationPanel,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
@@ -18,28 +18,28 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
   args: {
-    isBackDisabled: false,
-    isForwardDisabled: false
+    canGoBack: true,
+    canGoForward: true
   }
 };
 
 export const Head: Story = {
   args: {
-    isBackDisabled: true,
-    isForwardDisabled: false
+    canGoBack: false,
+    canGoForward: true
   }
 };
 
 export const Tail: Story = {
   args: {
-    isBackDisabled: false,
-    isForwardDisabled: true
+    canGoBack: true,
+    canGoForward: false
   }
 };
 
 export const Disabled: Story = {
   args: {
-    isBackDisabled: false,
-    isForwardDisabled: false
+    canGoBack: false,
+    canGoForward: false
   }
 };

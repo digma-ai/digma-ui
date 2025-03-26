@@ -47,7 +47,7 @@ export const useCommitInfos = <T extends GenericCodeObjectInsight>(
   }, [insight, setIsLoading]);
 
   return {
-    isLoading: platform === "Web" ? false : isLoading,
+    isLoading: platform === "JetBrains" ? isLoading : false,
     commitInfos
   };
 };

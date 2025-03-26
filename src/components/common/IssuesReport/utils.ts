@@ -1,6 +1,6 @@
 import type {
   EndpointIssuesData,
-  GetEnvironmentsResponse,
+  Environment,
   ServiceIssuesData
 } from "../../../redux/services/types";
 import type { Severity } from "./Table/types";
@@ -62,7 +62,5 @@ export const transformEndpointsData = (
   }));
 };
 
-export const sortEnvironments = (
-  environments: GetEnvironmentsResponse
-): GetEnvironmentsResponse =>
+export const sortEnvironments = (environments: Environment[]): Environment[] =>
   [...environments].sort((a, b) => a.name.localeCompare(b.name));

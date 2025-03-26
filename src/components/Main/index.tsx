@@ -7,8 +7,8 @@ import type { HistoryEntryLocation } from "../../history/History";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { logger } from "../../logging";
+import { platform } from "../../platform";
 import { PLUGIN_EVENTS } from "../../pluginEvents";
-import type { IssueCriticality } from "../../redux/services/types";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { useStore } from "../../store/useStore";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
@@ -72,14 +72,8 @@ const getUrlToNavigateFromRestApiCall = (scope: Scope): string | undefined => {
 
 export const Main = () => {
   const location = useLocation();
-  const {
-    environments,
-    environment,
-    scope,
-    userInfo,
-    backendInfo,
-    selectedServices
-  } = useConfigSelector();
+  const { environments, environment, userInfo, backendInfo, selectedServices } =
+    useConfigSelector();
   const {
     setSelectedServices,
     setInsightsFilteredCriticalityLevels:
@@ -100,6 +94,18 @@ export const Main = () => {
   const isInitialized = useMemo(
     () => !isUndefined(persistedServices),
     [persistedServices]
+  );
+  const isNoEnvironments = useMemo(
+    () => Boolean(!environments || environments.length === 0),
+    [environments]
+  );
+
+  const isSelectedEnvironmentExist = useMemo(
+    () =>
+      Boolean(
+        environment && environments?.find((x) => x.id == environment?.id)
+      ),
+    [environment, environments]
   );
 
   useEffect(() => {
@@ -145,14 +151,11 @@ export const Main = () => {
     }
   }, [selectedServices, isInitialized, setPersistedServices]);
 
-  // Clear selected services when backend instance or environment is changed
+  // Clear selected services when backend instance changed
   useEffect(() => {
     if (
-      Boolean(
-        previousBackendInfo &&
-          !areBackendInfosEqual(previousBackendInfo, backendInfo)
-      ) ||
-      (previousEnvironment && previousEnvironment.id !== environment?.id)
+      previousBackendInfo &&
+      !areBackendInfosEqual(previousBackendInfo, backendInfo)
     ) {
       setSelectedServices([]);
     }
@@ -165,22 +168,18 @@ export const Main = () => {
   ]);
 
   useEffect(() => {
-    // clear the history in following cases:
-    // 1) there are no environments
-    // 2) selected environment is not exist in the list of environments
-    if (
-      !environments ||
-      environments.length === 0 ||
-      Boolean(
-        environment && !environments?.find((x) => x.id == environment?.id)
-      )
-    ) {
+    if (isNoEnvironments || !isSelectedEnvironmentExist) {
       history.clear();
     }
-  }, [environments, environment, scope?.span]);
+  }, [isNoEnvironments, isSelectedEnvironmentExist]);
 
   useEffect(() => {
     const defaultGoTo = (scope: Scope, state: HistoryState) => {
+      if (platform === "Visual Studio") {
+        goTo(`/${TAB_IDS.ISSUES}`, { state });
+        return;
+      }
+
       if (scope.issuesInsightsCount > 0) {
         goTo(`/${TAB_IDS.ISSUES}`, { state });
       } else {
@@ -250,19 +249,6 @@ export const Main = () => {
             break;
           case ScopeChangeEvent.MetricsServiceSelected:
           case ScopeChangeEvent.MetricsEndpointSelected: {
-            const serviceToSelect = scope.context.payload?.service as string;
-            setSelectedServices(serviceToSelect ? [serviceToSelect] : []);
-            const criticalityLevels = scope.context.payload
-              ?.criticalityLevels as IssueCriticality[];
-            if (scope.span?.spanCodeObjectId) {
-              setInsightsFilteredCriticalityLevelsInSpanScope(
-                criticalityLevels
-              );
-            } else {
-              setInsightsFilteredCriticalityLevelsInGlobalScope(
-                criticalityLevels
-              );
-            }
             goTo(`/${TAB_IDS.ISSUES}`, { state });
             break;
           }

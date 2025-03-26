@@ -7,7 +7,6 @@ import {
   InsightType,
   ScopeChangeEvent
 } from "../../../../../types";
-import { changeScope } from "../../../../../utils/actions/changeScope";
 import { openURLInDefaultBrowser } from "../../../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { openBrowserTabWithContent } from "../../../../../utils/openBrowserTabWithContent";
@@ -70,7 +69,8 @@ export const InsightCardRenderer = ({
   onDismissalChange,
   onOpenSuggestion,
   tooltipBoundaryRef,
-  backendInfo
+  backendInfo,
+  onScopeChange
 }: InsightCardRendererProps) => {
   const [triggerSpanPercentilesHistogramFetch] =
     useLazyGetSpanPercentilesHistogramQuery();
@@ -182,7 +182,7 @@ export const InsightCardRenderer = ({
         insightType
       }
     );
-    changeScope({
+    onScopeChange({
       span: { spanCodeObjectId },
       context: {
         event: ScopeChangeEvent.InsightsInsightCardAssetLinkClicked
@@ -191,7 +191,7 @@ export const InsightCardRenderer = ({
   };
 
   const handleGoToSpan = (spanCodeObjectId: string) => {
-    changeScope({
+    onScopeChange({
       span: { spanCodeObjectId },
       context: {
         event: ScopeChangeEvent.InsightsInsightCardTitleAssetLinkClicked

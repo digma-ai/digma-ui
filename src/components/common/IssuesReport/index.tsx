@@ -1,10 +1,8 @@
 import { useEffect, useMemo } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import {
-  useGetAboutQuery,
   useGetEndpointsIssuesQuery,
   useGetEnvironmentServicesQuery,
-  useGetEnvironmentsQuery,
   useGetServicesIssuesQuery
 } from "../../../redux/services/digma";
 import type {
@@ -35,6 +33,8 @@ const getEndpointDisplayName = (
     ?.displayName;
 
 export const IssuesReport = ({
+  backendInfo,
+  environments,
   viewMode,
   viewLevel,
   timeMode,
@@ -59,9 +59,6 @@ export const IssuesReport = ({
   showEnvironmentSelect = true,
   showServicesSelect = true
 }: IssuesReportProps) => {
-  const { data: about } = useGetAboutQuery();
-  const { data: environments } = useGetEnvironmentsQuery();
-
   const sortedEnvironments = useMemo(
     () => (environments ? sortEnvironments(environments) : undefined),
     [environments]
@@ -81,7 +78,7 @@ export const IssuesReport = ({
     onSelectedEnvironmentIdChange
   ]);
 
-  const isInitialized = Boolean(sortedEnvironments && about);
+  const isInitialized = Boolean(sortedEnvironments && backendInfo);
 
   const { data: services } = useGetEnvironmentServicesQuery(
     {
@@ -93,7 +90,7 @@ export const IssuesReport = ({
   );
 
   const isDataFilterEnabled = getFeatureFlagValue(
-    about,
+    backendInfo,
     FeatureFlag.IsMetricsReportDataFilterEnabled
   );
 
@@ -199,7 +196,7 @@ export const IssuesReport = ({
   };
 
   const isCriticalityEnabled = getFeatureFlagValue(
-    about,
+    backendInfo,
     FeatureFlag.IsMetricsReportCriticalityEnabled
   );
 
@@ -267,6 +264,8 @@ export const IssuesReport = ({
         sortedEnvironments && sortedEnvironments.length > 0 ? (
           <>
             <Header
+              backendInfo={backendInfo}
+              environments={environments}
               showEnvironmentSelect={showEnvironmentSelect}
               showServicesSelect={showServicesSelect}
               viewMode={viewMode}

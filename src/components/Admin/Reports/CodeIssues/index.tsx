@@ -3,9 +3,14 @@ import {
   useAdminDispatch,
   useAdminSelector
 } from "../../../../containers/Admin/hooks";
+import { getFeatureFlagValue } from "../../../../featureFlags";
 import { useMount } from "../../../../hooks/useMount";
 import { useStableSearchParams } from "../../../../hooks/useStableSearchParams";
-import { useGetServiceEndpointsQuery } from "../../../../redux/services/digma";
+import {
+  useGetAboutQuery,
+  useGetEnvironmentsQuery,
+  useGetServiceEndpointsQuery
+} from "../../../../redux/services/digma";
 import type {
   EndpointData,
   IssueCriticality
@@ -28,6 +33,7 @@ import {
   type IssuesReportViewMode
 } from "../../../../redux/slices/issuesReportSlice";
 import { isNull } from "../../../../typeGuards/isNull";
+import { FeatureFlag } from "../../../../types";
 import { IssuesReport } from "../../../common/IssuesReport";
 import type { TargetScope } from "../../../common/IssuesReport/types";
 import { IssuesSidebarOverlay } from "../../common/IssuesSidebarOverlay";
@@ -120,6 +126,9 @@ export const CodeIssues = () => {
     () => searchParams.getAll("endpoints"),
     [searchParams]
   );
+
+  const { data: about } = useGetAboutQuery();
+  const { data: environments } = useGetEnvironmentsQuery();
 
   const { data: serviceEndpoints } = useGetServiceEndpointsQuery(
     {
@@ -350,6 +359,11 @@ export const CodeIssues = () => {
 
   const isIssuesSidebarOpen = Boolean(scope);
 
+  const isCriticalityLevelsFilterEnabled = getFeatureFlagValue(
+    about,
+    FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled
+  );
+
   const issuesSidebarQuery: IssuesSidebarQuery = useMemo(
     () => ({
       query: {
@@ -360,7 +374,10 @@ export const CodeIssues = () => {
           : scope?.value
           ? [scope.value]
           : [],
-        page: issuesPage
+        page: issuesPage,
+        ...(isCriticalityLevelsFilterEnabled
+          ? { criticalityFilter: criticalityLevels }
+          : {})
       }
     }),
     [
@@ -368,7 +385,9 @@ export const CodeIssues = () => {
       selectedEnvironmentId,
       selectedService,
       issuesPage,
-      spanCodeObjectId
+      spanCodeObjectId,
+      isCriticalityLevelsFilterEnabled,
+      criticalityLevels
     ]
   );
 
@@ -377,6 +396,8 @@ export const CodeIssues = () => {
   return (
     <s.Container>
       <IssuesReport
+        backendInfo={about}
+        environments={environments}
         selectedEnvironmentId={selectedEnvironmentId}
         criticalityLevels={criticalityLevels}
         periodInDays={periodInDays}

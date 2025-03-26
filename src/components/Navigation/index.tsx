@@ -15,11 +15,12 @@ import { ThreeDotsVerticalIcon } from "../common/icons/ThreeDotsVerticalIcon";
 // import { CodeButtonMenu } from "./CodeButtonMenu";
 import useDimensions from "react-cool-dimensions";
 import { getFeatureFlagValue } from "../../featureFlags";
+import { platform } from "../../platform";
 import { useGetSpanInfoQuery } from "../../redux/services/digma";
 import type { Environment } from "../../redux/services/types";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { EnvironmentBar } from "./EnvironmentBar";
-import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
+import { HistoryNavigation } from "./HistoryNavigation";
 import { KebabMenu } from "./KebabMenu";
 import { ScopeBar } from "./ScopeBar";
 import { SpanInfo } from "./SpanInfo";
@@ -355,7 +356,7 @@ export const Navigation = () => {
   return (
     <s.Container $isActive={isAtSpan} ref={observe}>
       <s.Row>
-        <HistoryNavigationPanel />
+        <HistoryNavigation />
         {isAtSpan ? (
           <ScopeBar
             codeContext={codeContext}
@@ -368,6 +369,7 @@ export const Navigation = () => {
                 (x) => x.environment === environment?.id
               ) ?? []
             }
+            isTargetButtonMenuVisible={platform === "JetBrains"}
           />
         ) : (
           <EnvironmentBar
@@ -450,9 +452,11 @@ export const Navigation = () => {
           )}
         </Tooltip>
       </s.Row> */}
-      <s.TabsContainer>
-        <Tabs />
-      </s.TabsContainer>
+      {platform === "JetBrains" && (
+        <s.TabsContainer>
+          <Tabs />
+        </s.TabsContainer>
+      )}
     </s.Container>
   );
 };

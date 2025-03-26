@@ -62,6 +62,7 @@ export const useFetchData = <T, K>(
   const [isMounted, setIsMounted] = useState(false);
 
   useMount(() => {
+    // TODO: check if isEnabled and payload.isEnabled are equal
     if (isEnabled && fetchOnMount) {
       sendMessage(requestAction, payload);
     }
