@@ -13,10 +13,10 @@ export const environmentTypesData: EnvironmentTypeData[] = [
       "Local environment uses observability collected from your local machine. This information can be automatically collected when your run or debug your code in the IDE or run tests.",
     status: "active",
     insights: [
-      { type: InsightCardType.TRACING_DATA },
-      { type: InsightCardType.QUERY_ISSUES },
-      { type: InsightCardType.BOTTLENECKS },
-      { type: InsightCardType.ERRORS }
+      { type: InsightCardType.TracingData },
+      { type: InsightCardType.QueryIssues },
+      { type: InsightCardType.Bottlenecks },
+      { type: InsightCardType.Errors }
     ]
   },
   {
@@ -27,10 +27,10 @@ export const environmentTypesData: EnvironmentTypeData[] = [
       "Collect information from your CI build to monitor releases over time.",
     status: "active",
     insights: [
-      { type: InsightCardType.SCALING_ISSUES_CI },
-      { type: InsightCardType.SLOWDOWN_PERF_IMPROVEMENTS },
-      { type: InsightCardType.SLOWDOWN_ROOT_CAUSE_DETECTION },
-      { type: InsightCardType.USAGE_ANALYSIS }
+      { type: InsightCardType.ScalingIssuesCI },
+      { type: InsightCardType.SlowdownPerfImprovements },
+      { type: InsightCardType.SlowdownRootCauseDetection },
+      { type: InsightCardType.UsageAnalysis }
     ]
   },
   {
@@ -41,12 +41,12 @@ export const environmentTypesData: EnvironmentTypeData[] = [
       "Digma can ingest data from your production to provide real world data about your code and issues currently in the wild.",
     status: "active",
     insights: [
-      { type: InsightCardType.PERFORMANCE_IMPACT },
-      { type: InsightCardType.ERROR_HOTSPOTS },
-      { type: InsightCardType.CONCURRENCY_AND_COST_OPTIMIZATION },
-      { type: InsightCardType.SCALING_ISSUES_PRODUCTION },
-      { type: InsightCardType.USAGE_ANALYSIS },
-      { type: InsightCardType.CHATTY_MICROSERVICES }
+      { type: InsightCardType.PerformanceImpact },
+      { type: InsightCardType.ErrorHotSpots },
+      { type: InsightCardType.ConcurrencyAndCostOptimization },
+      { type: InsightCardType.ScalingIssuesProduction },
+      { type: InsightCardType.UsageAnalysis },
+      { type: InsightCardType.ChattyMicroservices }
     ]
   }
 ];

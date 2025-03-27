@@ -46,7 +46,7 @@ export const CarouselPagination = ({
             onClick={handleButtonClick(page - 1)}
           >
             <ChevronIcon
-              direction={Direction.LEFT}
+              direction={Direction.Left}
               color={"currentColor"}
               size={16}
             />
@@ -67,7 +67,7 @@ export const CarouselPagination = ({
             onClick={handleButtonClick(page + 1)}
           >
             <ChevronIcon
-              direction={Direction.RIGHT}
+              direction={Direction.Right}
               color={"currentColor"}
               size={16}
             />

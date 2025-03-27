@@ -80,11 +80,11 @@ export const SpanDurationBreakdownInsightCard = ({
   const { backendInfo } = useConfigSelector();
   const isQuantitySupported = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.IS_DURATION_BREAKDOWN_QUANTITY_ENABLED
+    FeatureFlag.IsDurationBreakdownQuantityEnabled
   );
   const isPercentageOfCallsSupported = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.IS_DURATION_BREAKDOWN_QUANTITY_ENABLED
+    FeatureFlag.IsDurationBreakdownQuantityEnabled
   );
 
   const columnHelper = createColumnHelper<SpanDurationBreakdownEntry>();

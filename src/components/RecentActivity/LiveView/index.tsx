@@ -607,7 +607,7 @@ export const LiveView = ({ data, onClose }: LiveViewProps) => {
               <s.LatestDataButton onClick={handleLatestDataButtonClick}>
                 Latest Data
                 <ArrowSmallIcon
-                  direction={Direction.RIGHT}
+                  direction={Direction.Right}
                   color={latestDataButtonIconColor}
                 />
               </s.LatestDataButton>

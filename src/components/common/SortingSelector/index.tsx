@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import type { DefaultTheme } from "styled-components";
 import { useTheme } from "styled-components";
+import { usePrevious } from "../../../hooks/usePrevious";
+import { SortingOrder } from "../../../redux/services/types";
 import { Menu } from "../Menu";
 import { Popover } from "../Popover";
 import { PopoverContent } from "../Popover/PopoverContent";
@@ -10,7 +12,6 @@ import { SortIcon } from "../icons/SortIcon";
 import { Direction } from "../icons/types";
 import * as s from "./styles";
 import type { Sorting, SortingSelectorProps } from "./types";
-import { SORTING_ORDER } from "./types";
 
 const getSortingMenuChevronColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
@@ -22,19 +23,32 @@ const getSortingMenuChevronColor = (theme: DefaultTheme) => {
   }
 };
 
-export const SortingSelector = ({
+export const SortingSelector = <T extends string>({
   defaultSorting,
   onChange,
   options
-}: SortingSelectorProps) => {
+}: SortingSelectorProps<T>) => {
   const theme = useTheme();
-  const [sorting, setSorting] = useState<Sorting>(defaultSorting);
+  const [sorting, setSorting] = useState<Sorting<T>>(defaultSorting);
+  const previousSorting = usePrevious(sorting);
+  const previousDefaultSorting = usePrevious(defaultSorting);
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
   const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
 
   useEffect(() => {
-    onChange(sorting);
-  }, [sorting, defaultSorting]);
+    if (
+      previousDefaultSorting !== defaultSorting ||
+      previousSorting !== sorting
+    ) {
+      onChange(sorting);
+    }
+  }, [
+    sorting,
+    onChange,
+    defaultSorting,
+    previousDefaultSorting,
+    previousSorting
+  ]);
 
   const getSortingCriterionInfo = useCallback(
     (value: string) => {
@@ -43,20 +57,19 @@ export const SortingSelector = ({
     [options]
   );
 
-  const handleSortingMenuItemSelect = (value: string) => {
+  const handleSortingMenuItemSelect = (value: T) => {
     if (sorting.criterion === value) {
       setSorting({
         ...sorting,
         order:
-          sorting.order === SORTING_ORDER.DESC
-            ? SORTING_ORDER.ASC
-            : SORTING_ORDER.DESC
+          sorting.order === SortingOrder.Desc
+            ? SortingOrder.Asc
+            : SortingOrder.Desc
       });
     } else {
       setSorting({
         criterion: value,
-        order:
-          getSortingCriterionInfo(value)?.defaultOrder ?? SORTING_ORDER.DESC
+        order: getSortingCriterionInfo(value)?.defaultOrder ?? SortingOrder.Desc
       });
     }
     handleSortingMenuToggle();
@@ -67,7 +80,7 @@ export const SortingSelector = ({
   };
 
   const handleSortingOrderToggleOptionButtonClick =
-    (order: SORTING_ORDER) => () => {
+    (order: SortingOrder) => () => {
       setSorting({
         ...sorting,
         order
@@ -88,13 +101,13 @@ export const SortingSelector = ({
               {getSortingCriterionInfo(sorting.criterion)?.label}
             </s.SortingLabel>
             <ChevronIcon
-              direction={isSortingMenuOpen ? Direction.UP : Direction.DOWN}
+              direction={isSortingMenuOpen ? Direction.Up : Direction.Down}
               color={sortingMenuChevronColor}
             />
           </s.SortingMenuButton>
         </PopoverTrigger>
         <PopoverContent className={"Popover"}>
-          <Menu
+          <Menu<T>
             title={"Sort by"}
             items={options.map(({ value, label }) => ({
               value,
@@ -106,7 +119,7 @@ export const SortingSelector = ({
       </Popover>
 
       <s.SortingOrderToggle>
-        {[SORTING_ORDER.DESC, SORTING_ORDER.ASC].map((order) => {
+        {[SortingOrder.Desc, SortingOrder.Asc].map((order) => {
           const isSelected = sorting.order === order;
 
           return (

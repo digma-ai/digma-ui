@@ -11,6 +11,7 @@ import {
 import { useInsightsSelector } from "../../store/insights/useInsightsSelector";
 import { useStore } from "../../store/useStore";
 import { isUndefined } from "../../typeGuards/isUndefined";
+import { type InsightType } from "../../types";
 import { areBackendInfosEqual } from "../../utils/areBackendInfosEqual";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import type { RegistrationFormValues } from "../common/RegistrationDialog/types";
@@ -23,7 +24,6 @@ import * as s from "./styles";
 import type {
   GenericCodeObjectInsight,
   InsightTicketInfo,
-  InsightType,
   InsightsProps
 } from "./types";
 

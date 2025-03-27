@@ -22,7 +22,7 @@ const mockedConfig: ConfigContextData = {
   ...initialState,
   backendInfo: {
     applicationVersion: "0.3.15",
-    deploymentType: DeploymentType.DOCKER_COMPOSE,
+    deploymentType: DeploymentType.DockerCompose,
     centralize: false
   },
   environment: {

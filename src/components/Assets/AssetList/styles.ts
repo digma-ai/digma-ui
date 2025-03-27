@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { SortingOrder } from "../../../redux/services/types";
 import { bodyRegularTypography } from "../../common/App/typographies";
 import { Link } from "../../common/v3/Link";
 import type {
@@ -6,7 +7,6 @@ import type {
   SortingOrderIconContainerProps,
   SortingOrderOptionProps
 } from "./types";
-import { SORTING_ORDER } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -157,7 +157,7 @@ export const SortingOrderToggleOptionButton = styled.button<SortingOrderOptionPr
 export const SortingOrderIconContainer = styled.div<SortingOrderIconContainerProps>`
   display: flex;
   transform: scaleY(
-    ${({ $sortingOrder }) => ($sortingOrder === SORTING_ORDER.DESC ? -1 : 1)}
+    ${({ $sortingOrder }) => ($sortingOrder === SortingOrder.Desc ? -1 : 1)}
   );
 `;
 

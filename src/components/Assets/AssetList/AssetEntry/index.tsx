@@ -1,4 +1,5 @@
 import { getFeatureFlagValue } from "../../../../featureFlags";
+import { AssetsSortingCriterion } from "../../../../redux/services/types";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isString } from "../../../../typeGuards/isString";
@@ -12,7 +13,6 @@ import { Tag } from "../../../common/Tag";
 import { Tooltip } from "../../../common/Tooltip";
 import { GlobeIcon } from "../../../common/icons/GlobeIcon";
 import { getAssetTypeInfo } from "../../utils";
-import { SORTING_CRITERION } from "../types";
 import * as s from "./styles";
 import type { AssetEntryProps } from "./types";
 
@@ -27,7 +27,7 @@ export const AssetEntry = ({
   const { backendInfo } = useConfigSelector();
   const isNewImpactScoreCalculationEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.IS_NEW_IMPACT_SCORE_CALCULATION_ENABLED
+    FeatureFlag.IsNewImpactScoreCalculationEnabled
   );
   const impactScore = isNewImpactScoreCalculationEnabled
     ? entry.impactScore
@@ -43,18 +43,14 @@ export const AssetEntry = ({
   const slowestFivePercentDuration = entry.p95;
   const lastSeenDateTime = entry.latestSpanTimestamp;
 
-  // Do not show unimplemented insights
-  const filteredInsights = entry.insights
-    .filter(
-      (x) =>
-        ![
-          InsightType.SpanScalingWell,
-          InsightType.SpanScalingInsufficientData
-        ].includes(x.type as InsightType)
-    )
-    // TODO: fix types
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-    .filter((x) => x.importance < InsightImportance.Info);
+  const filteredInsights = entry.insights.filter(
+    (x) =>
+      // Do not show unimplemented insights
+      ![
+        InsightType.SpanScalingWell,
+        InsightType.SpanScalingInsufficientData
+      ].includes(x.type) && x.importance < InsightImportance.Info
+  );
 
   const sortedInsights = [...filteredInsights].sort(
     (a, b) =>
@@ -177,7 +173,8 @@ export const AssetEntry = ({
                 <ImpactScore
                   score={impactScore}
                   showIndicator={
-                    sortingCriterion === SORTING_CRITERION.PERFORMANCE_IMPACT
+                    sortingCriterion ===
+                    AssetsSortingCriterion.PerformanceImpact
                   }
                 />
               </s.ValueContainer>

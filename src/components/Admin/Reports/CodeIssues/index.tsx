@@ -361,7 +361,7 @@ export const CodeIssues = () => {
 
   const isCriticalityLevelsFilterEnabled = getFeatureFlagValue(
     about,
-    FeatureFlag.IS_ISSUES_CRITICALITY_LEVELS_FILTER_ENABLED
+    FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled
   );
 
   const issuesSidebarQuery: IssuesSidebarQuery = useMemo(

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
-import { InsightType, SCOPE_CHANGE_EVENTS } from "../../../../types";
+import { InsightType, ScopeChangeEvent } from "../../../../types";
 import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
@@ -192,19 +192,10 @@ const renderInsightCard = (
         insightType
       }
     );
-
-    window.sendMessageToDigma({
-      action: actions.GO_TO_ERROR,
-      payload: {
-        errorId
-      }
-    });
   };
 
   const handleErrorsExpandButtonClick = () => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_ERRORS
-    });
+    return undefined;
   };
 
   const handleHistogramButtonClick = (
@@ -226,13 +217,8 @@ const renderInsightCard = (
     return undefined;
   };
 
-  const handleRefresh = (insightType: InsightType) => {
-    window.sendMessageToDigma({
-      action: actions.REFRESH_ALL,
-      payload: {
-        insightType
-      }
-    });
+  const handleRefresh = () => {
+    return undefined;
   };
 
   const handleGoToSpan = (spanCodeObjectId: string) => {
@@ -241,8 +227,7 @@ const renderInsightCard = (
         spanCodeObjectId
       },
       context: {
-        event:
-          SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_TITLE_ASSET_LINK_CLICKED
+        event: ScopeChangeEvent.InsightsInsightCardTitleAssetLinkClicked
       }
     });
   };

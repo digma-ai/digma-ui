@@ -26,7 +26,7 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
   const { backendInfo, digmaStatus, environment } = useConfigSelector();
   const isDigmaMetricsVisible =
     backendInfo?.centralize &&
-    getFeatureFlagValue(backendInfo, FeatureFlag.IS_METRICS_REPORT_ENABLED);
+    getFeatureFlagValue(backendInfo, FeatureFlag.IsMetricsReportEnabled);
   const isDigmaMetricsEnabled =
     isDigmaMetricsVisible && environment?.type === "Public";
 

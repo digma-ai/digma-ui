@@ -91,7 +91,7 @@ export const IssuesReport = ({
 
   const isDataFilterEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.IS_METRICS_REPORT_DATA_FILTER_ENABLED
+    FeatureFlag.IsMetricsReportDataFilterEnabled
   );
 
   const getServicesIssuesPayloadV1: GetMetricsReportDataPayloadV1 =
@@ -197,7 +197,7 @@ export const IssuesReport = ({
 
   const isCriticalityEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.IS_METRICS_REPORT_CRITICALITY_ENABLED
+    FeatureFlag.IsMetricsReportCriticalityEnabled
   );
 
   const scoreCriterion: ScoreCriterion = isCriticalityEnabled

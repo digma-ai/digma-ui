@@ -8,6 +8,7 @@ import type { Theme } from "../../../globals";
 import { useColorScheme } from "../../../hooks/useColorScheme";
 import { logger } from "../../../logging";
 import { platform } from "../../../platform";
+import type { Environment } from "../../../redux/services/types";
 import { initialState as insightsInitialState } from "../../../store/insights/insightsSlice";
 import { useStore } from "../../../store/useStore";
 import { isBoolean } from "../../../typeGuards/isBoolean";
@@ -24,7 +25,6 @@ import type {
   AppProps,
   BackendInfo,
   DigmaStatus,
-  Environment,
   PersistedState,
   RunConfiguration,
   Scope,

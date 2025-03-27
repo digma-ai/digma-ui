@@ -1,4 +1,4 @@
-import { SCOPE_CHANGE_EVENTS } from "../../types";
+import { ScopeChangeEvent } from "../../types";
 import type {
   Scope,
   ScopeWithCodeLensContext,
@@ -10,17 +10,17 @@ import type {
 export const isScopeWithCodeLensContext = (
   x: Scope
 ): x is ScopeWithCodeLensContext =>
-  x.context?.event === SCOPE_CHANGE_EVENTS.IDE_CODE_LENS_CLICKED;
+  x.context?.event === ScopeChangeEvent.IdeCodeLensClicked;
 
 export const isScopeWithRestApiCallContext = (
   x: Scope
 ): x is ScopeWithCustomProtocolLinkContext =>
-  x.context?.event === SCOPE_CHANGE_EVENTS.IDE_REST_API_CALL;
+  x.context?.event === ScopeChangeEvent.IdeRestApiCall;
 
 export const isScopeWithErrorDetailsIdContext = (
   x: Scope
 ): x is ScopeWithErrorDetailsId =>
-  x.context?.event === SCOPE_CHANGE_EVENTS.ERROR_CARD_LINK_CLICKED;
+  x.context?.event === ScopeChangeEvent.ErrorCardLinkClicked;
 
 export const isScopeWithMetricsReportContext = (
   x: Scope
@@ -28,7 +28,7 @@ export const isScopeWithMetricsReportContext = (
   Boolean(
     x.context?.event &&
       [
-        SCOPE_CHANGE_EVENTS.METRICS_SERVICE_SELECTED,
-        SCOPE_CHANGE_EVENTS.METRICS_ENDPOINT_SELECTED
-      ].includes(x.context?.event as SCOPE_CHANGE_EVENTS)
+        ScopeChangeEvent.MetricsServiceSelected,
+        ScopeChangeEvent.MetricsEndpointSelected
+      ].includes(x.context?.event)
   );

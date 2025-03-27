@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { EndpointUsageInsightCard } from ".";
-import { InsightImportance, InsightType } from "../../../../../types";
+import { InsightType } from "../../../../../../../types";
+import { InsightImportance } from "../../../../../types";
 import { mockedEndpointNormalUsageInsight } from "./mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction

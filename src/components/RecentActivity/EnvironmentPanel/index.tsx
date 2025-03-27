@@ -266,7 +266,7 @@ export const EnvironmentPanel = ({
             onClick={handleCarouselButtonClick("left")}
             disabled={isLeftCarouselButtonDisabled}
           >
-            <ChevronIcon direction={Direction.LEFT} color={"currentColor"} />
+            <ChevronIcon direction={Direction.Left} color={"currentColor"} />
           </s.CarouselButton>
         )}
       </s.CarouselButtonContainer>
@@ -295,7 +295,7 @@ export const EnvironmentPanel = ({
             onClick={handleCarouselButtonClick("right")}
             disabled={isRightCarouselButtonDisabled}
           >
-            <ChevronIcon direction={Direction.RIGHT} color={"currentColor"} />
+            <ChevronIcon direction={Direction.Right} color={"currentColor"} />
           </s.CarouselButton>
         )}
       </s.CarouselButtonContainer>

@@ -1,4 +1,4 @@
-import type { Environment } from "../../common/App/types";
+import type { Environment } from "../../../redux/services/types";
 
 export interface EnvironmentBarProps {
   selectedEnvironment?: Environment | null;

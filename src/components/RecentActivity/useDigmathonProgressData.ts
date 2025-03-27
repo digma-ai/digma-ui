@@ -4,7 +4,7 @@ import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isNull } from "../../typeGuards/isNull";
 import { isString } from "../../typeGuards/isString";
-import { InsightType } from "../Insights/types";
+import { InsightType } from "../../types";
 import { getDigmathonInsightCardData } from "./Digmathon/getDigmathonInsightData";
 import { actions } from "./actions";
 import type {

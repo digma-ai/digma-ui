@@ -1,5 +1,9 @@
-import { InsightStatus, InsightType } from "../../../../Insights/types";
-import type { HighlightData, SpaNPlusOneMetrics } from "../../types";
+import type {
+  HighlightData,
+  SpaNPlusOneMetrics
+} from "../../../../../redux/services/types";
+import { InsightType } from "../../../../../types";
+import { InsightStatus } from "../../../../Insights/types";
 
 export const mockedSpaNPlusOneInsights: SpaNPlusOneMetrics = [
   { id: "AffectedEndpoints", value: 50 },

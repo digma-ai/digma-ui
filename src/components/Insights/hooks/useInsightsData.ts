@@ -5,12 +5,15 @@ import {
   useGetIssuesQuery,
   useGetSpanEnvironmentsQuery
 } from "../../../redux/services/digma";
+import {
+  InsightsSortingCriterion,
+  SortingOrder
+} from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../store/useStore";
 import { FeatureFlag } from "../../../types";
-import { SORTING_ORDER } from "../../common/SortingSelector/types";
-import { SORTING_CRITERION, ViewMode } from "../InsightsCatalog/types";
+import { ViewMode } from "../InsightsCatalog/types";
 import { useInsightsStats } from "./useInsightsStats";
 
 interface UseInsightsDataProps {
@@ -65,32 +68,19 @@ export const useInsightsData = ({
     [backendInfo, areFiltersRehydrated, insightViewType, environment]
   );
 
-  const areIssuesFiltersEnabled = useMemo(
-    () =>
-      Boolean(
-        backendInfo &&
-          getFeatureFlagValue(
-            backendInfo,
-            FeatureFlag.ARE_ISSUES_FILTERS_ENABLED
-          )
-      ),
-    [backendInfo]
+  const areIssuesFiltersEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.AreIssuesFiltersEnabled
   );
 
-  const isCriticalityLevelsFilterEnabled = useMemo(
-    () =>
-      Boolean(
-        getFeatureFlagValue(
-          backendInfo,
-          FeatureFlag.IS_ISSUES_CRITICALITY_LEVELS_FILTER_ENABLED
-        )
-      ),
-    [backendInfo]
+  const isCriticalityLevelsFilterEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled
   );
 
   const areSpanEnvironmentsEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.ARE_SPAN_ENVIRONMENTS_ENABLED
+    FeatureFlag.AreSpanEnvironmentsEnabled
   );
 
   const isIssuesQueryActive =
@@ -122,12 +112,12 @@ export const useInsightsData = ({
                 filteredInsightTypes.length > 0
                   ? filteredInsightTypes.join(",")
                   : undefined,
-              sortBy: sorting.criterion as SORTING_CRITERION,
+              sortBy: sorting.criterion,
               sortOrder: sorting.order
             }
           : {
-              sortBy: SORTING_CRITERION.CRITICALITY,
-              sortOrder: SORTING_ORDER.DESC
+              sortBy: InsightsSortingCriterion.Criticality,
+              sortOrder: SortingOrder.Desc
             })
       },
       extra: {
@@ -149,7 +139,7 @@ export const useInsightsData = ({
       displayName: search.length > 0 ? search : undefined,
       page,
       pageSize: PAGE_SIZE,
-      sortBy: sorting.criterion as SORTING_CRITERION,
+      sortBy: sorting.criterion,
       sortOrder: sorting.order,
       filters: isCriticalityLevelsFilterEnabled
         ? filters.filter((x) => x !== "criticality")

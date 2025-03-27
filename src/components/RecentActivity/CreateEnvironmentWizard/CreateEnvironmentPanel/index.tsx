@@ -48,7 +48,7 @@ export const CreateEnvironmentPanel = ({
         label={"Back"}
         isDisabled={backDisabled}
         onClick={onBack}
-        icon={(props) => <ChevronIcon {...props} direction={Direction.LEFT} />}
+        icon={(props) => <ChevronIcon {...props} direction={Direction.Left} />}
       />
       <s.Divider />
       <s.Header>Add New Environment</s.Header>

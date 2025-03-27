@@ -1,7 +1,11 @@
 import type { Row } from "@tanstack/react-table";
 import { createColumnHelper } from "@tanstack/react-table";
+import type {
+  EnvironmentData,
+  SpanEndpointBottleneckMetrics
+} from "../../../../../redux/services/types";
 import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
-import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
+import { ScopeChangeEvent } from "../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { Tag } from "../../../../common/v3/Tag";
@@ -10,10 +14,6 @@ import { TableText } from "../../../common/TableText";
 import { handleEnvironmentTableRowClick } from "../../../handleEnvironmentTableRowClick";
 import { trackingEvents } from "../../../tracking";
 import { HighlightCard } from "../../common/HighlightCard";
-import type {
-  EnvironmentData,
-  SpanEndpointBottleneckMetrics
-} from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
 import type { SpanEndpointBottleneckHighlightCardProps } from "./types";
 
@@ -76,7 +76,7 @@ export const SpanEndpointBottleneckHighlightCard = ({
       scope,
       environments,
       row.original.environmentId,
-      SCOPE_CHANGE_EVENTS.HIGHLIGHTS_TOP_ISSUES_CARD_ITEM_CLICKED
+      ScopeChangeEvent.HighlightsTopIssuesCardItemClicked
     );
   };
 

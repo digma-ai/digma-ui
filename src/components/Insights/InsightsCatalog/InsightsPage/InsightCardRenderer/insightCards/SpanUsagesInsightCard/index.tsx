@@ -29,7 +29,7 @@ const PAGE_SIZE = 3;
 
 const FlowArrow = (
   <s.ArrowIconContainer>
-    <ArrowDashedLineIcon direction={Direction.RIGHT} color={"currentColor"} />
+    <ArrowDashedLineIcon direction={Direction.Right} color={"currentColor"} />
   </s.ArrowIconContainer>
 );
 

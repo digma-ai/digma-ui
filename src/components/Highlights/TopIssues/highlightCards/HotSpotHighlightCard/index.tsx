@@ -1,14 +1,17 @@
 import type { Row } from "@tanstack/react-table";
 import { createColumnHelper } from "@tanstack/react-table";
+import type {
+  EnvironmentData,
+  HotSpotMetrics
+} from "../../../../../redux/services/types";
 import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
-import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
+import { ScopeChangeEvent } from "../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { Table } from "../../../common/Table";
 import { TableText } from "../../../common/TableText";
 import { handleEnvironmentTableRowClick } from "../../../handleEnvironmentTableRowClick";
 import { trackingEvents } from "../../../tracking";
 import { HighlightCard } from "../../common/HighlightCard";
-import type { EnvironmentData, HotSpotMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
 import type { HotSpotHighlightCardProps } from "./types";
 
@@ -41,7 +44,7 @@ export const HotSpotHighlightCard = ({ data }: HotSpotHighlightCardProps) => {
       scope,
       environments,
       row.original.environmentId,
-      SCOPE_CHANGE_EVENTS.HIGHLIGHTS_TOP_ISSUES_CARD_ITEM_CLICKED
+      ScopeChangeEvent.HighlightsTopIssuesCardItemClicked
     );
   };
 

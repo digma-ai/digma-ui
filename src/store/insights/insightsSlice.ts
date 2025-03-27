@@ -1,21 +1,19 @@
 import { createSlice } from "zustand-slices";
 import type { Sorting } from "../../components/common/SortingSelector/types";
-import { SORTING_ORDER } from "../../components/common/SortingSelector/types";
 import type { InsightFilterType } from "../../components/Insights/InsightsCatalog/types";
-import {
-  SORTING_CRITERION,
-  ViewMode
-} from "../../components/Insights/InsightsCatalog/types";
-import type {
-  InsightType,
-  InsightViewType
-} from "../../components/Insights/types";
+import { ViewMode } from "../../components/Insights/InsightsCatalog/types";
+import type { InsightViewType } from "../../components/Insights/types";
 import type {
   GetInsightsResponse,
   GetIssuesFiltersResponse,
   GetIssuesResponse,
   IssueCriticality
 } from "../../redux/services/types";
+import {
+  InsightsSortingCriterion,
+  SortingOrder
+} from "../../redux/services/types";
+import type { InsightType } from "../../types";
 
 export type InsightsData = GetIssuesResponse | GetInsightsResponse;
 
@@ -24,7 +22,7 @@ interface InsightsState {
   isDataLoading: boolean;
   search: string;
   page: number;
-  sorting: Sorting;
+  sorting: Sorting<InsightsSortingCriterion>;
   viewMode: ViewMode;
   filters: InsightFilterType[];
   filteredInsightTypes: InsightType[];
@@ -42,8 +40,8 @@ export const initialState: InsightsState = {
   search: "",
   page: 0,
   sorting: {
-    criterion: SORTING_CRITERION.CRITICALITY,
-    order: SORTING_ORDER.DESC
+    criterion: InsightsSortingCriterion.Criticality,
+    order: SortingOrder.Desc
   },
   viewMode: ViewMode.All,
   filters: [],
@@ -70,7 +68,8 @@ export const insightsSlice = createSlice({
       set({ isDataLoading }),
     setInsightsSearch: (search: string) => set({ search }),
     setInsightsPage: (page: number) => set({ page }),
-    setInsightsSorting: (sorting: Sorting) => set({ sorting }),
+    setInsightsSorting: (sorting: Sorting<InsightsSortingCriterion>) =>
+      set({ sorting }),
     setInsightsViewMode: (viewMode: ViewMode) => set({ viewMode }),
     setInsightsFilters: (filters: InsightFilterType[]) => set({ filters }),
     setInsightsFilteredInsightTypes: (filteredInsightTypes: InsightType[]) =>

@@ -1,9 +1,6 @@
+import { InsightType } from "../../../../../../../types";
 import type { EndpointBottleneckInsight } from "../../../../../types";
-import {
-  InsightCategory,
-  InsightScope,
-  InsightType
-} from "../../../../../types";
+import { InsightCategory, InsightScope } from "../../../../../types";
 
 export const mockedEndpointBottleneckInsight: EndpointBottleneckInsight = {
   sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",

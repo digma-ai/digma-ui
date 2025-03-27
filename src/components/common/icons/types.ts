@@ -1,8 +1,8 @@
 export enum Direction {
-  LEFT = "LEFT",
-  UP = "UP",
-  RIGHT = "RIGHT",
-  DOWN = "DOWN"
+  Left,
+  Up,
+  Right,
+  Down
 }
 
 export interface IconProps {

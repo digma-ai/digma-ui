@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
-import type { Duration } from "../../../globals";
+import type { Duration } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { FeatureFlag } from "../../../types";
@@ -120,7 +120,7 @@ export const RecentActivityTable = ({
 
   const spansCountEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.RECENT_ACTIVITY_SPANS_COUNT_ENABLED
+    FeatureFlag.RecentActivitySpansCountEnabled
   );
 
   const renderSpanLink = (span: EntrySpan) => (

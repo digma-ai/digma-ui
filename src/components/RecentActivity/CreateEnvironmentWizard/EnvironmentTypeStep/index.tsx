@@ -1,4 +1,4 @@
-import type { EnvironmentType } from "../../../common/App/types";
+import type { EnvironmentType } from "../../../../redux/services/types";
 import { EnvironmentTypePanel } from "../EnvironmentTypePanel";
 import * as s from "./styles";
 import type { EnvironmentTypeStepProps } from "./types";

@@ -1,10 +1,11 @@
 import { usePagination } from "../../../../../../../hooks/usePagination";
 import { useConfigSelector } from "../../../../../../../store/config/useConfigSelector";
+import type { InsightType } from "../../../../../../../types";
 import { TraceIcon } from "../../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../../common/v3/Button";
 import { Pagination } from "../../../../../../common/v3/Pagination";
 import { Tooltip } from "../../../../../../common/v3/Tooltip";
-import type { InsightType, Trace } from "../../../../../types";
+import type { Trace } from "../../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ListItem } from "../common/InsightCard/ListItem";
 import { ContentContainer, Description } from "../styles";

@@ -6,13 +6,14 @@ import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
+import type { Environment } from "../../redux/services/types";
 import { isBoolean } from "../../typeGuards/isBoolean";
-import { SCOPE_CHANGE_EVENTS } from "../../types";
+import { ScopeChangeEvent } from "../../types";
 import { changeScope } from "../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { groupBy } from "../../utils/groupBy";
 import { ConfigContext } from "../common/App/ConfigContext";
-import type { Environment, Scope } from "../common/App/types";
+import type { Scope } from "../common/App/types";
 import { Overlay } from "../common/Overlay";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import type { RegistrationFormValues } from "../common/RegistrationDialog/types";
@@ -307,7 +308,7 @@ export const RecentActivity = () => {
           spanCodeObjectId: span.spanCodeObjectId
         },
         context: {
-          event: SCOPE_CHANGE_EVENTS.RECENT_ACTIVITY_SPAN_LINK_CLICKED
+          event: ScopeChangeEvent.RecentActivitySpanLinkClicked
         }
       });
     }
@@ -458,16 +459,14 @@ export const RecentActivity = () => {
     return (
       <>
         <s.RecentActivityToolbarContainer>
-          {!selectedEnvironment?.isPending && (
-            <s.RecentActivityToolbar>
-              <span>Recent Activity</span>
-              <Toggle
-                value={viewMode}
-                options={viewModeOptions}
-                onChange={handleViewModeChange}
-              />
-            </s.RecentActivityToolbar>
-          )}
+          <s.RecentActivityToolbar>
+            <span>Recent Activity</span>
+            <Toggle
+              value={viewMode}
+              options={viewModeOptions}
+              onChange={handleViewModeChange}
+            />
+          </s.RecentActivityToolbar>
           {!config.isObservabilityEnabled && <ObservabilityStatusBadge />}
         </s.RecentActivityToolbarContainer>
         <RecentActivityTable

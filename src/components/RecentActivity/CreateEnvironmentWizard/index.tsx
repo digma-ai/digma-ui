@@ -4,7 +4,6 @@ import { dispatcher } from "../../../dispatcher";
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import type { Environment } from "../../common/App/types";
 import { actions } from "../actions";
 import { RecentActivityContainerBackgroundGradient } from "../styles";
 import { trackingEvents } from "../tracking";
@@ -23,6 +22,7 @@ import { RegisterStep } from "./RegisterStep";
 import * as s from "./styles";
 import type {
   CreateEnvironmentWizardProps,
+  EnvironmentDraft,
   ErrorDefinitions,
   StepDefinitions
 } from "./types";
@@ -36,7 +36,7 @@ export const CreateEnvironmentWizard = ({
 }: CreateEnvironmentWizardProps) => {
   const config = useContext(ConfigContext);
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [newEnvironment, setNewEnvironment] = useState<Environment>({
+  const [newEnvironment, setNewEnvironment] = useState<EnvironmentDraft>({
     name: "",
     type: null,
     id: ""

@@ -1,8 +1,5 @@
-import type {
-  EndpointSessionInViewInsight,
-  InsightType,
-  Trace
-} from "../../../../../types";
+import type { InsightType } from "../../../../../../../types";
+import type { EndpointSessionInViewInsight, Trace } from "../../../../../types";
 import type { InsightCardCommonProps } from "../types";
 
 export interface EndpointSessionInViewInsightCardProps

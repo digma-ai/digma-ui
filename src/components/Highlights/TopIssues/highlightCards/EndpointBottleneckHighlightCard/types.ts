@@ -1,4 +1,7 @@
-import type { EndpointBottleneckMetrics, HighlightData } from "../../types";
+import type {
+  EndpointBottleneckMetrics,
+  HighlightData
+} from "../../../../../redux/services/types";
 
 export interface EndpointBottleneckHighlightCardProps {
   data: HighlightData<EndpointBottleneckMetrics>;

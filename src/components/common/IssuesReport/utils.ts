@@ -1,8 +1,8 @@
 import type {
   EndpointIssuesData,
+  Environment,
   ServiceIssuesData
 } from "../../../redux/services/types";
-import type { Environment } from "../App/types";
 import type { Severity } from "./Table/types";
 import type { PresentationalReportData, ScoreCriterion } from "./types";
 

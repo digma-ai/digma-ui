@@ -91,7 +91,7 @@ export const ErrorDetailsCardContent = ({
             disabled={isPreviousFlowButtonDisabled}
           >
             <ChevronIcon12px
-              direction={Direction.LEFT}
+              direction={Direction.Left}
               size={12}
               color={"currentColor"}
             />
@@ -108,7 +108,7 @@ export const ErrorDetailsCardContent = ({
             disabled={isNextFlowButtonDisabled}
           >
             <ChevronIcon12px
-              direction={Direction.RIGHT}
+              direction={Direction.Right}
               size={12}
               color={"currentColor"}
             />

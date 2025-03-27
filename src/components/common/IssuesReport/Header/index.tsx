@@ -100,7 +100,7 @@ export const Header = ({
 
   const isDataFilterEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.IS_METRICS_REPORT_DATA_FILTER_ENABLED
+    FeatureFlag.IsMetricsReportDataFilterEnabled
   );
 
   const { data: services } = useGetEnvironmentServicesQuery(
@@ -189,7 +189,7 @@ export const Header = ({
             <>
               <NewIconButton
                 icon={(props) => (
-                  <ChevronIcon {...props} direction={Direction.LEFT} />
+                  <ChevronIcon {...props} direction={Direction.Left} />
                 )}
                 size={"small"}
                 buttonType={"secondaryBorderless"}

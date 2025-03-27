@@ -1,4 +1,4 @@
-import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
+import { ScopeChangeEvent } from "../../../../../types";
 import { changeScope } from "../../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { Link } from "../../../../common/v3/Link";
@@ -18,7 +18,7 @@ export const AssetLink = ({ asset }: AssetLinkProps) => {
         spanCodeObjectId: asset.spanCodeObjectId
       },
       context: {
-        event: SCOPE_CHANGE_EVENTS.HIGHLIGHTS_TOP_ISSUES_CARD_ASSET_LINK_CLICKED
+        event: ScopeChangeEvent.HighlightsTopIssuesCardAssetLinkClicked
       }
     });
   };

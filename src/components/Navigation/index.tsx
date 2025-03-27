@@ -8,7 +8,6 @@ import { changeScope } from "../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 // import { AsyncActionResultData } from "../InstallationWizard/types";
 // import { SCOPE_CHANGE_EVENTS } from "../Main/types";
-import type { Environment } from "../common/App/types";
 import { NewPopover } from "../common/NewPopover";
 import { ThreeDotsVerticalIcon } from "../common/icons/ThreeDotsVerticalIcon";
 // import { Tooltip } from "../common/v3/Tooltip";
@@ -18,6 +17,7 @@ import useDimensions from "react-cool-dimensions";
 import { getFeatureFlagValue } from "../../featureFlags";
 import { platform } from "../../platform";
 import { useGetSpanInfoQuery } from "../../redux/services/digma";
+import type { Environment } from "../../redux/services/types";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { EnvironmentBar } from "./EnvironmentBar";
 import { HistoryNavigation } from "./HistoryNavigation";
@@ -126,10 +126,7 @@ export const Navigation = () => {
   //   codeContext && codeContext.spans.assets.length !== 1;
 
   const isSpanInfoEnabled = Boolean(
-    getFeatureFlagValue(
-      backendInfo,
-      FeatureFlag.IS_HIGHLIGHTS_SPAN_INFO_ENABLED
-    )
+    getFeatureFlagValue(backendInfo, FeatureFlag.IsHighlightsSpanInfoEnabled)
   );
 
   useEffect(() => {

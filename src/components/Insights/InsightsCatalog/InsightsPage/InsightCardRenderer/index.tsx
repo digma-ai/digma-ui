@@ -2,7 +2,11 @@ import { getFeatureFlagValue } from "../../../../../featureFlags";
 import { platform } from "../../../../../platform";
 import { useLazyGetSpanPercentilesHistogramQuery } from "../../../../../redux/services/digma";
 import { isString } from "../../../../../typeGuards/isString";
-import { FeatureFlag, SCOPE_CHANGE_EVENTS } from "../../../../../types";
+import {
+  FeatureFlag,
+  InsightType,
+  ScopeChangeEvent
+} from "../../../../../types";
 import { openURLInDefaultBrowser } from "../../../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { openBrowserTabWithContent } from "../../../../../utils/openBrowserTabWithContent";
@@ -32,7 +36,7 @@ import {
   isSpanScalingBadlyInsight,
   isSpanUsagesInsight
 } from "../../../typeGuards";
-import { InsightType, type Trace } from "../../../types";
+import type { Trace } from "../../../types";
 import type { OpenHistogramPayload, OpenLiveViewPayload } from "../types";
 import { EndpointBottleneckInsightCard } from "./insightCards/EndpointBottleneckInsightCard";
 import { EndpointBreakdownInsightCard } from "./insightCards/EndpointBreakdownInsightCard";
@@ -77,12 +81,9 @@ export const InsightCardRenderer = ({
     displayName: string,
     environmentId: string
   ) => {
-    const isSpanPercentilesHistogramIsEnabled = Boolean(
-      backendInfo &&
-        getFeatureFlagValue(
-          backendInfo,
-          FeatureFlag.IS_HTTP_GET_METHOD_SPAN_PERCENTILES_HISTOGRAM_ENABLED
-        )
+    const isSpanPercentilesHistogramIsEnabled = getFeatureFlagValue(
+      backendInfo,
+      FeatureFlag.IsHttpGetMethodSpanPercentilesHistogramEnabled
     );
 
     if (platform === "Web") {
@@ -184,7 +185,7 @@ export const InsightCardRenderer = ({
     onScopeChange({
       span: { spanCodeObjectId },
       context: {
-        event: SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_ASSET_LINK_CLICKED
+        event: ScopeChangeEvent.InsightsInsightCardAssetLinkClicked
       }
     });
   };
@@ -193,8 +194,7 @@ export const InsightCardRenderer = ({
     onScopeChange({
       span: { spanCodeObjectId },
       context: {
-        event:
-          SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_TITLE_ASSET_LINK_CLICKED
+        event: ScopeChangeEvent.InsightsInsightCardTitleAssetLinkClicked
       }
     });
   };

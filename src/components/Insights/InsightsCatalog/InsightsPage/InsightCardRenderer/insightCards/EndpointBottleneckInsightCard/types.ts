@@ -1,8 +1,5 @@
-import type {
-  EndpointBottleneckInsight,
-  InsightType,
-  Trace
-} from "../../../../../types";
+import type { InsightType } from "../../../../../../../types";
+import type { EndpointBottleneckInsight, Trace } from "../../../../../types";
 import type { InsightCardCommonProps } from "../types";
 
 export interface EndpointBottleneckInsightCardProps

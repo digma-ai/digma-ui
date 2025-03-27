@@ -1,9 +1,12 @@
-import type { GetSpanInfoResponse } from "../../../redux/services/types";
+import {
+  AssetType,
+  type GetSpanInfoResponse
+} from "../../../redux/services/types";
 
 export const mockedSpanInfoData: GetSpanInfoResponse = {
   displayName:
     "select v1_0.pet_id,v1_0. id, v1_0. visit_date, v1_0. description from visits v1_0 where v1_0.petid=? order by v1_0.visit_date",
-  assetTypeId: "DatabaseQueries",
+  assetTypeId: AssetType.DatabaseQueries,
   services: [
     "Digma analytics",
     "Digma service1",

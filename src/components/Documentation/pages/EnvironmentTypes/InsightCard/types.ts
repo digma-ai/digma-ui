@@ -22,17 +22,17 @@ export interface InsightCardTypeData {
 }
 
 export enum InsightCardType {
-  TRACING_DATA,
-  QUERY_ISSUES,
-  BOTTLENECKS,
-  ERRORS,
-  SCALING_ISSUES_CI,
-  SCALING_ISSUES_PRODUCTION,
-  SLOWDOWN_PERF_IMPROVEMENTS,
-  SLOWDOWN_ROOT_CAUSE_DETECTION,
-  PERFORMANCE_IMPACT,
-  USAGE_ANALYSIS,
-  ERROR_HOTSPOTS,
-  CONCURRENCY_AND_COST_OPTIMIZATION,
-  CHATTY_MICROSERVICES
+  TracingData,
+  QueryIssues,
+  Bottlenecks,
+  Errors,
+  ScalingIssuesCI,
+  ScalingIssuesProduction,
+  SlowdownPerfImprovements,
+  SlowdownRootCauseDetection,
+  PerformanceImpact,
+  UsageAnalysis,
+  ErrorHotSpots,
+  ConcurrencyAndCostOptimization,
+  ChattyMicroservices
 }

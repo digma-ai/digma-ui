@@ -1,9 +1,5 @@
-import type {
-  GenericCodeObjectInsight,
-  InsightType,
-  InsightViewType
-} from "../../types";
-
+import type { InsightType } from "../../../../types";
+import type { GenericCodeObjectInsight, InsightViewType } from "../../types";
 export interface InsightsPageProps {
   insights: GenericCodeObjectInsight[];
   onJiraTicketCreate: (

@@ -74,9 +74,3 @@ declare global {
     productFruitsWorkspaceCode?: unknown;
   }
 }
-
-export interface Duration {
-  value: number;
-  unit: string;
-  raw: number;
-}

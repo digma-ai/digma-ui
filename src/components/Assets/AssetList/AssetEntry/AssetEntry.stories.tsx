@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { AssetEntry } from ".";
+import { AssetType } from "../../../../redux/services/types";
+import { InsightType } from "../../../../types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof AssetEntry> = {
@@ -22,7 +24,7 @@ export const Default: Story = {
       displayName: "HTTP GET /SampleInsights/ErrorRecordedOnLocalRootSpan",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/ErrorRecordedOnLocalRootSpan",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       service: "PetClinicWithAgent",
       p50: {
         value: 804.65,
@@ -41,17 +43,17 @@ export const Default: Story = {
       },
       insights: [
         {
-          type: "Errors",
+          type: InsightType.Errors,
           importance: 5,
           criticality: 0.9
         },
         {
-          type: "HotSpot",
+          type: InsightType.HotSpot,
           importance: 2,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.1
         }

@@ -60,7 +60,7 @@ export const Errors = () => {
   const selectedErrorId = params.id;
   const isGlobalErrorsViewEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.ARE_GLOBAL_ERRORS_ENABLED
+    FeatureFlag.AreGlobalErrorsEnabled
   );
   const isInitialized = Boolean(globalErrorsSelectedFilters);
 

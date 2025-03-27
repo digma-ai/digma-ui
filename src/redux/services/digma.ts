@@ -7,10 +7,18 @@ import type {
   ExtendedGetInsightsStatsResponse,
   ExtendedGetSpanEnvironmentsResponse,
   GetAboutResponse,
+  GetAssetsCategoriesPayload,
+  GetAssetsCategoriesResponse,
+  GetAssetsFiltersPayload,
+  GetAssetsFiltersResponse,
+  GetAssetsPayload,
+  GetAssetsResponse,
   GetEndpointsIssuesPayload,
   GetEnvironmentServicesPayload,
   GetEnvironmentServicesResponse,
   GetEnvironmentsResponse,
+  GetImpactHighlightsPayload,
+  GetImpactHighlightsResponse,
   GetInsightsResponse,
   GetInsightsStatsPayload,
   GetInsightsStatsResponse,
@@ -22,6 +30,10 @@ import type {
   GetIssuesResponse,
   GetMetricsReportDataPayloadV1,
   GetMetricsReportDataPayloadV2,
+  GetPerformanceHighlightsPayload,
+  GetPerformanceHighlightsResponse,
+  GetScalingHighlightsPayload,
+  GetScalingHighlightsResponse,
   GetServiceEndpointsPayload,
   GetServiceEnvironmentsPayload,
   GetSpanByIdPayload,
@@ -35,6 +47,9 @@ import type {
   GetSpanInsightPayload,
   GetSpanInsightResponse,
   GetSpanPercentilesHistogramPayload,
+  GetTopIssuesHighlightsPayload,
+  GetTopIssuesHighlightsResponse,
+  GetTopIssuesHighlightsV2Payload,
   GetUserProfileResponse,
   LinkTicketResponse,
   LinkTicketToIssuePayload,
@@ -49,7 +64,7 @@ import type {
 } from "./types";
 
 export const digmaApi = createApi({
-  tagTypes: ["Insight"],
+  tagTypes: ["Asset", "AssetCategory", "Insight"],
   reducerPath: "digmaApi",
   baseQuery: fetchBaseQuery({
     baseUrl: isString(window.digmaApiProxyPrefix)
@@ -60,6 +75,32 @@ export const digmaApi = createApi({
   endpoints: (builder) => ({
     getAbout: builder.query<GetAboutResponse, void>({
       query: () => "About"
+    }),
+    getAssetsFilters: builder.query<
+      GetAssetsFiltersResponse,
+      GetAssetsFiltersPayload
+    >({
+      query: (data) => ({
+        url: `/Assets/get_filter`,
+        params: data
+      })
+    }),
+    getAssetsCategories: builder.query<
+      GetAssetsCategoriesResponse,
+      GetAssetsCategoriesPayload
+    >({
+      query: (data) => ({
+        url: `/Assets/get_categories`,
+        params: data
+      }),
+      providesTags: ["AssetCategory"]
+    }),
+    getAssets: builder.query<GetAssetsResponse, GetAssetsPayload>({
+      query: (data) => ({
+        url: `/Assets/get_assets`,
+        params: data
+      }),
+      providesTags: ["Asset"]
     }),
     getUserProfile: builder.query<GetUserProfileResponse, void>({
       query: () => "Authentication/logged-in-user"
@@ -104,6 +145,64 @@ export const digmaApi = createApi({
         method: "POST",
         body: data,
         responseHandler: "text"
+      })
+    }),
+    getTopIssuesHighlights: builder.query<
+      GetTopIssuesHighlightsResponse,
+      GetTopIssuesHighlightsPayload
+    >({
+      query: (data) => ({
+        url: `/Highlights/topInsights`,
+        params: data
+      })
+    }),
+    getTopIssuesHighlightsV2: builder.query<
+      GetTopIssuesHighlightsResponse,
+      GetTopIssuesHighlightsV2Payload
+    >({
+      query: (data) => ({
+        url: `/Highlights/topInsights`,
+        method: "POST",
+        body: data
+      })
+    }),
+    getPerformanceHighlights: builder.query<
+      GetPerformanceHighlightsResponse,
+      GetPerformanceHighlightsPayload
+    >({
+      query: (data) => ({
+        url: `/Highlights/performance`,
+        params: data
+      })
+    }),
+    getPerformanceHighlightsV2: builder.query<
+      GetPerformanceHighlightsResponse,
+      GetPerformanceHighlightsPayload
+    >({
+      query: (data) => ({
+        url: `/Highlights/performance`,
+        method: "POST",
+        body: data
+      })
+    }),
+    getImpactHighlights: builder.query<
+      GetImpactHighlightsResponse,
+      GetImpactHighlightsPayload
+    >({
+      query: (data) => ({
+        url: `/Highlights/impact`,
+        method: "POST",
+        body: data
+      })
+    }),
+    getScalingHighlights: builder.query<
+      GetScalingHighlightsResponse,
+      GetScalingHighlightsPayload
+    >({
+      query: (data) => ({
+        url: `/Highlights/scaling`,
+        method: "POST",
+        body: data
       })
     }),
     getInsights: builder.query<
@@ -294,12 +393,21 @@ export const digmaApi = createApi({
 
 export const {
   useGetAboutQuery,
+  useGetAssetsCategoriesQuery,
+  useGetAssetsFiltersQuery,
+  useGetAssetsQuery,
   useGetUserProfileQuery,
   useGetSpanCodeLocationsQuery,
   useGetSpanInsightQuery,
   useRecheckInsightMutation,
   useGetEnvironmentsQuery,
   useLazyGetSpanPercentilesHistogramQuery,
+  useGetTopIssuesHighlightsQuery,
+  useGetTopIssuesHighlightsV2Query,
+  useGetPerformanceHighlightsQuery,
+  useGetPerformanceHighlightsV2Query,
+  useGetImpactHighlightsQuery,
+  useGetScalingHighlightsQuery,
   useGetInsightsQuery,
   useGetInsightsStatsQuery,
   useGetIssuesQuery,

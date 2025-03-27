@@ -1,25 +1,22 @@
 import type { MemoExoticComponent } from "react";
-import type { Duration } from "../../globals";
-import type { SpanInfo, SpanInstanceInfo } from "../../types";
-import { InsightType } from "../../types";
-import type { Sorting } from "../common/SortingSelector/types";
+import type { Duration, SpanInfo } from "../../redux/services/types";
+import type { InsightType, SpanInstanceInfo } from "../../types";
 import type { IconProps } from "../common/icons/types";
-import type { InsightFilterType } from "./InsightsCatalog/types";
 
 /** @deprecated */
 export enum ViewMode {
-  PREVIEW = "PREVIEW",
-  INSIGHTS = "INSIGHTS"
+  Preview = "PREVIEW",
+  Insights = "INSIGHTS"
 }
 /** @deprecated */
 export enum InsightsStatus {
-  STARTUP = "Startup",
-  DEFAULT = "Default",
-  NO_INSIGHTS = "NoInsights",
-  INSIGHT_PENDING = "InsightPending",
-  NO_SPANS_DATA = "NoSpanData",
-  NO_OBSERVABILITY = "NoObservability",
-  LOADING = "Loading"
+  Startup = "Startup",
+  Default = "Default",
+  NoInsights = "NoInsights",
+  InsightPending = "InsightPending",
+  NoSpansData = "NoSpanData",
+  NoObservability = "NoObservability",
+  Loading = "Loading"
 }
 
 export type GenericCodeObjectInsight =
@@ -642,28 +639,6 @@ export interface EndpointQueryOptimizationV2Insight extends EndpointInsight {
   importance: InsightImportance.HighlyImportant;
   isRecalculateEnabled: true;
   span: EndpointQueryOptimizationSpan;
-}
-
-export interface InsightsQuery {
-  page: number;
-  sorting: Sorting;
-  searchQuery: string | null;
-  showDismissed: boolean;
-  showUnreadOnly: boolean;
-  insightViewType: InsightViewType;
-  filters: InsightFilterType[];
-}
-
-export interface ScopedInsightsQuery extends InsightsQuery {
-  scopedSpanCodeObjectId: string | null;
-  insightTypes?: string[];
-}
-
-export { InsightType };
-
-export interface DismissUndismissInsightPayload {
-  insightId: string;
-  id: string;
 }
 
 export interface SpanPerformanceAnomalyInsight extends SpanInsight {

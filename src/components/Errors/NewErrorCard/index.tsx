@@ -48,17 +48,17 @@ export const NewErrorCard = ({
 
   const isOccurrenceChartEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.IS_ERROR_OCCURRENCE_CHART_ENABLED
+    FeatureFlag.IsErrorOccurrenceChartEnabled
   );
 
   const isPinEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.IS_GLOBAL_ERROR_PIN_ENABLED
+    FeatureFlag.IsGlobalErrorPinEnabled
   );
 
   const isDismissEnabled = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.IS_GLOBAL_ERROR_DISMISS_ENABLED
+    FeatureFlag.IsGlobalErrorDismissEnabled
   );
 
   const {

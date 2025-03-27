@@ -1,5 +1,9 @@
-import { InsightStatus, InsightType } from "../../../../Insights/types";
-import type { EndpointSlowdownSourceMetrics, HighlightData } from "../../types";
+import type {
+  EndpointSlowdownSourceMetrics,
+  HighlightData
+} from "../../../../../redux/services/types";
+import { InsightType } from "../../../../../types";
+import { InsightStatus } from "../../../../Insights/types";
 
 export const mockedEndpointSlowdownSourceHighlight: EndpointSlowdownSourceMetrics =
   [

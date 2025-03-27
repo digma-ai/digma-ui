@@ -1,4 +1,4 @@
-import type { Environment } from "../../common/App/types";
+import type { Environment } from "../../../redux/services/types";
 
 export const mockedEnvironments: Environment[] = new Array(35)
   .fill(5)

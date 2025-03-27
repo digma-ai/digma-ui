@@ -1,5 +1,9 @@
-import { InsightStatus, InsightType } from "../../../../Insights/types";
-import type { HighlightData, SpanScalingMetrics } from "../../types";
+import type {
+  HighlightData,
+  SpanScalingMetrics
+} from "../../../../../redux/services/types";
+import { InsightType } from "../../../../../types";
+import { InsightStatus } from "../../../../Insights/types";
 
 export const mockedSpanScalingMetrics: SpanScalingMetrics = [
   {

@@ -4,16 +4,16 @@ import type { RotatableIconProps } from "./types";
 import { Direction } from "./types";
 
 const directionRotateMap: Record<Direction, string> = {
-  [Direction.UP]: "-90",
-  [Direction.LEFT]: "180",
-  [Direction.RIGHT]: "0",
-  [Direction.DOWN]: "90"
+  [Direction.Up]: "-90",
+  [Direction.Left]: "180",
+  [Direction.Right]: "0",
+  [Direction.Down]: "90"
 };
 
 const ArrowSmallIconComponent = (props: RotatableIconProps) => {
   const { size, color } = useIconProps(props);
   const transform = {
-    transform: `rotate(${directionRotateMap[props.direction ?? Direction.UP]})`
+    transform: `rotate(${directionRotateMap[props.direction ?? Direction.Up]})`
   };
 
   return (

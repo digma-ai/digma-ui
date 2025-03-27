@@ -1,8 +1,13 @@
 import * as s from "./styles";
 import type { MenuItem, MenuProps } from "./types";
 
-export const Menu = ({ onSelect, title, width, items }: MenuProps) => {
-  const handleMenuItemClick = (item: MenuItem) => () => {
+export const Menu = <T extends string>({
+  onSelect,
+  title,
+  width,
+  items
+}: MenuProps<T>) => {
+  const handleMenuItemClick = (item: MenuItem<T>) => () => {
     if (item.onClick) {
       item.onClick(item.value);
     } else {

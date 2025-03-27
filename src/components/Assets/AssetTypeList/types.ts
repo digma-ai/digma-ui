@@ -1,34 +1,12 @@
 import type { MemoExoticComponent } from "react";
-import type { SpanInfo } from "../../../types";
+import type { AssetCategory } from "../../../redux/services/types";
 import type { IconProps } from "../../common/icons/types";
 
 export interface AssetTypeListProps {
   onAssetTypeSelect: (assetTypeId: string) => void;
-  setRefresher: (refresher: () => void) => void;
 }
 
-export interface AssetCategoriesData {
-  assetCategories: {
-    name: string;
-    count: number;
-  }[];
-  parents?: SpanInfo[];
-}
-
-export interface AssetCategoryData {
-  name: string;
-  count: number;
+export interface AssetCategoryData extends AssetCategory {
   label?: string;
   icon?: MemoExoticComponent<(props: IconProps) => JSX.Element>;
-}
-
-export interface GetAssetCategoriesDataPayload {
-  query: {
-    directOnly: boolean;
-    scopedSpanCodeObjectId?: string;
-    services: string[];
-    operations: string[];
-    insights: string[];
-    displayName?: string;
-  };
 }

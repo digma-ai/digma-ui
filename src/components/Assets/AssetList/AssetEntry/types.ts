@@ -1,9 +1,12 @@
-import type { AssetEntry, SORTING_CRITERION } from "../types";
+import type {
+  AssetRecordItemRead,
+  AssetsSortingCriterion
+} from "../../../../redux/services/types";
 
 export interface AssetEntryProps {
-  entry: AssetEntry;
-  onAssetLinkClick: (entry: AssetEntry) => void;
-  sortingCriterion: SORTING_CRITERION;
+  entry: AssetRecordItemRead;
+  onAssetLinkClick: (entry: AssetRecordItemRead) => void;
+  sortingCriterion: AssetsSortingCriterion;
   isImpactHidden: boolean;
 }
 

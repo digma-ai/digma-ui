@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLoading } from "../../../../../hooks/useLoading";
-import type { SpanInfo } from "../../../../../types";
+import type { SpanInfo } from "../../../../../redux/services/types";
 import type { GenericCodeObjectInsight } from "../../../types";
 import { getInsightCommits } from "../getInsightCommits";
 import { useCodeLocations } from "./useCodeLocations";

@@ -1,9 +1,9 @@
+import { InsightType } from "../../../../../../../types";
 import type { EndpointBreakdownInsight } from "../../../../../types";
 import {
   ComponentType,
   InsightCategory,
-  InsightScope,
-  InsightType
+  InsightScope
 } from "../../../../../types";
 
 export const mockedEndpointBreakdownInsight: EndpointBreakdownInsight = {

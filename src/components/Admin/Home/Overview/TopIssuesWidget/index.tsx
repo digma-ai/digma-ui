@@ -37,12 +37,9 @@ export const TopIssuesWidget = ({
 
   const { data: about } = useGetAboutQuery();
 
-  const isBySeverityButtonVisible = Boolean(
-    about &&
-      getFeatureFlagValue(
-        about,
-        FeatureFlag.IS_INSIGHT_SEVERITY_SORTING_ENABLED
-      )
+  const isBySeverityButtonVisible = getFeatureFlagValue(
+    about,
+    FeatureFlag.IsInsightSeveritySortingEnabled
   );
 
   return (
@@ -68,7 +65,7 @@ export const TopIssuesWidget = ({
               <s.ChevronIconContainer>
                 <ChevronIcon
                   size={20}
-                  direction={Direction.RIGHT}
+                  direction={Direction.Right}
                   color={"currentColor"}
                 />
               </s.ChevronIconContainer>
@@ -98,7 +95,7 @@ export const TopIssuesWidget = ({
                   <s.ChevronIconContainer>
                     <ChevronIcon
                       size={20}
-                      direction={Direction.RIGHT}
+                      direction={Direction.Right}
                       color={"currentColor"}
                     />
                   </s.ChevronIconContainer>

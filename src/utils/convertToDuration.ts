@@ -1,4 +1,4 @@
-import type { Duration } from "../globals";
+import type { Duration } from "../redux/services/types";
 import { convertToDurationUnit } from "./convertToDurationUnit";
 import { roundTo } from "./roundTo";
 

@@ -11,8 +11,13 @@ import {
   useGetIssuesQuery,
   useGetSpanInfoQuery
 } from "../../../../../redux/services/digma";
+import {
+  InsightsSortingCriterion,
+  SortingOrder
+} from "../../../../../redux/services/types";
 import { setIsInsightJiraTicketHintShown } from "../../../../../redux/slices/persistSlice";
 import { isUndefined } from "../../../../../typeGuards/isUndefined";
+import { InsightType } from "../../../../../types";
 import type { ChangeScopePayload } from "../../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import type { Scope } from "../../../../common/App/types";
@@ -21,20 +26,15 @@ import { CrossIcon } from "../../../../common/icons/16px/CrossIcon";
 import { EyeIcon } from "../../../../common/icons/16px/EyeIcon";
 import { TwoVerticalLinesIcon } from "../../../../common/icons/16px/TwoVerticalLinesIcon";
 import { Pagination } from "../../../../common/Pagination";
-import { SORTING_ORDER } from "../../../../common/SortingSelector/types";
 import { NewButton } from "../../../../common/v3/NewButton";
 import { NewIconButton } from "../../../../common/v3/NewIconButton";
 import { EmptyState } from "../../../../Insights/EmptyState";
 import { EmptyState as InsightsPageEmptyState } from "../../../../Insights/InsightsCatalog/InsightsPage/EmptyState";
 import { InsightCardRenderer } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer";
 import { actions } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/hooks/useDismissal";
-import {
-  SORTING_CRITERION,
-  ViewMode
-} from "../../../../Insights/InsightsCatalog/types";
+import { ViewMode } from "../../../../Insights/InsightsCatalog/types";
 import { InsightTicketRenderer } from "../../../../Insights/InsightTicketRenderer";
 import {
-  InsightType,
   type CodeObjectInsight,
   type GenericCodeObjectInsight,
   type InsightTicketInfo
@@ -116,8 +116,8 @@ export const IssuesSidebar = ({
   const pageSize = query?.pageSize ?? PAGE_SIZE;
   const { data, isFetching, refetch } = useGetIssuesQuery({
     showDismissed: viewMode === ViewMode.OnlyDismissed,
-    sortBy: SORTING_CRITERION.CRITICALITY,
-    sortOrder: SORTING_ORDER.DESC,
+    sortBy: InsightsSortingCriterion.Criticality,
+    sortOrder: SortingOrder.Desc,
     ...query,
     scopedSpanCodeObjectId: currentSpanCodeObjectId,
     page,

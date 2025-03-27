@@ -1,10 +1,10 @@
 import type { AsyncActionStatus } from "../types";
 
 export enum Operation {
-  INSTALL = "install",
-  UNINSTALL = "uninstall",
-  START = "start",
-  STOP = "stop"
+  Install = "install",
+  Uninstall = "uninstall",
+  Start = "start",
+  Stop = "stop"
 }
 
 export interface CurrentOperation {

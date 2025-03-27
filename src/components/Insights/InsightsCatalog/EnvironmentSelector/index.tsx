@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import useDimensions from "react-cool-dimensions";
+import type { Environment } from "../../../../redux/services/types";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import type { Environment } from "../../../common/App/types";
 import { NewPopover } from "../../../common/NewPopover";
 import { NewButton } from "../../../common/v3/NewButton";
 import { EnvironmentMenu } from "../../../Navigation/EnvironmentBar/EnvironmentMenu";

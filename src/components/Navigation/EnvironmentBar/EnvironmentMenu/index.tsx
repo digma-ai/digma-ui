@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useDimensions from "react-cool-dimensions";
-import type { Environment } from "../../../common/App/types";
+import type { Environment } from "../../../../redux/services/types";
 import { EnvironmentIcon } from "../../../common/EnvironmentIcon";
 import { MenuList } from "../../common/MenuList";
 import * as s from "./styles";

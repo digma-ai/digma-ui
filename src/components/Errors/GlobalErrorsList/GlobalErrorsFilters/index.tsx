@@ -37,7 +37,7 @@ export const GlobalErrorsFilters = () => {
   const areGlobalErrorsCriticalityAndUnhandledFiltersEnabled =
     getFeatureFlagValue(
       backendInfo,
-      FeatureFlag.ARE_GLOBAL_ERRORS_CRITICALITY_AND_UNHANDLED_FILTERS_ENABLED
+      FeatureFlag.AreGlobalErrorsCriticalityAndUnhandledFiltersEnabled
     );
   const { globalErrorsFilters, globalErrorsSelectedFilters } =
     useErrorsSelector();

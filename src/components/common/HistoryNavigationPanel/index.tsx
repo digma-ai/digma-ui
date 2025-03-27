@@ -33,7 +33,7 @@ export const HistoryNavigationPanel = ({
       <Tooltip title={"Go back"}>
         <s.Button onClick={handleBackButtonClick} disabled={!canGoBack}>
           <ChevronIcon
-            direction={Direction.LEFT}
+            direction={Direction.Left}
             size={16}
             color={"currentColor"}
           />
@@ -42,7 +42,7 @@ export const HistoryNavigationPanel = ({
       <Tooltip title={"Go forward"}>
         <s.Button onClick={handleForwardButtonClick} disabled={!canGoForward}>
           <ChevronIcon
-            direction={Direction.RIGHT}
+            direction={Direction.Right}
             size={16}
             color={"currentColor"}
           />

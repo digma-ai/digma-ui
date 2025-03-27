@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { DigmathonInsightCard } from ".";
-import { InsightType } from "../../../Insights/types";
+import { InsightType } from "../../../../types";
 import { getDigmathonInsightCardData } from "../getDigmathonInsightData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction

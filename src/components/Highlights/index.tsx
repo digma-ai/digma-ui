@@ -12,11 +12,11 @@ export const Highlights = () => {
 
   const areImpactHighlightsVisible = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.IS_HIGHLIGHTS_IMPACT_ENABLED
+    FeatureFlag.IsHighlightsImpactEnabled
   );
   const areScalingHighlightsVisible = getFeatureFlagValue(
     backendInfo,
-    FeatureFlag.IS_HIGHLIGHTS_SCALING_ENABLED
+    FeatureFlag.IsHighlightsScalingEnabled
   );
 
   return (

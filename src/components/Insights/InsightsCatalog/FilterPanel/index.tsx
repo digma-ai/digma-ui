@@ -42,12 +42,9 @@ export const FilterPanel = ({
     ]
   );
 
-  const isCriticalityLevelsFilterEnabled = Boolean(
-    backendInfo &&
-      getFeatureFlagValue(
-        backendInfo,
-        FeatureFlag.IS_ISSUES_CRITICALITY_LEVELS_FILTER_ENABLED
-      )
+  const isCriticalityLevelsFilterEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled
   );
 
   const handleCriticalFilterChipClick = () => () => {

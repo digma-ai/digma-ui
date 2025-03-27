@@ -1,5 +1,6 @@
 import type {
   EndpointData,
+  Environment,
   GetAboutResponse,
   IssueCriticality
 } from "../../../redux/services/types";
@@ -9,7 +10,7 @@ import type {
   IssuesReportViewMode
 } from "../../../redux/slices/issuesReportSlice";
 import type { Severity } from "../../common/IssuesReport/Table/types";
-import type { BackendInfo, Environment } from "../App/types";
+import type { BackendInfo } from "../App/types";
 
 export interface TargetScope {
   value: string;

@@ -83,7 +83,7 @@ export const Select = ({
           <ChevronIcon
             size={16}
             color={"currentColor"}
-            direction={isOpen ? Direction.UP : Direction.DOWN}
+            direction={isOpen ? Direction.Up : Direction.Down}
           />
         </s.ExpandButton>
       </s.SelectBar>

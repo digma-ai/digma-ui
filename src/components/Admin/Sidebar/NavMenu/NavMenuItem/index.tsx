@@ -41,7 +41,7 @@ export const NavMenuItem = ({ item, onClick }: NavMenuItemProps) => {
             <ChevronIcon
               size={16}
               color={"currentColor"}
-              direction={isExpanded ? Direction.UP : Direction.DOWN}
+              direction={isExpanded ? Direction.Up : Direction.Down}
             />
           </s.ChevronIconContainer>
         )}

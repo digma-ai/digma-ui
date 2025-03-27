@@ -1,5 +1,9 @@
-import { InsightStatus, InsightType } from "../../../../Insights/types";
-import type { HighlightData, HotSpotMetrics } from "../../types";
+import type {
+  HighlightData,
+  HotSpotMetrics
+} from "../../../../../redux/services/types";
+import { InsightType } from "../../../../../types";
+import { InsightStatus } from "../../../../Insights/types";
 
 export const mockedHotSpotMetrics: HotSpotMetrics = [
   {

@@ -1,5 +1,6 @@
 import { usePagination } from "../../../../../../../hooks/usePagination";
 import { useConfigSelector } from "../../../../../../../store/config/useConfigSelector";
+import type { InsightType } from "../../../../../../../types";
 import { getDurationString } from "../../../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../../../utils/trimEndpointScheme";
 import { TraceIcon } from "../../../../../../common/icons/12px/TraceIcon";
@@ -7,11 +8,7 @@ import { Button } from "../../../../../../common/v3/Button";
 import { JiraButton } from "../../../../../../common/v3/JiraButton";
 import { Pagination } from "../../../../../../common/v3/Pagination";
 import { Tooltip } from "../../../../../../common/v3/Tooltip";
-import type {
-  InsightType,
-  RootCauseSpanInfo,
-  Trace
-} from "../../../../../types";
+import type { RootCauseSpanInfo, Trace } from "../../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";

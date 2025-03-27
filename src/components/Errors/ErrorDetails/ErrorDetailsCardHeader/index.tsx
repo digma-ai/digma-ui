@@ -25,7 +25,7 @@ export const ErrorDetailsCardHeader = ({
       <s.TitleRow>
         <s.BackButton onClick={handleBackButtonClick}>
           <ChevronIcon16px
-            direction={Direction.LEFT}
+            direction={Direction.Left}
             size={16}
             color={"currentColor"}
           />

@@ -1,5 +1,5 @@
 import type { ComponentType, ReactNode } from "react";
-import type { EnvironmentType } from "../../../common/App/types";
+import type { EnvironmentType } from "../../../../redux/services/types";
 import type { IconProps } from "../../../common/icons/types";
 
 export interface EnvironmentTypePanelProps {

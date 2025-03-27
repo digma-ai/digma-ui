@@ -5,11 +5,11 @@ import {
   useAdminSelector
 } from "../../../containers/Admin/hooks";
 import { useMount } from "../../../hooks/useMount";
+import { InsightsSortingCriterion } from "../../../redux/services/types";
 import {
   setSelectedEnvironmentId,
   setSelectedServices
 } from "../../../redux/slices/issuesReportSlice";
-import { SORTING_CRITERION } from "../../Insights/InsightsCatalog/types";
 import { IssuesSidebarOverlay } from "../common/IssuesSidebarOverlay";
 import type { IssuesSidebarQuery } from "../common/IssuesSidebarOverlay/types";
 import { Environments } from "./Environments";
@@ -41,7 +41,7 @@ export const Home = () => {
       "top-criticality": {
         query: {
           environment: environmentId ?? undefined,
-          sortBy: SORTING_CRITERION.CRITICALITY,
+          sortBy: InsightsSortingCriterion.Criticality,
           services: selectedServices
         },
         limit: ISSUES_LIMIT,
@@ -50,7 +50,7 @@ export const Home = () => {
       "top-severity": {
         query: {
           environment: environmentId ?? undefined,
-          sortBy: SORTING_CRITERION.SEVERITY,
+          sortBy: InsightsSortingCriterion.Severity,
           services: selectedServices
         },
         limit: ISSUES_LIMIT,

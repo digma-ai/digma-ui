@@ -1,7 +1,7 @@
 import type {
   Environment,
   EnvironmentIssueCounts
-} from "../../../common/App/types";
+} from "../../../../redux/services/types";
 
 export interface SelectorEnvironment {
   environment: Environment;

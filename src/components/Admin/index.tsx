@@ -1,5 +1,5 @@
 import { usePostHog } from "posthog-js/react";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Outlet } from "react-router-dom";
 import {
@@ -27,17 +27,14 @@ export const Admin = () => {
   const dispatch = useAdminDispatch();
   const currentUser = useAdminSelector((state) => state.auth.user);
   const isInitialized = useAdminSelector((state) => state.app.isInitialized);
-  const ifUserIdEnabled = useMemo(
-    () =>
-      Boolean(
-        about && getFeatureFlagValue(about, FeatureFlag.IS_USER_ID_ENABLED)
-      ),
-    [about]
+  const isUserIdEnabled = getFeatureFlagValue(
+    about,
+    FeatureFlag.IsUserIdEnabled
   );
 
   // Clear issues report state when user changes
   useEffect(() => {
-    if (ifUserIdEnabled && userProfile) {
+    if (isUserIdEnabled && userProfile) {
       if (currentUser?.uid !== userProfile?.uid) {
         dispatch(globalClear());
       }
@@ -57,7 +54,7 @@ export const Admin = () => {
         dispatch(setIsInitialized(true));
       }
     }
-  }, [ifUserIdEnabled, dispatch, currentUser, userProfile, posthog]);
+  }, [isUserIdEnabled, dispatch, currentUser, userProfile, posthog]);
 
   return (
     <s.Container>

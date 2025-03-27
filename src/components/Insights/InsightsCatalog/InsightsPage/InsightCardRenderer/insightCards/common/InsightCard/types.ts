@@ -1,9 +1,7 @@
 import type { ReactNode, RefObject } from "react";
+import type { InsightType } from "../../../../../../../../types";
 import type { CardProps } from "../../../../../../../common/v3/Card/types";
-import type {
-  GenericCodeObjectInsight,
-  InsightType
-} from "../../../../../../types";
+import type { GenericCodeObjectInsight } from "../../../../../../types";
 
 export type InsightCardViewMode = "full" | "compact";
 

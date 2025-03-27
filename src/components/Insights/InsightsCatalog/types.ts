@@ -13,14 +13,8 @@ export interface FilterButtonContainerProps {
 }
 
 export enum ViewMode {
-  All = "All",
-  OnlyDismissed = "OnlyDismissed"
-}
-
-export enum SORTING_CRITERION {
-  CRITICALITY = "criticality",
-  SEVERITY = "severity",
-  LATEST = "latest"
+  All,
+  OnlyDismissed
 }
 
 export interface PagedData<TData> {

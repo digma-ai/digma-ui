@@ -1,12 +1,12 @@
 import type {
   Environment,
   EnvironmentIssueCounts
-} from "../../../../common/App/types";
+} from "../../../../../redux/services/types";
 
-export enum ISSUE_CRITICALITY {
-  LOW = 1,
-  MEDIUM = 2,
-  HIGH = 3
+export enum IssueCriticality {
+  Low,
+  Medium,
+  High
 }
 
 export interface EnvironmentChipProps {
@@ -21,5 +21,5 @@ export interface StyledChipProps {
 }
 
 export interface CounterProps {
-  $criticality: ISSUE_CRITICALITY;
+  $criticality: IssueCriticality;
 }

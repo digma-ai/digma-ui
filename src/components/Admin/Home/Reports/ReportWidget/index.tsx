@@ -39,7 +39,7 @@ export const ReportWidget = ({
           <ChevronIcon
             size={20}
             color={"currentColor"}
-            direction={Direction.RIGHT}
+            direction={Direction.Right}
           />
         </s.ChevronIconContainer>
       </s.TitleContainer>

@@ -1,5 +1,5 @@
 import type { Logger } from "./Logger";
-import { LOG_LEVEL } from "./types";
+import { LogLevel } from "./types";
 
 export class TaggedLogger {
   private logger: Logger;
@@ -11,7 +11,7 @@ export class TaggedLogger {
   }
 
   public log(
-    level: LOG_LEVEL,
+    level: LogLevel,
     message?: unknown,
     ...optionalParams: unknown[]
   ): void {
@@ -19,18 +19,18 @@ export class TaggedLogger {
   }
 
   public debug(message?: unknown, ...optionalParams: unknown[]): void {
-    this.log(LOG_LEVEL.DEBUG, message, ...optionalParams);
+    this.log(LogLevel.Debug, message, ...optionalParams);
   }
 
   public info(message?: unknown, ...optionalParams: unknown[]): void {
-    this.log(LOG_LEVEL.INFO, message, ...optionalParams);
+    this.log(LogLevel.Info, message, ...optionalParams);
   }
 
   public warn(message?: unknown, ...optionalParams: unknown[]): void {
-    this.log(LOG_LEVEL.WARN, message, ...optionalParams);
+    this.log(LogLevel.Warn, message, ...optionalParams);
   }
 
   public error(message?: unknown, ...optionalParams: unknown[]): void {
-    this.log(LOG_LEVEL.ERROR, message, ...optionalParams);
+    this.log(LogLevel.Error, message, ...optionalParams);
   }
 }

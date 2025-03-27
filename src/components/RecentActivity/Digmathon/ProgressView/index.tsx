@@ -115,7 +115,7 @@ export const ProgressView = ({ data }: ProgressViewProps) => {
             $transitionDuration={s.NEW_ISSUES_FOUND_MESSAGE_TRANSITION_DURATION}
           >
             New issues found, please update the progress
-            <ChevronIcon direction={Direction.RIGHT} color={"currentColor"} />
+            <ChevronIcon direction={Direction.Right} color={"currentColor"} />
           </s.NewIssuesFoundMessage>
         </CSSTransition>
         <s.ButtonsContainer>

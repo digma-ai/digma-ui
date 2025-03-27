@@ -8,7 +8,7 @@ import { isBoolean } from "../../../typeGuards/isBoolean";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
-import { SCOPE_CHANGE_EVENTS } from "../../../types";
+import { ScopeChangeEvent } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { HistoryNavigationPanel } from "../../common/HistoryNavigationPanel";
@@ -86,7 +86,7 @@ export const HistoryNavigation = () => {
       changeScope({
         span: null,
         context: {
-          event: SCOPE_CHANGE_EVENTS.HISTORY_CLEARED,
+          event: ScopeChangeEvent.HistoryCleared,
           payload: {
             environmentId: environmentNavigateTo?.id
           }
@@ -117,7 +117,7 @@ export const HistoryNavigation = () => {
             : null,
           environmentId: e.detail.state?.environmentId,
           context: {
-            event: SCOPE_CHANGE_EVENTS.HISTORY_NAVIGATED,
+            event: ScopeChangeEvent.HistoryNavigated,
             payload: {
               location: e.detail.location
             }
@@ -148,7 +148,7 @@ export const HistoryNavigation = () => {
     changeScope({
       span: null,
       context: {
-        event: SCOPE_CHANGE_EVENTS.NAVIGATION_HOME_BUTTON_CLICKED
+        event: ScopeChangeEvent.NavigationHomeButtonClicked
       }
     });
   };

@@ -1,5 +1,5 @@
 import type { ChartOffset } from "recharts/types/util/types";
-import type { Duration } from "../../../globals";
+import type { Duration } from "../../../redux/services/types";
 
 export interface LiveViewProps {
   data: LiveData;

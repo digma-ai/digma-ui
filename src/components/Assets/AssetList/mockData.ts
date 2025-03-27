@@ -1,6 +1,10 @@
-import type { AssetsData } from "./types";
+import {
+  AssetType,
+  type GetAssetsResponse
+} from "../../../redux/services/types";
+import { InsightType } from "../../../types";
 
-export const mockedAssetsData: AssetsData = {
+export const mockedAssetsData: GetAssetsResponse = {
   data: [
     {
       service: "PetClinic",
@@ -8,7 +12,7 @@ export const mockedAssetsData: AssetsData = {
       displayName: "HTTP GET /owners/new",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/new",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:25:05.821874Z",
       p50: {
         value: 2.03,
@@ -22,27 +26,22 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "SlowestSpans",
+          type: InsightType.SlowEndpoint,
           importance: 2,
           criticality: 0.5
         },
         {
-          type: "SlowEndpoint",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 2,
           criticality: 0.5
         },
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.EndpointBreakdown,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
-          importance: 6,
-          criticality: 0.5
-        },
-        {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         }
@@ -59,7 +58,7 @@ export const mockedAssetsData: AssetsData = {
       displayName: "HTTP GET /owners/{ownerId}",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/{ownerId}",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:24:48.612988Z",
       p50: {
         value: 22.71,
@@ -73,27 +72,27 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "HotSpot",
+          type: InsightType.HotSpot,
           importance: 2,
           criticality: 0.5
         },
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "HighUsage",
+          type: InsightType.HighUsage,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "Errors",
+          type: InsightType.Errors,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         }
@@ -109,7 +108,7 @@ export const mockedAssetsData: AssetsData = {
       services: ["PetClinic"],
       displayName: "HTTP GET /oups",
       spanCodeObjectId: "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /oups",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:24:47.16926Z",
       p50: {
         value: 3.89,
@@ -123,27 +122,27 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "HotSpot",
+          type: InsightType.HotSpot,
           importance: 2,
           criticality: 0.5
         },
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "Errors",
+          type: InsightType.Errors,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         }
@@ -160,7 +159,7 @@ export const mockedAssetsData: AssetsData = {
       displayName: "HTTP GET /SampleInsights/ErrorHotspot",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/ErrorHotspot",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:25:14.968188Z",
       p50: {
         value: 50.99,
@@ -174,27 +173,27 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "HotSpot",
+          type: InsightType.HotSpot,
           importance: 2,
           criticality: 0.5
         },
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "Errors",
+          type: InsightType.Errors,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         }
@@ -211,7 +210,7 @@ export const mockedAssetsData: AssetsData = {
       displayName: "HTTP GET /SampleInsights/ErrorRecordedOnLocalRootSpan",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/ErrorRecordedOnLocalRootSpan",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:25:19.219654Z",
       p50: {
         value: 1.36,
@@ -225,27 +224,27 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "HotSpot",
+          type: InsightType.HotSpot,
           importance: 2,
           criticality: 0.5
         },
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "Errors",
+          type: InsightType.Errors,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         }
@@ -262,7 +261,7 @@ export const mockedAssetsData: AssetsData = {
       displayName: "HTTP GET /owners/{ownerId}/pets/new",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/{ownerId}/pets/new",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:25:08.728395Z",
       p50: {
         value: 94.44,
@@ -276,22 +275,22 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "SlowestSpans",
+          type: InsightType.SlowEndpoint,
           importance: 2,
           criticality: 0.5
         },
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         }
@@ -308,7 +307,7 @@ export const mockedAssetsData: AssetsData = {
       displayName: "HTTP GET /SampleInsights/SpanBottleneck",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/SpanBottleneck",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:25:14.363144Z",
       p50: {
         value: 283.5,
@@ -322,22 +321,22 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "SlowestSpans",
+          type: InsightType.SlowEndpoint,
           importance: 2,
           criticality: 0.5
         },
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         }
@@ -354,7 +353,7 @@ export const mockedAssetsData: AssetsData = {
       displayName: "HTTP GET /SampleInsights/NPlusOneWithInternalSpan",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/NPlusOneWithInternalSpan",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:25:15.093935Z",
       p50: {
         value: 31.66,
@@ -368,22 +367,22 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "EndpointSpaNPlusOne",
-          importance: 3,
-          criticality: 0.5
-        },
-        {
-          type: "SpanScalingInsufficientData",
-          importance: 5,
-          criticality: 0.5
-        },
-        {
-          type: "LowUsage",
+          type: InsightType.EndpointSpanNPlusOne,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.SpanScalingInsufficientData,
+          importance: 5,
+          criticality: 0.5
+        },
+        {
+          type: InsightType.LowUsage,
+          importance: 6,
+          criticality: 0.5
+        },
+        {
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         }
@@ -400,7 +399,7 @@ export const mockedAssetsData: AssetsData = {
       displayName: "HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:25:15.130839Z",
       p50: {
         value: 26.17,
@@ -414,22 +413,22 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "EndpointSpaNPlusOne",
+          type: InsightType.EndpointSpanNPlusOne,
           importance: 3,
           criticality: 0.5
         },
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         }
@@ -446,7 +445,7 @@ export const mockedAssetsData: AssetsData = {
       displayName: "HTTP GET /SampleInsights/ErrorRecordedOnCurrentSpan",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/ErrorRecordedOnCurrentSpan",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:25:19.224037Z",
       p50: {
         value: 1.65,
@@ -460,22 +459,22 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "Errors",
+          type: InsightType.Errors,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         }
@@ -492,7 +491,7 @@ export const mockedAssetsData: AssetsData = {
       displayName: "HTTP GET /SampleInsights/ErrorRecordedOnDeeplyNestedSpan",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/ErrorRecordedOnDeeplyNestedSpan",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:25:19.212544Z",
       p50: {
         value: 1.65,
@@ -506,22 +505,22 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "Errors",
+          type: InsightType.Errors,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         }
@@ -537,7 +536,7 @@ export const mockedAssetsData: AssetsData = {
       services: ["PetClinic"],
       displayName: "HTTP GET /",
       spanCodeObjectId: "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:24:47.675037Z",
       p50: {
         value: 4.94,
@@ -551,17 +550,17 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         }
@@ -577,7 +576,7 @@ export const mockedAssetsData: AssetsData = {
       services: ["PetClinic"],
       displayName: "HTTP GET /**",
       spanCodeObjectId: "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /**",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:24:47.662761Z",
       p50: {
         value: 9.86,
@@ -591,17 +590,17 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         }
@@ -617,7 +616,7 @@ export const mockedAssetsData: AssetsData = {
       services: ["PetClinic"],
       displayName: "HTTP GET /owners",
       spanCodeObjectId: "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:24:48.798657Z",
       p50: {
         value: 8.34,
@@ -631,17 +630,17 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         }
@@ -658,7 +657,7 @@ export const mockedAssetsData: AssetsData = {
       displayName: "HTTP GET /owners/{ownerId}/edit",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/{ownerId}/edit",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:25:08.60984Z",
       p50: {
         value: 30.09,
@@ -672,17 +671,17 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         }
@@ -699,7 +698,7 @@ export const mockedAssetsData: AssetsData = {
       displayName: "HTTP GET /owners/find",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/find",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:24:47.759516Z",
       p50: {
         value: 3.7,
@@ -713,17 +712,17 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         }
@@ -740,7 +739,7 @@ export const mockedAssetsData: AssetsData = {
       displayName: "HTTP GET /SampleInsights/HighUsage",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/HighUsage",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:25:19.187797Z",
       p50: {
         value: 7.11,
@@ -754,17 +753,17 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         }
@@ -781,7 +780,7 @@ export const mockedAssetsData: AssetsData = {
       displayName: "HTTP GET /SampleInsights/req-map-get",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/req-map-get",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:25:19.198821Z",
       p50: {
         value: 2.2,
@@ -795,17 +794,17 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         }
@@ -822,7 +821,7 @@ export const mockedAssetsData: AssetsData = {
       displayName: "HTTP GET /SampleInsights/SlowEndpoint",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/SlowEndpoint",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:25:11.491062Z",
       p50: {
         value: 2.42,
@@ -836,17 +835,17 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         }
@@ -863,7 +862,7 @@ export const mockedAssetsData: AssetsData = {
       displayName: "HTTP GET /vets.html",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /vets.html",
-      assetType: "Endpoint",
+      assetType: AssetType.Endpoint,
       latestSpanTimestamp: "2023-10-23T15:24:46.980123Z",
       p50: {
         value: 10.55,
@@ -877,17 +876,17 @@ export const mockedAssetsData: AssetsData = {
       },
       insights: [
         {
-          type: "SpanScalingInsufficientData",
+          type: InsightType.SpanScalingInsufficientData,
           importance: 5,
           criticality: 0.5
         },
         {
-          type: "EndpointBreakdown",
+          type: InsightType.EndpointBreakdown,
           importance: 6,
           criticality: 0.5
         },
         {
-          type: "LowUsage",
+          type: InsightType.LowUsage,
           importance: 6,
           criticality: 0.5
         }
@@ -899,6 +898,7 @@ export const mockedAssetsData: AssetsData = {
       }
     }
   ],
+  environments: [],
   totalCount: 20,
   filteredCount: 20
 };

@@ -18,11 +18,11 @@ type Story = StoryObj<typeof meta>;
 const env: ExtendedEnvironment = {
   name: "ENV_RENDER",
   id: "ENV_RENDER#ID#1",
-  isPending: false,
   type: "Public",
   token: null,
   serverApiUrl: null,
   isOrgDigmaSetupFinished: false,
+  additionToConfigResult: null,
   hasRecentActivity: false
 };
 

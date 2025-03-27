@@ -1,7 +1,11 @@
 import type { Row } from "@tanstack/react-table";
 import { createColumnHelper } from "@tanstack/react-table";
+import type {
+  EndpointHighNumberOfQueriesMetrics,
+  EnvironmentData
+} from "../../../../../redux/services/types";
 import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
-import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
+import { ScopeChangeEvent } from "../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { Table } from "../../../common/Table";
 import { TableText } from "../../../common/TableText";
@@ -9,10 +13,6 @@ import { handleEnvironmentTableRowClick } from "../../../handleEnvironmentTableR
 import { trackingEvents } from "../../../tracking";
 import { AssetLink } from "../../common/AssetLink";
 import { HighlightCard } from "../../common/HighlightCard";
-import type {
-  EndpointHighNumberOfQueriesMetrics,
-  EnvironmentData
-} from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
 import { DescriptionContainer } from "../styles";
 import type { EndpointHighNumberOfQueriesHighlightCardProps } from "./types";
@@ -65,7 +65,7 @@ export const EndpointHighNumberOfQueriesHighlightCard = ({
       scope,
       environments,
       row.original.environmentId,
-      SCOPE_CHANGE_EVENTS.HIGHLIGHTS_TOP_ISSUES_CARD_ITEM_CLICKED
+      ScopeChangeEvent.HighlightsTopIssuesCardItemClicked
     );
   };
 

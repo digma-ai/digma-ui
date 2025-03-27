@@ -1,5 +1,9 @@
-import { InsightStatus, InsightType } from "../../../../Insights/types";
-import type { EndpointBottleneckMetrics, HighlightData } from "../../types";
+import type {
+  EndpointBottleneckMetrics,
+  HighlightData
+} from "../../../../../redux/services/types";
+import { InsightType } from "../../../../../types";
+import { InsightStatus } from "../../../../Insights/types";
 
 export const mockedEndpointBottleneckMetrics: EndpointBottleneckMetrics = [
   { id: "PercentageWhenBottleneck", value: 50 },

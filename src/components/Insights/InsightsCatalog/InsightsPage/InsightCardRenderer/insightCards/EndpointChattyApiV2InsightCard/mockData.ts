@@ -1,9 +1,6 @@
+import { InsightType } from "../../../../../../../types";
 import type { EndpointChattyApiV2Insight } from "../../../../../types";
-import {
-  InsightCategory,
-  InsightScope,
-  InsightType
-} from "../../../../../types";
+import { InsightCategory, InsightScope } from "../../../../../types";
 
 export const mockedEndpointChattyApiV2Insight: EndpointChattyApiV2Insight = {
   sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",

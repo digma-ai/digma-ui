@@ -93,6 +93,14 @@ export const EnvironmentVariableCode = () => {
     useConfigSelector();
   const isMicrometerProjectValue = isMicrometerProject ?? false;
   const userId = userInfo?.id;
+
+  const areNewInstrumentationAttributesEnabled = Boolean(
+    getFeatureFlagValue(
+      backendInfo,
+      FeatureFlag.AreNewInstrumentationAttributesEnabled
+    )
+  );
+
   if (!environment || !backendInfo) {
     return null;
   }
@@ -106,11 +114,6 @@ export const EnvironmentVariableCode = () => {
   const javaToolOptions = isRunConfigSupported
     ? undefined
     : runConfig?.javaToolOptions;
-
-  const areNewInstrumentationAttributesEnabled = getFeatureFlagValue(
-    backendInfo,
-    FeatureFlag.ARE_NEW_INSTRUMENTATION_ATTRIBUTES_ENABLED
-  );
 
   if (areNewInstrumentationAttributesEnabled) {
     if (isCentralizedDeployment) {

@@ -1,10 +1,10 @@
 import styled from "styled-components";
+import { SortingOrder } from "../../../redux/services/types";
 import type {
   SortingMenuButtonProps,
   SortingOrderIconContainerProps,
   SortingOrderOptionProps
 } from "./types";
-import { SORTING_ORDER } from "./types";
 
 export const PopoverContainer = styled.div`
   margin-left: auto;
@@ -131,6 +131,6 @@ export const SortingOrderToggleOptionButton = styled.button<SortingOrderOptionPr
 export const SortingOrderIconContainer = styled.div<SortingOrderIconContainerProps>`
   display: flex;
   transform: scaleY(
-    ${({ $sortingOrder }) => ($sortingOrder === SORTING_ORDER.DESC ? -1 : 1)}
+    ${({ $sortingOrder }) => ($sortingOrder === SortingOrder.Desc ? -1 : 1)}
   );
 `;

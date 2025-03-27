@@ -1,8 +1,9 @@
-import { InsightStatus, InsightType } from "../../../../Insights/types";
 import type {
   EndpointHighNumberOfQueriesMetrics,
   HighlightData
-} from "../../types";
+} from "../../../../../redux/services/types";
+import { InsightType } from "../../../../../types";
+import { InsightStatus } from "../../../../Insights/types";
 
 export const mockedEndpointHighNumberOfQueriesMetrics: EndpointHighNumberOfQueriesMetrics =
   [

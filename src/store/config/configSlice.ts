@@ -2,12 +2,12 @@ import { createSlice } from "zustand-slices";
 import type {
   BackendInfo,
   DigmaStatus,
-  Environment,
   PersistedState,
   RunConfiguration,
   Scope,
   UserInfo
 } from "../../components/common/App/types";
+import type { Environment } from "../../redux/services/types";
 import { isBoolean } from "../../typeGuards/isBoolean";
 import { isEnvironment } from "../../typeGuards/isEnvironment";
 import { isString } from "../../typeGuards/isString";

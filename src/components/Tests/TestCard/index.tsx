@@ -1,5 +1,5 @@
 import { isString } from "../../../typeGuards/isString";
-import { SCOPE_CHANGE_EVENTS } from "../../../types";
+import { ScopeChangeEvent } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatEnvironmentName } from "../../../utils/formatEnvironmentName";
@@ -72,7 +72,7 @@ export const TestCard = ({
       },
       environmentId: test.environmentId,
       context: {
-        event: SCOPE_CHANGE_EVENTS.TESTS_TEST_CARD_TITLE_LINK_CLICKED
+        event: ScopeChangeEvent.TestsTestCardTitleLinkClicked
       }
     });
   };
