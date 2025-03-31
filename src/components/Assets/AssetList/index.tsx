@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { DefaultTheme } from "styled-components";
 import { useTheme } from "styled-components";
-import { useMount } from "../../../hooks/useMount";
 import { useGetAssetsQuery } from "../../../redux/services/digma";
 import {
   type AssetRecordItemRead,
@@ -10,10 +9,8 @@ import {
   SortingOrder
 } from "../../../redux/services/types";
 import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
-import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useStore } from "../../../store/useStore";
 import { ScopeChangeEvent } from "../../../types";
-import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { Menu } from "../../common/Menu";
 import { Pagination } from "../../common/Pagination";
@@ -84,41 +81,46 @@ const getSortingCriteria = (isImpactHidden: boolean) =>
     (x) => !(isImpactHidden && x === AssetsSortingCriterion.PerformanceImpact)
   );
 
-export const AssetList = ({ assetTypeId, onGoToAllAssets }: AssetListProps) => {
-  const {
-    assets: data,
-    sorting,
-    page,
-    viewMode,
-    search,
-    filters
-  } = useAssetsSelector();
-  const {
-    setAssets: setData,
-    setAssetsSorting: setSorting,
-    setAssetsPage: setPage,
-    setShowAssetsHeaderToolBox
-  } = useStore.getState();
+// TODO: move to AssetsContent
+export const AssetList = ({
+  assetTypeId,
+  onGoToAllAssets,
+  isImpactHidden,
+  sorting,
+  services,
+  environmentId,
+  spanCodeObjectId,
+  setSorting,
+  onScopeChange
+}: AssetListProps) => {
+  const { viewMode, search, filters, assets: data } = useAssetsSelector();
+  const { setShowAssetsHeaderToolBox, setAssets: setData } =
+    useStore.getState();
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
   const theme = useTheme();
   const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
   const filteredCount = data?.filteredCount ?? 0;
+  const [page, setPage] = useState(0);
   const pageStartItemNumber = page * PAGE_SIZE + 1;
   const pageEndItemNumber = Math.min(
     pageStartItemNumber + PAGE_SIZE - 1,
     filteredCount
   );
   const listRef = useRef<HTMLUListElement>(null);
-
-  const {
-    environment,
-    backendInfo,
-    scope,
-    selectedServices: globallySelectedServices
-  } = useConfigSelector();
-  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
-  const isServicesFilterEnabled = !scopeSpanCodeObjectId;
+  const isServicesFilterEnabled = !spanCodeObjectId;
   const isInitialLoading = !data;
+  const entries = data?.data ?? [];
+  const assetTypeInfo = getAssetTypeInfo(assetTypeId);
+  const sortingCriteria = useMemo(
+    () => getSortingCriteria(isImpactHidden),
+    [isImpactHidden]
+  );
+  const areAnyFiltersApplied = checkIfAnyFiltersApplied(
+    filters,
+    search,
+    isServicesFilterEnabled,
+    services
+  );
 
   const payload: GetAssetsPayload = useMemo(() => {
     const operations = [
@@ -126,7 +128,6 @@ export const AssetList = ({ assetTypeId, onGoToAllAssets }: AssetListProps) => {
       ...(filters?.consumers ?? []),
       ...(filters?.internals ?? [])
     ];
-    const services = globallySelectedServices ?? [];
 
     return {
       assetType: assetTypeId,
@@ -134,66 +135,45 @@ export const AssetList = ({ assetTypeId, onGoToAllAssets }: AssetListProps) => {
       pageSize: PAGE_SIZE,
       sortBy: sorting.criterion,
       sortOrder: sorting.order,
-      scopedSpanCodeObjectId: scopeSpanCodeObjectId,
+      scopedSpanCodeObjectId: spanCodeObjectId,
       displayName: search.length > 0 ? search : undefined,
       insights:
         filters?.insights && filters.insights.length > 0
           ? filters.insights.join(",")
           : undefined,
       operations: operations.length > 0 ? operations.join(",") : undefined,
-      services: scopeSpanCodeObjectId
-        ? undefined
-        : services.length > 0
-        ? services.join(",")
-        : undefined,
+      services:
+        services && services.length > 0 ? services.join(",") : undefined,
       directOnly: viewMode === "children",
-      environment: environment?.id
+      environment: environmentId
     };
   }, [
     assetTypeId,
     page,
     sorting.criterion,
     sorting.order,
-    scopeSpanCodeObjectId,
-    globallySelectedServices,
+    spanCodeObjectId,
+    services,
     search,
     filters,
     viewMode,
-    environment
+    environmentId
   ]);
 
   const { data: fetchedData } = useGetAssetsQuery(payload, {
-    skip: !environment,
+    skip: !environmentId,
     pollingInterval: REFRESH_INTERVAL
   });
 
-  useMount(() => {
+  useEffect(() => {
     setShowAssetsHeaderToolBox(true);
-  });
+  }, []);
 
   useEffect(() => {
     if (fetchedData) {
       setData(fetchedData);
     }
   }, [fetchedData, setData]);
-
-  const entries = data?.data ?? [];
-  const assetTypeInfo = getAssetTypeInfo(assetTypeId);
-  const isImpactHidden = useMemo(
-    () => !(backendInfo?.centralize && environment?.type === "Public"),
-    [backendInfo?.centralize, environment?.type]
-  );
-  const sortingCriteria = useMemo(
-    () => getSortingCriteria(isImpactHidden),
-    [isImpactHidden]
-  );
-
-  const areAnyFiltersApplied = checkIfAnyFiltersApplied(
-    filters,
-    search,
-    isServicesFilterEnabled,
-    globallySelectedServices
-  );
 
   useEffect(() => {
     if (
@@ -210,25 +190,25 @@ export const AssetList = ({ assetTypeId, onGoToAllAssets }: AssetListProps) => {
   useEffect(() => {
     setPage(0);
   }, [
-    environment?.id,
+    environmentId,
     search,
     sorting,
     assetTypeId,
     viewMode,
-    scopeSpanCodeObjectId,
+    spanCodeObjectId,
     setPage
   ]);
 
   useEffect(() => {
     listRef.current?.scrollTo(0, 0);
   }, [
-    environment?.id,
+    environmentId,
     search,
     sorting,
     page,
     assetTypeId,
     viewMode,
-    scopeSpanCodeObjectId
+    spanCodeObjectId
   ]);
 
   const handleAllAssetsLinkClick = () => {
@@ -260,7 +240,7 @@ export const AssetList = ({ assetTypeId, onGoToAllAssets }: AssetListProps) => {
   };
 
   const handleAssetLinkClick = (entry: AssetRecordItemRead) => {
-    changeScope({
+    onScopeChange({
       span: {
         spanCodeObjectId: entry.spanCodeObjectId
       },
@@ -390,7 +370,6 @@ export const AssetList = ({ assetTypeId, onGoToAllAssets }: AssetListProps) => {
           </s.SortingOrderToggle>
         </s.Toolbar>
       </s.Header>
-
       {renderContent()}
     </s.Container>
   );

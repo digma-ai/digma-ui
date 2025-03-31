@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, RefObject } from "react";
 
 export interface FilterPopupProps {
   onApply: () => void;
@@ -13,4 +13,5 @@ export interface FilterPopupProps {
     component: ReactNode;
   }[];
   isOpen: boolean;
+  boundaryRef?: RefObject<HTMLElement>;
 }

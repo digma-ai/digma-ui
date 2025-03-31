@@ -1,10 +1,11 @@
 import type { MemoExoticComponent } from "react";
+import type { AssetType } from "../../../../redux/services/types";
 import type { IconProps } from "../../../common/icons/types";
 
 export interface AssetTypeListItemProps {
-  id: string;
+  id: AssetType;
   label?: string;
   icon?: MemoExoticComponent<(props: IconProps) => JSX.Element>;
   entryCount: number;
-  onAssetTypeClick: (assetTypeId: string) => void;
+  onAssetTypeClick: (assetTypeId: AssetType) => void;
 }

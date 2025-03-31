@@ -1,45 +1,50 @@
 import { useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import { platform } from "../../../platform";
 import type { ExtendedGetInsightsStatsResponse } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { useInsightsStats } from "../../Insights/hooks/useInsightsStats";
-import { useHistory } from "../../Main/useHistory";
 import type { Scope } from "../../common/App/types";
 import { MagicWandIcon } from "../../common/icons/16px/MagicWandIcon";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
-import type { BaseTabData, TabData } from "./types";
+import type { BaseTabData, TabData, TabsProps } from "./types";
 import { TAB_IDS } from "./types";
 
 const tabs: BaseTabData[] = [
   {
     id: TAB_IDS.HIGHLIGHTS,
     icon: MagicWandIcon,
-    width: 40
+    width: 40,
+    platforms: ["JetBrains"]
   },
   {
     title: "Issues",
-    id: TAB_IDS.ISSUES
+    id: TAB_IDS.ISSUES,
+    platforms: ["JetBrains", "Web"]
   },
   {
     title: "Assets",
-    id: TAB_IDS.ASSETS
+    id: TAB_IDS.ASSETS,
+    platforms: ["JetBrains", "Web"]
   },
   {
     title: "Analytics",
-    id: TAB_IDS.ANALYTICS
+    id: TAB_IDS.ANALYTICS,
+    platforms: ["JetBrains"]
   },
   {
     title: "Errors",
-    id: TAB_IDS.ERRORS
+    id: TAB_IDS.ERRORS,
+    platforms: ["JetBrains"]
   },
   {
     title: "Tests",
-    id: TAB_IDS.TESTS
+    id: TAB_IDS.TESTS,
+    platforms: ["JetBrains"]
   }
 ];
 
@@ -78,12 +83,9 @@ const getIsNewIndicatorVisible = (
       : false
   );
 
-export const Tabs = () => {
+export const Tabs = ({ onTabSelect, selectedTabId }: TabsProps) => {
   const { scope } = useConfigSelector();
   const { data: insightStats } = useInsightsStats();
-
-  const location = useLocation();
-  const { goTo } = useHistory();
 
   const handleTabClick = (tab: TabData) => () => {
     if (!getIsTabDisabled(tab, scope)) {
@@ -92,21 +94,23 @@ export const Tabs = () => {
       });
 
       if (!tab.isSelected) {
-        goTo(`/${tab.id}`);
+        onTabSelect(tab.id);
       }
     }
   };
 
   const tabsData: TabData[] = useMemo(
     () =>
-      tabs.map((tab) => ({
-        ...tab,
-        isSelected: location.pathname.startsWith(`/${tab.id}`),
-        isDisabled: getIsTabDisabled(tab, scope),
-        hasNewData: getIsNewIndicatorVisible(tab, insightStats, scope),
-        tooltipMessage: getTabTooltipMessage(tab, scope)
-      })),
-    [scope, insightStats, location.pathname]
+      tabs
+        .filter((x) => platform && x.platforms.includes(platform))
+        .map((tab) => ({
+          ...tab,
+          isSelected: selectedTabId === tab.id,
+          isDisabled: getIsTabDisabled(tab, scope),
+          hasNewData: getIsNewIndicatorVisible(tab, insightStats, scope),
+          tooltipMessage: getTabTooltipMessage(tab, scope)
+        })),
+    [scope, insightStats, selectedTabId]
   );
 
   return (

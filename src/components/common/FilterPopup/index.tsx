@@ -14,7 +14,8 @@ export const FilterPopup = ({
   filters,
   onApply,
   isOpen,
-  onFiltersButtonClick
+  onFiltersButtonClick,
+  boundaryRef
 }: FilterPopupProps) => {
   const handleApplyButtonClick = () => {
     onApply();
@@ -32,6 +33,7 @@ export const FilterPopup = ({
     <NewPopover
       width={"100%"}
       closeOnOutsidePress={false}
+      boundary={boundaryRef?.current ?? undefined}
       content={
         <s.Container>
           <s.Header>

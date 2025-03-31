@@ -14,19 +14,23 @@ import { ThreeDotsVerticalIcon } from "../common/icons/ThreeDotsVerticalIcon";
 // import { CodeButton } from "./CodeButton";
 // import { CodeButtonMenu } from "./CodeButtonMenu";
 import useDimensions from "react-cool-dimensions";
+import { useLocation } from "react-router-dom";
 import { getFeatureFlagValue } from "../../featureFlags";
 import { platform } from "../../platform";
 import { useGetSpanInfoQuery } from "../../redux/services/digma";
 import type { Environment } from "../../redux/services/types";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
+import { useHistory } from "../Main/useHistory";
 import { EnvironmentBar } from "./EnvironmentBar";
 import { HistoryNavigation } from "./HistoryNavigation";
 import { KebabMenu } from "./KebabMenu";
 import { ScopeBar } from "./ScopeBar";
 import { SpanInfo } from "./SpanInfo";
 import { Tabs } from "./Tabs";
+import { TAB_IDS } from "./Tabs/types";
 import { actions } from "./actions";
 import { IconButton } from "./common/IconButton";
+import { isDisplayNameTooLong } from "./isDisplayNameTooLong";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import type {
@@ -34,17 +38,6 @@ import type {
   // AutoFixMissingDependencyPayload,
   CodeContext
 } from "./types";
-
-const isDisplayNameTooLong = (displayName: string, containerWidth: number) => {
-  const CHAR_WIDTH = 8; // in pixels
-  const MAX_DISPLAY_NAME_OVERFLOW_RATIO = 1.5;
-  const CONTAINER_PADDING = 64; // in pixels
-  return (
-    (displayName.length * CHAR_WIDTH) /
-      Math.max(containerWidth - CONTAINER_PADDING, 1) >
-    MAX_DISPLAY_NAME_OVERFLOW_RATIO
-  );
-};
 
 // const hasData = (codeContext?: CodeContext): boolean =>
 //   Boolean(
@@ -104,6 +97,8 @@ export const Navigation = () => {
   // const previousCodeContext = usePrevious(codeContext);
   const previousEnvironment = usePrevious(environment);
   const [isSpanInfoVisible, setIsSpanInfoVisible] = useState(false);
+  const location = useLocation();
+  const { goTo } = useHistory();
 
   const { data: spanInfo } = useGetSpanInfoQuery(
     {
@@ -345,6 +340,15 @@ export const Navigation = () => {
     setIsKebabButtonMenuOpen(false);
   };
 
+  const handleTabSelect = (tabId: string) => {
+    goTo(`/${tabId}`);
+  };
+
+  const selectedTabId =
+    Object.entries(TAB_IDS).find(([, value]) =>
+      location.pathname.startsWith(`/${value}`)
+    )?.[0] ?? TAB_IDS.ISSUES;
+
   // const handleCodeButtonMenuClose = () => {
   //   setIsCodeButtonMenuOpen(false);
   // };
@@ -454,7 +458,7 @@ export const Navigation = () => {
       </s.Row> */}
       {platform === "JetBrains" && (
         <s.TabsContainer>
-          <Tabs />
+          <Tabs onTabSelect={handleTabSelect} selectedTabId={selectedTabId} />
         </s.TabsContainer>
       )}
     </s.Container>

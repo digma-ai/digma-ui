@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { AssetTypeListItem } from ".";
+import { AssetType } from "../../../../redux/services/types";
 import { DatabaseIcon } from "../../../common/icons/DatabaseIcon";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -19,7 +20,7 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
   args: {
-    id: "databaseQueries",
+    id: AssetType.DatabaseQueries,
     icon: DatabaseIcon,
     label: "Database queries",
     entryCount: 10

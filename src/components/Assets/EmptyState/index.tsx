@@ -1,4 +1,5 @@
 import { actions as globalActions } from "../../../actions";
+import { platform } from "../../../platform";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ChildIcon } from "../../common/icons/30px/ChildIcon";
@@ -37,11 +38,12 @@ const getPresetContent = (preset: EmptyStatePreset) => {
       title: "No data yet",
       message:
         "Trigger actions that call this application to learn more about its runtime behavior",
-      customContent: (
-        <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
-          Not seeing your application data?
-        </s.TroubleshootingLink>
-      )
+      customContent:
+        platform === "JetBrains" ? (
+          <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
+            Not seeing your application data?
+          </s.TroubleshootingLink>
+        ) : null
     },
     noDataForAsset: {
       icon: <CardsColoredIcon size={33} />,
@@ -75,6 +77,7 @@ const getPresetContent = (preset: EmptyStatePreset) => {
   return content[preset];
 };
 
+// TODO: move to AssetsContent
 export const EmptyState = ({
   preset,
   icon,

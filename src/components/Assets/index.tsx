@@ -1,78 +1,52 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMainDispatch } from "../../containers/Main/hooks";
-import { useDebounce } from "../../hooks/useDebounce";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { digmaApi } from "../../redux/services/digma";
-import type {
-  AssetType,
-  GetAssetsCategoriesResponse
+import {
+  AssetsSortingCriterion,
+  SortingOrder
 } from "../../redux/services/types";
 import type { AssetsFilters } from "../../store/assets/assetsSlice";
 import { useAssetsSelector } from "../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { useStore } from "../../store/useStore";
 import { isUndefined } from "../../typeGuards/isUndefined";
+import { changeScope } from "../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { useHistory } from "../Main/useHistory";
-import { SearchInput } from "../common/SearchInput";
-import { RefreshIcon } from "../common/icons/16px/RefreshIcon";
-import { NewIconButton } from "../common/v3/NewIconButton";
-import { Tooltip } from "../common/v3/Tooltip";
-import { AssetList } from "./AssetList";
-import { AssetTypeList } from "./AssetTypeList";
-import { AssetsFilter } from "./AssetsFilter";
-import { AssetsViewScopeConfiguration } from "./AssetsViewScopeConfiguration";
-import { EmptyState } from "./EmptyState";
-import * as s from "./styles";
+import type { Sorting } from "../common/SortingSelector/types";
+import { AssetsContent } from "./AssetsContent";
 import { trackingEvents } from "./tracking";
 
 const PERSISTENCE_KEY = "assetsFiltersV2";
-const SEARCH_INPUT_DEBOUNCE_DELAY = 1000; // in milliseconds
-
-const getAssetCategoryCount = (
-  assetCategoriesData: GetAssetsCategoriesResponse | null
-) =>
-  assetCategoriesData?.assetCategories.reduce(
-    (acc, cur) => acc + cur.count,
-    0
-  ) ?? 0;
 
 export const Assets = () => {
   const [persistedFilters, setPersistedFilters] = usePersistence<AssetsFilters>(
     PERSISTENCE_KEY,
     "project"
   );
+  const [sorting, setSorting] = useState<Sorting<AssetsSortingCriterion>>({
+    criterion: AssetsSortingCriterion.CriticalInsights,
+    order: SortingOrder.Desc
+  });
   const previousPersistedFilters = usePrevious(persistedFilters);
   const params = useParams();
   const selectedAssetTypeId = useMemo(() => params.typeId, [params]);
-  const { search, filters, assets, assetCategoriesData } = useAssetsSelector();
-  const { setAssetsSearch: setSearch, setAssetsFilters: setFilters } =
-    useStore.getState();
-  const [searchInputValue, setSearchInputValue] = useState(search);
-  const debouncedSearchInputValue = useDebounce(
-    searchInputValue,
-    SEARCH_INPUT_DEBOUNCE_DELAY
+  const { filters } = useAssetsSelector();
+  const { setAssetsFilters: setFilters } = useStore.getState();
+
+  const { scope, environments, environment, backendInfo, selectedServices } =
+    useConfigSelector();
+  const isImpactHidden = useMemo(
+    () => !(backendInfo?.centralize && environment?.type === "Public"),
+    [backendInfo?.centralize, environment?.type]
   );
-  const { scope, environments } = useConfigSelector();
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
-  const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
   const { goTo } = useHistory();
-  const isBackendUpgradeMessageVisible = false;
-  const { showAssetsHeaderToolBox } = useAssetsSelector();
   const isInitialized = Boolean(filters);
   const dispatch = useMainDispatch();
-
-  useEffect(() => {
-    if (previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId) {
-      setSearchInputValue("");
-    }
-  }, [scopeSpanCodeObjectId, previousScopeSpanCodeObjectId, setSearch]);
-
-  useEffect(() => {
-    setSearch(debouncedSearchInputValue);
-  }, [debouncedSearchInputValue, setSearch]);
 
   useEffect(() => {
     if (
@@ -102,10 +76,6 @@ export const Assets = () => {
     goTo("..");
   };
 
-  const handleSearchInputChange = (val: string | null) => {
-    setSearchInputValue(val ?? "");
-  };
-
   const handleAssetTypeSelect = (assetTypeId: string) => {
     goTo(assetTypeId);
   };
@@ -122,74 +92,25 @@ export const Assets = () => {
     }
   };
 
-  const assetsCount = useMemo(
-    () =>
-      !selectedAssetTypeId
-        ? getAssetCategoryCount(assetCategoriesData)
-        : assets?.filteredCount,
-    [assetCategoriesData, assets, selectedAssetTypeId]
-  );
-
-  const renderContent = () => {
-    if (isBackendUpgradeMessageVisible) {
-      return <EmptyState preset={"updateRequired"} />;
-    }
-
-    if (!environments?.length) {
-      return <EmptyState preset={"noDataYet"} />;
-    }
-
-    if (!filters && showAssetsHeaderToolBox) {
-      return <EmptyState preset={"loading"} />;
-    }
-
-    if (!selectedAssetTypeId) {
-      return <AssetTypeList onAssetTypeSelect={handleAssetTypeSelect} />;
-    }
-
-    return (
-      <AssetList
-        onGoToAllAssets={handleGoToAllAssets}
-        assetTypeId={selectedAssetTypeId as AssetType}
-      />
-    );
-  };
-
   if (!isInitialized) {
     return null;
   }
 
   return (
-    <s.Container>
-      <s.Header>
-        {scope?.span && (
-          <s.HeaderItem>
-            <AssetsViewScopeConfiguration assetsCount={assetsCount} />
-          </s.HeaderItem>
-        )}
-        {showAssetsHeaderToolBox && (
-          <>
-            <s.HeaderItem>
-              <SearchInput
-                onChange={handleSearchInputChange}
-                value={searchInputValue}
-              />
-              <AssetsFilter />
-              <Tooltip title={"Refresh"}>
-                <NewIconButton
-                  buttonType={"secondary"}
-                  icon={RefreshIcon}
-                  onClick={handleRefresh}
-                />
-              </Tooltip>
-            </s.HeaderItem>
-            {scope?.span && (
-              <s.HeaderItem>Assets filtered to current scope</s.HeaderItem>
-            )}
-          </>
-        )}
-      </s.Header>
-      {renderContent()}
-    </s.Container>
+    <AssetsContent
+      environmentId={environment?.id}
+      spanCodeObjectId={scopeSpanCodeObjectId}
+      services={selectedServices ?? undefined}
+      sorting={sorting}
+      setSorting={setSorting}
+      onScopeChange={changeScope}
+      onGoToAllAssets={handleGoToAllAssets}
+      isImpactHidden={isImpactHidden}
+      environments={environments ?? undefined}
+      onRefresh={handleRefresh}
+      onAssetTypeSelect={handleAssetTypeSelect}
+      selectedAssetTypeId={selectedAssetTypeId}
+      areFiltersEnabled={true}
+    />
   );
 };

@@ -1,8 +1,10 @@
 import type { ComponentType } from "react";
+import type { Platform } from "../../../globals";
 import type { IconProps } from "../../common/icons/types";
 
 export interface TabsProps {
   selectedTabId: string;
+  onTabSelect: (tabId: string) => void;
 }
 
 export interface TabProps {
@@ -23,6 +25,7 @@ export interface BaseTabData {
    */
   width?: number;
   icon?: ComponentType<IconProps>;
+  platforms: Platform[];
 }
 
 export interface TabData extends BaseTabData {

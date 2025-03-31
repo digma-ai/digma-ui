@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
-import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { trackingEvents } from "../../tracking";
-import { IssuesSidebar } from "./IssuesSidebar";
+import { MainSidebar } from "./MainSidebar";
 import * as s from "./styles";
-import type { IssuesSidebarOverlayProps } from "./types";
+import type { MainSidebarOverlayProps } from "./types";
 
 export const MIN_SIDEBAR_WIDTH = 382; // in pixels
 export const MAX_SIDEBAR_WIDTH = 640; // in pixels
@@ -24,16 +23,15 @@ export const getDefaultSidebarWidth = (windowWidth: number) => {
   return defaultWidth;
 };
 
-export const IssuesSidebarOverlay = ({
+export const MainSidebarOverlay = ({
   isSidebarOpen,
-  onIssuesPageChange,
   onSidebarClose,
-  issuesSidebarQuery,
+  mainSidebarQuery,
   scopeDisplayName
-}: IssuesSidebarOverlayProps) => {
+}: MainSidebarOverlayProps) => {
   const sidebarContainerRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
-  const [isIssuesSidebarTransitioning, setIsIssuesSidebarTransitioning] =
+  const [isMainSidebarTransitioning, setIsMainSidebarTransitioning] =
     useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const defaultSidebarWidth = getDefaultSidebarWidth(windowWidth);
@@ -41,27 +39,22 @@ export const IssuesSidebarOverlay = ({
   const [startX, setStartX] = useState(0);
   const [left, setLeft] = useState(windowWidth - defaultSidebarWidth);
   const [startLeft, setStartLeft] = useState(0);
-  const isPaginationEnabled = isUndefined(issuesSidebarQuery?.limit);
 
   const handleOverlayClick = () => {
     sendUserActionTrackingEvent(trackingEvents.ISSUES_SIDEBAR_OVERLAY_CLICKED);
     onSidebarClose();
   };
 
-  const handlesIssuesSidebarPageChange = (page: number) => {
-    onIssuesPageChange?.(page);
-  };
-
-  const handleIssuesSidebarClose = () => {
+  const handleMainSidebarClose = () => {
     onSidebarClose();
   };
 
-  const handleIssuesSidebarTransitionStart = () => {
-    setIsIssuesSidebarTransitioning(true);
+  const handleMainSidebarTransitionStart = () => {
+    setIsMainSidebarTransitioning(true);
   };
 
-  const handleIssuesSidebarTransitionEnd = () => {
-    setIsIssuesSidebarTransitioning(false);
+  const handleMainSidebarTransitionEnd = () => {
+    setIsMainSidebarTransitioning(false);
   };
 
   const handleResizeHandleMouseDown = (e: React.MouseEvent) => {
@@ -143,29 +136,26 @@ export const IssuesSidebarOverlay = ({
         mountOnEnter={true}
         unmountOnExit={true}
         nodeRef={sidebarContainerRef}
-        onEnter={handleIssuesSidebarTransitionStart}
-        onEntered={handleIssuesSidebarTransitionEnd}
-        onExit={handleIssuesSidebarTransitionStart}
-        onExited={handleIssuesSidebarTransitionEnd}
+        onEnter={handleMainSidebarTransitionStart}
+        onEntered={handleMainSidebarTransitionEnd}
+        onExit={handleMainSidebarTransitionStart}
+        onExited={handleMainSidebarTransitionEnd}
       >
-        <s.IssuesSidebarContainer
+        <s.MainSidebarContainer
           style={{ left }}
           ref={sidebarContainerRef}
           $transitionClassName={s.sidebarContainerTransitionClassName}
           $transitionDuration={s.TRANSITION_DURATION}
         >
-          <IssuesSidebar
-            query={issuesSidebarQuery?.query}
+          <MainSidebar
+            query={mainSidebarQuery?.query}
             isResizing={isResizeHandlePressed}
-            onClose={handleIssuesSidebarClose}
-            isTransitioning={isIssuesSidebarTransitioning}
+            onClose={handleMainSidebarClose}
+            isTransitioning={isMainSidebarTransitioning}
             onResizeHandleMouseDown={handleResizeHandleMouseDown}
             scopeDisplayName={scopeDisplayName}
-            isPaginationEnabled={isPaginationEnabled}
-            title={issuesSidebarQuery?.title}
-            onPageChange={handlesIssuesSidebarPageChange}
           />
-        </s.IssuesSidebarContainer>
+        </s.MainSidebarContainer>
       </CSSTransition>
     </>
   );

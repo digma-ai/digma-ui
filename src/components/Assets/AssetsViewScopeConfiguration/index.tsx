@@ -11,6 +11,7 @@ import type { ToggleOption } from "../../common/v3/Toggle/types";
 import * as s from "./styles";
 import type { AssetsViewScopeConfigurationProps, ViewMode } from "./types";
 
+// TODO: move to AssetsContent
 export const AssetsViewScopeConfiguration = ({
   assetsCount
 }: AssetsViewScopeConfigurationProps) => {
