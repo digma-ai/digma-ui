@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState, type MouseEvent } from "react";
-import { useAdminSelector } from "../../../../../containers/Admin/hooks";
+import {
+  useAdminDispatch,
+  useAdminSelector
+} from "../../../../../containers/Admin/hooks";
 import History, { type HistoryEntry } from "../../../../../history/History";
 import { useGetSpanInfoQuery } from "../../../../../redux/services/digma";
 import type { GetIssuesPayload } from "../../../../../redux/services/types";
@@ -39,6 +42,7 @@ export const MainSidebar = ({
   const insightIdToOpenSuggestion = useAdminSelector(
     (state) => state.repositorySlice.issues.insightIdToOpenSuggestion
   );
+  const dispatch = useAdminDispatch();
   const [history] = useState(
     () =>
       new History<MainSidebarHistoryState>([
@@ -137,9 +141,9 @@ export const MainSidebar = ({
           trackingEvents.ISSUES_SIDEBAR_ESCAPE_KEY_PRESSED
         );
         if (insightInfoToOpenTicket) {
-          setIssuesInsightInfoToOpenTicket(null);
+          dispatch(setIssuesInsightInfoToOpenTicket(null));
         } else if (insightIdToOpenSuggestion) {
-          setIssuesInsightIdToOpenSuggestion(null);
+          dispatch(setIssuesInsightIdToOpenSuggestion(null));
         } else {
           onClose();
         }
@@ -151,7 +155,7 @@ export const MainSidebar = ({
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [insightInfoToOpenTicket, insightIdToOpenSuggestion, onClose]);
+  }, [insightInfoToOpenTicket, insightIdToOpenSuggestion, onClose, dispatch]);
 
   const handleSidebarCloseButtonClick = () => {
     sendUserActionTrackingEvent(

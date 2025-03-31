@@ -142,7 +142,7 @@ export const Issues = ({
   };
 
   const handleSuggestionBarClose = () => {
-    setIssuesInsightIdToOpenSuggestion(null);
+    dispatch(setIssuesInsightIdToOpenSuggestion(null));
   };
 
   const handleDrawerTransitionStart = () => {
