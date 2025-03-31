@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import type { IssuesSidebarContainerProps, OverlayProps } from "./types";
+import type { MainSidebarContainerProps, OverlayProps } from "./types";
 
 export const TRANSITION_DURATION = 300;
 export const overlayTransitionClassName = "overlay";
@@ -38,7 +38,7 @@ export const Overlay = styled.div<OverlayProps>`
   `}
 `;
 
-export const IssuesSidebarContainer = styled.div<IssuesSidebarContainerProps>`
+export const MainSidebarContainer = styled.div<MainSidebarContainerProps>`
   position: absolute;
   right: 0;
   top: 0;

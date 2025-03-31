@@ -138,7 +138,11 @@ export const InsightsCatalog = ({
   const theme = useTheme();
   const [markScopeInsightsRead] = useMarkScopeInsightsReadMutation();
   const [isFiltersToolbarVisible, setIsFiltersToolbarVisible] = useState(false);
-  const { data: insightStats } = useInsightsStats();
+  const { data: insightStats } = useInsightsStats({
+    spanCodeObjectId: scopeSpanCodeObjectId ?? "",
+    environmentId: environment?.id,
+    services: selectedServices ?? undefined
+  });
 
   const isServicesFilterEnabled = !scopeSpanCodeObjectId;
 

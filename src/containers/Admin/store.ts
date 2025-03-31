@@ -10,6 +10,7 @@ import { appSlice } from "../../redux/slices/appSlice";
 import { authSlice } from "../../redux/slices/authSlice";
 import { issuesReportSlice } from "../../redux/slices/issuesReportSlice";
 import { persistSlice } from "../../redux/slices/persistSlice";
+import { repositorySlice } from "../../redux/slices/repositorySlice";
 import { scopeSlice } from "../../redux/slices/scopeSlice";
 import { getRememberEnhancer } from "../../redux/utils/getRememberEnhancer";
 import { APP_ID } from "./constants";
@@ -23,6 +24,7 @@ const reducer = rememberReducer({
   app: appSlice.reducer,
   scope: scopeSlice.reducer, // not in use
   auth: authSlice.reducer,
+  repositorySlice: repositorySlice.reducer,
   codeIssuesReport: issuesReportSlice.reducer,
   persist: persistSlice.reducer,
   [authApi.reducerPath]: authApi.reducer,

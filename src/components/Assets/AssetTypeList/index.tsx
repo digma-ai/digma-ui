@@ -6,7 +6,6 @@ import {
   type GetAssetsCategoriesPayload
 } from "../../../redux/services/types";
 import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
-import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useStore } from "../../../store/useStore";
 import { isNull } from "../../../typeGuards/isNull";
 import { ScopeChangeEvent } from "../../../types";
@@ -21,15 +20,16 @@ import type { AssetCategoryData, AssetTypeListProps } from "./types";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
-export const AssetTypeList = ({ onAssetTypeSelect }: AssetTypeListProps) => {
+// TODO: move to AssetsContent
+export const AssetTypeList = ({
+  onAssetTypeSelect,
+  services,
+  spanCodeObjectId,
+  environmentId
+}: AssetTypeListProps) => {
   const { search, viewMode, filters } = useAssetsSelector();
   const { setAssetCategoriesData: setData, setShowAssetsHeaderToolBox } =
     useStore.getState();
-  const {
-    scope,
-    environment,
-    selectedServices: globallySelectedServices
-  } = useConfigSelector();
   const [showNoDataWithParents, setShowNoDataWithParents] = useState(false);
 
   const payload: GetAssetsCategoriesPayload = useMemo(() => {
@@ -42,41 +42,32 @@ export const AssetTypeList = ({ onAssetTypeSelect }: AssetTypeListProps) => {
     return {
       displayName: search.length > 0 ? search : undefined,
       services:
-        globallySelectedServices && globallySelectedServices.length > 0
-          ? globallySelectedServices.join(",")
-          : undefined,
+        services && services.length > 0 ? services.join(",") : undefined,
       insights:
         filters?.insights && filters?.insights.length > 0
           ? filters?.insights.join(",")
           : undefined,
       operations: operations.length > 0 ? operations.join(",") : undefined,
-      scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId,
+      scopedSpanCodeObjectId: spanCodeObjectId,
       directOnly: viewMode === "children",
-      environment: environment?.id
+      environment: environmentId
     };
-  }, [
-    filters,
-    search,
-    globallySelectedServices,
-    scope?.span?.spanCodeObjectId,
-    viewMode,
-    environment
-  ]);
+  }, [filters, search, services, spanCodeObjectId, viewMode, environmentId]);
 
   const { data } = useGetAssetsCategoriesQuery(payload, {
-    skip: !environment,
+    skip: !environmentId,
     pollingInterval: REFRESH_INTERVAL
   });
 
   const previousData = usePrevious(data);
   const isInitialLoading = !data;
 
-  const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
+  const isServicesFilterEnabled = !spanCodeObjectId;
   const areAnyFiltersApplied = checkIfAnyFiltersApplied(
     filters,
     search,
     isServicesFilterEnabled,
-    globallySelectedServices
+    services
   );
 
   useEffect(() => {
@@ -97,7 +88,7 @@ export const AssetTypeList = ({ onAssetTypeSelect }: AssetTypeListProps) => {
     }
   }, [previousData, data, setShowAssetsHeaderToolBox]);
 
-  const handleAssetTypeClick = (assetTypeId: string) => {
+  const handleAssetTypeClick = (assetTypeId: AssetType) => {
     onAssetTypeSelect(assetTypeId);
   };
 
@@ -123,7 +114,7 @@ export const AssetTypeList = ({ onAssetTypeSelect }: AssetTypeListProps) => {
       return <EmptyState preset={"noFilteredData"} />;
     }
 
-    if (!scope) {
+    if (!spanCodeObjectId) {
       return <EmptyState preset={"noDataYet"} />;
     }
 

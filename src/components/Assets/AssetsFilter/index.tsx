@@ -26,6 +26,7 @@ import { SparkleIcon } from "../../common/icons/SparkleIcon";
 import type { IconProps } from "../../common/icons/types";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
+import type { AssetsFilterProps } from "./types";
 
 const renderFilterCategory = (
   category: CategoryFilter,
@@ -62,7 +63,8 @@ const renderFilterCategory = (
   );
 };
 
-export const AssetsFilter = () => {
+// TODO: move to AssetsContent
+export const AssetsFilter = ({ popupBoundaryRef }: AssetsFilterProps) => {
   const [data, setData] = useState<GetAssetsFiltersResponse | null>();
   const previousData = usePrevious(data);
   const { filters, search: searchQuery, viewMode } = useAssetsSelector();
@@ -503,6 +505,7 @@ export const AssetsFilter = () => {
       appliedFiltersCount={appliedFiltersCount}
       isOpen={isPopupOpen}
       onFiltersButtonClick={handleFiltersButtonClick}
+      boundaryRef={popupBoundaryRef}
     />
   );
 };

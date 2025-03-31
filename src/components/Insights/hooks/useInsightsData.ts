@@ -45,7 +45,11 @@ export const useInsightsData = ({
   const { setInsightsData: setData, setIsInsightsDataLoading: setIsLoading } =
     useStore.getState();
   const isInitialLoading = !data && isLoading;
-  const { refresh: refreshInsightStats } = useInsightsStats();
+  const { refresh: refreshInsightStats } = useInsightsStats({
+    spanCodeObjectId: scope?.span?.spanCodeObjectId,
+    environmentId: environment?.id,
+    services: selectedServices ?? undefined
+  });
   const environmentId = environment?.id;
   const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
 

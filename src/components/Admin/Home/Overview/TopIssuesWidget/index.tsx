@@ -45,13 +45,11 @@ export const TopIssuesWidget = ({
   return (
     <OverviewWidget id={"top-issues"}>
       <s.Container>
-        <s.Title>Top 10 Issues</s.Title>
+        <s.Title>Top Issues</s.Title>
         <s.ButtonsContainer>
           <Tooltip
             placement={"bottom"}
-            title={
-              "A list of the 10 most important issues, ranked by their impact and urgency."
-            }
+            title={"A list of issues, ranked by their impact and urgency."}
           >
             <s.ByCriticalityButton
               onClick={handleByCriticalityButtonClick}
@@ -79,9 +77,7 @@ export const TopIssuesWidget = ({
               />
               <Tooltip
                 placement={"bottom"}
-                title={
-                  "A list of the 10 most severe issues, ranked by their severity level."
-                }
+                title={"A list of issues, ranked by their severity level."}
               >
                 <s.BySeverityButton
                   onClick={handleBySeverityButtonClick}

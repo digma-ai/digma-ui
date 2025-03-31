@@ -1,63 +1,15 @@
 import styled from "styled-components";
-import { LAYERS } from "../../../../common/App/styles";
-import {
-  bodyBoldTypography,
-  caption1RegularTypography
-} from "../../../../common/App/typographies";
-import type { ContainerProps, DrawerContainerProps } from "./types";
+import { LAYERS } from "../../../../../common/App/styles";
+import { caption1RegularTypography } from "../../../../../common/App/typographies";
+import type { DrawerContainerProps } from "./types";
 
 export const TRANSITION_DURATION = 300;
 export const drawerTransitionClassName = "drawer";
 
-export const Container = styled.div<ContainerProps>`
-  background: ${({ theme }) =>
-    `linear-gradient(0deg, ${theme.colors.v3.surface.primary} 0%, ${theme.colors.v3.surface.primary} 100%), #fff`};
+export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: 8px 0 0 8px;
-  height: 100%;
-  user-select: ${({ $isResizing }) => ($isResizing ? "none" : "auto")};
-`;
-
-export const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 16px;
-  border-radius: 8px 0 8px 8px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
-  background: ${({ theme }) => theme.colors.v3.surface.brandDarkest};
-`;
-
-export const HeaderTitleRow = styled.div`
-  ${bodyBoldTypography}
-  color: ${({ theme }) => theme.colors.v3.text.tertiary};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-export const ToolbarRow = styled.div`
-  display: flex;
-  gap: 4px;
-  align-items: center;
-`;
-
-export const ResizeHandle = styled.div`
-  width: 16px;
-  cursor: ew-resize;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${({ theme }) => theme.colors.v3.icon.disabled};
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.v3.icon.secondary};
-  }
+  width: 100%;
 `;
 
 export const ContentContainer = styled.div`
@@ -72,7 +24,7 @@ export const IssuesList = styled.div`
   flex-direction: column;
   gap: 8px;
   overflow-y: auto;
-  padding: 16px;
+  padding: 16px 16px 16px 0;
   width: 100%;
 `;
 

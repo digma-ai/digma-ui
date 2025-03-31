@@ -1,16 +1,13 @@
 import type { MouseEvent } from "react";
 import type { GetIssuesPayload } from "../../../../../redux/services/types";
 
-export interface IssuesSidebarProps {
+export interface MainSidebarProps {
   onClose: () => void;
   scopeDisplayName?: string;
   isTransitioning: boolean;
   isResizing?: boolean;
   onResizeHandleMouseDown: (e: MouseEvent) => void;
   query?: GetIssuesPayload;
-  isPaginationEnabled?: boolean;
-  title?: string;
-  onPageChange?: (page: number) => void;
 }
 
 export interface DrawerContainerProps {
@@ -22,6 +19,7 @@ export interface ContainerProps {
   $isResizing?: boolean;
 }
 
-export interface IssuesSidebarHistoryState {
+export interface MainSidebarHistoryState {
   spanCodeObjectId?: string;
+  tabId: string;
 }

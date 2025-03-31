@@ -10,14 +10,12 @@ import {
   setSelectedEnvironmentId,
   setSelectedServices
 } from "../../../redux/slices/issuesReportSlice";
-import { IssuesSidebarOverlay } from "../common/IssuesSidebarOverlay";
-import type { IssuesSidebarQuery } from "../common/IssuesSidebarOverlay/types";
+import { MainSidebarOverlay } from "../common/MainSidebarOverlay";
+import type { MainSidebarQuery } from "../common/MainSidebarOverlay/types";
 import { Environments } from "./Environments";
 import { Overview } from "./Overview";
 import { Reports } from "./Reports";
 import * as s from "./styles";
-
-const ISSUES_LIMIT = 10;
 
 export const Home = () => {
   const environmentId = useAdminSelector(
@@ -36,25 +34,21 @@ export const Home = () => {
     [searchParams]
   );
 
-  const queries: Record<string, IssuesSidebarQuery> = useMemo(
+  const queries: Record<string, MainSidebarQuery> = useMemo(
     () => ({
       "top-criticality": {
         query: {
           environment: environmentId ?? undefined,
           sortBy: InsightsSortingCriterion.Criticality,
           services: selectedServices
-        },
-        limit: ISSUES_LIMIT,
-        title: "Top issues by criticality"
+        }
       },
       "top-severity": {
         query: {
           environment: environmentId ?? undefined,
           sortBy: InsightsSortingCriterion.Severity,
           services: selectedServices
-        },
-        limit: ISSUES_LIMIT,
-        title: "Top issues by severity"
+        }
       }
     }),
     [environmentId, selectedServices]
@@ -68,7 +62,7 @@ export const Home = () => {
     setIssuesQuery("top-severity");
   };
 
-  const handleIssuesSidebarClose = () => {
+  const handleMainSidebarClose = () => {
     setIssuesQuery(undefined);
   };
 
@@ -117,7 +111,7 @@ export const Home = () => {
     });
   }, [setSearchParams, issuesQuery]);
 
-  const issuesSidebarQuery = issuesQuery ? queries[issuesQuery] : undefined;
+  const mainSidebarQuery = issuesQuery ? queries[issuesQuery] : undefined;
 
   return (
     <s.Container>
@@ -127,10 +121,10 @@ export const Home = () => {
       />
       <Reports />
       <Environments />
-      <IssuesSidebarOverlay
-        issuesSidebarQuery={issuesSidebarQuery}
-        isSidebarOpen={Boolean(issuesSidebarQuery)}
-        onSidebarClose={handleIssuesSidebarClose}
+      <MainSidebarOverlay
+        mainSidebarQuery={mainSidebarQuery}
+        isSidebarOpen={Boolean(mainSidebarQuery)}
+        onSidebarClose={handleMainSidebarClose}
       />
     </s.Container>
   );

@@ -1,16 +1,14 @@
 import type { GetIssuesPayload } from "../../../../redux/services/types";
 
-export interface IssuesSidebarQuery {
+export interface MainSidebarQuery {
   query?: GetIssuesPayload;
-  limit?: number;
-  title?: string;
 }
 
-export interface IssuesSidebarOverlayProps {
+export interface MainSidebarOverlayProps {
   isSidebarOpen: boolean;
   onIssuesPageChange?: (page: number) => void;
   onSidebarClose: () => void;
-  issuesSidebarQuery?: IssuesSidebarQuery;
+  mainSidebarQuery?: MainSidebarQuery;
   scopeDisplayName?: string;
 }
 
@@ -20,7 +18,7 @@ export interface OverlayProps {
   $isVisible: boolean;
 }
 
-export interface IssuesSidebarContainerProps {
+export interface MainSidebarContainerProps {
   $transitionDuration: number;
   $transitionClassName: string;
 }

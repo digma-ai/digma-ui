@@ -4,7 +4,7 @@ export interface OverlayProps {
   $isVisible: boolean;
 }
 
-export interface IssuesSidebarContainerProps {
+export interface MainSidebarContainerProps {
   $transitionDuration: number;
   $transitionClassName: string;
 }

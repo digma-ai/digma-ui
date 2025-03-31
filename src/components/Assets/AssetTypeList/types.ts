@@ -1,9 +1,12 @@
 import type { MemoExoticComponent } from "react";
-import type { AssetCategory } from "../../../redux/services/types";
+import type { AssetCategory, AssetType } from "../../../redux/services/types";
 import type { IconProps } from "../../common/icons/types";
 
 export interface AssetTypeListProps {
-  onAssetTypeSelect: (assetTypeId: string) => void;
+  onAssetTypeSelect: (assetTypeId: AssetType) => void;
+  services?: string[];
+  spanCodeObjectId?: string;
+  environmentId?: string;
 }
 
 export interface AssetCategoryData extends AssetCategory {

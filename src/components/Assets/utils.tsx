@@ -56,7 +56,7 @@ export const checkIfAnyFiltersApplied = (
   filters: AssetsFilters | null,
   searchQuery: string,
   isServicesFilterEnabled: boolean,
-  globallySelectedServices: string[] | null
+  globallySelectedServices: string[] | undefined
 ) =>
   Boolean(
     filters &&

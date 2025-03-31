@@ -36,8 +36,8 @@ import { isNull } from "../../../../typeGuards/isNull";
 import { FeatureFlag } from "../../../../types";
 import { IssuesReport } from "../../../common/IssuesReport";
 import type { TargetScope } from "../../../common/IssuesReport/types";
-import { IssuesSidebarOverlay } from "../../common/IssuesSidebarOverlay";
-import type { IssuesSidebarQuery } from "../../common/IssuesSidebarOverlay/types";
+import { MainSidebarOverlay } from "../../common/MainSidebarOverlay";
+import type { MainSidebarQuery } from "../../common/MainSidebarOverlay/types";
 import * as s from "./styles";
 
 export const MIN_SIDEBAR_WIDTH = 382; // in pixels
@@ -103,10 +103,7 @@ export const CodeIssues = () => {
 
   const [searchParams, setSearchParams] = useStableSearchParams();
   const [scope, setScope] = useState<TargetScope | undefined>(
-    getScope(searchParams.get("issues-scope"))
-  );
-  const [issuesPage, setIssuesPage] = useState<number>(
-    getIssuesPage(searchParams.get("issues-page"))
+    getScope(searchParams.get("sidebar-scope"))
   );
 
   const environmentParam = searchParams.get("environment");
@@ -173,13 +170,8 @@ export const CodeIssues = () => {
     });
   };
 
-  const handleIssuesSidebarPageChange = (page: number) => {
-    setIssuesPage(page);
-  };
-
-  const handleIssuesSidebarClose = () => {
+  const handleMainSidebarClose = () => {
     setScope(undefined);
-    setIssuesPage(0);
   };
 
   const handleSelectedEnvironmentIdChange = (environmentId: string) => {
@@ -323,15 +315,13 @@ export const CodeIssues = () => {
   useEffect(() => {
     setSearchParams((params) => {
       if (scope?.value) {
-        params.set("issues-scope", scope.value);
-        params.set("issues-page", String(issuesPage + 1));
+        params.set("sidebar-scope", scope.value);
       } else {
-        params.delete("issues-scope");
-        params.delete("issues-page");
+        params.delete("sidebar-scope");
       }
       return params;
     });
-  }, [setSearchParams, scope?.value, issuesPage]);
+  }, [setSearchParams, scope?.value]);
 
   const viewLevel: IssuesReportViewLevel = selectedService
     ? "endpoints"
@@ -357,14 +347,14 @@ export const CodeIssues = () => {
     return id ? [id] : undefined;
   }, [spanCodeObjectId, scope?.value]);
 
-  const isIssuesSidebarOpen = Boolean(scope);
+  const isMainSidebarOpen = Boolean(scope);
 
   const isCriticalityLevelsFilterEnabled = getFeatureFlagValue(
     about,
     FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled
   );
 
-  const issuesSidebarQuery: IssuesSidebarQuery = useMemo(
+  const mainSidebarQuery: MainSidebarQuery = useMemo(
     () => ({
       query: {
         environment: selectedEnvironmentId ?? undefined,
@@ -374,7 +364,6 @@ export const CodeIssues = () => {
           : scope?.value
           ? [scope.value]
           : [],
-        page: issuesPage,
         ...(isCriticalityLevelsFilterEnabled
           ? { criticalityFilter: criticalityLevels }
           : {})
@@ -384,7 +373,6 @@ export const CodeIssues = () => {
       scope?.value,
       selectedEnvironmentId,
       selectedService,
-      issuesPage,
       spanCodeObjectId,
       isCriticalityLevelsFilterEnabled,
       criticalityLevels
@@ -422,11 +410,10 @@ export const CodeIssues = () => {
         showEnvironmentSelect={false}
         showServicesSelect={false}
       />
-      <IssuesSidebarOverlay
-        isSidebarOpen={isIssuesSidebarOpen}
-        onIssuesPageChange={handleIssuesSidebarPageChange}
-        onSidebarClose={handleIssuesSidebarClose}
-        issuesSidebarQuery={issuesSidebarQuery}
+      <MainSidebarOverlay
+        isSidebarOpen={isMainSidebarOpen}
+        onSidebarClose={handleMainSidebarClose}
+        mainSidebarQuery={mainSidebarQuery}
         scopeDisplayName={scopeDisplayName}
       />
     </s.Container>
