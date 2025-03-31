@@ -5,6 +5,11 @@ import type { IconProps } from "../../common/icons/types";
 export interface TabsProps {
   selectedTabId: string;
   onTabSelect: (tabId: string) => void;
+  spanCodeObjectId?: string;
+  unreadInsightsCount?: number;
+  hasErrors?: boolean;
+  environmentId?: string;
+  services?: string[];
 }
 
 export interface TabProps {

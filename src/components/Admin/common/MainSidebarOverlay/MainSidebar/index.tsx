@@ -76,12 +76,13 @@ export const MainSidebar = ({
         relatedCodeDetailsList: [],
         codeDetailsList: []
       },
+      environmentId: query?.environment,
       hasErrors: false,
       issuesInsightsCount: 0,
       analyticsInsightsCount: 0,
       unreadInsightsCount: 0
     }),
-    [scopeBarDisplayName, currentSpanCodeObjectId]
+    [scopeBarDisplayName, currentSpanCodeObjectId, query?.environment]
   );
 
   useEffect(() => {
@@ -279,6 +280,7 @@ export const MainSidebar = ({
         spanInfo={spanInfo}
         onTabSelect={handleTabSelect}
         selectedTabId={currentTabId}
+        query={query}
       />
       <s.ContentContainer>
         <s.ResizeHandle onMouseDown={handleSidebarResizeHandleMouseDown}>

@@ -1,31 +1,37 @@
 import { useCallback, useMemo } from "react";
 import { useGetInsightsStatsQuery } from "../../../redux/services/digma";
-import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
-export const useInsightsStats = () => {
-  const { scope, environment, selectedServices } = useConfigSelector();
+export interface UseInsightStatsProps {
+  spanCodeObjectId?: string;
+  environmentId?: string;
+  services?: string[];
+}
+
+export const useInsightsStats = ({
+  spanCodeObjectId,
+  environmentId,
+  services
+}: UseInsightStatsProps) => {
   const {
     filteredInsightTypes: filteredInsightTypesInSpanScope,
     filteredInsightTypesInGlobalScope,
     search
   } = useInsightsSelector();
 
-  const environmentId = environment?.id;
-  const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
   const filteredInsightTypes = spanCodeObjectId
     ? filteredInsightTypesInSpanScope
     : filteredInsightTypesInGlobalScope;
   const filteredServices = useMemo(
-    () => (spanCodeObjectId ? [] : selectedServices ?? []),
-    [selectedServices, spanCodeObjectId]
+    () => (spanCodeObjectId ? [] : services ?? []),
+    [services, spanCodeObjectId]
   );
 
   const { data, refetch, isUninitialized } = useGetInsightsStatsQuery(
     {
-      scopedSpanCodeObjectId: spanCodeObjectId ?? undefined,
+      scopedSpanCodeObjectId: spanCodeObjectId,
       environment: environmentId,
       insights:
         filteredInsightTypes.length > 0

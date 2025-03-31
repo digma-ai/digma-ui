@@ -1,12 +1,10 @@
 import { useMemo } from "react";
 import { platform } from "../../../platform";
 import type { ExtendedGetInsightsStatsResponse } from "../../../redux/services/types";
-import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { useInsightsStats } from "../../Insights/hooks/useInsightsStats";
-import type { Scope } from "../../common/App/types";
 import { MagicWandIcon } from "../../common/icons/16px/MagicWandIcon";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
@@ -50,17 +48,20 @@ const tabs: BaseTabData[] = [
 
 const getTabTooltipMessage = (
   tab: BaseTabData,
-  scope: Scope | null
+  spanCodeObjectId: string | undefined
 ): string | undefined => {
-  if (!scope?.span && tab.id === TAB_IDS.TESTS) {
+  if (!spanCodeObjectId && tab.id === TAB_IDS.TESTS) {
     return "Global tests is COMING SOON";
   }
 
   return tab.title;
 };
 
-const getIsTabDisabled = (tab: BaseTabData, scope: Scope | null): boolean => {
-  if (!scope?.span && [TAB_IDS.HIGHLIGHTS].includes(tab.id)) {
+const getIsTabDisabled = (
+  tab: BaseTabData,
+  spanCodeObjectId: string | undefined
+): boolean => {
+  if (!spanCodeObjectId && [TAB_IDS.HIGHLIGHTS].includes(tab.id)) {
     return true;
   }
 
@@ -70,25 +71,35 @@ const getIsTabDisabled = (tab: BaseTabData, scope: Scope | null): boolean => {
 const getIsNewIndicatorVisible = (
   tab: BaseTabData,
   insightsStats: ExtendedGetInsightsStatsResponse | undefined,
-  scope: Scope | null
+  spanScopeCodeObjectId: string | undefined,
+  unreadInsightsCount: number | undefined
 ): boolean =>
   Boolean(
     tab.id === TAB_IDS.ISSUES
       ? insightsStats &&
-        scope?.span?.spanCodeObjectId === insightsStats.extra.spanCodeObjectId
-        ? insightsStats && insightsStats.data.unreadInsightsCount > 0
-        : scope &&
-          isNumber(scope.unreadInsightsCount) &&
-          scope.unreadInsightsCount > 0
+        spanScopeCodeObjectId === insightsStats.extra.spanCodeObjectId
+        ? insightsStats.data.unreadInsightsCount > 0
+        : isNumber(unreadInsightsCount) && unreadInsightsCount > 0
       : false
   );
 
-export const Tabs = ({ onTabSelect, selectedTabId }: TabsProps) => {
-  const { scope } = useConfigSelector();
-  const { data: insightStats } = useInsightsStats();
+export const Tabs = ({
+  onTabSelect,
+  selectedTabId,
+  spanCodeObjectId,
+  environmentId,
+  unreadInsightsCount,
+  hasErrors,
+  services
+}: TabsProps) => {
+  const { data: insightStats } = useInsightsStats({
+    spanCodeObjectId,
+    environmentId,
+    services
+  });
 
   const handleTabClick = (tab: TabData) => () => {
-    if (!getIsTabDisabled(tab, scope)) {
+    if (!getIsTabDisabled(tab, spanCodeObjectId)) {
       sendUserActionTrackingEvent(trackingEvents.TAB_CLICKED, {
         tabName: tab.id
       });
@@ -106,11 +117,16 @@ export const Tabs = ({ onTabSelect, selectedTabId }: TabsProps) => {
         .map((tab) => ({
           ...tab,
           isSelected: selectedTabId === tab.id,
-          isDisabled: getIsTabDisabled(tab, scope),
-          hasNewData: getIsNewIndicatorVisible(tab, insightStats, scope),
-          tooltipMessage: getTabTooltipMessage(tab, scope)
+          isDisabled: getIsTabDisabled(tab, spanCodeObjectId),
+          hasNewData: getIsNewIndicatorVisible(
+            tab,
+            insightStats,
+            spanCodeObjectId,
+            unreadInsightsCount
+          ),
+          tooltipMessage: getTabTooltipMessage(tab, spanCodeObjectId)
         })),
-    [scope, insightStats, selectedTabId]
+    [spanCodeObjectId, unreadInsightsCount, insightStats, selectedTabId]
   );
 
   return (
@@ -130,7 +146,7 @@ export const Tabs = ({ onTabSelect, selectedTabId }: TabsProps) => {
             {tab.icon && <tab.icon color={"currentColor"} size={16} />}
             {isString(tab.title) && <s.TabTitle>{tab.title}</s.TabTitle>}
             {tab.hasNewData && <s.Indicator type={"new"} />}
-            {scope?.hasErrors && [TAB_IDS.ERRORS].includes(tab.id) && (
+            {hasErrors && [TAB_IDS.ERRORS].includes(tab.id) && (
               <s.Indicator type={"errors"} />
             )}
           </s.Tab>

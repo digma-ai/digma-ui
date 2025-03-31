@@ -86,8 +86,14 @@ import type {
 // };
 
 export const Navigation = () => {
-  const { environments, environment, scope, userInfo, backendInfo } =
-    useConfigSelector();
+  const {
+    environments,
+    environment,
+    scope,
+    userInfo,
+    backendInfo,
+    selectedServices
+  } = useConfigSelector();
   const [selectedEnvironment, setSelectedEnvironment] = useState(environment);
   const [codeContext, setCodeContext] = useState<CodeContext>();
   // const [isCodeButtonMenuOpen, setIsCodeButtonMenuOpen] = useState(false);
@@ -345,9 +351,9 @@ export const Navigation = () => {
   };
 
   const selectedTabId =
-    Object.entries(TAB_IDS).find(([, value]) =>
+    Object.values(TAB_IDS).find((value) =>
       location.pathname.startsWith(`/${value}`)
-    )?.[0] ?? TAB_IDS.ISSUES;
+    ) ?? TAB_IDS.ISSUES;
 
   // const handleCodeButtonMenuClose = () => {
   //   setIsCodeButtonMenuOpen(false);
@@ -458,7 +464,15 @@ export const Navigation = () => {
       </s.Row> */}
       {platform === "JetBrains" && (
         <s.TabsContainer>
-          <Tabs onTabSelect={handleTabSelect} selectedTabId={selectedTabId} />
+          <Tabs
+            onTabSelect={handleTabSelect}
+            selectedTabId={selectedTabId}
+            spanCodeObjectId={scope?.span?.spanCodeObjectId}
+            environmentId={environment?.id}
+            unreadInsightsCount={scope?.unreadInsightsCount}
+            hasErrors={scope?.hasErrors}
+            services={selectedServices ?? undefined}
+          />
         </s.TabsContainer>
       )}
     </s.Container>

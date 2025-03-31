@@ -24,19 +24,19 @@ export const Header = ({
   canGoBack,
   canGoForward,
   onTabSelect,
-  selectedTabId
+  selectedTabId,
+  query
 }: HeaderProps) => {
   const [isSpanInfoVisible, setIsSpanInfoVisible] = useState(false);
   const previousSpanInfo = usePrevious(spanInfo);
   const { observe, width: containerWidth } = useDimensions();
-
   const { data: about } = useGetAboutQuery();
-
   const isSpanInfoEnabled = Boolean(
     getFeatureFlagValue(about, FeatureFlag.IsHighlightsSpanInfoEnabled)
   );
   const linkedEndpoints = useMemo(() => [], []);
-  const isAtHome = !scope?.span?.spanCodeObjectId;
+  const spanCodeObjectId = scope?.span?.spanCodeObjectId;
+  const isAtHome = !spanCodeObjectId;
 
   const handleCloseButtonClick = () => {
     onCloseButtonClick();
@@ -111,12 +111,18 @@ export const Header = ({
           <SpanInfo
             data={spanInfo}
             onCollapse={handleSpanInfoCollapse}
-            spanCodeObjectId={scope.span?.spanCodeObjectId}
+            spanCodeObjectId={spanCodeObjectId}
           />
         )}
       </s.ContentContainer>
       <s.TabsContainer>
-        <Tabs onTabSelect={handleTabSelect} selectedTabId={selectedTabId} />
+        <Tabs
+          onTabSelect={handleTabSelect}
+          selectedTabId={selectedTabId}
+          spanCodeObjectId={spanCodeObjectId}
+          environmentId={query?.environment}
+          services={query?.services}
+        />
       </s.TabsContainer>
     </s.Container>
   );
