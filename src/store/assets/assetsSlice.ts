@@ -52,9 +52,9 @@ export const assetsSlice = createSlice({
   name: "assets",
   value: initialState,
   actions: {
-    setAssetCategoriesData: (data: GetAssetsCategoriesResponse) =>
+    setAssetCategoriesData: (data: GetAssetsCategoriesResponse | null) =>
       set({ assetCategoriesData: data }),
-    setAssets: (assets: GetAssetsResponse) => set({ assets }),
+    setAssets: (assets: GetAssetsResponse | null) => set({ assets }),
     setAssetsFilters: (filters: AssetsFilters | null) => set({ filters }),
     setAssetsViewMode: (viewMode: ViewMode) => set({ viewMode }),
     setAssetsSearch: (search: string) => set({ search }),

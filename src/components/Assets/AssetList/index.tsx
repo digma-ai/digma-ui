@@ -93,23 +93,16 @@ export const AssetList = ({
   setSorting,
   onScopeChange
 }: AssetListProps) => {
-  const { viewMode, search, filters, assets: data } = useAssetsSelector();
+  const { viewMode, search, filters } = useAssetsSelector();
   const { setShowAssetsHeaderToolBox, setAssets: setData } =
     useStore.getState();
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
   const theme = useTheme();
   const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
-  const filteredCount = data?.filteredCount ?? 0;
   const [page, setPage] = useState(0);
-  const pageStartItemNumber = page * PAGE_SIZE + 1;
-  const pageEndItemNumber = Math.min(
-    pageStartItemNumber + PAGE_SIZE - 1,
-    filteredCount
-  );
+
   const listRef = useRef<HTMLUListElement>(null);
   const isServicesFilterEnabled = !spanCodeObjectId;
-  const isInitialLoading = !data;
-  const entries = data?.data ?? [];
   const assetTypeInfo = getAssetTypeInfo(assetTypeId);
   const sortingCriteria = useMemo(
     () => getSortingCriteria(isImpactHidden),
@@ -160,21 +153,38 @@ export const AssetList = ({
     environmentId
   ]);
 
-  const { data: fetchedData } = useGetAssetsQuery(payload, {
+  const { data } = useGetAssetsQuery(payload, {
     skip: !environmentId,
     pollingInterval: REFRESH_INTERVAL
   });
 
+  const filteredCount = data?.filteredCount ?? 0;
+  const pageStartItemNumber = page * PAGE_SIZE + 1;
+  const pageEndItemNumber = Math.min(
+    pageStartItemNumber + PAGE_SIZE - 1,
+    filteredCount
+  );
+  const isInitialLoading = !data;
+  const entries = data?.data ?? [];
+
   useEffect(() => {
+    // Show filters toolbar on mount
     setShowAssetsHeaderToolBox(true);
-  }, []);
 
+    // Clear data on unmount
+    return () => {
+      setData(null);
+    };
+  }, [setData, setShowAssetsHeaderToolBox]);
+
+  // Set data to store on fetch
   useEffect(() => {
-    if (fetchedData) {
-      setData(fetchedData);
+    if (data) {
+      setData(data);
     }
-  }, [fetchedData, setData]);
+  }, [data, setData]);
 
+  // Reset sorting if "Performance impact" sorting is not available
   useEffect(() => {
     if (
       isImpactHidden &&
@@ -187,29 +197,15 @@ export const AssetList = ({
     }
   }, [isImpactHidden, sorting, setSorting]);
 
+  // Reset page on filters or sorting change
   useEffect(() => {
     setPage(0);
-  }, [
-    environmentId,
-    search,
-    sorting,
-    assetTypeId,
-    viewMode,
-    spanCodeObjectId,
-    setPage
-  ]);
+  }, [search, sorting, viewMode, setPage]);
 
+  // Scroll to top on filters or sorting change
   useEffect(() => {
     listRef.current?.scrollTo(0, 0);
-  }, [
-    environmentId,
-    search,
-    sorting,
-    page,
-    assetTypeId,
-    viewMode,
-    spanCodeObjectId
-  ]);
+  }, [search, sorting, page, viewMode]);
 
   const handleAllAssetsLinkClick = () => {
     sendUserActionTrackingEvent(trackingEvents.ALL_ASSETS_LINK_CLICKED);
