@@ -70,6 +70,7 @@ export const AssetTypeList = ({
     services
   );
 
+  // Set data to store on fetch
   useEffect(() => {
     if (data) {
       setData(data);
