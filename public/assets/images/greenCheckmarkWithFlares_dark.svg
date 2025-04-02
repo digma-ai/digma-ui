@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="265" fill="none" viewBox="0 0 1100 265">
+  <g filter="url(#greenCheckmarkWithSparkles_dark-filter-1)" opacity=".1">
+    <ellipse cx="550.5" cy="114.5" fill="#6EBD9C" rx="144.5" ry="51.5"/>
+  </g>
+  <rect width="82" height="82" x="508" y="74" fill="#233332" rx="41"/>
+  <g clip-path="url(#greenCheckmarkWithSparkles_dark-clip-1)">
+    <path stroke="#6EBD9C" stroke-linecap="round" stroke-linejoin="round" stroke-width="5.1" d="m535 113.5 10.3 12 17.7-21"/>
+  </g>
+  <path fill="#D5DCFF" d="M702.4 242.7a2.6 2.6 0 0 1 0 5.3 2.6 2.6 0 0 1-2.7-2.7c0-1.4 1.2-2.6 2.7-2.6Zm-28.1-80.3c.6 0 1 .5 1 1 0 .7-.4 1.1-1 1.1a1 1 0 1 1 0-2ZM573.6 228a1 1 0 1 1 0 2.1 1 1 0 1 1 0-2Zm-111.3-47.2c.6 0 1.1.5 1.1 1 0 .6-.5 1.1-1 1.1a1 1 0 1 1 0-2Zm63.7-17.3a1 1 0 1 1 0 2 1 1 0 1 1 0-2Zm-38.5 99.2c.7 0 1.3.4 1.3 1s-.6 1-1.3 1c-.7 0-1.3-.4-1.3-1s.6-1 1.3-1ZM647.8 84.5c1.4 0 2.5 1 2.5 2.4 0 1.3-1.1 2.4-2.5 2.4-1.3 0-2.4-1-2.4-2.4 0-1.3 1.1-2.4 2.4-2.4ZM622.1 11a1 1 0 1 1 0 2 1 1 0 1 1 0-2ZM530 71a1 1 0 1 1 0 2 1 1 0 1 1 0-2ZM428.1 27.8a1 1 0 1 1 0 2 1 1 0 1 1 0-2ZM486.3 12a1 1 0 1 1 0 1.9 1 1 0 1 1 0-2Zm-35.1 90.7c.6 0 1.2.5 1.2 1s-.6 1-1.2 1c-.7 0-1.3-.5-1.3-1s.6-1 1.3-1Z" opacity=".3"/>
+  <defs>
+    <clipPath id="greenCheckmarkWithSparkles_dark-clip-1">
+      <path fill="#fff" d="M528 94h42v42h-42z"/>
+    </clipPath>
+    <filter id="greenCheckmarkWithSparkles_dark-filter-1" width="352.9" height="166.9" x="374" y="31" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur result="effect1_foregroundBlur_22807_155276" stdDeviation="16"/>
+    </filter>
+  </defs>
+</svg>

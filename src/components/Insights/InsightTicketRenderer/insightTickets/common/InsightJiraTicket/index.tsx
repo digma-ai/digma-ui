@@ -4,7 +4,7 @@ import {
   useUnlinkTicketFromIssueMutation
 } from "../../../../../../redux/services/digma";
 import type { LinkTicketResponse } from "../../../../../../redux/services/types";
-import { isValidHttpUrl } from "../../../../../../utils/isValidUrl";
+import { isValidHttpUrl } from "../../../../../../utils/isValidHttpUrl";
 import { JiraTicket } from "../../../../../common/JiraTicket";
 import type { InsightJiraTicketProps } from "./types";
 

@@ -100,7 +100,6 @@ export const AssetList = ({
   const theme = useTheme();
   const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
   const [page, setPage] = useState(0);
-
   const listRef = useRef<HTMLUListElement>(null);
   const isServicesFilterEnabled = !spanCodeObjectId;
   const assetTypeInfo = getAssetTypeInfo(assetTypeId);
