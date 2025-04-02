@@ -1,4 +1,6 @@
+import { useTheme } from "styled-components";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import { getThemeKind } from "../../../common/App/styles";
 import * as s from "./styles";
 import type { AccountActivationProps } from "./types";
 
@@ -7,6 +9,9 @@ export const AccountActivation = ({
   emailToConfirm,
   onConfirmationEmailResend
 }: AccountActivationProps) => {
+  const theme = useTheme();
+  const themeKind = getThemeKind(theme);
+
   const handleResendButtonClick = () => {
     if (!emailToConfirm) {
       return;
@@ -23,7 +28,9 @@ export const AccountActivation = ({
 
   return (
     <s.Container>
-      <s.Illustration src={`/assets/images/mailWithCheckmark.svg`} />
+      <s.Illustration
+        src={`/assets/images/mailWithCheckmark_${themeKind}.svg`}
+      />
       <s.TextContainer>
         <s.Title>Check your mail</s.Title>
         <span>

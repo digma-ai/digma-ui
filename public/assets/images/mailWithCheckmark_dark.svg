@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="353" height="220" fill="none" viewBox="0 0 353 220">
-  <g filter="url(#mailWithCheckmark-filter-1)" opacity=".1">
+  <g filter="url(#mailWithCheckmark_dark-filter-1)" opacity=".1">
     <ellipse cx="176.5" cy="114.5" fill="#6063F6" rx="144.5" ry="51.5"/>
   </g>
   <rect width="170" height="170" x="91" y="30" fill="#28293E" rx="20"/>
@@ -8,7 +8,7 @@
   <path stroke="#6063F6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6" d="m166.5 98.5 9.5 7.5 17.5-17.5"/>
   <path fill="#242433" d="M219.3 160h-86.6a8.7 8.7 0 0 1-8.7-8.7V100l48.7 19.8c2.1.8 4.5.8 6.6 0L228 100v51.3a8.7 8.7 0 0 1-8.7 8.7Z"/>
   <defs>
-    <filter id="mailWithCheckmark-filter-1" width="352.9" height="166.9" x="0" y="31" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+    <filter id="mailWithCheckmark_dark-filter-1" width="352.9" height="166.9" x="0" y="31" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
       <feFlood flood-opacity="0" result="BackgroundImageFix"/>
       <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
       <feGaussianBlur result="effect1_foregroundBlur_22835_150087" stdDeviation="16"/>
