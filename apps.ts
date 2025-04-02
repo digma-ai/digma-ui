@@ -17,6 +17,13 @@ export const appData: AppData = {
     environmentVariables: ["documentationPage"],
     platforms: ["jetbrains"]
   },
+  ["email-confirmation"]: {
+    entry: path.resolve(
+      __dirname,
+      "./src/containers/EmailConfirmation/index.tsx"
+    ),
+    platforms: ["web"]
+  },
   ["ide-launcher"]: {
     entry: path.resolve(__dirname, "./src/containers/IdeLauncher/index.tsx"),
     platforms: ["web"]
