@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
-import { useTheme } from "styled-components";
 import { JETBRAINS_MARKETPLACE_PLUGIN_URL } from "../../constants";
 import { isString } from "../../typeGuards/isString";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
-import { getThemeKind } from "../common/App/styles";
+import { GenericPageLayout } from "../common/GenericPageLayout";
+import {
+  Subtitle,
+  TextContainer,
+  Title
+} from "../common/GenericPageLayout/styles";
 import { NewButton } from "../common/v3/NewButton";
 import { Select } from "../common/v3/Select";
 import type { SelectItem } from "../common/v3/Select/types";
@@ -35,8 +38,6 @@ const getURLQueryParams = (url: string) => {
 };
 
 export const IdeLauncher = () => {
-  const theme = useTheme();
-  const themeKind = getThemeKind(theme);
   const params = getURLQueryParams(window.location.search);
   const action = params["plugin.action"];
   const [selectItems, setSelectItems] = useState<SelectItem[]>();
@@ -157,54 +158,52 @@ export const IdeLauncher = () => {
   const renderContent = () => {
     if (!action) {
       return (
-        <s.TextContainer>
-          <s.Title>Invalid link</s.Title>
-          <s.Subtitle>Link is partial or invalid</s.Subtitle>
-        </s.TextContainer>
+        <TextContainer>
+          <Title>Invalid link</Title>
+          <Subtitle>Link is partial or invalid</Subtitle>
+        </TextContainer>
       );
     }
 
     if (isMobile) {
       return (
-        <s.TextContainer>
-          <s.Title>Can&apos;t open Digma link</s.Title>
-          <s.Subtitle>
-            Digma links can only be opened on desktop/laptop
-          </s.Subtitle>
-        </s.TextContainer>
+        <TextContainer>
+          <Title>Can&apos;t open Digma link</Title>
+          <Subtitle>Digma links can only be opened on desktop/laptop</Subtitle>
+        </TextContainer>
       );
     }
 
     if (isIdeProjectScanningInProgress) {
       return (
-        <s.TextContainer>
-          <s.Title>Searching for a running IDE</s.Title>
-          <s.Subtitle>
+        <TextContainer>
+          <Title>Searching for a running IDE</Title>
+          <Subtitle>
             You&apos;ll need an IDE installed with Digma configured to open the
             link
-          </s.Subtitle>
-        </s.TextContainer>
+          </Subtitle>
+        </TextContainer>
       );
     }
 
     if (isShowIdeProjectInProgress) {
       return (
-        <s.TextContainer>
-          <s.Title>Opening the Digma link in your IDE</s.Title>
-        </s.TextContainer>
+        <TextContainer>
+          <Title>Opening the Digma link in your IDE</Title>
+        </TextContainer>
       );
     }
 
     if (showIdeProjectResult?.result === "failure") {
       return (
         <>
-          <s.TextContainer>
-            <s.Title>There was an issue opening the link in the IDE</s.Title>
-            <s.Subtitle>
+          <TextContainer>
+            <Title>There was an issue opening the link in the IDE</Title>
+            <Subtitle>
               Please check that IDE is running and click the{" "}
               <s.EmphasizedText>Try again</s.EmphasizedText> button below.
-            </s.Subtitle>
-          </s.TextContainer>
+            </Subtitle>
+          </TextContainer>
           <NewButton
             label={"Try again"}
             onClick={() => {
@@ -217,12 +216,12 @@ export const IdeLauncher = () => {
 
     if (showIdeProjectResult?.result === "success") {
       return (
-        <s.TextContainer>
-          <s.Title>Opening the Digma link in your IDE</s.Title>
-          <s.Subtitle>
+        <TextContainer>
+          <Title>Opening the Digma link in your IDE</Title>
+          <Subtitle>
             Switching over to the IDE. You can close this tab.
-          </s.Subtitle>
-        </s.TextContainer>
+          </Subtitle>
+        </TextContainer>
       );
     }
 
@@ -233,14 +232,14 @@ export const IdeLauncher = () => {
     if (selectItems.length === 0) {
       return (
         <>
-          <s.TextContainer>
-            <s.Title>Unable to open the Digma link</s.Title>
-            <s.Subtitle>
+          <TextContainer>
+            <Title>Unable to open the Digma link</Title>
+            <Subtitle>
               Opening this link requires a running IDE with Digma installed and
               configured. Launch your IDE and install Digma as needed, then
               click the <s.EmphasizedText>Try again</s.EmphasizedText> button.
-            </s.Subtitle>
-          </s.TextContainer>
+            </Subtitle>
+          </TextContainer>
           <s.ButtonsContainer>
             <NewButton
               label={"Try again"}
@@ -259,13 +258,13 @@ export const IdeLauncher = () => {
     if (selectItems.length > 1) {
       return (
         <>
-          <s.TextContainer>
-            <s.Title>Select the IDE project to view the Digma link</s.Title>
-            <s.Subtitle>
+          <TextContainer>
+            <Title>Select the IDE project to view the Digma link</Title>
+            <Subtitle>
               We&apos;ll automatically switch to the IDE once you make a
               selection
-            </s.Subtitle>
-          </s.TextContainer>
+            </Subtitle>
+          </TextContainer>
           <s.SelectContainer>
             <Select
               placeholder={selectedItem?.label ?? "Select IDE Project"}
@@ -281,32 +280,8 @@ export const IdeLauncher = () => {
   };
 
   return (
-    <s.Container>
-      <Helmet>
-        <title>Digma IDE Plugin Launcher</title>
-        <meta name={"viewport"} content={"width=device-width"} />
-      </Helmet>
-      <s.Header>
-        <a
-          target={"_blank"}
-          rel={"noopener noreferrer"}
-          href={"https://digma.ai"}
-        >
-          <s.Logo src={`/assets/images/digmaLogo_${themeKind}.svg`} />
-        </a>
-      </s.Header>
-      <s.Content>{renderContent()}</s.Content>
-      <s.Footer>
-        <span>&copy; {new Date().getFullYear()}</span>
-        <s.FooterLink
-          target={"_blank"}
-          rel={"noopener noreferrer"}
-          href={"https://digma.ai"}
-        >
-          digma.ai
-        </s.FooterLink>
-        <span>&#183; All Rights Reserved</span>
-      </s.Footer>
-    </s.Container>
+    <GenericPageLayout title={"Digma IDE Plugin Launcher"}>
+      {renderContent()}
+    </GenericPageLayout>
   );
 };

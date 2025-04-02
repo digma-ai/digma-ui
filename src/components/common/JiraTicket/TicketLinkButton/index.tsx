@@ -1,7 +1,7 @@
 import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
-import { isValidHttpUrl } from "../../../../utils/isValidUrl";
+import { isValidHttpUrl } from "../../../../utils/isValidHttpUrl";
 import { Button } from "../../Button";
 import { ActionableTextField } from "../ActionableTextField";
 import type { TicketLinkButtonProps } from "./types";

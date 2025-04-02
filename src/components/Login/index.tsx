@@ -4,31 +4,12 @@ import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { isString } from "../../typeGuards/isString";
-import { sendErrorTrackingEvent } from "../../utils/actions/sendErrorTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
+import { reportError } from "../../utils/reportError";
 import { TextField } from "../common/v3/TextField";
 import { GoogleSignInButton } from "./GoogleSignInButton";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-
-const reportError = (error: Error) => {
-  if (isAxiosError(error)) {
-    sendErrorTrackingEvent(error, {
-      "request.url": error.config?.url,
-      severity: "high",
-      "error.source":
-        error.response &&
-        error.response.status >= 500 &&
-        error.response.status < 600
-          ? "backend"
-          : "ui"
-    });
-  } else {
-    sendErrorTrackingEvent(error, {
-      severity: "high"
-    });
-  }
-};
 
 export const Login = () => {
   const [username, setUsername] = useState("");
