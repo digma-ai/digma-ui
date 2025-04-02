@@ -56,6 +56,7 @@ import type {
   MarkInsightReadPayload,
   MarkScopeInsightsReadPayload,
   RecheckInsightPayload,
+  ResendConfirmationEmailPayload,
   SetEndpointsIssuesPayload,
   SetMetricsReportDataPayload,
   SetServiceEndpointsPayload,
@@ -104,6 +105,16 @@ export const digmaApi = createApi({
     }),
     getUserProfile: builder.query<GetUserProfileResponse, void>({
       query: () => "Authentication/logged-in-user"
+    }),
+    resendConfirmationEmail: builder.mutation<
+      void,
+      ResendConfirmationEmailPayload
+    >({
+      query: (data) => ({
+        url: "Authentication/resend-email-confirmation",
+        method: "POST",
+        body: data
+      })
     }),
     getSpanCodeLocations: builder.query<
       GetSpanCodeLocationsResponse,
@@ -397,6 +408,7 @@ export const {
   useGetAssetsFiltersQuery,
   useGetAssetsQuery,
   useGetUserProfileQuery,
+  useResendConfirmationEmailMutation,
   useGetSpanCodeLocationsQuery,
   useGetSpanInsightQuery,
   useRecheckInsightMutation,

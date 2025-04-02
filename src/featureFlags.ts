@@ -32,7 +32,8 @@ export const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
   [FeatureFlag.IsHttpGetMethodSpanPercentilesHistogramEnabled]: "0.3.199",
   [FeatureFlag.IsInsightSeveritySortingEnabled]: "0.3.204",
   [FeatureFlag.IsUserIdEnabled]: "0.3.212",
-  [FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled]: "0.3.214"
+  [FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled]: "0.3.214",
+  [FeatureFlag.IsEmailConfirmationEnabled]: "0.3.264-alpha.1"
 };
 
 export const getFeatureFlagValue = (

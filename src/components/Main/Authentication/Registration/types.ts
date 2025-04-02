@@ -1,5 +1,5 @@
 export interface RegistrationProps {
-  onRegister: () => void;
+  onRegister: (email: string) => void;
 }
 
 export interface RegisterFormValues {

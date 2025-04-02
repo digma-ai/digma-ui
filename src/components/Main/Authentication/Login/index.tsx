@@ -5,16 +5,16 @@ import { LockIcon } from "../../../common/icons/12px/LockIcon";
 import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
 import { Spinner } from "../../../common/v3/Spinner";
 import { TextField } from "../../../common/v3/TextField";
-import * as s from "../styles";
+import { Agreement } from "../Agreement";
 import {
   ButtonsContainer,
   ErrorMessage,
   Form,
   FormContainer,
-  InfoMessage,
   Loader,
   SubmitButton
 } from "../styles";
+import * as s from "./styles";
 import type { LoginFormValues, LoginProps } from "./types";
 import { useLogin } from "./useLogin";
 
@@ -25,13 +25,18 @@ const formDefaultValues: LoginFormValues = {
   email: ""
 };
 
-export const Login = ({ successMessage, onLogin }: LoginProps) => {
+export const Login = ({
+  successMessage,
+  onLogin,
+  onConfirmationEmailResend
+}: LoginProps) => {
   const {
     handleSubmit,
     control,
     clearErrors,
     watch,
     setError,
+    getValues,
     formState: { errors, isValid },
     setFocus
   } = useForm<LoginFormValues>({
@@ -39,6 +44,8 @@ export const Login = ({ successMessage, onLogin }: LoginProps) => {
     defaultValues: formDefaultValues
   });
   const { isLoading, login, error, isSucceed } = useLogin();
+
+  const values = getValues();
 
   useEffect(() => {
     setFocus("email");
@@ -65,8 +72,17 @@ export const Login = ({ successMessage, onLogin }: LoginProps) => {
     sendUserActionTrackingEvent("login form submitted");
   };
 
+  const handleResendVerificationEmailLinkClick = () => {
+    onConfirmationEmailResend(values.email);
+    sendUserActionTrackingEvent("resend verification email");
+  };
+
   const errorMessage =
     Object.values(errors).length > 0 ? Object.values(errors)[0].message : "";
+
+  const isUserIsNotActivatedError = errorMessage?.includes(
+    "user has not yet been activated"
+  );
 
   return (
     <FormContainer>
@@ -107,23 +123,42 @@ export const Login = ({ successMessage, onLogin }: LoginProps) => {
           )}
         />
       </Form>
-      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      {errorMessage && !isUserIsNotActivatedError && (
+        <ErrorMessage>{errorMessage}</ErrorMessage>
+      )}
       <ButtonsContainer>
         <SubmitButton
-          isDisabled={!isValid || isLoading || isSucceed}
+          isDisabled={
+            (!isValid && !isUserIsNotActivatedError) || isLoading || isSucceed
+          }
           label={"Sign In"}
           type={"submit"}
           form={FORM_ID}
         />
       </ButtonsContainer>
       {successMessage && <s.SuccessMessage>{successMessage}</s.SuccessMessage>}
-      <InfoMessage>Forgot password? Contact the Digma admin</InfoMessage>
+      <Agreement />
       {isLoading && (
         <Loader>
           <Spinner size={16} />
           Loading...
         </Loader>
       )}
+      {isUserIsNotActivatedError && (
+        <s.UserIsNotActivatedErrorMessageContainer>
+          <ErrorMessage>
+            Your user has not yet been activated, please check your email
+          </ErrorMessage>
+          <s.ResendVerificationEmailLink
+            onClick={handleResendVerificationEmailLinkClick}
+          >
+            Resend verification email
+          </s.ResendVerificationEmailLink>
+        </s.UserIsNotActivatedErrorMessageContainer>
+      )}
+      <s.ForgotPasswordMessage>
+        Forgot password? Contact the Digma admin
+      </s.ForgotPasswordMessage>
     </FormContainer>
   );
 };
