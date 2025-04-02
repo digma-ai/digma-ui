@@ -7,6 +7,7 @@ import { LockIcon } from "../../../common/icons/12px/LockIcon";
 import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
 import { Spinner } from "../../../common/v3/Spinner";
 import { TextField } from "../../../common/v3/TextField";
+import { Agreement } from "../Agreement";
 import * as s from "../styles";
 import type { RegisterFormValues, RegistrationProps } from "./types";
 import { useRegistration } from "./useRegistration";
@@ -88,9 +89,9 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
 
   useEffect(() => {
     if (isSucceed) {
-      onRegister();
+      onRegister(values.email);
     }
-  }, [isSucceed, onRegister]);
+  }, [isSucceed, onRegister, values.email]);
 
   const onSubmit = (data: RegisterFormValues) => {
     register({ email: data.email, password: data.password });
@@ -186,6 +187,7 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
           form={FORM_ID}
         />
       </s.ButtonsContainer>
+      <Agreement />
       {isLoading && (
         <s.Loader>
           <Spinner size={16} />

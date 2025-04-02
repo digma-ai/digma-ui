@@ -52,6 +52,10 @@ export const BOOK_DEMO_URL = "https://digma.ai/book-a-demo";
 
 export const DIGMA_DOCUMENTATION_URL = "https://docs.digma.ai";
 
+export const DIGMA_TERMS_OF_USE_URL = "https://digma.ai/terms-of-use";
+
+export const DIGMA_PRIVACY_POLICY_URL = "https://digma.ai/privacy-policy";
+
 export const NOT_SUPPORTED_IN_SANDBOX_MODE_MESSAGE =
   "Feature not supported in sandbox mode";
 

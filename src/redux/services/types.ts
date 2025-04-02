@@ -171,6 +171,10 @@ export interface GetUserProfileResponse {
   uid?: string;
 }
 
+export interface ResendConfirmationEmailPayload {
+  email: string;
+}
+
 export interface GetMetricsReportDataPayloadV1 {
   keys: {
     environment: string;

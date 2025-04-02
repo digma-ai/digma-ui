@@ -1,15 +1,15 @@
 import styled from "styled-components";
 import {
-  bodyMediumTypography,
   bodyRegularTypography,
   caption1RegularTypography,
+  subheading1SemiboldTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
 import { Button } from "../../common/v3/Button";
 import { Link } from "../../common/v3/Link";
 
 export const Container = styled.div`
-  padding: 10px;
+  padding: 24px;
   min-height: 100%;
   gap: 16px;
   display: flex;
@@ -25,21 +25,18 @@ export const Header = styled.div`
   align-items: center;
 `;
 
+export const Title = styled.div`
+  ${subheading1SemiboldTypography}
+  color: ${({ theme }) => theme.colors.v3.text.primary};
+`;
+
 export const Message = styled.div`
+  ${subscriptRegularTypography}
   display: flex;
   flex-direction: column;
-  gap: 4px;
   text-align: center;
-`;
-
-export const Title = styled.div`
-  color: ${({ theme }) => theme.colors.v3.text.white};
-  ${bodyMediumTypography}
-`;
-
-export const Description = styled.div`
+  max-width: 324px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
-  ${subscriptRegularTypography}
 `;
 
 export const ToggleOptions = styled.div`
@@ -86,21 +83,13 @@ export const ButtonsContainer = styled.div`
   width: 100%;
 `;
 
-const StatusMessage = styled.span`
-  display: flex;
-  font-size: 13px;
-  height: 15px;
-  align-items: center;
-  align-self: flex-start;
+export const StatusMessage = styled.span`
+  ${subscriptRegularTypography}
+  text-align: center;
 `;
 
 export const ErrorMessage = styled(StatusMessage)`
   color: ${({ theme }) => theme.colors.v3.status.high};
-`;
-
-export const SuccessMessage = styled(StatusMessage)`
-  color: ${({ theme }) => theme.colors.v3.status.success};
-  text-align: center;
 `;
 
 export const SubmitButton = styled(Button)`
@@ -116,11 +105,6 @@ export const InputForm = styled.div`
   flex-direction: column;
   gap: 12px;
   max-width: 250px;
-`;
-
-export const InfoMessage = styled.div`
-  ${caption1RegularTypography}
-  color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
 
 export const SlackLink = styled(Link)`

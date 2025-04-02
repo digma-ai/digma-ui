@@ -16,15 +16,20 @@ export const EmailConfirmation = () => {
   const themeKind = getThemeKind(theme);
   const [emailConfirmationResult, setEmailConfirmationResult] =
     useState<EmailConfirmationResult>();
+  const params = getUrlQueryParams(window.location.search);
+  const userId = params.userId;
+  const token = params.token;
 
   useEffect(() => {
-    const params = getUrlQueryParams(window.location.search);
+    if (!userId || !token) {
+      return;
+    }
 
     axios
       .get("/api/Authentication/confirm-email", {
         params: {
-          userId: params.userId,
-          token: params.token
+          userId,
+          token
         }
       })
       .then(() => {
@@ -39,7 +44,7 @@ export const EmailConfirmation = () => {
           result: "failure"
         });
       });
-  }, []);
+  }, [token, userId]);
 
   useEffect(() => {
     if (emailConfirmationResult) {
@@ -49,9 +54,18 @@ export const EmailConfirmation = () => {
     }
   }, [emailConfirmationResult]);
 
-  return (
-    <GenericPageLayout title={"Digma email confirmation"}>
-      {emailConfirmationResult?.result === "success" && (
+  const renderContent = () => {
+    if (!userId || !token) {
+      return (
+        <s.TextContainer>
+          <Title>Invalid link</Title>
+          <Subtitle>Link is partial or invalid</Subtitle>
+        </s.TextContainer>
+      );
+    }
+
+    if (emailConfirmationResult?.result === "success") {
+      return (
         <s.Container>
           <s.Illustration
             src={`/assets/images/greenCheckmarkWithFlares_${themeKind}.svg`}
@@ -61,10 +75,17 @@ export const EmailConfirmation = () => {
             <Subtitle>You may now log in with your user and password</Subtitle>
           </s.TextContainer>
         </s.Container>
-      )}
-      {emailConfirmationResult?.result === "failure" && (
-        <Title>Failed to confirm email</Title>
-      )}
+      );
+    }
+
+    if (emailConfirmationResult?.result === "failure") {
+      return <Title>Failed to confirm email</Title>;
+    }
+  };
+
+  return (
+    <GenericPageLayout title={"Digma email confirmation"}>
+      {renderContent()}
     </GenericPageLayout>
   );
 };
