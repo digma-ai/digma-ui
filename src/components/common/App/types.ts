@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { Theme } from "../../../globals";
 import type {
   Environment,
+  Features,
   IssueCriticality
 } from "../../../redux/services/types";
 import type { ScopeChangeEvent } from "../../../types";
@@ -32,6 +33,7 @@ export interface BackendInfo {
   deploymentType: DeploymentType;
   centralize: boolean;
   site?: string;
+  features?: Features;
 }
 
 export enum DeploymentType {

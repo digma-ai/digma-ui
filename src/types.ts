@@ -29,8 +29,7 @@ export enum FeatureFlag {
   IsInsightSeveritySortingEnabled,
   IsHttpGetMethodSpanPercentilesHistogramEnabled,
   IsUserIdEnabled,
-  IsIssuesCriticalityLevelsFilterEnabled,
-  IsEmailConfirmationEnabled
+  IsIssuesCriticalityLevelsFilterEnabled
 }
 
 export enum InsightType {
