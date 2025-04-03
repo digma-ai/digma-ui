@@ -32,11 +32,16 @@ export interface Environment {
   type: EnvironmentType;
 }
 
+export interface Features {
+  EmailVerificationEnabled: "True" | "False";
+}
+
 export interface GetAboutResponse {
   applicationVersion: string;
   deploymentType: DeploymentType;
   isCentralize: boolean;
   site?: string;
+  features?: Features;
 }
 
 export interface GetAssetsFiltersPayload {

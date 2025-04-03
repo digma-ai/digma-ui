@@ -1,9 +1,7 @@
 import { forwardRef, useEffect, useState } from "react";
 import { SLACK_WORKSPACE_URL } from "../../../constants";
-import { getFeatureFlagValue } from "../../../featureFlags";
 import { useResendConfirmationEmailMutation } from "../../../redux/services/digma";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
-import { FeatureFlag } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { SlackLogoIcon } from "../../common/icons/16px/SlackLogoIcon";
@@ -23,10 +21,9 @@ const AuthenticationComponent = () => {
   const [emailToConfirm, setEmailToConfirm] = useState<string>();
   const [resend] = useResendConfirmationEmailMutation();
   const { backendInfo } = useConfigSelector();
-  const isEmailConfirmationEnabled = getFeatureFlagValue(
-    backendInfo,
-    FeatureFlag.IsEmailConfirmationEnabled
-  );
+
+  const isEmailConfirmationEnabled =
+    backendInfo?.features?.EmailVerificationEnabled === "True";
 
   const handleRegister = (email: string) => {
     setOption("login");
