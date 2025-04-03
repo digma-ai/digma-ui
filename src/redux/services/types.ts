@@ -33,7 +33,7 @@ export interface Environment {
 }
 
 export interface Features {
-  emailVerificationEnabled: "true" | "false";
+  EmailVerificationEnabled: "True" | "False";
 }
 
 export interface GetAboutResponse {

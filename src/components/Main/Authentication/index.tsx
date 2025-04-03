@@ -23,7 +23,7 @@ const AuthenticationComponent = () => {
   const { backendInfo } = useConfigSelector();
 
   const isEmailConfirmationEnabled =
-    backendInfo?.features?.emailVerificationEnabled === "true";
+    backendInfo?.features?.EmailVerificationEnabled === "True";
 
   const handleRegister = (email: string) => {
     setOption("login");
