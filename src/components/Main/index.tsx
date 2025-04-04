@@ -206,12 +206,11 @@ export const Main = () => {
 
       if (scope?.context) {
         switch (scope.context.event) {
-          case ScopeChangeEvent.HistoryNavigated: {
+          case ScopeChangeEvent.HistoryNavigated:
             updateBrowserLocation(
               scope.context.payload?.location as HistoryEntryLocation
             );
             break;
-          }
           case ScopeChangeEvent.HistoryCleared:
             goTo(`/${TAB_IDS.ISSUES}`, {
               state: {
@@ -227,6 +226,10 @@ export const Main = () => {
             break;
           case ScopeChangeEvent.JaegerSpanLinkClicked:
           case ScopeChangeEvent.AssetsAssetCardTitleLinkClicked:
+            if (platform === "Visual Studio") {
+              goTo(`/${TAB_IDS.ISSUES}`, { state });
+              break;
+            }
             goTo(`/${TAB_IDS.HIGHLIGHTS}`, { state });
             break;
           case ScopeChangeEvent.HighlightsTopIssuesCardItemClicked:
@@ -248,10 +251,9 @@ export const Main = () => {
             goTo(`/${TAB_IDS.ASSETS}`, { state });
             break;
           case ScopeChangeEvent.MetricsServiceSelected:
-          case ScopeChangeEvent.MetricsEndpointSelected: {
+          case ScopeChangeEvent.MetricsEndpointSelected:
             goTo(`/${TAB_IDS.ISSUES}`, { state });
             break;
-          }
           case ScopeChangeEvent.IdeCodeLensClicked: {
             const url = getURLToNavigateOnCodeLensClick(scope);
             if (url) {
