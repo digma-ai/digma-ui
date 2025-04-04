@@ -22,12 +22,12 @@ const tabs: BaseTabData[] = [
   {
     title: "Issues",
     id: TAB_IDS.ISSUES,
-    platforms: ["JetBrains", "Web"]
+    platforms: ["JetBrains", "Visual Studio", "Web"]
   },
   {
     title: "Assets",
     id: TAB_IDS.ASSETS,
-    platforms: ["JetBrains", "Web"]
+    platforms: ["JetBrains", "Visual Studio", "Web"]
   },
   {
     title: "Analytics",

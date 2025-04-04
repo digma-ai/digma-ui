@@ -462,19 +462,17 @@ export const Navigation = () => {
           )}
         </Tooltip>
       </s.Row> */}
-      {platform === "JetBrains" && (
-        <s.TabsContainer>
-          <Tabs
-            onTabSelect={handleTabSelect}
-            selectedTabId={selectedTabId}
-            spanCodeObjectId={scope?.span?.spanCodeObjectId}
-            environmentId={environment?.id}
-            unreadInsightsCount={scope?.unreadInsightsCount}
-            hasErrors={scope?.hasErrors}
-            services={selectedServices ?? undefined}
-          />
-        </s.TabsContainer>
-      )}
+      <s.TabsContainer>
+        <Tabs
+          onTabSelect={handleTabSelect}
+          selectedTabId={selectedTabId}
+          spanCodeObjectId={scope?.span?.spanCodeObjectId}
+          environmentId={environment?.id}
+          unreadInsightsCount={scope?.unreadInsightsCount}
+          hasErrors={scope?.hasErrors}
+          services={selectedServices ?? undefined}
+        />
+      </s.TabsContainer>
     </s.Container>
   );
 };

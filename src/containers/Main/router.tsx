@@ -28,18 +28,18 @@ export const routes: RouteObject[] = [
         path: TAB_IDS.ISSUES,
         element: <Insights insightViewType={"Issues"} key={"issues"} />
       },
+      {
+        path: TAB_IDS.ASSETS,
+        element: <Assets />,
+        children: [
+          {
+            path: ":typeId",
+            element: <Assets />
+          }
+        ]
+      },
       ...(platform === "JetBrains"
         ? [
-            {
-              path: TAB_IDS.ASSETS,
-              element: <Assets />,
-              children: [
-                {
-                  path: ":typeId",
-                  element: <Assets />
-                }
-              ]
-            },
             {
               path: TAB_IDS.ANALYTICS,
               element: (
