@@ -17,7 +17,7 @@ const tabs: BaseTabData[] = [
     id: TAB_IDS.HIGHLIGHTS,
     icon: MagicWandIcon,
     width: 40,
-    platforms: ["JetBrains"]
+    platforms: ["JetBrains", "Visual Studio"]
   },
   {
     title: "Issues",
@@ -32,7 +32,7 @@ const tabs: BaseTabData[] = [
   {
     title: "Analytics",
     id: TAB_IDS.ANALYTICS,
-    platforms: ["JetBrains"]
+    platforms: ["JetBrains", "Visual Studio"]
   },
   {
     title: "Errors",

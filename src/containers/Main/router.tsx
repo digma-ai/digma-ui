@@ -21,9 +21,7 @@ export const routes: RouteObject[] = [
         index: true,
         element: <Navigate replace={true} to={TAB_IDS.ISSUES} />
       },
-      ...(platform === "JetBrains"
-        ? [{ path: TAB_IDS.HIGHLIGHTS, element: <Highlights /> }]
-        : []),
+      { path: TAB_IDS.HIGHLIGHTS, element: <Highlights /> },
       {
         path: TAB_IDS.ISSUES,
         element: <Insights insightViewType={"Issues"} key={"issues"} />
@@ -38,14 +36,12 @@ export const routes: RouteObject[] = [
           }
         ]
       },
+      {
+        path: TAB_IDS.ANALYTICS,
+        element: <Insights insightViewType={"Analytics"} key={"analytics"} />
+      },
       ...(platform === "JetBrains"
         ? [
-            {
-              path: TAB_IDS.ANALYTICS,
-              element: (
-                <Insights insightViewType={"Analytics"} key={"analytics"} />
-              )
-            },
             {
               path: TAB_IDS.ERRORS,
               element: <Errors />,
