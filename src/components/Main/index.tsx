@@ -226,10 +226,6 @@ export const Main = () => {
             break;
           case ScopeChangeEvent.JaegerSpanLinkClicked:
           case ScopeChangeEvent.AssetsAssetCardTitleLinkClicked:
-            if (platform === "Visual Studio") {
-              goTo(`/${TAB_IDS.ISSUES}`, { state });
-              break;
-            }
             goTo(`/${TAB_IDS.HIGHLIGHTS}`, { state });
             break;
           case ScopeChangeEvent.HighlightsTopIssuesCardItemClicked:
