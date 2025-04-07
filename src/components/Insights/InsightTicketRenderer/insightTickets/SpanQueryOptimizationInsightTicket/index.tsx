@@ -6,7 +6,8 @@ import { intersperse } from "../../../../../utils/intersperse";
 import { DigmaSignature } from "../../../../common/DigmaSignature";
 import type { Attachment } from "../../../../common/JiraTicket/types";
 import type { SpanQueryOptimizationInsight } from "../../../types";
-import { useCommitInfos } from "../common";
+import { useSpanDataSource } from "../common";
+import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { getTraceAttachment } from "../common/getTraceAttachment";
 import { InsightJiraTicket } from "../common/InsightJiraTicket";
@@ -17,7 +18,13 @@ export const SpanQueryOptimizationInsightTicket = ({
   data,
   onClose
 }: InsightTicketProps<SpanQueryOptimizationInsight>) => {
-  const { isLoading, commitInfos } = useCommitInfos(data.insight);
+  const { commitInfos, codeLocations, isLoading } =
+    useSpanDataSource<SpanQueryOptimizationInsight>(
+      data.insight.spanInfo,
+      data.insight,
+      data.insight.environment
+    );
+
   const { jaegerApiPath } = useConfigSelector();
 
   const criticalityString =
@@ -60,6 +67,7 @@ export const SpanQueryOptimizationInsightTicket = ({
             {"\n"}
             This query: {getDurationString(data.insight.duration)}
           </div>,
+          <CodeLocations key={"codeLocations"} codeLocations={codeLocations} />,
           <QueryOptimizationEndpoints
             key={"affectedEndpoints"}
             insight={data.insight}
