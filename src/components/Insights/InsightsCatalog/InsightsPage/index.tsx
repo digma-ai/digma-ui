@@ -95,8 +95,7 @@ const renderEmptyState = (
   if (
     scope &&
     isNumber(scope.analyticsInsightsCount) &&
-    scope.analyticsInsightsCount > 0 &&
-    platform !== "Visual Studio"
+    scope.analyticsInsightsCount > 0
   ) {
     return (
       <EmptyState

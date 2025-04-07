@@ -5,7 +5,7 @@ import {
 } from "../../../../../containers/Admin/hooks";
 import History, { type HistoryEntry } from "../../../../../history/History";
 import {
-  useGetInsightsStatsQuery,
+  digmaApi,
   useGetSpanInfoQuery
 } from "../../../../../redux/services/digma";
 import type { GetIssuesPayload } from "../../../../../redux/services/types";
@@ -13,6 +13,7 @@ import {
   setIssuesInsightIdToOpenSuggestion,
   setIssuesInsightInfoToOpenTicket
 } from "../../../../../redux/slices/repositorySlice";
+import { ScopeChangeEvent } from "../../../../../types";
 import type { ChangeScopePayload } from "../../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import type { Scope } from "../../../../common/App/types";
@@ -67,21 +68,9 @@ export const MainSidebar = ({
     }
   );
 
-  const { data: insightsStats } = useGetInsightsStatsQuery({
-    scopedSpanCodeObjectId: currentSpanCodeObjectId,
-    environment: query?.environment,
-    services:
-      query?.services && query?.services.length > 0
-        ? query?.services.join(",")
-        : undefined
-  });
-
   const scopeBarDisplayName = currentSpanCodeObjectId
     ? spanInfo?.displayName
     : scopeDisplayName ?? "Home";
-
-  // const areInsightsStatsUpdating =
-  //   insightsStats?.extra.spanCodeObjectId !== currentSpanCodeObjectId;
 
   const extendedScope: Scope = useMemo(
     () => ({
@@ -98,16 +87,11 @@ export const MainSidebar = ({
       },
       environmentId: query?.environment,
       hasErrors: false,
-      issuesInsightsCount: insightsStats?.data.issuesInsightsCount ?? 0,
-      analyticsInsightsCount: insightsStats?.data.analyticsInsightsCount ?? 0,
-      unreadInsightsCount: insightsStats?.data.unreadInsightsCount ?? 0
+      issuesInsightsCount: 0,
+      analyticsInsightsCount: 0,
+      unreadInsightsCount: 0
     }),
-    [
-      scopeBarDisplayName,
-      currentSpanCodeObjectId,
-      query?.environment,
-      insightsStats
-    ]
+    [scopeBarDisplayName, currentSpanCodeObjectId, query?.environment]
   );
 
   useEffect(() => {
@@ -240,7 +224,7 @@ export const MainSidebar = ({
     history.replaceEntry(newEntry, newState);
   };
 
-  const handleScopeChange = (payload: ChangeScopePayload, tabId: string) => {
+  const updateHistory = (payload: ChangeScopePayload, tabId: string) => {
     const newEntry = {
       pathname: window.location.pathname,
       search: window.location.search
@@ -258,24 +242,48 @@ export const MainSidebar = ({
     }
   };
 
-  const renderContent = () => {
-    const handleInsightsScopeChange = (payload: ChangeScopePayload) => {
-      handleScopeChange(payload, TAB_IDS.ISSUES);
-    };
+  const navigate = async (payload: ChangeScopePayload) => {
+    switch (payload.context?.event) {
+      case ScopeChangeEvent.NavigationHomeButtonClicked:
+        if (currentTabId === TAB_IDS.ASSETS) {
+          updateHistory(payload, TAB_IDS.ASSETS);
+          break;
+        }
+        updateHistory(payload, TAB_IDS.ISSUES);
+        break;
+      case ScopeChangeEvent.AssetsEmptyCategoryParentLinkClicked:
+        updateHistory(payload, TAB_IDS.ANALYTICS);
+        break;
+      case ScopeChangeEvent.InsightsInsightCardTitleAssetLinkClicked:
+      case ScopeChangeEvent.InsightsInsightCardAssetLinkClicked:
+      default: {
+        const result = await dispatch(
+          digmaApi.endpoints.getInsightsStats.initiate({
+            scopedSpanCodeObjectId: payload.span?.spanCodeObjectId,
+            environment: query?.environment,
+            services:
+              query?.services && query?.services.length > 0
+                ? query?.services.join(",")
+                : undefined
+          })
+        ).unwrap();
 
-    const handleAssetsScopeChange = (payload: ChangeScopePayload) => {
-      handleScopeChange(payload, TAB_IDS.ISSUES);
+        if (result.data.issuesInsightsCount > 0) {
+          updateHistory(payload, TAB_IDS.ISSUES);
+        } else {
+          updateHistory(payload, TAB_IDS.ANALYTICS);
+        }
+      }
+    }
+  };
+
+  const renderContent = () => {
+    const handleScopeChange = (payload: ChangeScopePayload) => {
+      void navigate(payload);
     };
 
     const handleGoToAssets = () => {
-      handleScopeChange(
-        {
-          span: {
-            spanCodeObjectId: currentSpanCodeObjectId ?? ""
-          }
-        },
-        TAB_IDS.ASSETS
-      );
+      handleTabSelect(TAB_IDS.ASSETS);
     };
 
     const currentQuery: GetIssuesPayload = {
@@ -286,15 +294,12 @@ export const MainSidebar = ({
     switch (currentTabId) {
       case TAB_IDS.ASSETS:
         return (
-          <Assets
-            query={currentQuery}
-            onScopeChange={handleAssetsScopeChange}
-          />
+          <Assets query={currentQuery} onScopeChange={handleScopeChange} />
         );
       case TAB_IDS.ANALYTICS:
         return (
           <Analytics
-            onScopeChange={handleInsightsScopeChange}
+            onScopeChange={handleScopeChange}
             query={currentQuery}
             onGoToAssets={handleGoToAssets}
           />
@@ -304,7 +309,7 @@ export const MainSidebar = ({
         return (
           <Issues
             isTransitioning={isTransitioning}
-            onScopeChange={handleInsightsScopeChange}
+            onScopeChange={handleScopeChange}
             query={currentQuery}
           />
         );
