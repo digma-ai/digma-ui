@@ -4,7 +4,10 @@ import {
   useAdminSelector
 } from "../../../../../containers/Admin/hooks";
 import History, { type HistoryEntry } from "../../../../../history/History";
-import { useGetSpanInfoQuery } from "../../../../../redux/services/digma";
+import {
+  useGetInsightsStatsQuery,
+  useGetSpanInfoQuery
+} from "../../../../../redux/services/digma";
 import type { GetIssuesPayload } from "../../../../../redux/services/types";
 import {
   setIssuesInsightIdToOpenSuggestion,
@@ -16,6 +19,7 @@ import type { Scope } from "../../../../common/App/types";
 import { TwoVerticalLinesIcon } from "../../../../common/icons/16px/TwoVerticalLinesIcon";
 import { TAB_IDS } from "../../../../Navigation/Tabs/types";
 import { trackingEvents } from "../../../tracking";
+import { Analytics } from "./Analytics";
 import { Assets } from "./Assets";
 import { Header } from "./Header";
 import { Issues } from "./Issues";
@@ -63,9 +67,21 @@ export const MainSidebar = ({
     }
   );
 
+  const { data: insightsStats } = useGetInsightsStatsQuery({
+    scopedSpanCodeObjectId: currentSpanCodeObjectId,
+    environment: query?.environment,
+    services:
+      query?.services && query?.services.length > 0
+        ? query?.services.join(",")
+        : undefined
+  });
+
   const scopeBarDisplayName = currentSpanCodeObjectId
     ? spanInfo?.displayName
     : scopeDisplayName ?? "Home";
+
+  // const areInsightsStatsUpdating =
+  //   insightsStats?.extra.spanCodeObjectId !== currentSpanCodeObjectId;
 
   const extendedScope: Scope = useMemo(
     () => ({
@@ -82,11 +98,16 @@ export const MainSidebar = ({
       },
       environmentId: query?.environment,
       hasErrors: false,
-      issuesInsightsCount: 0,
-      analyticsInsightsCount: 0,
-      unreadInsightsCount: 0
+      issuesInsightsCount: insightsStats?.data.issuesInsightsCount ?? 0,
+      analyticsInsightsCount: insightsStats?.data.analyticsInsightsCount ?? 0,
+      unreadInsightsCount: insightsStats?.data.unreadInsightsCount ?? 0
     }),
-    [scopeBarDisplayName, currentSpanCodeObjectId, query?.environment]
+    [
+      scopeBarDisplayName,
+      currentSpanCodeObjectId,
+      query?.environment,
+      insightsStats
+    ]
   );
 
   useEffect(() => {
@@ -138,7 +159,7 @@ export const MainSidebar = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         sendUserActionTrackingEvent(
-          trackingEvents.ISSUES_SIDEBAR_ESCAPE_KEY_PRESSED
+          trackingEvents.MAIN_SIDEBAR_ESCAPE_KEY_PRESSED
         );
         if (insightInfoToOpenTicket) {
           dispatch(setIssuesInsightInfoToOpenTicket(null));
@@ -159,35 +180,35 @@ export const MainSidebar = ({
 
   const handleSidebarCloseButtonClick = () => {
     sendUserActionTrackingEvent(
-      trackingEvents.ISSUES_SIDEBAR_CLOSE_BUTTON_CLICKED
+      trackingEvents.MAIN_SIDEBAR_CLOSE_BUTTON_CLICKED
     );
     onClose();
   };
 
   const handleSidebarResizeHandleMouseDown = (e: MouseEvent) => {
     sendUserActionTrackingEvent(
-      trackingEvents.ISSUES_SIDEBAR_RESIZE_HANDLE_MOUSE_BUTTON_PRESSED
+      trackingEvents.MAIN_SIDEBAR_RESIZE_HANDLE_MOUSE_BUTTON_PRESSED
     );
     onResizeHandleMouseDown(e);
   };
 
   const handleGoBack = () => {
     sendUserActionTrackingEvent(
-      trackingEvents.ISSUES_SIDEBAR_BACK_BUTTON_CLICKED
+      trackingEvents.MAIN_SIDEBAR_BACK_BUTTON_CLICKED
     );
     history.goBack();
   };
 
   const handleGoForward = () => {
     sendUserActionTrackingEvent(
-      trackingEvents.ISSUES_SIDEBAR_FORWARD_BUTTON_CLICKED
+      trackingEvents.MAIN_SIDEBAR_FORWARD_BUTTON_CLICKED
     );
     history.goForward();
   };
 
   const handleGoHome = () => {
     sendUserActionTrackingEvent(
-      trackingEvents.ISSUES_SIDEBAR_HOME_BUTTON_CLICKED
+      trackingEvents.MAIN_SIDEBAR_HOME_BUTTON_CLICKED
     );
 
     if (!currentSpanCodeObjectId) {
@@ -246,6 +267,17 @@ export const MainSidebar = ({
       handleScopeChange(payload, TAB_IDS.ISSUES);
     };
 
+    const handleGoToAssets = () => {
+      handleScopeChange(
+        {
+          span: {
+            spanCodeObjectId: currentSpanCodeObjectId ?? ""
+          }
+        },
+        TAB_IDS.ASSETS
+      );
+    };
+
     const currentQuery: GetIssuesPayload = {
       ...query,
       scopedSpanCodeObjectId: currentSpanCodeObjectId
@@ -257,6 +289,14 @@ export const MainSidebar = ({
           <Assets
             query={currentQuery}
             onScopeChange={handleAssetsScopeChange}
+          />
+        );
+      case TAB_IDS.ANALYTICS:
+        return (
+          <Analytics
+            onScopeChange={handleInsightsScopeChange}
+            query={currentQuery}
+            onGoToAssets={handleGoToAssets}
           />
         );
       case TAB_IDS.ISSUES:

@@ -110,15 +110,15 @@ export const Issues = ({
   };
 
   const handleChangePage = (page: number) => {
-    sendUserActionTrackingEvent(trackingEvents.ISSUES_SIDEBAR_PAGE_CHANGED);
+    sendUserActionTrackingEvent(trackingEvents.ISSUES_PAGE_CHANGED);
     setPage(page);
   };
 
   const handleDismissalViewModeButtonClick = () => {
     sendUserActionTrackingEvent(
       viewMode === ViewMode.All
-        ? trackingEvents.ISSUES_SIDEBAR_SHOW_ALL_BUTTON_CLICKED
-        : trackingEvents.ISSUES_SIDEBAR_SHOW_ONLY_DISMISSED_BUTTON_CLICKED
+        ? trackingEvents.ISSUES_SHOW_ALL_BUTTON_CLICKED
+        : trackingEvents.ISSUES_SHOW_ONLY_DISMISSED_BUTTON_CLICKED
     );
     const newMode =
       viewMode === ViewMode.All ? ViewMode.OnlyDismissed : ViewMode.All;

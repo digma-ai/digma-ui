@@ -7,7 +7,7 @@ import type { InsightCardViewMode } from "./insightCards/common/InsightCard/type
 
 export interface InsightCardRendererProps {
   insight: GenericCodeObjectInsight;
-  onJiraTicketCreate: (
+  onJiraTicketCreate?: (
     insight: GenericCodeObjectInsight,
     spanCodeObjectId: string | undefined,
     event?: string
@@ -15,7 +15,7 @@ export interface InsightCardRendererProps {
   isJiraHintEnabled: boolean;
   isMarkAsReadButtonEnabled: boolean;
   viewMode: InsightCardViewMode;
-  onDismissalChange: (action: string, insightId: string) => void;
+  onDismissalChange?: (action: string, insightId: string) => void;
   onOpenSuggestion?: (insightId: string) => void;
   tooltipBoundaryRef?: RefObject<HTMLElement>;
   backendInfo: BackendInfo | GetAboutResponse | null;
