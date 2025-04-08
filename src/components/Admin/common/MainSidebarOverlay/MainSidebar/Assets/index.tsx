@@ -14,12 +14,16 @@ import type { Sorting } from "../../../../../common/SortingSelector/types";
 import * as s from "./styles";
 import type { AssetsProps } from "./types";
 
-export const Assets = ({ query, onScopeChange }: AssetsProps) => {
+export const Assets = ({
+  query,
+  onScopeChange,
+  selectedAssetTypeId,
+  onSelectedAssetTypeIdChange
+}: AssetsProps) => {
   const [sorting, setSorting] = useState<Sorting<AssetsSortingCriterion>>({
     criterion: AssetsSortingCriterion.CriticalInsights,
     order: SortingOrder.Desc
   });
-  const [selectedAssetTypeId, setSelectedAssetTypeId] = useState<AssetType>();
 
   const dispatch = useAdminDispatch();
 
@@ -37,11 +41,11 @@ export const Assets = ({ query, onScopeChange }: AssetsProps) => {
   );
 
   const handleAssetTypeSelect = (assetTypeId: AssetType) => {
-    setSelectedAssetTypeId(assetTypeId);
+    onSelectedAssetTypeIdChange(assetTypeId);
   };
 
   const handleGoToAllAssets = () => {
-    setSelectedAssetTypeId(undefined);
+    onSelectedAssetTypeIdChange(undefined);
   };
 
   const handleRefresh = () => {

@@ -3,12 +3,18 @@ import {
   useAdminDispatch,
   useAdminSelector
 } from "../../../../../containers/Admin/hooks";
-import History, { type HistoryEntry } from "../../../../../history/History";
+import History, {
+  type HistoryEntry,
+  type HistoryEntryLocation
+} from "../../../../../history/History";
 import {
   digmaApi,
   useGetSpanInfoQuery
 } from "../../../../../redux/services/digma";
-import type { GetIssuesPayload } from "../../../../../redux/services/types";
+import type {
+  AssetType,
+  GetIssuesPayload
+} from "../../../../../redux/services/types";
 import {
   setIssuesInsightIdToOpenSuggestion,
   setIssuesInsightInfoToOpenTicket
@@ -25,7 +31,11 @@ import { Assets } from "./Assets";
 import { Header } from "./Header";
 import { Issues } from "./Issues";
 import * as s from "./styles";
-import type { MainSidebarHistoryState, MainSidebarProps } from "./types";
+import type {
+  MainSidebarHistoryState,
+  MainSidebarProps,
+  TabLocation
+} from "./types";
 
 const CONTAINER_ID = "issues-sidebar"; // For Product Fruits selector
 
@@ -37,7 +47,9 @@ export const MainSidebar = ({
   query,
   scopeDisplayName
 }: MainSidebarProps) => {
-  const [currentTabId, setCurrentTabId] = useState<string>(TAB_IDS.ISSUES);
+  const [currentTabLocation, setCurrentTabLocation] = useState<TabLocation>({
+    id: TAB_IDS.ISSUES
+  });
   const [currentSpanCodeObjectId, setCurrentSpanCodeObjectId] = useState(
     query?.scopedSpanCodeObjectId
   );
@@ -55,7 +67,7 @@ export const MainSidebar = ({
           location: window.location,
           state: {
             spanCodeObjectId: currentSpanCodeObjectId,
-            tabId: currentTabId
+            tabLocation: currentTabLocation
           }
         }
       ])
@@ -99,7 +111,9 @@ export const MainSidebar = ({
       e: CustomEvent<HistoryEntry<MainSidebarHistoryState>>
     ) => {
       setCurrentSpanCodeObjectId(e.detail.state?.spanCodeObjectId);
-      setCurrentTabId(e.detail.state?.tabId ?? TAB_IDS.ISSUES);
+      setCurrentTabLocation(
+        e.detail.state?.tabLocation ?? { id: TAB_IDS.ISSUES }
+      );
     };
 
     window.addEventListener(
@@ -134,7 +148,7 @@ export const MainSidebar = ({
       },
       {
         spanCodeObjectId: newSpanCodeObjectId,
-        tabId: TAB_IDS.ISSUES
+        tabLocation: { id: TAB_IDS.ISSUES }
       }
     );
   }, [history, query?.scopedSpanCodeObjectId]);
@@ -177,113 +191,101 @@ export const MainSidebar = ({
   };
 
   const handleGoBack = () => {
-    sendUserActionTrackingEvent(
-      trackingEvents.MAIN_SIDEBAR_BACK_BUTTON_CLICKED
-    );
     history.goBack();
   };
 
   const handleGoForward = () => {
-    sendUserActionTrackingEvent(
-      trackingEvents.MAIN_SIDEBAR_FORWARD_BUTTON_CLICKED
-    );
     history.goForward();
   };
 
-  const handleGoHome = () => {
-    sendUserActionTrackingEvent(
-      trackingEvents.MAIN_SIDEBAR_HOME_BUTTON_CLICKED
-    );
-
-    if (!currentSpanCodeObjectId) {
-      return;
-    }
-
-    history.pushEntry(
-      {
-        pathname: window.location.pathname,
-        search: window.location.search
-      },
-      {
-        spanCodeObjectId: undefined,
-        tabId: currentTabId
-      }
-    );
-  };
-
-  const handleTabSelect = (tabId: string) => {
-    const newEntry = {
-      pathname: window.location.pathname,
-      search: window.location.search
-    };
-    const newState = {
-      spanCodeObjectId: currentSpanCodeObjectId,
-      tabId
-    };
-
-    history.replaceEntry(newEntry, newState);
-  };
-
-  const updateHistory = (payload: ChangeScopePayload, tabId: string) => {
-    const newEntry = {
+  const updateHistory = ({
+    payload,
+    tabLocation
+  }: {
+    payload?: ChangeScopePayload;
+    tabLocation?: TabLocation;
+  }) => {
+    const newEntry: HistoryEntryLocation = {
       pathname: window.location.pathname,
       search: window.location.search
     };
 
-    const newState = {
-      spanCodeObjectId: payload.span?.spanCodeObjectId,
-      tabId
+    const newState: MainSidebarHistoryState = {
+      spanCodeObjectId: payload
+        ? payload.span?.spanCodeObjectId
+        : currentSpanCodeObjectId,
+      tabLocation: tabLocation ?? currentTabLocation
     };
 
-    if (payload.span?.spanCodeObjectId === currentSpanCodeObjectId) {
+    if (
+      !payload ||
+      payload.span?.spanCodeObjectId === currentSpanCodeObjectId
+    ) {
       history.replaceEntry(newEntry, newState);
     } else {
       history.pushEntry(newEntry, newState);
     }
   };
 
+  const handleTabSelect = (tabId: string) => {
+    updateHistory({ tabLocation: { id: tabId } });
+  };
+
   const navigate = async (payload: ChangeScopePayload) => {
+    if (!payload.context?.event) {
+      updateHistory({ payload });
+      return;
+    }
+
     switch (payload.context?.event) {
       case ScopeChangeEvent.NavigationHomeButtonClicked:
-        if (currentTabId === TAB_IDS.ASSETS) {
-          updateHistory(payload, TAB_IDS.ASSETS);
+        if (currentTabLocation.id === TAB_IDS.ASSETS) {
+          updateHistory({ payload, tabLocation: { id: TAB_IDS.ASSETS } });
           break;
         }
-        updateHistory(payload, TAB_IDS.ISSUES);
+        updateHistory({ payload, tabLocation: { id: TAB_IDS.ISSUES } });
         break;
       case ScopeChangeEvent.AssetsEmptyCategoryParentLinkClicked:
-        updateHistory(payload, TAB_IDS.ANALYTICS);
+        updateHistory({ payload, tabLocation: { id: TAB_IDS.ANALYTICS } });
         break;
       case ScopeChangeEvent.InsightsInsightCardTitleAssetLinkClicked:
       case ScopeChangeEvent.InsightsInsightCardAssetLinkClicked:
       default: {
-        const result = await dispatch(
-          digmaApi.endpoints.getInsightsStats.initiate({
-            scopedSpanCodeObjectId: payload.span?.spanCodeObjectId,
-            environment: query?.environment,
-            services:
-              query?.services && query?.services.length > 0
-                ? query?.services.join(",")
-                : undefined
-          })
-        ).unwrap();
+        try {
+          const result = await dispatch(
+            digmaApi.endpoints.getInsightsStats.initiate({
+              scopedSpanCodeObjectId: payload.span?.spanCodeObjectId,
+              environment: query?.environment,
+              services:
+                query?.services && query?.services.length > 0
+                  ? query?.services.join(",")
+                  : undefined
+            })
+          ).unwrap();
 
-        if (result.data.issuesInsightsCount > 0) {
-          updateHistory(payload, TAB_IDS.ISSUES);
-        } else {
-          updateHistory(payload, TAB_IDS.ANALYTICS);
+          if (result.data.issuesInsightsCount > 0) {
+            updateHistory({ payload, tabLocation: { id: TAB_IDS.ISSUES } });
+          } else {
+            updateHistory({ payload, tabLocation: { id: TAB_IDS.ANALYTICS } });
+          }
+        } catch {
+          updateHistory({ payload, tabLocation: { id: TAB_IDS.ISSUES } });
         }
       }
     }
   };
 
+  const handleScopeChange = (payload: ChangeScopePayload) => {
+    void navigate(payload);
+  };
+
   const renderContent = () => {
-    const handleScopeChange = (payload: ChangeScopePayload) => {
-      void navigate(payload);
+    const handleSelectedAssetTypeIdChange = (assetTypeId?: AssetType) => {
+      updateHistory({ tabLocation: { id: TAB_IDS.ASSETS, path: assetTypeId } });
     };
 
     const handleGoToAssets = () => {
-      handleTabSelect(TAB_IDS.ASSETS);
+      handleSelectedAssetTypeIdChange(undefined);
     };
 
     const currentQuery: GetIssuesPayload = {
@@ -291,10 +293,17 @@ export const MainSidebar = ({
       scopedSpanCodeObjectId: currentSpanCodeObjectId
     };
 
-    switch (currentTabId) {
+    switch (currentTabLocation.id) {
       case TAB_IDS.ASSETS:
         return (
-          <Assets query={currentQuery} onScopeChange={handleScopeChange} />
+          <Assets
+            query={currentQuery}
+            onScopeChange={handleScopeChange}
+            selectedAssetTypeId={
+              currentTabLocation.path as AssetType | undefined
+            }
+            onSelectedAssetTypeIdChange={handleSelectedAssetTypeIdChange}
+          />
         );
       case TAB_IDS.ANALYTICS:
         return (
@@ -323,12 +332,12 @@ export const MainSidebar = ({
         scope={extendedScope}
         onGoBack={handleGoBack}
         onGoForward={handleGoForward}
-        onGoHome={handleGoHome}
+        onScopeChange={handleScopeChange}
         canGoBack={history.canGoBack()}
         canGoForward={history.canGoForward()}
         spanInfo={spanInfo}
         onTabSelect={handleTabSelect}
-        selectedTabId={currentTabId}
+        selectedTabId={currentTabLocation.id}
         query={query}
       />
       <s.ContentContainer>

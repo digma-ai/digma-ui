@@ -19,7 +19,12 @@ export interface ContainerProps {
   $isResizing?: boolean;
 }
 
+export interface TabLocation {
+  id: string;
+  path?: string;
+}
+
 export interface MainSidebarHistoryState {
   spanCodeObjectId?: string;
-  tabId: string;
+  tabLocation?: TabLocation;
 }
