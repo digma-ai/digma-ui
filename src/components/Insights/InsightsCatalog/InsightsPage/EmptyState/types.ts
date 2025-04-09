@@ -3,6 +3,7 @@ import type { EmptyStateProps as CommonEmptyStateProps } from "../../../../commo
 export type EmptyStatePreset =
   | "noDismissedData"
   | "noFilteredData"
+  | "noFilteredIssues"
   | "noSearchResults"
   | "noInsightsYet"
   | "noDataYet"

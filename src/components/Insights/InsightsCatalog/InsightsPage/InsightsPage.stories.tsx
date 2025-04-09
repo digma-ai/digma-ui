@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { InsightsPage } from ".";
 import { ConfigContext, initialState } from "../../../common/App/ConfigContext";
 import type { Scope } from "../../../common/App/types";
-import { mockedEndpointBottleneckInsight } from "./InsightCardRenderer/insightCards/EndpointBottleneckInsightCard/mockData";
 import type { InsightsPageProps } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -32,16 +31,13 @@ const scope: Scope = {
 };
 
 const props: InsightsPageProps = {
-  insights: [],
   onJiraTicketCreate: () => {
     return undefined;
   },
   onRefresh: () => {
     return undefined;
   },
-  page: 0,
-  isMarkAsReadButtonEnabled: false,
-  insightsViewType: "Analytics"
+  isMarkAsReadButtonEnabled: false
 };
 
 export const WithInsights: Story = {
@@ -61,8 +57,7 @@ export const WithInsights: Story = {
     )
   ],
   args: {
-    ...props,
-    insights: [mockedEndpointBottleneckInsight]
+    ...props
   }
 };
 
@@ -140,7 +135,6 @@ export const NoAnalyticsInsightsOnHomeScope: Story = {
     )
   ],
   args: {
-    ...props,
-    insightsViewType: "Analytics"
+    ...props
   }
 };

@@ -34,7 +34,7 @@ export interface InsightCardProps {
   isMarkAsReadButtonEnabled: boolean;
   viewMode: InsightCardViewMode;
   mainMetric?: ReactNode;
-  onDismissalChange: (action: string, insightId: string) => void;
+  onDismissalChange?: (action: string, insightId: string) => void;
   onOpenSuggestion?: (insightId: string) => void;
   tooltipBoundaryRef?: RefObject<HTMLElement>;
 }

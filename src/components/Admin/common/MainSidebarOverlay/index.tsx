@@ -41,7 +41,7 @@ export const MainSidebarOverlay = ({
   const [startLeft, setStartLeft] = useState(0);
 
   const handleOverlayClick = () => {
-    sendUserActionTrackingEvent(trackingEvents.ISSUES_SIDEBAR_OVERLAY_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.MAIN_SIDEBAR_OVERLAY_CLICKED);
     onSidebarClose();
   };
 
@@ -97,7 +97,7 @@ export const MainSidebarOverlay = ({
 
     const handleMouseUp = () => {
       sendUserActionTrackingEvent(
-        trackingEvents.ISSUES_SIDEBAR_RESIZE_HANDLE_MOUSE_BUTTON_RELEASED
+        trackingEvents.MAIN_SIDEBAR_RESIZE_HANDLE_MOUSE_BUTTON_RELEASED
       );
       setIsResizeHandlePressed(false);
     };

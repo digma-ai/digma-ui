@@ -118,7 +118,6 @@ export const InsightsCatalog = ({
   const { selectedServices, environment, environments, scope, backendInfo } =
     useConfigSelector();
 
-  const insights = data?.insights ?? [];
   const totalCount = data?.totalCount ?? 0;
   const dismissedCount = data?.dismissedCount;
   const unreadCount = data?.unreadCount ?? 0;
@@ -377,9 +376,6 @@ export const InsightsCatalog = ({
         )}
       </s.Toolbar>
       <InsightsPage
-        page={page}
-        insights={insights}
-        insightsViewType={insightViewType}
         onJiraTicketCreate={onJiraTicketCreate}
         onRefresh={onRefresh}
         isMarkAsReadButtonEnabled={isShowUnreadOnly(filters)}

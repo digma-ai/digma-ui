@@ -15,6 +15,11 @@ const getPresetContent = (preset: EmptyStatePreset, theme: DefaultTheme) => {
       title: "No data found",
       message: "There are no insights for this criteria"
     },
+    noFilteredIssues: {
+      icon: <CardsColoredIcon size={33} themeKind={themeKind} />,
+      title: "No issues found",
+      message: "Some issues are not be visible because of the active filters."
+    },
     noSearchResults: {
       icon: <CardsColoredIcon size={33} themeKind={themeKind} />,
       title: "No results",
