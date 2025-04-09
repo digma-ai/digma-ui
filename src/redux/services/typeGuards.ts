@@ -12,6 +12,7 @@ import type {
   HotSpotMetrics,
   SpaNPlusOneMetrics,
   SpanEndpointBottleneckMetrics,
+  SpanPerformanceAnomalyMetrics,
   SpanQueryOptimizationMetrics,
   SpanScalingMetrics
 } from "./types";
@@ -75,3 +76,8 @@ export const isSpanScalingHighlight = (
   highlight: HighlightData<GenericMetrics>
 ): highlight is HighlightData<SpanScalingMetrics> =>
   highlight.insightType === InsightType.SpanScaling;
+
+export const isSpanPerformanceAnomalyHighlight = (
+  highlight: HighlightData<GenericMetrics>
+): highlight is HighlightData<SpanPerformanceAnomalyMetrics> =>
+  highlight.insightType === InsightType.SpanPerformanceAnomaly;

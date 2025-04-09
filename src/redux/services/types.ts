@@ -413,6 +413,21 @@ export type SpanScalingMetrics = [
   }
 ];
 
+export type SpanPerformanceAnomalyMetrics = [
+  {
+    id: "P50";
+    value: Duration;
+  },
+  {
+    id: "P95";
+    value: Duration;
+  },
+  {
+    id: "SlowerByPercentage";
+    value: number;
+  }
+];
+
 export type GenericMetrics =
   | EndpointBottleneckMetrics
   | SpanEndpointBottleneckMetrics
@@ -425,7 +440,8 @@ export type GenericMetrics =
   | EndpointSpanNPlusOneMetrics
   | SpaNPlusOneMetrics
   | HotSpotMetrics
-  | SpanScalingMetrics;
+  | SpanScalingMetrics
+  | SpanPerformanceAnomalyMetrics;
 
 export interface GetTopIssuesHighlightsResponse {
   topInsights: HighlightData<GenericMetrics>[];
