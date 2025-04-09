@@ -46,7 +46,7 @@ export const SpanPerformanceAnomalyHighlightCard = ({
     columnHelper.accessor(
       (x) => x.metrics.find((x) => x.id === "SlowerByPercentage"),
       {
-        header: "5% slower than Median by",
+        header: "The slowest 5% slower than the Median by",
         cell: (info) => {
           const metric = info.getValue();
           const value = metric ? `${String(roundTo(metric.value, 2))}%` : "";

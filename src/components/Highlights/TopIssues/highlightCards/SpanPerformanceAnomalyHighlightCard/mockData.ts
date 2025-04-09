@@ -29,9 +29,9 @@ export const mockedSpanPerformanceAnomalyMetrics: SpanPerformanceAnomalyMetrics 
     }
   ];
 
-export const mockedSpanScalingHighlightData: HighlightData<SpanPerformanceAnomalyMetrics> =
+export const mockedSpanPerformanceAnomalyHighlightData: HighlightData<SpanPerformanceAnomalyMetrics> =
   {
-    insightType: InsightType.SpanScaling,
+    insightType: InsightType.SpanPerformanceAnomaly,
     asset: {
       name: "spanName",
       displayName: "displayName",
