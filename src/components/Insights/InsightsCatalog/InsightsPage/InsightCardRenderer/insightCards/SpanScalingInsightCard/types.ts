@@ -11,7 +11,7 @@ export interface SpanScalingInsightCardProps extends InsightCardCommonProps {
   onTraceButtonClick: (
     trace: Trace,
     insightType: InsightType,
-    spanCodeObjectId: string
+    spanCodeObjectId?: string
   ) => void;
   onHistogramButtonClick: (
     spanCodeObjectId: string,

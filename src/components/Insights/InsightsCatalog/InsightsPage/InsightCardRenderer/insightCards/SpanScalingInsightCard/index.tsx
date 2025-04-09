@@ -1,14 +1,23 @@
-import { usePagination } from "../../../../../../../hooks/usePagination";
+import { useEffect, useMemo, useState } from "react";
 import { useConfigSelector } from "../../../../../../../store/config/useConfigSelector";
+import { isNull } from "../../../../../../../typeGuards/isNull";
 import type { InsightType } from "../../../../../../../types";
 import { getDurationString } from "../../../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../../../utils/trimEndpointScheme";
+import {
+  AffectedEndpointsSelector,
+  getEndpointKey
+} from "../../../../../../common/AffectedEndpointsSelector";
+import type { Option } from "../../../../../../common/AffectedEndpointsSelector/types";
 import { TraceIcon } from "../../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../../common/v3/Button";
 import { JiraButton } from "../../../../../../common/v3/JiraButton";
-import { Pagination } from "../../../../../../common/v3/Pagination";
 import { Tooltip } from "../../../../../../common/v3/Tooltip";
-import type { RootCauseSpanInfo, Trace } from "../../../../../types";
+import type {
+  AffectedEndpoint,
+  RootCauseSpanInfo,
+  Trace
+} from "../../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
@@ -17,7 +26,11 @@ import { ContentContainer, Description } from "../styles";
 import * as s from "./styles";
 import type { SpanScalingInsightCardProps } from "./types";
 
-const PAGE_SIZE = 3;
+const getSelectorOption = (endpoint: AffectedEndpoint): Option => ({
+  route: trimEndpointScheme(endpoint.route),
+  serviceName: endpoint.serviceName,
+  spanCodeObjectId: endpoint.spanCodeObjectId
+});
 
 export const SpanScalingInsightCard = ({
   insight,
@@ -33,22 +46,28 @@ export const SpanScalingInsightCard = ({
   tooltipBoundaryRef
 }: SpanScalingInsightCardProps) => {
   const { isJaegerEnabled } = useConfigSelector();
-  const affectedEndpoints = insight.affectedEndpoints ?? [];
-  const [pageItems, page, setPage] = usePagination(
-    affectedEndpoints,
-    PAGE_SIZE,
-    insight.id
+
+  const affectedEndpoints = useMemo(
+    () => insight.affectedEndpoints ?? [],
+    [insight.affectedEndpoints]
   );
 
-  const handleLinkClick = (spanCodeObjectId: string) => () => () => {
-    onAssetLinkClick(spanCodeObjectId, insight.type);
-  };
+  const selectorOptions: Option[] = useMemo(
+    () => affectedEndpoints.map(getSelectorOption),
+    [affectedEndpoints]
+  );
 
-  const handleTraceButtonClick =
-    (trace: Trace, insightType: InsightType, spanCodeObjectId: string) =>
-    () => {
-      onTraceButtonClick(trace, insightType, spanCodeObjectId);
-    };
+  const [selectedEndpointKey, setSelectedEndpointKey] = useState<
+    string | undefined
+  >(selectorOptions[0] ? getEndpointKey(selectorOptions[0]) : undefined);
+
+  useEffect(() => {
+    const newOption = selectedEndpointKey
+      ? selectorOptions.find((x) => getEndpointKey(x) === selectedEndpointKey)
+      : undefined;
+
+    setSelectedEndpointKey(newOption ? getEndpointKey(newOption) : undefined);
+  }, [selectorOptions, selectedEndpointKey]);
 
   const handleTicketInfoButtonClick = (
     spanCodeObjectId: string | undefined,
@@ -61,8 +80,18 @@ export const SpanScalingInsightCard = ({
 
   const renderRootCause = (rootCauseSpans: RootCauseSpanInfo[]) => {
     if (rootCauseSpans.length > 0) {
+      const handleLinkClick = (spanCodeObjectId: string) => () => {
+        onAssetLinkClick(spanCodeObjectId, insight.type);
+      };
+
+      const handleTraceButtonClick =
+        (trace: Trace, insightType: InsightType, spanCodeObjectId: string) =>
+        () => {
+          onTraceButtonClick(trace, insightType, spanCodeObjectId);
+        };
+
       return (
-        <s.List>
+        <s.Details>
           <Description>Caused by</Description>
           {rootCauseSpans.map((span, i) => {
             const spanName = span.displayName;
@@ -107,10 +136,49 @@ export const SpanScalingInsightCard = ({
               />
             );
           })}
-        </s.List>
+        </s.Details>
       );
     }
   };
+
+  const handleEndpointLinkClick = (spanCodeObjectId: string) => {
+    onAssetLinkClick(spanCodeObjectId, insight.type);
+  };
+
+  const handleEndpointTraceButtonClick =
+    (
+      endpoint: AffectedEndpoint,
+      insightType: InsightType,
+      spanCodeObjectId?: string
+    ) =>
+    () => {
+      if (isNull(endpoint.sampleTraceId)) {
+        return;
+      }
+
+      onTraceButtonClick(
+        {
+          name: endpoint.displayName,
+          id: endpoint.sampleTraceId
+        },
+        insightType,
+        spanCodeObjectId
+      );
+    };
+
+  const handleAffectedEndpointsSelectorChange = (endpointKey: string) => {
+    setSelectedEndpointKey(endpointKey);
+  };
+
+  const selectedEndpoint = useMemo(
+    () =>
+      selectedEndpointKey
+        ? affectedEndpoints.find(
+            (x) => getEndpointKey(x) === selectedEndpointKey
+          )
+        : undefined,
+    [selectedEndpointKey, affectedEndpoints]
+  );
 
   const durationRangeString = `${getDurationString(
     insight.minDuration
@@ -139,26 +207,32 @@ export const SpanScalingInsightCard = ({
           </ColumnsContainer>
           {renderRootCause(insight.rootCauseSpans)}
           {affectedEndpoints.length > 0 && (
-            <s.List>
-              <Description>Affected Endpoints</Description>
-              {pageItems.map((endpoint) => {
-                const endpointRoute = trimEndpointScheme(endpoint.route);
-                return (
-                  <ListItem
-                    key={endpoint.route}
-                    onClick={handleLinkClick(endpoint.spanCodeObjectId)}
-                    name={endpointRoute}
-                  />
-                );
-              })}
-              <Pagination
-                itemsCount={affectedEndpoints.length}
-                page={page}
-                pageSize={PAGE_SIZE}
-                onPageChange={setPage}
-                withDescription={true}
-              />
-            </s.List>
+            <s.Details>
+              <Description>
+                Affected Endpoints ({affectedEndpoints.length})
+              </Description>
+              <s.SelectContainer>
+                <AffectedEndpointsSelector
+                  onChange={handleAffectedEndpointsSelectorChange}
+                  onAssetLinkClick={handleEndpointLinkClick}
+                  value={selectedEndpointKey}
+                  options={selectorOptions}
+                  isDisabled={selectorOptions.length === 0}
+                />
+                {isJaegerEnabled && selectedEndpoint?.sampleTraceId && (
+                  <Tooltip title={"Open Trace"}>
+                    <Button
+                      icon={TraceIcon}
+                      onClick={handleEndpointTraceButtonClick(
+                        selectedEndpoint,
+                        insight.type,
+                        insight.spanInfo?.spanCodeObjectId
+                      )}
+                    />
+                  </Tooltip>
+                )}
+              </s.SelectContainer>
+            </s.Details>
           )}
         </ContentContainer>
       }
