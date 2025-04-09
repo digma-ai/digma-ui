@@ -8,6 +8,7 @@ import {
   isEndpointSpanNPlusOneHighlight,
   isHotSpotHighlight,
   isSpanEndpointBottleneckHighlight,
+  isSpanPerformanceAnomalyHighlight,
   isSpaNPlusOneHighlight,
   isSpanQueryOptimizationHighlight,
   isSpanScalingHighlight
@@ -21,6 +22,7 @@ import { EndpointSlowdownSourceHighlightCard } from "../highlightCards/EndpointS
 import { EndpointSpanNPlusOneHighlightCard } from "../highlightCards/EndpointSpanNPlusOneHighlightCard";
 import { HotSpotHighlightCard } from "../highlightCards/HotSpotHighlightCard";
 import { SpanEndpointBottleneckHighlightCard } from "../highlightCards/SpanEndpointBottleneckHighlightCard";
+import { SpanPerformanceAnomalyHighlightCard } from "../highlightCards/SpanPerformanceAnomalyHighlightCard";
 import { SpaNPlusOneHighlightCard } from "../highlightCards/SpaNPlusOneHighlightCard";
 import { SpanQueryOptimizationHighlightCard } from "../highlightCards/SpanQueryOptimizationHighlightCard";
 import { SpanScalingHighlightCard } from "../highlightCards/SpanScalingHighlightCard";
@@ -75,5 +77,9 @@ export const HighlightCardRenderer = ({
 
   if (isSpanScalingHighlight(highlight)) {
     return <SpanScalingHighlightCard data={highlight} />;
+  }
+
+  if (isSpanPerformanceAnomalyHighlight(highlight)) {
+    return <SpanPerformanceAnomalyHighlightCard data={highlight} />;
   }
 };
