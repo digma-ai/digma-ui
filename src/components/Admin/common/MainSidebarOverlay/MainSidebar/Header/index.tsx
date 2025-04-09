@@ -3,7 +3,8 @@ import useDimensions from "react-cool-dimensions";
 import { getFeatureFlagValue } from "../../../../../../featureFlags";
 import { usePrevious } from "../../../../../../hooks/usePrevious";
 import { useGetAboutQuery } from "../../../../../../redux/services/digma";
-import { FeatureFlag } from "../../../../../../types";
+import { FeatureFlag, ScopeChangeEvent } from "../../../../../../types";
+import { sendUserActionTrackingEvent } from "../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { HistoryNavigationPanel } from "../../../../../common/HistoryNavigationPanel";
 import { CrossIcon } from "../../../../../common/icons/16px/CrossIcon";
 import { NewIconButton } from "../../../../../common/v3/NewIconButton";
@@ -11,6 +12,7 @@ import { isDisplayNameTooLong } from "../../../../../Navigation/isDisplayNameToo
 import { ScopeBar } from "../../../../../Navigation/ScopeBar";
 import { SpanInfo } from "../../../../../Navigation/SpanInfo";
 import { Tabs } from "../../../../../Navigation/Tabs";
+import { trackingEvents } from "../../../../tracking";
 import * as s from "./styles";
 import type { HeaderProps } from "./types";
 
@@ -19,12 +21,12 @@ export const Header = ({
   scope,
   onGoBack,
   onGoForward,
-  onGoHome,
   spanInfo,
   canGoBack,
   canGoForward,
   onTabSelect,
   selectedTabId,
+  onScopeChange,
   query
 }: HeaderProps) => {
   const [isSpanInfoVisible, setIsSpanInfoVisible] = useState(false);
@@ -43,15 +45,29 @@ export const Header = ({
   };
 
   const handleGoBack = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.MAIN_SIDEBAR_BACK_BUTTON_CLICKED
+    );
     onGoBack();
   };
 
   const handleGoForward = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.MAIN_SIDEBAR_FORWARD_BUTTON_CLICKED
+    );
     onGoForward();
   };
 
   const handleGoHome = () => {
-    onGoHome();
+    sendUserActionTrackingEvent(
+      trackingEvents.MAIN_SIDEBAR_HOME_BUTTON_CLICKED
+    );
+    onScopeChange({
+      span: null,
+      context: {
+        event: ScopeChangeEvent.NavigationHomeButtonClicked
+      }
+    });
   };
 
   const handleScopeDisplayNameExpandCollapseChange = (isExpanded: boolean) => {

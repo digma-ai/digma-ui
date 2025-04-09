@@ -1,4 +1,5 @@
 import { actions } from "../../actions";
+import type { ScopeChangeEvent } from "../../types";
 
 export interface ChangeScopePayload {
   span: {
@@ -7,7 +8,7 @@ export interface ChangeScopePayload {
   environmentId?: string;
   openMainPanel?: boolean;
   context?: {
-    event: string;
+    event: ScopeChangeEvent;
     payload?: Record<string, unknown>;
   };
 }

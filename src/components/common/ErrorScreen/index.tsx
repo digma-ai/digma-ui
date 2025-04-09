@@ -10,6 +10,7 @@ const getMessage = (platform: Platform | null) => {
   let substring = "";
   switch (platform) {
     case "JetBrains":
+    case "Visual Studio":
     case "VS Code":
       substring = "plugin";
       break;

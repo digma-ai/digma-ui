@@ -83,6 +83,7 @@ export const InsightCard = ({
 
   useEffect(() => {
     if (
+      onDismissalChange &&
       previousDismissalData !== dismissalData &&
       dismissalData?.payload.status === "success"
     ) {

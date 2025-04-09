@@ -12,7 +12,7 @@ export interface InsightCardCommonProps {
   isJiraHintEnabled?: boolean;
   isMarkAsReadButtonEnabled: boolean;
   viewMode: InsightCardViewMode;
-  onDismissalChange: (action: string, insightId: string) => void;
+  onDismissalChange?: (action: string, insightId: string) => void;
   onOpenSuggestion?: (insightId: string) => void;
   tooltipBoundaryRef?: RefObject<HTMLElement>;
 }

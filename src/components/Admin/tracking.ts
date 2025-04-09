@@ -16,22 +16,23 @@ export const trackingEvents = addPrefix(
     TOP_ISSUES_WIDGET_BY_SEVERITY_BUTTON_CLICKED:
       "top issues widget by severity button clicked",
     REPORT_WIDGET_CLICKED: "report widget clicked",
-    ISSUES_SIDEBAR_OVERLAY_CLICKED: "issues sidebar overlay clicked",
-    ISSUES_SIDEBAR_ESCAPE_KEY_PRESSED: "issues sidebar escape key pressed",
-    ISSUES_SIDEBAR_CLOSE_BUTTON_CLICKED: "issues sidebar close button clicked",
-    ISSUES_SIDEBAR_RESIZE_HANDLE_MOUSE_BUTTON_PRESSED:
-      "issues sidebar resize handle mouse button pressed",
-    ISSUES_SIDEBAR_RESIZE_HANDLE_MOUSE_BUTTON_RELEASED:
-      "issues sidebar resize handle mouse button released",
-    ISSUES_SIDEBAR_PAGE_CHANGED: "issues sidebar page changed",
-    ISSUES_SIDEBAR_SHOW_ONLY_DISMISSED_BUTTON_CLICKED:
-      "issues sidebar show only dismissed button clicked",
-    ISSUES_SIDEBAR_SHOW_ALL_BUTTON_CLICKED:
-      "issues sidebar show all button clicked",
-    ISSUES_SIDEBAR_BACK_BUTTON_CLICKED: "issues sidebar back button clicked",
-    ISSUES_SIDEBAR_FORWARD_BUTTON_CLICKED:
-      "issues sidebar forward button clicked",
-    ISSUES_SIDEBAR_HOME_BUTTON_CLICKED: "issues sidebar home button clicked",
+    MAIN_SIDEBAR_OVERLAY_CLICKED: "main sidebar overlay clicked",
+    MAIN_SIDEBAR_ESCAPE_KEY_PRESSED: "main sidebar escape key pressed",
+    MAIN_SIDEBAR_CLOSE_BUTTON_CLICKED: "main sidebar close button clicked",
+    MAIN_SIDEBAR_RESIZE_HANDLE_MOUSE_BUTTON_PRESSED:
+      "main sidebar resize handle mouse button pressed",
+    MAIN_SIDEBAR_RESIZE_HANDLE_MOUSE_BUTTON_RELEASED:
+      "main sidebar resize handle mouse button released",
+    MAIN_SIDEBAR_BACK_BUTTON_CLICKED: "main sidebar back button clicked",
+    MAIN_SIDEBAR_FORWARD_BUTTON_CLICKED: "main sidebar forward button clicked",
+    MAIN_SIDEBAR_HOME_BUTTON_CLICKED: "main sidebar home button clicked",
+    ISSUES_PAGE_CHANGED: "issues page changed",
+    ISSUES_SHOW_ONLY_DISMISSED_BUTTON_CLICKED:
+      "issues show only dismissed button clicked",
+    ISSUES_SHOW_ALL_BUTTON_CLICKED: "issues show all button clicked",
+    ANALYTICS_PAGE_CHANGED: "analytics page changed",
+    ANALYTICS_SEE_ALL_ASSETS_BUTTON_CLICKED:
+      "analytics see all assets button clicked",
     SUGGESTION_BAR_CLOSE_BUTTON_CLICKED: "suggestion bar close button clicked",
     SUGGESTION_BAR_ASSETS_TOGGLE_VALUE_CHANGED:
       "suggestion bar assets toggle value changed",
