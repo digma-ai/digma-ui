@@ -22,6 +22,27 @@ export const useStore = create(
               }
             : state
         );
+      },
+      clearInsightsFilters: (spanCodeObjectId?: string) => (_, set) => {
+        set((state) => ({
+          ...state,
+          config: {
+            ...state.config,
+            ...(spanCodeObjectId ? {} : { selectedServices: [] })
+          },
+          insights: {
+            ...state.insights,
+            page: 0,
+            search: "",
+            filters: [],
+            ...(spanCodeObjectId
+              ? { filteredInsightTypes: [], filteredCriticalityLevels: [] }
+              : {
+                  filteredInsightTypesInGlobalScope: [],
+                  filteredCriticalityLevelsInGlobalScope: []
+                })
+          }
+        }));
       }
     }
   )

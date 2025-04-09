@@ -27,7 +27,8 @@ export const trackingEvents = addPrefix(
     ENVIRONMENT_MENU_BUTTON_CLICKED: "environment menu button clicked",
     FILTER_ICON_BUTTON_CLICKED: "filter icon button clicked",
     INSIGHTS_INFO_OPEN_DOCS_CLICKED: "insights info open docs clicked",
-    INSIGHTS_INFO_CLOSE_CLICKED: "insights info close clicked"
+    INSIGHTS_INFO_CLOSE_CLICKED: "insights info close clicked",
+    ISSUES_CLEAR_FILTERS_BUTTON_CLICKED: "issues clear filters button clicked"
   },
   " "
 );

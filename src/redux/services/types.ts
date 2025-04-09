@@ -527,6 +527,7 @@ export interface GetInsightsResponse {
   dismissedCount?: number;
   insights: GenericCodeObjectInsight[];
   unreadCount?: number;
+  hasIssuesIgnoringFilters?: boolean;
 }
 
 export interface ExtendedGetInsightsResponse {
@@ -603,6 +604,7 @@ export interface GetIssuesResponse {
   totalCount: number;
   dismissedCount?: number;
   unreadCount?: number;
+  hasIssuesIgnoringFilters?: boolean;
 }
 
 export interface RecheckInsightPayload {

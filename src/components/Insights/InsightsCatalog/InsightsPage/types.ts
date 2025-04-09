@@ -1,15 +1,12 @@
 import type { InsightType } from "../../../../types";
-import type { GenericCodeObjectInsight, InsightViewType } from "../../types";
+import type { GenericCodeObjectInsight } from "../../types";
 export interface InsightsPageProps {
-  insights: GenericCodeObjectInsight[];
   onJiraTicketCreate: (
     insight: GenericCodeObjectInsight,
     spanCodeObjectId?: string
   ) => void;
   onRefresh: () => void;
-  page: number;
   isMarkAsReadButtonEnabled: boolean;
-  insightsViewType: InsightViewType | null;
 }
 
 export interface isInsightJiraTicketHintShownPayload {

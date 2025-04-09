@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { actions as globalActions } from "../../../../actions";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { platform } from "../../../../platform";
@@ -56,7 +56,9 @@ const renderEmptyState = (
   search: string,
   scope: Scope | null,
   insightsViewType: InsightViewType | null,
-  goTo: (location: string) => void
+  goTo: (location: string) => void,
+  onFiltersClear: (spanCodeObjectId?: string) => void,
+  hasIssues?: boolean
 ) => {
   const handleTroubleshootingLinkClick = () => {
     sendUserActionTrackingEvent(globalEvents.TROUBLESHOOTING_LINK_CLICKED, {
@@ -80,8 +82,33 @@ const renderEmptyState = (
     goTo(`/${TAB_IDS.ASSETS}`);
   };
 
+  const handleClearFiltersButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ISSUES_CLEAR_FILTERS_BUTTON_CLICKED
+    );
+    onFiltersClear(scope?.span?.spanCodeObjectId);
+  };
+
   if (search.length > 0) {
     return <EmptyState preset={"noSearchResults"} />;
+  }
+
+  if (
+    insightsViewType === "Issues" &&
+    areAnyFiltersApplied &&
+    hasIssues === true
+  ) {
+    return (
+      <EmptyState
+        preset={"noFilteredIssues"}
+        customContent={
+          <NewButton
+            onClick={handleClearFiltersButtonClick}
+            label={"Clear filters"}
+          />
+        }
+      />
+    );
   }
 
   if (areAnyFiltersApplied) {
@@ -149,15 +176,15 @@ export const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
   "isInsightJiraTicketHintShown";
 
 export const InsightsPage = ({
-  page,
-  insights,
   onJiraTicketCreate,
   onRefresh,
-  isMarkAsReadButtonEnabled,
-  insightsViewType
+  isMarkAsReadButtonEnabled
 }: InsightsPageProps) => {
   const { scope, environment, backendInfo } = useConfigSelector();
   const {
+    page,
+    data,
+    insightViewType,
     viewMode,
     search,
     filters,
@@ -166,7 +193,8 @@ export const InsightsPage = ({
     filteredCriticalityLevels: filteredCriticalityLevelsInSpanScope,
     filteredCriticalityLevelsInGlobalScope
   } = useInsightsSelector();
-  const { setInsightsViewMode: setMode } = useStore.getState();
+  const { setInsightsViewMode: setMode, clearInsightsFilters } =
+    useStore.getState();
   const isAtSpan = Boolean(scope?.span);
   const filteredInsightTypes = isAtSpan
     ? filteredInsightTypesInSpanScope
@@ -175,7 +203,7 @@ export const InsightsPage = ({
     ? filteredCriticalityLevelsInSpanScope
     : filteredCriticalityLevelsInGlobalScope;
   const areAnyFiltersApplied =
-    (insightsViewType === "Issues"
+    (insightViewType === "Issues"
       ? filters.length > 0 ||
         filteredInsightTypes.length > 0 ||
         filteredCriticalityLevels.length > 0
@@ -187,6 +215,7 @@ export const InsightsPage = ({
     );
   const listRef = useRef<HTMLDivElement>(null);
   const { goTo } = useHistory();
+  const insights = useMemo(() => data?.insights ?? [], [data?.insights]);
 
   const insightIndexWithJiraHint = getInsightToShowJiraHint(insights);
 
@@ -258,8 +287,10 @@ export const InsightsPage = ({
             areAnyFiltersApplied,
             search,
             scope,
-            insightsViewType,
-            goTo
+            insightViewType,
+            goTo,
+            clearInsightsFilters,
+            data?.hasIssuesIgnoringFilters
           )}
     </s.Container>
   );
