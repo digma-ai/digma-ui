@@ -181,6 +181,14 @@ export const Header = ({
   const titleSuffix = viewLevel === "endpoints" ? " Endpoints" : "";
   const tooltipTitle = `${title} ${titleSuffix}`;
 
+  const isNewBehaviorForMetricsTimeModesEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IsNewBehaviorForMetricsTimeModesEnabled
+  );
+  const changesTimeModeTitle = isNewBehaviorForMetricsTimeModesEnabled
+    ? "New"
+    : "Changes";
+
   return (
     <s.Container>
       <s.Row>
@@ -206,10 +214,10 @@ export const Header = ({
             <s.Title>{title}</s.Title>
           )}
         </s.TitleContainer>
-        <s.TimeModeToggle
+        <s.TimeModeToggle<IssuesReportTimeMode>
           options={[
             { value: "baseline", label: "Baseline" },
-            { value: "changes", label: "Changes" }
+            { value: "changes", label: changesTimeModeTitle }
           ]}
           value={timeMode}
           onValueChange={handleTimeModeChange}
