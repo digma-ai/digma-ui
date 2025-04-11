@@ -40,7 +40,7 @@ export const SpanScalingInsightCard = ({
     insight.id
   );
 
-  const handleLinkClick = (spanCodeObjectId: string) => () => () => {
+  const handleLinkClick = (spanCodeObjectId: string) => () => {
     onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
@@ -130,9 +130,7 @@ export const SpanScalingInsightCard = ({
             </KeyValue>
             <KeyValue
               label={"Duration"}
-              info={
-                "The execution time range from minimal  to maximum duration"
-              }
+              info={"The execution time range from minimal to maximum duration"}
             >
               {durationRangeString}
             </KeyValue>
