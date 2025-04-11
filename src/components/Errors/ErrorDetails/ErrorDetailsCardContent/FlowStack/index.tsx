@@ -137,7 +137,7 @@ export const FlowStack = ({ data }: FlowStackProps) => {
             : frames;
 
           const spanGroups = visibleFrames.reduce((acc, frame, i) => {
-            if (i == 0 || frame.spanName !== frames[i - 1].spanName) {
+            if (i === 0 || frame.spanName !== frames[i - 1].spanName) {
               acc.push([frame]);
             } else {
               acc[acc.length - 1].push(frame);

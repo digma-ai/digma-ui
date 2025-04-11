@@ -4,6 +4,7 @@ import type {
   EndpointChattyApiV2Metrics,
   EndpointHighNumberOfQueriesMetrics,
   EndpointQueryOptimizationV2Metrics,
+  EndpointScalingMetrics,
   EndpointSessionInViewMetrics,
   EndpointSlowdownSourceMetrics,
   EndpointSpanNPlusOneMetrics,
@@ -81,3 +82,8 @@ export const isSpanPerformanceAnomalyHighlight = (
   highlight: HighlightData<GenericMetrics>
 ): highlight is HighlightData<SpanPerformanceAnomalyMetrics> =>
   highlight.insightType === InsightType.SpanPerformanceAnomaly;
+
+export const isEndpointScalingHighlight = (
+  highlight: HighlightData<GenericMetrics>
+): highlight is HighlightData<EndpointScalingMetrics> =>
+  highlight.insightType === InsightType.EndpointScaling;

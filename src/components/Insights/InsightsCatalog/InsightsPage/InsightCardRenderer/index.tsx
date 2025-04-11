@@ -22,6 +22,7 @@ import {
   isEndpointLowUsageInsight,
   isEndpointNormalUsageInsight,
   isEndpointQueryOptimizationV2Insight,
+  isEndpointScalingInsight,
   isEndpointSlowdownSourceInsight,
   isEndpointSpanNPlusOneInsight,
   isSessionInViewEndpointInsight,
@@ -43,6 +44,7 @@ import { EndpointBreakdownInsightCard } from "./insightCards/EndpointBreakdownIn
 import { EndpointChattyApiV2InsightCard } from "./insightCards/EndpointChattyApiV2InsightCard";
 import { EndpointHighNumberOfQueriesInsightCard } from "./insightCards/EndpointHighNumberOfQueriesInsightCard";
 import { EndpointQueryOptimizationV2InsightCard } from "./insightCards/EndpointQueryOptimizationV2InsightCard";
+import { EndpointScalingInsightCard } from "./insightCards/EndpointScalingInsightCard";
 import { EndpointSessionInViewInsightCard } from "./insightCards/EndpointSessionInViewInsightCard";
 import { EndpointSlowdownSourceInsightCard } from "./insightCards/EndpointSlowdownSourceInsightCard";
 import { EndpointSpanNPlusOneInsightCard } from "./insightCards/EndpointSpanNPlusOneInsightInsightCard";
@@ -514,6 +516,25 @@ export const InsightCardRenderer = ({
         tooltipBoundaryRef={tooltipBoundaryRef}
         onTraceButtonClick={handleTraceButtonClick}
         onHistogramButtonClick={handleHistogramButtonClick}
+      />
+    );
+  }
+
+  if (isEndpointScalingInsight(insight)) {
+    return (
+      <EndpointScalingInsightCard
+        key={insight.id}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onTraceButtonClick={handleTraceButtonClick}
+        onHistogramButtonClick={handleHistogramButtonClick}
+        onJiraTicketCreate={onJiraTicketCreate}
+        isJiraHintEnabled={isJiraHintEnabled}
+        onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+        viewMode={viewMode}
+        onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }

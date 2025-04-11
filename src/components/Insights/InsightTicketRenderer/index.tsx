@@ -121,7 +121,7 @@ export const InsightTicketRenderer = ({
   if (isSpanScalingBadlyInsight(data.insight)) {
     const ticketData = data as InsightTicketInfo<SpanScalingInsight>;
     const selectedRootCause = data.insight.rootCauseSpans.find(
-      (r) => r.spanCodeObjectId == data.spanCodeObjectId
+      (r) => r.spanCodeObjectId === data.spanCodeObjectId
     );
     if (selectedRootCause) {
       return (
