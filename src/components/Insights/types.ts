@@ -387,6 +387,14 @@ export interface AffectedEndpoint extends SpanInfo {
   flowHash: string;
 }
 
+// interface ScalingInsightInfo {
+//   turningPointConcurrency: number;
+//   maxConcurrency: number;
+//   minDuration: Duration;
+//   maxDuration: Duration;
+//   histogramInfo: histogramBarData[] | null;
+// }
+
 export interface SpanScalingInsight extends SpanInsight {
   name: "Scaling Issue Found";
   type: InsightType.SpanScaling;
@@ -653,4 +661,10 @@ export interface SpanPerformanceAnomalyInsight extends SpanInsight {
   slowerByPercentage: number;
   p50TraceId: string | null;
   p95TraceId: string | null;
+}
+
+export interface EndpointScalingInsight extends EndpointInsight {
+  name: "Scaling Issue Found";
+  type: InsightType.EndpointScaling;
+  category: InsightCategory.Performance;
 }
