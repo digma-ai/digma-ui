@@ -413,6 +413,13 @@ export type SpanScalingMetrics = [
   }
 ];
 
+export type EndpointScalingMetrics = [
+  {
+    id: "IncreasePercentage";
+    value: number;
+  }
+];
+
 export type SpanPerformanceAnomalyMetrics = [
   {
     id: "P50";

@@ -12,6 +12,7 @@ import type {
   EndpointLowUsageInsight,
   EndpointNormalUsageInsight,
   EndpointQueryOptimizationV2Insight,
+  EndpointScalingInsight,
   EndpointSessionInViewInsight,
   EndpointSlowdownSourceInsight,
   EndpointSpanNPlusOneInsight,
@@ -161,7 +162,7 @@ export const isSpanPerformanceAnomalyInsight = (
 ): insight is SpanPerformanceAnomalyInsight =>
   insight.type === InsightType.SpanPerformanceAnomaly;
 
-// export const isEndpointScalingInsight = (
-//   insight: CodeObjectInsight
-// ): insight is EndpointScalingInsight =>
-//   insight.type === InsightType.EndpointScaling;
+export const isEndpointScalingInsight = (
+  insight: CodeObjectInsight
+): insight is EndpointScalingInsight =>
+  insight.type === InsightType.EndpointScaling;

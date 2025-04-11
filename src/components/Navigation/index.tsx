@@ -197,7 +197,7 @@ export const Navigation = () => {
     if (
       environments &&
       environments.length > 0 &&
-      (!environment || !environments.find((x) => x.id == environment?.id))
+      (!environment || !environments.find((x) => x.id === environment.id))
     ) {
       changeScope({
         span: scope?.span

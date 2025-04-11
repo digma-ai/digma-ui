@@ -145,7 +145,7 @@ const renderEmptyState = (
     return <EmptyState preset={"noDataYet"} />;
   }
 
-  if (!scope?.span?.spanCodeObjectId && insightsViewType == "Analytics") {
+  if (!scope?.span?.spanCodeObjectId && insightsViewType === "Analytics") {
     return (
       <EmptyState
         preset={"analyticsSelectAsset"}
