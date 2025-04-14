@@ -191,7 +191,7 @@ export const CreateEnvironmentWizard = ({
   };
 
   const getStepVisibility = (key: string) => {
-    const stepIndex = getSteps().findIndex((x) => x.key == key);
+    const stepIndex = getSteps().findIndex((x) => x.key === key);
     return stepIndex === currentStep;
   };
 

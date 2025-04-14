@@ -102,7 +102,7 @@ export const Main = () => {
   const isSelectedEnvironmentExist = useMemo(
     () =>
       Boolean(
-        environment && environments?.find((x) => x.id == environment?.id)
+        environment && environments?.find((x) => x.id === environment.id)
       ),
     [environment, environments]
   );

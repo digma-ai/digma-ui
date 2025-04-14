@@ -12,6 +12,7 @@ import {
   useRole
 } from "@floating-ui/react";
 import { createContext, useContext, useMemo, useState } from "react";
+import { isUndefined } from "../../../typeGuards/isUndefined";
 import type { ContextType, PopoverProps } from "./types";
 
 export const usePopover = ({
@@ -45,7 +46,7 @@ export const usePopover = ({
   const context = data.context;
 
   const click = useClick(context, {
-    enabled: controlledOpen == null
+    enabled: isUndefined(controlledOpen)
   });
   const dismiss = useDismiss(context);
   const role = useRole(context);
@@ -73,7 +74,7 @@ export const PopoverContext = createContext<ContextType>(null);
 export const usePopoverContext = () => {
   const context = useContext(PopoverContext);
 
-  if (context == null) {
+  if (context === null) {
     throw new Error("Popover components must be wrapped in <Popover />");
   }
 

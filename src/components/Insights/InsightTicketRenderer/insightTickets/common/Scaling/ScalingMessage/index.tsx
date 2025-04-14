@@ -1,6 +1,6 @@
 import type { ScalingIssueCommonProps } from "../types";
 
-export const ScalingIssueMessage = ({ insight }: ScalingIssueCommonProps) => {
+export const ScalingMessage = ({ insight }: ScalingIssueCommonProps) => {
   if (!insight) {
     return null;
   }

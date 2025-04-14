@@ -19,45 +19,25 @@ import {
   setIssuesInsightInfoToOpenTicket
 } from "../../../../../../redux/slices/repositorySlice";
 import { isUndefined } from "../../../../../../typeGuards/isUndefined";
-import { InsightType } from "../../../../../../types";
 import type { ChangeScopePayload } from "../../../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { EyeIcon } from "../../../../../common/icons/16px/EyeIcon";
 import { Pagination } from "../../../../../common/Pagination";
 import { NewButton } from "../../../../../common/v3/NewButton";
 import { EmptyState } from "../../../../../Insights/EmptyState";
+import { getInsightToShowJiraHint } from "../../../../../Insights/InsightsCatalog/InsightsPage";
 import { EmptyState as InsightsPageEmptyState } from "../../../../../Insights/InsightsCatalog/InsightsPage/EmptyState";
 import { InsightCardRenderer } from "../../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer";
 import { actions } from "../../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/hooks/useDismissal";
 import { ViewMode } from "../../../../../Insights/InsightsCatalog/types";
 import { InsightTicketRenderer } from "../../../../../Insights/InsightTicketRenderer";
-import {
-  type CodeObjectInsight,
-  type GenericCodeObjectInsight
-} from "../../../../../Insights/types";
+import { type GenericCodeObjectInsight } from "../../../../../Insights/types";
 import { trackingEvents } from "../../../../tracking";
 import { SuggestionBar } from "../SuggestionBar";
 import * as s from "./styles";
 import type { IssuesProps } from "./types";
 
 const PAGE_SIZE = 10;
-
-const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
-  const insightsWithJiraButton = [
-    InsightType.EndpointSpanNPlusOne,
-    InsightType.SpaNPlusOne,
-    InsightType.SpanEndpointBottleneck,
-    InsightType.EndpointBottleneck,
-    InsightType.SpanQueryOptimization,
-    InsightType.EndpointHighNumberOfQueries,
-    InsightType.EndpointQueryOptimizationV2,
-    InsightType.SpanScaling
-  ];
-
-  return insights.findIndex((insight) =>
-    insightsWithJiraButton.includes(insight.type)
-  );
-};
 
 export const Issues = ({
   isTransitioning,
