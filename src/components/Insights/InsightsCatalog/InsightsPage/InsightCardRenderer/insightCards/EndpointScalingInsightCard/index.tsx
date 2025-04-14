@@ -108,7 +108,7 @@ export const EndpointScalingInsightCard = ({
           <s.InsightDescription>
             {insight.shortDisplayInfo.description}
           </s.InsightDescription>
-          {insight.issueLocation === "Span" && (
+          {insight.issueLocation === "Span" && insight.sourceSpanInfo && (
             <Details>
               <Description>Asset</Description>
               <AssetLink
@@ -131,6 +131,7 @@ export const EndpointScalingInsightCard = ({
             </KeyValue>
           </ColumnsContainer>
           {insight.issueLocation === "SpanRootCause" &&
+            insight.sourceSpanInfo &&
             renderRootCause(insight.sourceSpanInfo)}
         </ContentContainer>
       }

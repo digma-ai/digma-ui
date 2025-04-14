@@ -63,7 +63,7 @@ export const EndpointScalingInsightTicket = ({
 
   const summary = getScalingSummary(data.insight);
 
-  const traceId = data.insight.sourceSpanInfo.sampleTraceId;
+  const traceId = data.insight.sourceSpanInfo?.sampleTraceId;
   const attachmentTrace = getTraceAttachment(
     `${window.location.origin}${jaegerApiPath ?? ""}`,
     traceId

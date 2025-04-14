@@ -440,7 +440,7 @@ export interface EndpointScalingInsight
   type: InsightType.EndpointScaling;
   flowHash: string;
   issueLocation: "Span" | "Endpoint" | "SpanRootCause";
-  sourceSpanInfo: SourceSpanInfo;
+  sourceSpanInfo: SourceSpanInfo | null;
 }
 
 export interface NPlusOneEndpointInfo {

@@ -46,7 +46,8 @@ export const EndpointScalingWithSpanInsightTicket = ({
               insight={spanInsight}
             />,
             <ScalingDuration key={"scalingDuration"} insight={spanInsight} />,
-            ...(data.insight.issueLocation === "SpanRootCause"
+            ...(data.insight.issueLocation === "SpanRootCause" &&
+            data.insight.sourceSpanInfo
               ? [
                   <ScalingRootCauses
                     key={"scalingRootCauses"}
@@ -75,7 +76,7 @@ export const EndpointScalingWithSpanInsightTicket = ({
 
   const summary = getScalingSummary(data.insight);
 
-  const traceId = data.insight.sourceSpanInfo.sampleTraceId;
+  const traceId = data.insight.sourceSpanInfo?.sampleTraceId;
   const attachmentTrace = getTraceAttachment(
     `${window.location.origin}${jaegerApiPath ?? ""}`,
     traceId
