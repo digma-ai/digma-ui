@@ -426,9 +426,7 @@ export interface SpanScalingInsight extends SpanInsight, ScalingInsightInfo {
   flowHash: string | null;
 }
 
-export interface SourceSpanInfo {
-  spanCodeObjectId: string;
-  displayName: string;
+export interface SourceSpanInfo extends SpanInfo {
   sampleTraceId?: string;
 }
 

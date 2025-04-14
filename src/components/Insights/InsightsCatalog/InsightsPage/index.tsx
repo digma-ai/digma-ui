@@ -33,7 +33,9 @@ import type {
   isInsightJiraTicketHintShownPayload
 } from "./types";
 
-const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
+export const getInsightToShowJiraHint = (
+  insights: CodeObjectInsight[]
+): number => {
   const insightsWithJiraButton = [
     InsightType.EndpointSpanNPlusOne,
     InsightType.SpaNPlusOne,
@@ -42,7 +44,8 @@ const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
     InsightType.SpanQueryOptimization,
     InsightType.EndpointHighNumberOfQueries,
     InsightType.EndpointQueryOptimizationV2,
-    InsightType.SpanScaling
+    InsightType.SpanScaling,
+    InsightType.EndpointScaling
   ];
 
   return insights.findIndex((insight) =>

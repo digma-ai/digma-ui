@@ -1,7 +1,7 @@
 import { getDurationString } from "../../../../../../../utils/getDurationString";
 import type { ScalingIssueCommonProps } from "../types";
 
-export const ScalingIssueDuration = ({ insight }: ScalingIssueCommonProps) => {
+export const ScalingDuration = ({ insight }: ScalingIssueCommonProps) => {
   if (!insight) {
     return null;
   }

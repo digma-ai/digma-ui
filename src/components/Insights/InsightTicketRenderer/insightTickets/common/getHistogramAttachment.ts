@@ -1,9 +1,9 @@
 import type { GetAboutResponse } from "../../../../../redux/services/types";
 import type { BackendInfo } from "../../../../common/App/types";
 import { getInsightHistogramUrl } from "../../../getInsightHistogramUrl";
-import type { SpanInsight } from "../../../types";
+import type { EndpointInsight, SpanInsight } from "../../../types";
 
-export const getHistogramAttachment = <T extends SpanInsight>(
+export const getHistogramAttachment = <T extends SpanInsight | EndpointInsight>(
   baseURL: string | null,
   insight: T | null,
   backendInfo: BackendInfo | GetAboutResponse | null

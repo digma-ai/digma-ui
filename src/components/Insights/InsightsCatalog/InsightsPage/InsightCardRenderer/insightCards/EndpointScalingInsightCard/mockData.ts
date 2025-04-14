@@ -417,7 +417,11 @@ export const mockedEndpointScalingInsight: EndpointScalingInsight = {
     displayName: "sourceSpanInfo displayName",
     spanCodeObjectId:
       "span:InsightNodeExecutionConsumer$_$InsightNodeExecutionConsumer InvokeBatch",
-    sampleTraceId: "3E41E4197B696CA9BF1157AEB254DFE0"
+    sampleTraceId: "3E41E4197B696CA9BF1157AEB254DFE0",
+    instrumentationLibrary: "InsightNodeExecutionConsumer",
+    methodCodeObjectId: null,
+    kind: "Consumer",
+    name: "name"
   }
 };
 

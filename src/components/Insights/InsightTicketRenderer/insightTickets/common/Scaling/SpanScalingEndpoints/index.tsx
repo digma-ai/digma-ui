@@ -1,11 +1,11 @@
 import { DELIMITER } from "../../../../../../../constants";
 import { trimEndpointScheme } from "../../../../../../../utils/trimEndpointScheme";
 import * as s from "../styles";
-import type { ScalingIssueCommonProps } from "../types";
+import type { SpanScalingAffectedEndpointsProps } from "./types";
 
-export const ScalingIssueAffectedEndpoints = ({
+export const SpanScalingAffectedEndpoints = ({
   insight
-}: ScalingIssueCommonProps) => {
+}: SpanScalingAffectedEndpointsProps) => {
   if (!insight) {
     return null;
   }

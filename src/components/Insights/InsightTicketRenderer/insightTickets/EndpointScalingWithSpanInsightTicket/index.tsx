@@ -1,10 +1,14 @@
 import type { ReactElement } from "react";
 import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
+import { InsightType } from "../../../../../types";
 import { intersperse } from "../../../../../utils/intersperse";
 import { DigmaSignature } from "../../../../common/DigmaSignature";
 import type { Attachment } from "../../../../common/JiraTicket/types";
-import type { SpanScalingInsight } from "../../../types";
-import { useSpanDataSource } from "../common";
+import type {
+  EndpointScalingInsight,
+  SpanScalingInsight
+} from "../../../types";
+import { useEndpointDataSource } from "../common";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { getHistogramAttachment } from "../common/getHistogramAttachment";
@@ -15,22 +19,19 @@ import { ScalingDuration } from "../common/Scaling/ScalingDuration";
 import { ScalingMessage } from "../common/Scaling/ScalingMessage";
 import { ScalingRootCauses } from "../common/Scaling/ScalingRootCauses";
 import { ScalingTestedConcurrency } from "../common/Scaling/ScalingTestedConcurrency";
-import { SpanScalingAffectedEndpoints } from "../common/Scaling/SpanScalingEndpoints";
 import type { InsightTicketProps } from "../types";
 
-export const SpanScalingInsightTicket = ({
+export const EndpointScalingWithSpanInsightTicket = ({
   data,
   onClose,
   backendInfo
-}: InsightTicketProps<SpanScalingInsight>) => {
+}: InsightTicketProps<EndpointScalingInsight>) => {
   const { jaegerApiPath, digmaApiProxyPrefix } = useConfigSelector();
 
-  const insight = data.insight;
-
-  const { commitInfos, isLoading, codeLocations } =
-    useSpanDataSource<SpanScalingInsight>(
-      data.insight.spanInfo,
-      data.insight,
+  const { commitInfos, spanInsight, isLoading, codeLocations } =
+    useEndpointDataSource<SpanScalingInsight>(
+      data.insight.sourceSpanInfo,
+      InsightType.SpanScaling,
       data.insight.environment
     );
 
@@ -39,20 +40,20 @@ export const SpanScalingInsightTicket = ({
       <>
         {intersperse<ReactElement, ReactElement>(
           [
-            <ScalingMessage key={"message"} insight={insight} />,
+            <ScalingMessage key={"message"} insight={spanInsight} />,
             <ScalingTestedConcurrency
               key={"scalingTestedConcurrency"}
-              insight={insight}
+              insight={spanInsight}
             />,
-            <ScalingDuration key={"scalingDuration"} insight={insight} />,
-            <ScalingRootCauses
-              key={"scalingRootCauses"}
-              spanInfos={insight.rootCauseSpans}
-            />,
-            <SpanScalingAffectedEndpoints
-              key={"spanScalingAffectedEndpoints"}
-              insight={insight}
-            />,
+            <ScalingDuration key={"scalingDuration"} insight={spanInsight} />,
+            ...(data.insight.issueLocation === "SpanRootCause"
+              ? [
+                  <ScalingRootCauses
+                    key={"scalingRootCauses"}
+                    spanInfos={[data.insight.sourceSpanInfo]}
+                  />
+                ]
+              : []),
             <CodeLocations
               key={"codeLocations"}
               codeLocations={codeLocations}
@@ -60,7 +61,7 @@ export const SpanScalingInsightTicket = ({
             <CommitInfos
               key={"commitInfos"}
               commitInfos={commitInfos}
-              insight={insight}
+              insight={spanInsight}
             />,
             <DigmaSignature key={"digmaSignature"} />
           ],
@@ -74,16 +75,14 @@ export const SpanScalingInsightTicket = ({
 
   const summary = getScalingSummary(data.insight);
 
-  const traceId = data.insight.affectedEndpoints
-    ?.map((ep) => ep.sampleTraceId)
-    ?.find((t) => t);
+  const traceId = data.insight.sourceSpanInfo.sampleTraceId;
   const attachmentTrace = getTraceAttachment(
     `${window.location.origin}${jaegerApiPath ?? ""}`,
     traceId
   );
   const attachmentHistogram = getHistogramAttachment(
     `${window.location.origin}${digmaApiProxyPrefix ?? "/api"}`,
-    insight,
+    data.insight,
     backendInfo
   );
   const attachments: Attachment[] = [
