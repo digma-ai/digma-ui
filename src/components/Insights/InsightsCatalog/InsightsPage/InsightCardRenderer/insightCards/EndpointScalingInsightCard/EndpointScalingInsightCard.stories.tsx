@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { EndpointScalingInsightCard } from ".";
-import { mockedEndpointScalingInsight } from "./mockData";
+import {
+  mockedEndpointScalingInsight,
+  mockedEndpointScalingWithRootCauseInsight,
+  mockedEndpointScalingWithSpanInsight
+} from "./mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof EndpointScalingInsightCard> = {
@@ -25,12 +29,12 @@ export const Default: Story = {
 
 export const WithSpan: Story = {
   args: {
-    insight: { ...mockedEndpointScalingInsight, issueLocation: "Span" }
+    insight: mockedEndpointScalingWithSpanInsight
   }
 };
 
 export const WithRootCause: Story = {
   args: {
-    insight: { ...mockedEndpointScalingInsight, issueLocation: "SpanRootCause" }
+    insight: mockedEndpointScalingWithRootCauseInsight
   }
 };

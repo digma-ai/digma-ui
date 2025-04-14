@@ -119,7 +119,11 @@ export const InsightCard = ({
   };
 
   const handleHistogramButtonClick = () => {
-    if (isSpanInsight(insight) && insight.spanInfo && onOpenHistogram) {
+    if (
+      (isSpanInsight(insight) || isEndpointInsight(insight)) &&
+      insight.spanInfo &&
+      onOpenHistogram
+    ) {
       onOpenHistogram(
         insight.spanInfo.spanCodeObjectId,
         insight.type,

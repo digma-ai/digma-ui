@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { EndpointScalingWithSpanInsightTicket } from ".";
-import { mockedEndpointScalingInsight } from "../../../InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/EndpointScalingInsightCard/mockData";
+import {
+  mockedEndpointScalingWithRootCauseInsight,
+  mockedEndpointScalingWithSpanInsight
+} from "../../../InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/EndpointScalingInsightCard/mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof EndpointScalingWithSpanInsightTicket> = {
@@ -20,7 +23,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     data: {
-      insight: { ...mockedEndpointScalingInsight, issueLocation: "Span" }
+      insight: mockedEndpointScalingWithSpanInsight
     }
   }
 };
@@ -28,10 +31,7 @@ export const Default: Story = {
 export const WithRootCause: Story = {
   args: {
     data: {
-      insight: {
-        ...mockedEndpointScalingInsight,
-        issueLocation: "SpanRootCause"
-      }
+      insight: mockedEndpointScalingWithRootCauseInsight
     }
   }
 };

@@ -392,6 +392,8 @@ interface HistogramInfo {
   lineFunction: {
     A: number;
     B: number;
+    C?: number;
+    KneeX?: number;
     $type: "linear" | "exponent";
   };
   points: {

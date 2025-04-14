@@ -11,283 +11,285 @@ export const mockedEndpointScalingInsight: EndpointScalingInsight = {
   category: InsightCategory.Performance,
   specifity: 2,
   importance: 2,
-  turningPointConcurrency: 0,
-  maxConcurrency: 11,
+  turningPointConcurrency: 5,
+  maxConcurrency: 9,
   minDuration: {
-    value: 8.02,
+    value: 9.1,
     unit: "ms",
-    raw: 8021001.110043491
+    raw: 9098884.61833865
   },
   maxDuration: {
-    value: 29.66,
+    value: 34.28,
     unit: "ms",
-    raw: 29655127.250608273
+    raw: 34278875.03671072
   },
   flowHash: "",
-  issueLocation: "Endpoint",
+  issueLocation: "Span",
   histogram: {
     lineFunction: {
-      A: 1375173.514291253,
-      B: 2565254.915088458,
-      $type: "linear"
+      A: 1556615.0413785747,
+      B: 0.29089712035014054,
+      C: 9098883.61833865,
+      KneeX: 5.743450145936153,
+      $type: "exponent"
     },
     points: [
       {
         x: 1,
-        y: 14607677.879437726,
-        occurrences: 148753,
+        y: 15968366.170570357,
+        occurrences: 139825,
         negligible: false
       },
       {
         x: 2,
-        y: 11803958.18842775,
-        occurrences: 66020,
+        y: 12940692.905096898,
+        occurrences: 59134,
         negligible: false
       },
       {
         x: 3,
-        y: 8221377.6361382995,
-        occurrences: 26358,
+        y: 9151696.144007443,
+        occurrences: 22934,
         negligible: false
       },
       {
         x: 4,
-        y: 8021001.110043491,
-        occurrences: 9887,
+        y: 9098884.61833865,
+        occurrences: 8463,
         negligible: false
       },
       {
         x: 5,
-        y: 8586327.215457913,
-        occurrences: 3778,
+        y: 10240765.271654764,
+        occurrences: 3221,
         negligible: false
       },
       {
         x: 6,
-        y: 11890889.534617146,
-        occurrences: 1454,
+        y: 13616007.83293301,
+        occurrences: 1249,
         negligible: false
       },
       {
         x: 7,
-        y: 21276288.073394496,
-        occurrences: 654,
+        y: 25946974.649618886,
+        occurrences: 581,
         negligible: false
       },
       {
         x: 8,
-        y: 25235655.799999997,
-        occurrences: 375,
+        y: 30054854.44606414,
+        occurrences: 343,
         negligible: false
       },
       {
         x: 9,
-        y: 29655127.250608273,
-        occurrences: 274,
+        y: 34278875.03671072,
+        occurrences: 227,
         negligible: false
       },
       {
         x: 10,
-        y: 32662940.0921659,
-        occurrences: 217,
+        y: 34937979.086021505,
+        occurrences: 186,
         negligible: true
       },
       {
         x: 11,
-        y: 24430388.17807707,
-        occurrences: 243,
-        negligible: false
+        y: 29936882.636363633,
+        occurrences: 200,
+        negligible: true
       },
       {
         x: 12,
-        y: 24345829.976303317,
-        occurrences: 211,
+        y: 28419015.78726968,
+        occurrences: 199,
         negligible: true
       },
       {
         x: 13,
-        y: 20567738.929313928,
-        occurrences: 148,
+        y: 23508810.331274565,
+        occurrences: 137,
         negligible: true
       },
       {
         x: 14,
-        y: 17387076.659959756,
-        occurrences: 142,
+        y: 20265642.228571426,
+        occurrences: 125,
         negligible: true
       },
       {
         x: 15,
-        y: 11173767.130124776,
-        occurrences: 187,
+        y: 13226994.824561406,
+        occurrences: 152,
         negligible: true
       },
       {
         x: 16,
-        y: 12027726.270325202,
-        occurrences: 123,
+        y: 13032020.495495494,
+        occurrences: 111,
         negligible: true
       },
       {
         x: 17,
-        y: 12397954.105998836,
-        occurrences: 101,
-        negligible: true
-      },
-      {
-        x: 18,
-        y: 21540104.824561402,
-        occurrences: 76,
-        negligible: true
-      },
-      {
-        x: 19,
-        y: 13579636.205899362,
+        y: 13696774.660633486,
         occurrences: 91,
         negligible: true
       },
       {
+        x: 18,
+        y: 24421427.30829421,
+        occurrences: 71,
+        negligible: true
+      },
+      {
+        x: 19,
+        y: 15494992.174515236,
+        occurrences: 76,
+        negligible: true
+      },
+      {
         x: 20,
-        y: 13869119.375,
-        occurrences: 56,
-        negligible: true
-      },
-      {
-        x: 21,
-        y: 15929635.752078611,
-        occurrences: 63,
-        negligible: true
-      },
-      {
-        x: 22,
-        y: 13600998.671328671,
-        occurrences: 65,
-        negligible: true
-      },
-      {
-        x: 23,
-        y: 9900698.457223002,
-        occurrences: 62,
-        negligible: true
-      },
-      {
-        x: 24,
-        y: 12550286.11111111,
-        occurrences: 57,
-        negligible: true
-      },
-      {
-        x: 25,
-        y: 9515048.181818182,
-        occurrences: 44,
-        negligible: true
-      },
-      {
-        x: 26,
-        y: 8039182.859531772,
-        occurrences: 46,
-        negligible: true
-      },
-      {
-        x: 27,
-        y: 5753428.420256992,
+        y: 14215335.51020408,
         occurrences: 49,
         negligible: true
       },
       {
+        x: 21,
+        y: 15688993.130366901,
+        occurrences: 61,
+        negligible: true
+      },
+      {
+        x: 22,
+        y: 15562939.108061751,
+        occurrences: 53,
+        negligible: true
+      },
+      {
+        x: 23,
+        y: 10903889.829192549,
+        occurrences: 56,
+        negligible: true
+      },
+      {
+        x: 24,
+        y: 13321730.053191489,
+        occurrences: 47,
+        negligible: true
+      },
+      {
+        x: 25,
+        y: 11680250.27027027,
+        occurrences: 37,
+        negligible: true
+      },
+      {
+        x: 26,
+        y: 10011658.653846154,
+        occurrences: 36,
+        negligible: true
+      },
+      {
+        x: 27,
+        y: 6934111.030595815,
+        occurrences: 46,
+        negligible: true
+      },
+      {
         x: 28,
-        y: 8243403.291316527,
-        occurrences: 51,
+        y: 8205554.336734696,
+        occurrences: 42,
         negligible: true
       },
       {
         x: 29,
-        y: 5517133.103448276,
-        occurrences: 55,
+        y: 5742216.632860041,
+        occurrences: 51,
         negligible: true
       },
       {
         x: 30,
-        y: 4896342.307692308,
+        y: 4502219.294871796,
         occurrences: 52,
         negligible: true
       },
       {
         x: 31,
-        y: 4257104.368279571,
-        occurrences: 48,
+        y: 4079368.4210526315,
+        occurrences: 38,
         negligible: true
       },
       {
         x: 32,
-        y: 3112727.6692708335,
+        y: 3001028.3203125,
         occurrences: 48,
         negligible: true
       },
       {
         x: 33,
-        y: 6220973.93939394,
-        occurrences: 30,
+        y: 7576430.303030304,
+        occurrences: 23,
         negligible: true
       },
       {
         x: 34,
-        y: 8630617.492260061,
+        y: 8593071.671826623,
         occurrences: 19,
         negligible: true
       },
       {
         x: 35,
-        y: 4580231.8367346935,
-        occurrences: 14,
+        y: 4232771.948051948,
+        occurrences: 11,
         negligible: true
       },
       {
         x: 36,
-        y: 4687220.7854406135,
-        occurrences: 29,
+        y: 4337564.087301587,
+        occurrences: 28,
         negligible: true
       },
       {
         x: 37,
-        y: 5490797.635135136,
-        occurrences: 16,
+        y: 5692613.153153154,
+        occurrences: 15,
         negligible: true
       },
       {
         x: 38,
-        y: 2500707.769423559,
+        y: 2489640.7268170426,
         occurrences: 21,
         negligible: true
       },
       {
         x: 39,
-        y: 1593112.564102564,
-        occurrences: 30,
+        y: 1562211.2489660878,
+        occurrences: 31,
         negligible: true
       },
       {
         x: 40,
-        y: 1994433.1521739129,
-        occurrences: 23,
+        y: 2299987.0312499995,
+        occurrences: 16,
         negligible: true
       },
       {
         x: 41,
-        y: 2922902.1680216803,
-        occurrences: 27,
+        y: 2999119.7936210134,
+        occurrences: 26,
         negligible: true
       },
       {
         x: 42,
-        y: 1115516.6666666667,
+        y: 1072403.8515406162,
         occurrences: 34,
         negligible: true
       },
       {
         x: 43,
-        y: 1195679.7342192691,
-        occurrences: 14,
+        y: 1160312.0639534884,
+        occurrences: 16,
         negligible: true
       },
       {
@@ -315,15 +317,9 @@ export const mockedEndpointScalingInsight: EndpointScalingInsight = {
         negligible: true
       },
       {
-        x: 49,
-        y: 2117240.8163265307,
-        occurrences: 1,
-        negligible: true
-      },
-      {
         x: 50,
-        y: 9130085.000000002,
-        occurrences: 2,
+        y: 14254112,
+        occurrences: 1,
         negligible: true
       },
       {
@@ -358,39 +354,41 @@ export const mockedEndpointScalingInsight: EndpointScalingInsight = {
       }
     ]
   },
+  extraHistograms: [],
+  sourceSpanInfo: null,
   scope: InsightScope.EntrySpan,
-  route: "route",
-  serviceName: "serviceName",
+  route: "epSpan:Execute ServicePipelineExecutionMessage",
+  serviceName: "Digma.Pipeline.Worker",
   spanInfo: {
-    uid: "dc8ea81a-f81f-11ef-bd96-7215f134c660",
-    name: "InsightNodeExecutionConsumer InvokeBatch",
-    displayName: "InsightNodeExecutionConsumer InvokeBatch",
-    instrumentationLibrary: "InsightNodeExecutionConsumer",
+    uid: "04bf283c-f820-11ef-b7b8-7215f134c660",
+    name: "Execute ServicePipelineExecutionMessage",
+    displayName: "Execute ServicePipelineExecutionMessage",
+    instrumentationLibrary: "PipelineConnector",
     spanCodeObjectId:
-      "span:InsightNodeExecutionConsumer$_$InsightNodeExecutionConsumer InvokeBatch",
+      "span:PipelineConnector$_$Execute ServicePipelineExecutionMessage",
     methodCodeObjectId: null,
-    kind: "Consumer"
+    kind: "Internal"
   },
   codeObjectId:
-    "span:InsightNodeExecutionConsumer$_$InsightNodeExecutionConsumer InvokeBatch",
-  id: "67138e6a-148b-11f0-b6b8-3a87d9c352a4",
+    "span:PipelineConnector$_$Execute ServicePipelineExecutionMessage",
+  id: "64687cde-148b-11f0-b94a-3a87d9c352a4",
   shortDisplayInfo: {
     title: "Scaling Issue Found",
     targetDisplayName: "",
     subtitle: "",
-    description: "Constant performance degradation by 2.57 ms per execution"
+    description: "Significant performance degradation at 5 executions/second"
   },
   decorators: [
     {
       title: "Scaling badly",
       description:
-        "This code experiences linearly grows in duration with the concurrent executions by 2.57 ms per execution"
+        "This code experiences exponential grows in duration after 5 concurrent executions"
     }
   ],
   environment: "ENV1#ID#3140161A-52C6-4994-AF81-51D2F4572E1A",
-  severity: 0.9387848299576458,
+  severity: 0.9364017241514355,
   impact: 0,
-  criticality: 0.9360378975471422,
+  criticality: 0.9192292131858377,
   reopenCount: 0,
   ticketLink: null,
   isRecalculateEnabled: false,
@@ -398,13 +396,13 @@ export const mockedEndpointScalingInsight: EndpointScalingInsight = {
   isReadable: true,
   isDismissed: false,
   customStartTime: null,
-  actualStartTime: "2025-03-26T07:23:22.418146Z",
+  actualStartTime: "0001-01-01T00:00:00",
   firstCommitId: "",
-  lastCommitId: "",
+  lastCommitId: null,
   deactivatedCommitId: null,
   sourceSpanCodeObjectInsight: "span:Npgsql$_$94E7B3FFF8FCB2D57C85140445C053",
-  firstDetected: "2025-04-08T15:09:01.08002Z",
-  lastDetected: "2025-04-09T07:23:36.378227Z",
+  firstDetected: "2025-04-08T15:08:56.605051Z",
+  lastDetected: "2025-04-14T13:10:47.127954Z",
   status: InsightStatus.Active,
   flags: [],
   isRead: false,
@@ -412,126 +410,27 @@ export const mockedEndpointScalingInsight: EndpointScalingInsight = {
   lastReopen: null,
   lastDeactivated: null,
   ignoreCriticalityOnInsert: false,
-  type: InsightType.EndpointScaling,
+  type: InsightType.EndpointScaling
+};
+
+export const mockedEndpointScalingWithSpanInsight: EndpointScalingInsight = {
+  ...mockedEndpointScalingInsight,
+  issueLocation: "Span",
   sourceSpanInfo: {
-    displayName: "sourceSpanInfo displayName",
-    spanCodeObjectId:
-      "span:InsightNodeExecutionConsumer$_$InsightNodeExecutionConsumer InvokeBatch",
-    sampleTraceId: "3E41E4197B696CA9BF1157AEB254DFE0",
-    instrumentationLibrary: "InsightNodeExecutionConsumer",
+    sampleTraceId: "02C0295F83E81BAC2048125275936F74",
+    spanCodeObjectId: "span:Npgsql$_$94E7B3FFF8FCB2D57C85140445C053",
+    uid: "e02b14d6-f81f-11ef-909d-7215f134c660",
+    name: "94E7B3FFF8FCB2D57C85140445C053",
+    displayName:
+      "INSERT INTO code_object_insight_related_services (id, code_object_insight_uid, service)\nVALUES (gen_random_uuid(), @InsightUid, @Service_0), (gen_random_uuid(), @InsightUid, @Service_1), (gen_random_uuid(), @InsightUid, @Service_2), (gen_random_uuid(), @InsightUid, @Service_3), (gen_random_uuid(), @InsightUid, @Service_4), (gen_random_uuid(), @InsightUid, @Service_5), (gen_random_uuid(), @InsightUid, @Service_6), (gen_random_uuid(), @InsightUid, @Service_7)\nON CONFLICT (code_object_insight_uid, service) DO NOTHING",
+    instrumentationLibrary: "Npgsql",
     methodCodeObjectId: null,
-    kind: "Consumer",
-    name: "name"
+    kind: "Client"
   }
 };
 
-export const ofEndpoint = {
-  codeObjectId: "SampleInsightsController$_$GetUsers",
-  spanInfo: {
-    name: "GetUsers",
-    displayName: "GetUsers",
-    instrumentationLibrary: "SampleInsightsController",
-    spanCodeObjectId: "span:SampleInsightsController$_$GetUsers",
-    methodCodeObjectId: null,
-    kind: "Server",
-    codeObjectId: null
-  }
-};
-
-export const ofDbSpan = {
-  codeObjectId: "UsersStorageService$_$QueryUsers",
-  spanInfo: {
-    name: "QueryUsers",
-    displayName: "QueryUsers",
-    instrumentationLibrary: "UsersStorageService",
-    spanCodeObjectId: "span:UsersStorageService$_$QueryUsers",
-    methodCodeObjectId: null,
-    kind: "Internal",
-    codeObjectId: null
-  }
-};
-
-export const withAffectedEndpoints = {
-  affectedEndpoints: [
-    {
-      route: "epHTTP:HTTP GET SampleInsights/lock/{milisec}1",
-      serviceName: "Sample.MoneyTransfer.API",
-      sampleTraceId: "3E41E4197B696CA9BF1157AEB254DFE0",
-      flowHash: "2C8EE08C75056058690249E52382F5",
-      name: "HTTP GET SampleInsights/lock/{milisec}1",
-      displayName: "HTTP GET SampleInsights/lock/{milisec}1",
-      instrumentationLibrary: "OpenTelemetry.Instrumentation.AspNetCore",
-      spanCodeObjectId:
-        "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/lock/{milisec}",
-      methodCodeObjectId:
-        "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)",
-      kind: "Server",
-      codeObjectId:
-        "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)"
-    },
-    {
-      route: "epHTTP:HTTP GET SampleInsights/lock/{milisec}2",
-      serviceName: "Sample.MoneyTransfer.API",
-      sampleTraceId: "3E41E4197B696CA9BF1157AEB254DFEd0dd",
-      flowHash: "2C8EE08C75056058690249E52382F5",
-      name: "HTTP GET SampleInsights/lock/{milisec}2",
-      displayName: "HTTP GET SampleInsights/lock/{milisec}2",
-      instrumentationLibrary: "OpenTelemetry.Instrumentation.AspNetCore",
-      spanCodeObjectId:
-        "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/lock/{milisec}2",
-      methodCodeObjectId:
-        "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)",
-      kind: "Server",
-      codeObjectId:
-        "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)"
-    },
-    {
-      route: "epHTTP:HTTP GET SampleInsights/lock/{milisec}3",
-      serviceName: "Sample.MoneyTransfer.API",
-      sampleTraceId: "3E41E4197B696CA9BF1157AEB254DFE02",
-      flowHash: "2C8EE08C75056058690249E52382F5",
-      name: "HTTP GET SampleInsights/lock/{milisec}3",
-      displayName: "HTTP GET SampleInsights/lock/{milisec}3",
-      instrumentationLibrary: "OpenTelemetry.Instrumentation.AspNetCore",
-      spanCodeObjectId:
-        "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/lock/{milisec}3",
-      methodCodeObjectId:
-        "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)",
-      kind: "Server",
-      codeObjectId:
-        "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)"
-    },
-    {
-      route: "epHTTP:HTTP GET SampleInsights/lock/{milisec}4",
-      serviceName: "Sample.MoneyTransfer.API",
-      sampleTraceId: "3E41E4197B696CA9BF1157AEB254DFE0",
-      flowHash: "2C8EE08C75056058690249E52382F5",
-      name: "HTTP GET SampleInsights/lock/{milisec}",
-      displayName: "HTTP GET SampleInsights/lock/{milisec}",
-      instrumentationLibrary: "OpenTelemetry.Instrumentation.AspNetCore",
-      spanCodeObjectId:
-        "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/lock/{milisec}4",
-      methodCodeObjectId:
-        "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)",
-      kind: "Server",
-      codeObjectId:
-        "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)"
-    }
-  ]
-};
-
-export const withRootCause = {
-  rootCauseSpans: [
-    {
-      instrumentationLibrary: "io.opentelemetry.somedb-10.0",
-      name: "fc3425f345f4",
-      displayName: "SELECT * FROM users",
-      sampleTraceId: "3E41E4197B696CA9BF1157AEB254DFE0",
-      spanCodeObjectId: "span:io.opentelemetry.somedb-10.0$_$fc3425f345f4",
-      kind: "Client",
-      methodCodeObjectId: null,
-      flowHash: "2C8EE08C75056058690249E52382F5",
-      codeObjectId: null
-    }
-  ]
-};
+export const mockedEndpointScalingWithRootCauseInsight: EndpointScalingInsight =
+  {
+    ...mockedEndpointScalingWithSpanInsight,
+    issueLocation: "SpanRootCause"
+  };
