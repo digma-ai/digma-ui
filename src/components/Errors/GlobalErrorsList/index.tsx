@@ -20,6 +20,7 @@ import { FeatureFlag, ScopeChangeEvent } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
+import { DaysFilter } from "../../common/DaysFilter";
 import { OppositeArrowsIcon } from "../../common/icons/12px/OppositeArrowsIcon";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { Direction } from "../../common/icons/types";
@@ -34,7 +35,6 @@ import { actions } from "../actions";
 import { EmptyState } from "../EmptyState";
 import { NewErrorCard } from "../NewErrorCard";
 import { trackingEvents } from "../tracking";
-import { DaysFilter } from "./DaysFilter";
 import { GlobalErrorsFilters } from "./GlobalErrorsFilters";
 import * as s from "./styles";
 import type {

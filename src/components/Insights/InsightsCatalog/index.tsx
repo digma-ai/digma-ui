@@ -20,6 +20,7 @@ import { isUndefined } from "../../../typeGuards/isUndefined";
 import { FeatureFlag } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
+import { DaysFilter } from "../../common/DaysFilter";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { EyeIcon } from "../../common/icons/16px/EyeIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
@@ -34,7 +35,6 @@ import type {
 import { NewButton } from "../../common/v3/NewButton";
 import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
-import { DaysFilter } from "../../Errors/GlobalErrorsList/DaysFilter";
 import { PAGE_SIZE } from "../hooks/useInsightsData";
 import { useInsightsStats } from "../hooks/useInsightsStats";
 import { trackingEvents } from "../tracking";
@@ -141,7 +141,7 @@ export const InsightsCatalog = ({
   const [markScopeInsightsRead] = useMarkScopeInsightsReadMutation();
   const [isFiltersToolbarVisible, setIsFiltersToolbarVisible] = useState(false);
   const { data: insightStats } = useInsightsStats({
-    spanCodeObjectId: scopeSpanCodeObjectId ?? "",
+    spanCodeObjectId: scopeSpanCodeObjectId,
     environmentId: environment?.id,
     services: selectedServices ?? undefined
   });

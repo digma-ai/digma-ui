@@ -1,5 +1,5 @@
-import type { ErrorFilter } from "../../../../store/errors/errorsSlice";
-import type { ButtonProps } from "../../../common/v3/NewButton/types";
+import type { ErrorFilter } from "../../../store/errors/errorsSlice";
+import type { ButtonProps } from "../v3/NewButton/types";
 
 export interface GetGlobalErrorsFiltersDataPayload {
   environment: string;

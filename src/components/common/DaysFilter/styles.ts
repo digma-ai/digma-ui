@@ -1,11 +1,11 @@
 import styled, { css } from "styled-components";
+import { Popup } from "../../Navigation/common/Popup";
 import {
   bodyRegularTypography,
   footnoteRegularTypography
-} from "../../../common/App/typographies";
-import { NewButton } from "../../../common/v3/NewButton";
-import { TextField } from "../../../common/v3/TextField";
-import { Popup } from "../../../Navigation/common/Popup";
+} from "../App/typographies";
+import { NewButton } from "../v3/NewButton";
+import { TextField } from "../v3/TextField";
 import type { CounterInputProps, DaysButtonProps } from "./types";
 
 export const ButtonIconContainer = styled.div`
