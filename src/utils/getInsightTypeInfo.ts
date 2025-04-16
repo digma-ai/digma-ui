@@ -118,6 +118,12 @@ export const getInsightTypeInfo = (
       description: descriptionProvider.SpanScalingDescription,
       documentationLink: SCALING_ISSUE_DOCUMENTATION_URL
     },
+    [InsightType.EndpointScaling]: {
+      icon: ScalesIcon,
+      label: "Scaling Issue Found",
+      description: descriptionProvider.SpanScalingDescription,
+      documentationLink: SCALING_ISSUE_DOCUMENTATION_URL
+    },
     [InsightType.SpanUsages]: {
       icon: SineIcon,
       label: "Top Usage"

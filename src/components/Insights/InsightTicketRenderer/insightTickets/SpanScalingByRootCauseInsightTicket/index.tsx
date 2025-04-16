@@ -11,14 +11,12 @@ import { CommitInfos } from "../common/CommitInfos";
 import { getHistogramAttachment } from "../common/getHistogramAttachment";
 import { getTraceAttachment } from "../common/getTraceAttachment";
 import { InsightJiraTicket } from "../common/InsightJiraTicket";
-import {
-  ScalingIssueAffectedEndpoints,
-  ScalingIssueDuration,
-  ScalingIssueMessage,
-  ScalingIssueRootCauses,
-  ScalingIssueTestedConcurrency,
-  getScalingIssueSummary
-} from "../common/SpanScaling";
+import { getScalingSummary } from "../common/Scaling";
+import { ScalingDuration } from "../common/Scaling/ScalingDuration";
+import { ScalingMessage } from "../common/Scaling/ScalingMessage";
+import { ScalingRootCauses } from "../common/Scaling/ScalingRootCauses";
+import { ScalingTestedConcurrency } from "../common/Scaling/ScalingTestedConcurrency";
+import { SpanScalingAffectedEndpoints } from "../common/Scaling/SpanScalingEndpoints";
 import type { InsightTicketProps } from "../types";
 
 export const SpanScalingByRootCauseInsightTicket = ({
@@ -45,21 +43,18 @@ export const SpanScalingByRootCauseInsightTicket = ({
       <>
         {intersperse<ReactElement, ReactElement>(
           [
-            <ScalingIssueMessage key={"message"} insight={spanInsight} />,
-            <ScalingIssueTestedConcurrency
-              key={"testedConcurrency"}
+            <ScalingMessage key={"message"} insight={spanInsight} />,
+            <ScalingTestedConcurrency
+              key={"scalingTestedConcurrency"}
               insight={spanInsight}
             />,
-            <ScalingIssueDuration
-              key={"scalingIssueDuration"}
-              insight={spanInsight}
+            <ScalingDuration key={"scalingDuration"} insight={spanInsight} />,
+            <ScalingRootCauses
+              key={"scalingRootCauses"}
+              spanInfos={spanInsight.rootCauseSpans}
             />,
-            <ScalingIssueRootCauses
-              key={"scalingIssueRootCauses"}
-              insight={spanInsight}
-            />,
-            <ScalingIssueAffectedEndpoints
-              key={"scalingIssueEndpoints"}
+            <SpanScalingAffectedEndpoints
+              key={"spanScalingAffectedEndpoints"}
               insight={spanInsight}
             />,
             <CodeLocations
@@ -81,7 +76,7 @@ export const SpanScalingByRootCauseInsightTicket = ({
     );
   };
 
-  const summary = getScalingIssueSummary(spanInsight);
+  const summary = getScalingSummary(spanInsight);
 
   const attachmentTrace = getTraceAttachment(
     `${window.location.origin}${jaegerApiPath ?? ""}`,

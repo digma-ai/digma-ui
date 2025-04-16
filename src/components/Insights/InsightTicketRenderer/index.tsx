@@ -2,6 +2,7 @@ import {
   isEndpointBottleneckInsight,
   isEndpointHighNumberOfQueriesInsight,
   isEndpointQueryOptimizationV2Insight,
+  isEndpointScalingInsight,
   isEndpointSpanNPlusOneInsight,
   isSpanEndpointBottleneckInsight,
   isSpanNPlusOneInsight,
@@ -13,6 +14,7 @@ import type {
   EndpointBottleneckInsight,
   EndpointHighNumberOfQueriesInsight,
   EndpointQueryOptimizationV2Insight,
+  EndpointScalingInsight,
   EndpointSpanNPlusOneInsight,
   InsightTicketInfo,
   SpanEndpointBottleneckInsight,
@@ -24,6 +26,8 @@ import type {
 import { EndpointBottleneckInsightTicket } from "./insightTickets/EndpointBottleneckInsightTicket";
 import { EndpointHighNumberOfQueriesInsightTicket } from "./insightTickets/EndpointHighNumberOfQueriesInsightTicket";
 import { EndpointQueryOptimizationV2InsightTicket } from "./insightTickets/EndpointQueryOptimizationV2InsightTicket";
+import { EndpointScalingInsightTicket } from "./insightTickets/EndpointScalingInsightTicket";
+import { EndpointScalingWithSpanInsightTicket } from "./insightTickets/EndpointScalingWithSpanInsightTicket";
 import { EndpointSpanNPlusOneInsightTicket } from "./insightTickets/EndpointSpanNPlusOneInsightTicket";
 import { SpanEndpointBottleneckInsightTicket } from "./insightTickets/SpanEndpointBottleneckInsightTicket";
 import { SpanPerformanceAnomalyInsightTicket } from "./insightTickets/SpanPerformanceAnomalyInsightTicket";
@@ -121,7 +125,7 @@ export const InsightTicketRenderer = ({
   if (isSpanScalingBadlyInsight(data.insight)) {
     const ticketData = data as InsightTicketInfo<SpanScalingInsight>;
     const selectedRootCause = data.insight.rootCauseSpans.find(
-      (r) => r.spanCodeObjectId == data.spanCodeObjectId
+      (r) => r.spanCodeObjectId === data.spanCodeObjectId
     );
     if (selectedRootCause) {
       return (
@@ -140,6 +144,30 @@ export const InsightTicketRenderer = ({
           backendInfo={backendInfo}
         />
       );
+    }
+  }
+
+  if (isEndpointScalingInsight(data.insight)) {
+    const ticketData = data as InsightTicketInfo<EndpointScalingInsight>;
+
+    switch (data.insight.issueLocation) {
+      case "SpanRootCause":
+      case "Span":
+        return (
+          <EndpointScalingWithSpanInsightTicket
+            data={ticketData}
+            onClose={onClose}
+            backendInfo={backendInfo}
+          />
+        );
+      case "Endpoint":
+        return (
+          <EndpointScalingInsightTicket
+            data={ticketData}
+            onClose={onClose}
+            backendInfo={backendInfo}
+          />
+        );
     }
   }
 

@@ -489,7 +489,7 @@ export const RecentActivity = () => {
     <CreateEnvironmentWizard
       onClose={(newEnvId) => {
         if (newEnvId) {
-          const newEnv = environments.find((x) => x.id == newEnvId);
+          const newEnv = environments.find((x) => x.id === newEnvId);
           if (newEnv) {
             changeSelectedEnvironment(
               config.scope,

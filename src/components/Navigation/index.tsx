@@ -16,7 +16,6 @@ import { ThreeDotsVerticalIcon } from "../common/icons/ThreeDotsVerticalIcon";
 import useDimensions from "react-cool-dimensions";
 import { useLocation } from "react-router-dom";
 import { getFeatureFlagValue } from "../../featureFlags";
-import { platform } from "../../platform";
 import { useGetSpanInfoQuery } from "../../redux/services/digma";
 import type { Environment } from "../../redux/services/types";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
@@ -197,7 +196,7 @@ export const Navigation = () => {
     if (
       environments &&
       environments.length > 0 &&
-      (!environment || !environments.find((x) => x.id == environment?.id))
+      (!environment || !environments.find((x) => x.id === environment.id))
     ) {
       changeScope({
         span: scope?.span
@@ -379,7 +378,6 @@ export const Navigation = () => {
                 (x) => x.environment === environment?.id
               ) ?? []
             }
-            isTargetButtonMenuVisible={platform === "JetBrains"}
           />
         ) : (
           <EnvironmentBar

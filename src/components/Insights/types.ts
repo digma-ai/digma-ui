@@ -40,7 +40,8 @@ export type GenericEndpointInsight =
   | EndpointSessionInViewInsight
   | EndpointChattyApiV2Insight
   | EndpointHighNumberOfQueriesInsight
-  | EndpointQueryOptimizationV2Insight;
+  | EndpointQueryOptimizationV2Insight
+  | EndpointScalingInsight;
 
 export type GenericSpanInsight =
   | SpanDurationsInsight
@@ -387,19 +388,61 @@ export interface AffectedEndpoint extends SpanInfo {
   flowHash: string;
 }
 
-export interface SpanScalingInsight extends SpanInsight {
+interface HistogramInfo {
+  lineFunction: {
+    A: number;
+    B: number;
+    C?: number;
+    KneeX?: number;
+    $type: "linear" | "exponent";
+  };
+  points: {
+    x: number;
+    y: number;
+    occurrences: number;
+    negligible: boolean;
+  }[];
+}
+
+interface HistogramInfoWithLegend extends HistogramInfo {
+  legend: string;
+}
+
+interface ScalingInsightInfo {
+  turningPointConcurrency: number;
+  maxConcurrency: number;
+  minDuration: Duration;
+  maxDuration: Duration;
+  histogram?: HistogramInfo;
+  extraHistograms?: HistogramInfoWithLegend[];
+}
+
+export interface SpanScalingInsight extends SpanInsight, ScalingInsightInfo {
   name: "Scaling Issue Found";
   type: InsightType.SpanScaling;
   category: InsightCategory.Performance;
   specifity: InsightSpecificity.OwnInsight;
   importance: InsightImportance.Critical;
-  turningPointConcurrency: number;
-  maxConcurrency: number;
-  minDuration: Duration;
-  maxDuration: Duration;
   rootCauseSpans: RootCauseSpanInfo[];
   affectedEndpoints: AffectedEndpoint[] | null;
   flowHash: string | null;
+}
+
+export interface SourceSpanInfo extends SpanInfo {
+  sampleTraceId?: string;
+}
+
+export interface EndpointScalingInsight
+  extends EndpointInsight,
+    ScalingInsightInfo {
+  name: "Scaling Issue Found";
+  category: InsightCategory.Performance;
+  specifity: InsightSpecificity.TargetAndReasonFound;
+  importance: InsightImportance.Critical;
+  type: InsightType.EndpointScaling;
+  flowHash: string;
+  issueLocation: "Span" | "Endpoint" | "SpanRootCause";
+  sourceSpanInfo: SourceSpanInfo | null;
 }
 
 export interface NPlusOneEndpointInfo {

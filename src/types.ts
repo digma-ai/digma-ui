@@ -60,7 +60,8 @@ export enum InsightType {
   SpanQueryOptimization = "SpanQueryOptimization",
   EndpointQueryOptimizationV2 = "EndpointQueryOptimizationV2",
   EndpointSlowdownSource = "EndpointSlowdownSource",
-  SpanPerformanceAnomaly = "SpanPerformanceAnomaly"
+  SpanPerformanceAnomaly = "SpanPerformanceAnomaly",
+  EndpointScaling = "EndpointScaling"
 }
 
 export enum ScopeChangeEvent {

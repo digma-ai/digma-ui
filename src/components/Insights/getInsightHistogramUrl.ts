@@ -11,6 +11,7 @@ export const getInsightHistogramUrl = (
   backendInfo: BackendInfo | GetAboutResponse | null
 ) => {
   switch (insightType) {
+    case InsightType.EndpointScaling:
     case InsightType.SpanScaling: {
       const histogramUrlParams = new URLSearchParams({
         env: environmentId,

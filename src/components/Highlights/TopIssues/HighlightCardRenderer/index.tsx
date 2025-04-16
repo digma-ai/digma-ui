@@ -3,6 +3,7 @@ import {
   isEndpointChattyApiV2Highlight,
   isEndpointHighNumberOfQueriesHighlight,
   isEndpointQueryOptimizationV2Highlight,
+  isEndpointScalingHighlight,
   isEndpointSessionInViewHighlight,
   isEndpointSlowdownSourceHighlight,
   isEndpointSpanNPlusOneHighlight,
@@ -17,6 +18,7 @@ import { EndpointBottleneckHighlightCard } from "../highlightCards/EndpointBottl
 import { EndpointChattyApiV2HighlightCard } from "../highlightCards/EndpointChattyApiV2HighlightCard";
 import { EndpointHighNumberOfQueriesHighlightCard } from "../highlightCards/EndpointHighNumberOfQueriesHighlightCard";
 import { EndpointQueryOptimizationV2HighlightCard } from "../highlightCards/EndpointQueryOptimizationV2HighlightCard";
+import { EndpointScalingHighlightCard } from "../highlightCards/EndpointScalingHighlightCard";
 import { EndpointSessionInViewHighlightCard } from "../highlightCards/EndpointSessionInViewHighlightCard";
 import { EndpointSlowdownSourceHighlightCard } from "../highlightCards/EndpointSlowdownSourceHighlightCard";
 import { EndpointSpanNPlusOneHighlightCard } from "../highlightCards/EndpointSpanNPlusOneHighlightCard";
@@ -81,5 +83,9 @@ export const HighlightCardRenderer = ({
 
   if (isSpanPerformanceAnomalyHighlight(highlight)) {
     return <SpanPerformanceAnomalyHighlightCard data={highlight} />;
+  }
+
+  if (isEndpointScalingHighlight(highlight)) {
+    return <EndpointScalingHighlightCard data={highlight} />;
   }
 };

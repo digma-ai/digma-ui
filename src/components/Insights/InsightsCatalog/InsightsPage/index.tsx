@@ -33,7 +33,9 @@ import type {
   isInsightJiraTicketHintShownPayload
 } from "./types";
 
-const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
+export const getInsightToShowJiraHint = (
+  insights: CodeObjectInsight[]
+): number => {
   const insightsWithJiraButton = [
     InsightType.EndpointSpanNPlusOne,
     InsightType.SpaNPlusOne,
@@ -42,7 +44,8 @@ const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
     InsightType.SpanQueryOptimization,
     InsightType.EndpointHighNumberOfQueries,
     InsightType.EndpointQueryOptimizationV2,
-    InsightType.SpanScaling
+    InsightType.SpanScaling,
+    InsightType.EndpointScaling
   ];
 
   return insights.findIndex((insight) =>
@@ -145,7 +148,7 @@ const renderEmptyState = (
     return <EmptyState preset={"noDataYet"} />;
   }
 
-  if (!scope?.span?.spanCodeObjectId && insightsViewType == "Analytics") {
+  if (!scope?.span?.spanCodeObjectId && insightsViewType === "Analytics") {
     return (
       <EmptyState
         preset={"analyticsSelectAsset"}

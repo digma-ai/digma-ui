@@ -165,7 +165,7 @@ export const SpanScalingInsightCard = ({
         isHintEnabled: isJiraHintEnabled
       }}
       onJiraButtonClick={
-        insight.rootCauseSpans.length == 0
+        insight.rootCauseSpans.length === 0
           ? handleTicketInfoButtonClick
           : undefined
       }

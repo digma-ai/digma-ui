@@ -18,7 +18,7 @@ export const DiscoveredCard = ({ options, title }: DiscoveredCardProps) => {
                 <CardOption
                   key={option.title}
                   {...option}
-                  isActive={selected == option.title}
+                  isActive={selected === option.title}
                 />
               ))}
             </s.Row>
