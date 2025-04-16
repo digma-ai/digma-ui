@@ -59,6 +59,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     setInsightsFilteredCriticalityLevelsInGlobalScope:
       setFilteredCriticalityLevelsInGlobalScope,
     setInsightsFilters: setFilters,
+    setInsightsLastDays: setLastDays,
     resetInsights: reset
   } = useStore.getState();
   const {
@@ -67,7 +68,8 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     filteredInsightTypesInGlobalScope,
     filteredCriticalityLevels: filteredCriticalityLevelsInSpanScope,
     filteredCriticalityLevelsInGlobalScope,
-    filters
+    filters,
+    lastDays
   } = useInsightsSelector();
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const filteredInsightTypes = scopeSpanCodeObjectId
@@ -81,6 +83,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     filteredCriticalityLevels
   );
   const previousFilters = usePrevious(filters);
+  const previousLastDays = usePrevious(lastDays);
   const previousBackendInfo = usePrevious(backendInfo);
 
   useEffect(() => {
@@ -123,6 +126,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
           insightsInitialState.filteredCriticalityLevelsInGlobalScope
       );
       setFilters(persistedFilters?.filters ?? []);
+      setLastDays(persistedFilters?.lastDays ?? insightsInitialState.lastDays);
       setAreFiltersRehydrated(true);
     }
   }, [
@@ -131,7 +135,8 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     setFilters,
     setFilteredInsightTypes,
     setFilteredInsightTypesInGlobalScope,
-    setFilteredCriticalityLevelsInGlobalScope
+    setFilteredCriticalityLevelsInGlobalScope,
+    setLastDays
   ]);
 
   // Persist filters on its change
@@ -139,7 +144,8 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     if (
       (previousFilteredInsightTypes !== filteredInsightTypes ||
         previousFilters !== filters ||
-        previousFilteredCriticalityLevels !== filteredCriticalityLevels) &&
+        previousFilteredCriticalityLevels !== filteredCriticalityLevels ||
+        previousLastDays !== lastDays) &&
       areFiltersRehydrated
     ) {
       setPersistedFilters({
@@ -169,7 +175,9 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     setPersistedFilters,
     areFiltersRehydrated,
     persistedFilters,
-    scopeSpanCodeObjectId
+    scopeSpanCodeObjectId,
+    lastDays,
+    previousLastDays
   ]);
 
   // Reset insight type, criticality and unread filters (for span and global scopes) on backend instance change

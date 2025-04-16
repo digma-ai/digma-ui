@@ -1,9 +1,9 @@
 import type { ChangeEvent } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePrevious } from "../../../../hooks/usePrevious";
-import { DAYS_FILTER_DEFAULT_VALUE } from "../../../../store/errors/errorsSlice";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import { addPrefix } from "../../../../utils/addPrefix";
 import { formatUnit } from "../../../../utils/formatUnit";
 import { CalendarIcon } from "../../../common/icons/12px/CalendarIcon";
 import { MinusIcon } from "../../../common/icons/MinusIcon";
@@ -11,8 +11,8 @@ import { PlusIcon } from "../../../common/icons/PlusIcon";
 import { NewPopover } from "../../../common/NewPopover";
 import { NewIconButton } from "../../../common/v3/NewIconButton";
 import { MenuList } from "../../../Navigation/common/MenuList";
-import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
 import type { DaysFilterProps } from "./types";
 
 const MAX_VALUE = 14;
@@ -22,11 +22,16 @@ const DEFAULT_LIST_OPTIONS = [7, 14];
 
 const getOptionLabel = (days: number) => `${days} ${formatUnit(days, "Day")}`;
 
-export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
+export const DaysFilter = ({
+  onChange,
+  defaultValue,
+  trackingPrefix = ""
+}: DaysFilterProps) => {
+  const prefixedTrackingEvents = addPrefix(trackingPrefix, trackingEvents, " ");
   const [isDateMenuOpen, setIsDateMenuOpen] = useState(false);
   const [selectedDays, setSelectedDays] = useState<number>();
   const [currentValue, setCurrentValue] = useState<number | undefined>(
-    DAYS_FILTER_DEFAULT_VALUE
+    defaultValue
   );
   const previousSelectedDays = usePrevious(selectedDays);
   const handleSelectionChange = useCallback((days: number) => {
@@ -48,13 +53,13 @@ export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
 
   useEffect(() => {
     if (previousSelectedDays !== selectedDays) {
-      onChanged(selectedDays ?? DAYS_FILTER_DEFAULT_VALUE);
+      onChange(selectedDays ?? defaultValue);
     }
-  }, [selectedDays, previousSelectedDays, onChanged]);
+  }, [selectedDays, previousSelectedDays, onChange, defaultValue]);
 
   const handleMenuButtonClick = () => {
     sendUserActionTrackingEvent(
-      trackingEvents.GLOBAL_ERRORS_VIEW_DATES_FILTERS_CHANGE
+      prefixedTrackingEvents.DAYS_FILTER_BUTTON_CLICKED
     );
     setIsDateMenuOpen(!isDateMenuOpen);
     setCurrentValue(selectedDays);
@@ -71,7 +76,7 @@ export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
         : intValue;
 
     sendUserActionTrackingEvent(
-      trackingEvents.GLOBAL_ERRORS_DAYS_FILTER_DECREMENT_CLICKED
+      prefixedTrackingEvents.DAYS_FILTER_INPUT_VALUE_CHANGE
     );
     setCurrentValue(days);
   };
@@ -81,7 +86,7 @@ export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
       return;
     }
     sendUserActionTrackingEvent(
-      trackingEvents.GLOBAL_ERRORS_DAYS_FILTER_DECREMENT_CLICKED
+      prefixedTrackingEvents.DAYS_FILTER_DECREMENT_CLICKED
     );
     setCurrentValue(currentValue ? currentValue - 1 : 0);
   };
@@ -92,18 +97,16 @@ export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
     }
 
     sendUserActionTrackingEvent(
-      trackingEvents.GLOBAL_ERRORS_DAYS_FILTER_INCREMENT_CLICKED
+      prefixedTrackingEvents.DAYS_FILTER_INCREMENT_CLICKED
     );
     setCurrentValue(currentValue ? currentValue + 1 : 1);
   };
 
   const handleApplyClick = () => {
-    sendUserActionTrackingEvent(
-      trackingEvents.GLOBAL_ERRORS_DAYS_FILTER_APPLY_BTN_CLICKED
-    );
+    sendUserActionTrackingEvent(trackingEvents.DAYS_FILTER_APPLY_BTN_CLICKED);
 
     if (!currentValue) {
-      setCurrentValue(DAYS_FILTER_DEFAULT_VALUE);
+      setCurrentValue(defaultValue);
     } else {
       setSelectedDays(currentValue);
     }

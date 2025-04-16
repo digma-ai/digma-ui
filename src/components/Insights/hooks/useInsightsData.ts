@@ -40,7 +40,8 @@ export const useInsightsData = ({
     filteredCriticalityLevels: filteredCriticalityLevelsInSpanScope,
     filteredCriticalityLevelsInGlobalScope,
     isDataLoading: isLoading,
-    insightViewType
+    insightViewType,
+    lastDays
   } = useInsightsSelector();
   const { setInsightsData: setData, setIsInsightsDataLoading: setIsLoading } =
     useStore.getState();
@@ -80,6 +81,11 @@ export const useInsightsData = ({
   const isCriticalityLevelsFilterEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled
+  );
+
+  const isIssuesLastDaysFilterEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IsIssuesLastDaysFilterEnabled
   );
 
   const areSpanEnvironmentsEnabled = getFeatureFlagValue(
@@ -155,7 +161,8 @@ export const useInsightsData = ({
       ...(isCriticalityLevelsFilterEnabled
         ? { criticalityFilter: filteredCriticalityLevels }
         : {}),
-      environment: environmentId
+      environment: environmentId,
+      lastDays: isIssuesLastDaysFilterEnabled ? lastDays : undefined
     },
     {
       skip: !isAppReadyToGetData || !isIssuesQueryActive,

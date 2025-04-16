@@ -32,7 +32,10 @@ interface InsightsState {
   insightViewType: InsightViewType | null;
   issuesFilters: GetIssuesFiltersResponse | null;
   areIssuesFiltersLoading: boolean;
+  lastDays?: number;
 }
+
+export const DAYS_FILTER_DEFAULT_VALUE = 7;
 
 export const initialState: InsightsState = {
   data: null,
@@ -51,7 +54,8 @@ export const initialState: InsightsState = {
   filteredCriticalityLevelsInGlobalScope: ["Medium", "High"],
   insightViewType: null,
   issuesFilters: null,
-  areIssuesFiltersLoading: false
+  areIssuesFiltersLoading: false,
+  lastDays: DAYS_FILTER_DEFAULT_VALUE
 };
 
 const set = (update: Partial<InsightsState>) => (state: InsightsState) => ({
@@ -89,6 +93,7 @@ export const insightsSlice = createSlice({
       set({ issuesFilters }),
     setAreInsightsIssuesFiltersLoading: (areIssuesFiltersLoading: boolean) =>
       set({ areIssuesFiltersLoading }),
+    setInsightsLastDays: (lastDays?: number) => set({ lastDays }),
     resetInsights: () => set(initialState)
   }
 });

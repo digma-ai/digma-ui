@@ -29,7 +29,9 @@ export interface DaysButtonProps extends ButtonProps {
 }
 
 export interface DaysFilterProps {
-  onChanged: (days?: number) => void;
+  onChange: (days?: number) => void;
+  defaultValue: number;
+  trackingPrefix?: string;
 }
 
 export interface CounterInputProps {

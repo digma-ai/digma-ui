@@ -7,6 +7,7 @@ import { useMount } from "../../../hooks/useMount";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import {
+  DAYS_FILTER_DEFAULT_VALUE,
   GlobalErrorsSortingCriterion,
   PAGE_SIZE,
   ViewMode
@@ -388,7 +389,11 @@ export const GlobalErrorsList = () => {
             {areGlobalErrorsFiltersEnabled && <GlobalErrorsFilters />}
             <SearchInput value={search} onChange={handleSearchInputChange} />
             {isGlobalErrorsLastDaysFilterEnabled && (
-              <DaysFilter onChanged={handleDayFilterChange} />
+              <DaysFilter
+                onChange={handleDayFilterChange}
+                defaultValue={DAYS_FILTER_DEFAULT_VALUE}
+                trackingPrefix={"global errors"}
+              />
             )}
             <NewPopover
               isOpen={isSortingMenuOpen}

@@ -12,6 +12,7 @@ import {
   type IssueCriticality
 } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { DAYS_FILTER_DEFAULT_VALUE } from "../../../store/insights/insightsSlice";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../store/useStore";
 import { isNumber } from "../../../typeGuards/isNumber";
@@ -33,6 +34,7 @@ import type {
 import { NewButton } from "../../common/v3/NewButton";
 import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
+import { DaysFilter } from "../../Errors/GlobalErrorsList/DaysFilter";
 import { PAGE_SIZE } from "../hooks/useInsightsData";
 import { useInsightsStats } from "../hooks/useInsightsStats";
 import { trackingEvents } from "../tracking";
@@ -98,7 +100,8 @@ export const InsightsCatalog = ({
     setInsightsViewMode: setMode,
     setInsightsPage: setPage,
     setInsightsSorting: setSorting,
-    setInsightsSearch: setSearch
+    setInsightsSearch: setSearch,
+    setInsightsLastDays: setLastDays
   } = useStore.getState();
 
   const {
@@ -150,6 +153,10 @@ export const InsightsCatalog = ({
   const isCriticalityLevelsFilterEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled
+  );
+  const isIssuesLastDaysFilterEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IsIssuesLastDaysFilterEnabled
   );
 
   const appliedFilterCount =
@@ -263,6 +270,10 @@ export const InsightsCatalog = ({
     setSorting(value);
   };
 
+  const handleDaysFilterChange = (days: number | undefined) => {
+    setLastDays(days);
+  };
+
   useEffect(() => {
     setSearch("");
   }, [scopeSpanCodeObjectId, setSearch]);
@@ -321,6 +332,13 @@ export const InsightsCatalog = ({
                 onChange={handleSearchInputChange}
                 value={searchInputValue}
               />
+              {isIssuesView && isIssuesLastDaysFilterEnabled && (
+                <DaysFilter
+                  onChange={handleDaysFilterChange}
+                  defaultValue={DAYS_FILTER_DEFAULT_VALUE}
+                  trackingPrefix={"issues"}
+                />
+              )}
               {sortingOptions.length > 0 && (
                 <SortingSelector
                   onChange={handleSortingChange}

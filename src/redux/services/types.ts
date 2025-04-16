@@ -592,6 +592,7 @@ export interface GetIssuesPayload {
   page?: number;
   pageSize?: number;
   criticalityFilter?: IssueCriticality[];
+  lastDays?: number;
 }
 
 export interface GetIssuesFiltersPayload {
