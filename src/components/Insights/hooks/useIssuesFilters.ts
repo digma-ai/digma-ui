@@ -21,7 +21,8 @@ export const useIssuesFilters = ({ isEnabled }: UseIssuesFiltersProps) => {
     filteredCriticalityLevels: filteredCriticalityLevelsInSpanScope,
     filteredCriticalityLevelsInGlobalScope,
     viewMode,
-    filters
+    filters,
+    lastDays
   } = useInsightsSelector();
   const { setInsightsIssuesFilters: setData } = useStore.getState();
   const { environment, scope, backendInfo, selectedServices } =
@@ -32,6 +33,11 @@ export const useIssuesFilters = ({ isEnabled }: UseIssuesFiltersProps) => {
   const isCriticalityLevelsFilterEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled
+  );
+
+  const isIssuesLastDaysFilterEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IsIssuesLastDaysFilterEnabled
   );
 
   const payload: GetIssuesFiltersPayload = useMemo(() => {
@@ -65,7 +71,8 @@ export const useIssuesFilters = ({ isEnabled }: UseIssuesFiltersProps) => {
       criticalityFilter:
         isCriticalityLevelsFilterEnabled && filteredCriticalityLevels.length > 0
           ? filteredCriticalityLevels
-          : undefined
+          : undefined,
+      lastDays: isIssuesLastDaysFilterEnabled ? lastDays : undefined
     };
   }, [
     search,
@@ -78,7 +85,9 @@ export const useIssuesFilters = ({ isEnabled }: UseIssuesFiltersProps) => {
     filteredInsightTypesInSpanScope,
     filteredInsightTypesInGlobalScope,
     filteredCriticalityLevelsInSpanScope,
-    filteredCriticalityLevelsInGlobalScope
+    filteredCriticalityLevelsInGlobalScope,
+    isIssuesLastDaysFilterEnabled,
+    lastDays
   ]);
 
   const { data: issuesFiltersData } = useGetIssuesFiltersQuery(payload, {

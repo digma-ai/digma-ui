@@ -1,6 +1,9 @@
 import { useCallback, useMemo } from "react";
+import { getFeatureFlagValue } from "../../../featureFlags";
 import { useGetInsightsStatsQuery } from "../../../redux/services/digma";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
+import { FeatureFlag } from "../../../types";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
@@ -15,11 +18,19 @@ export const useInsightsStats = ({
   environmentId,
   services
 }: UseInsightStatsProps) => {
+  const { backendInfo } = useConfigSelector();
+
   const {
     filteredInsightTypes: filteredInsightTypesInSpanScope,
     filteredInsightTypesInGlobalScope,
-    search
+    search,
+    lastDays
   } = useInsightsSelector();
+
+  const isIssuesLastDaysFilterEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IsIssuesLastDaysFilterEnabled
+  );
 
   const filteredInsightTypes = spanCodeObjectId
     ? filteredInsightTypesInSpanScope
@@ -39,7 +50,8 @@ export const useInsightsStats = ({
           : undefined,
       services:
         filteredServices.length > 0 ? filteredServices.join(",") : undefined,
-      displayName: search.length > 0 ? search : undefined
+      displayName: search.length > 0 ? search : undefined,
+      lastDays: isIssuesLastDaysFilterEnabled ? lastDays : undefined
     },
     {
       skip: !environmentId,
