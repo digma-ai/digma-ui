@@ -12,20 +12,15 @@ import {
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../store/useStore";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { FeatureFlag } from "../../../types";
 import { ViewMode } from "../InsightsCatalog/types";
 import { useInsightsStats } from "./useInsightsStats";
 
-interface UseInsightsDataProps {
-  areFiltersRehydrated: boolean;
-}
-
 export const PAGE_SIZE = 10;
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
-export const useInsightsData = ({
-  areFiltersRehydrated
-}: UseInsightsDataProps) => {
+export const useInsightsData = () => {
   const { scope, backendInfo, environment, selectedServices } =
     useConfigSelector();
   const {
@@ -66,11 +61,8 @@ export const useInsightsData = ({
     : filteredCriticalityLevelsInGlobalScope;
   const showDismissed = viewMode === ViewMode.OnlyDismissed;
   const isAppReadyToGetData = useMemo(
-    () =>
-      Boolean(
-        backendInfo && areFiltersRehydrated && insightViewType && environment
-      ),
-    [backendInfo, areFiltersRehydrated, insightViewType, environment]
+    () => Boolean(backendInfo && insightViewType && environment),
+    [backendInfo, insightViewType, environment]
   );
 
   const areIssuesFiltersEnabled = getFeatureFlagValue(
@@ -162,7 +154,10 @@ export const useInsightsData = ({
         ? { criticalityFilter: filteredCriticalityLevels }
         : {}),
       environment: environmentId,
-      lastDays: isIssuesLastDaysFilterEnabled ? lastDays : undefined
+      lastDays:
+        isIssuesLastDaysFilterEnabled && isNumber(lastDays)
+          ? lastDays
+          : undefined
     },
     {
       skip: !isAppReadyToGetData || !isIssuesQueryActive,

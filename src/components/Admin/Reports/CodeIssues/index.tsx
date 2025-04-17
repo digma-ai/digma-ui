@@ -155,6 +155,7 @@ export const CodeIssues = () => {
 
   const handleTileIssuesStatsClick = (
     viewLevel: IssuesReportViewLevel,
+    timeMode: IssuesReportTimeMode,
     target: TargetScope
   ) => {
     const spanId =
@@ -354,6 +355,11 @@ export const CodeIssues = () => {
     FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled
   );
 
+  const isIssuesLastDaysFilterEnabled = getFeatureFlagValue(
+    about,
+    FeatureFlag.IsIssuesLastDaysFilterEnabled
+  );
+
   const mainSidebarQuery: MainSidebarQuery = useMemo(
     () => ({
       query: {
@@ -366,7 +372,11 @@ export const CodeIssues = () => {
           : [],
         ...(isCriticalityLevelsFilterEnabled
           ? { criticalityFilter: criticalityLevels }
-          : {})
+          : {}),
+        lastDays:
+          isIssuesLastDaysFilterEnabled && timeMode === "changes"
+            ? periodInDays
+            : undefined
       }
     }),
     [
@@ -375,7 +385,10 @@ export const CodeIssues = () => {
       selectedService,
       spanCodeObjectId,
       isCriticalityLevelsFilterEnabled,
-      criticalityLevels
+      criticalityLevels,
+      periodInDays,
+      timeMode,
+      isIssuesLastDaysFilterEnabled
     ]
   );
 

@@ -12,7 +12,6 @@ import {
   type IssueCriticality
 } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
-import { DAYS_FILTER_DEFAULT_VALUE } from "../../../store/insights/insightsSlice";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../store/useStore";
 import { isNumber } from "../../../typeGuards/isNumber";
@@ -115,7 +114,8 @@ export const InsightsCatalog = ({
     filteredCriticalityLevelsInGlobalScope,
     data,
     viewMode: mode,
-    insightViewType
+    insightViewType,
+    lastDays
   } = useInsightsSelector();
 
   const { selectedServices, environment, environments, scope, backendInfo } =
@@ -174,7 +174,8 @@ export const InsightsCatalog = ({
         selectedServices &&
         selectedServices.length > 0
           ? 1
-          : 0)
+          : 0) +
+        (isNumber(lastDays) ? 1 : 0)
       : 0) + (searchInputValue.length > 0 ? 1 : 0);
 
   const areSpanEnvironmentsEnabled = getFeatureFlagValue(
@@ -270,7 +271,7 @@ export const InsightsCatalog = ({
     setSorting(value);
   };
 
-  const handleDaysFilterChange = (days: number | undefined) => {
+  const handleDaysFilterChange = (days: number) => {
     setLastDays(days);
   };
 
@@ -335,8 +336,8 @@ export const InsightsCatalog = ({
               {isIssuesView && isIssuesLastDaysFilterEnabled && (
                 <DaysFilter
                   onChange={handleDaysFilterChange}
-                  defaultValue={DAYS_FILTER_DEFAULT_VALUE}
                   trackingPrefix={"issues"}
+                  value={lastDays}
                 />
               )}
               {sortingOptions.length > 0 && (

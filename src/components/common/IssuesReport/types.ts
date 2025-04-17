@@ -43,6 +43,7 @@ export interface IssuesReportProps {
   ) => void;
   onTileIssuesStatsClick: (
     viewLevel: IssuesReportViewLevel,
+    timeMode: IssuesReportTimeMode,
     target: TargetScope
   ) => void;
   onSelectedServiceChange: (service: string | null) => void;

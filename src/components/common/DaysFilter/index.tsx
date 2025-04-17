@@ -1,7 +1,6 @@
 import type { ChangeEvent } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { usePrevious } from "../../../hooks/usePrevious";
-import { isUndefined } from "../../../typeGuards/isUndefined";
+import { isNull } from "../../../typeGuards/isNull";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { addPrefix } from "../../../utils/addPrefix";
 import { formatUnit } from "../../../utils/formatUnit";
@@ -22,94 +21,79 @@ const DEFAULT_LIST_OPTIONS = [7, 14];
 
 const getOptionLabel = (days: number) => `${days} ${formatUnit(days, "Day")}`;
 
+const isValueValid = (value: string) => {
+  const intValue = parseInt(value);
+  return (
+    Number.isInteger(intValue) && intValue >= MIN_VALUE && intValue <= MAX_VALUE
+  );
+};
+
 export const DaysFilter = ({
   onChange,
-  defaultValue,
+  value,
   trackingPrefix = ""
 }: DaysFilterProps) => {
   const prefixedTrackingEvents = addPrefix(trackingPrefix, trackingEvents, " ");
   const [isDateMenuOpen, setIsDateMenuOpen] = useState(false);
-  const [selectedDays, setSelectedDays] = useState<number>();
-  const [currentValue, setCurrentValue] = useState<number | undefined>(
-    defaultValue
+  const [inputValue, setInputValue] = useState<string>(value?.toString() ?? "");
+
+  useEffect(() => {
+    setInputValue(value?.toString() ?? "");
+  }, [value]);
+
+  const handleSelectionChange = useCallback(
+    (days: number) => {
+      onChange(days);
+      setIsDateMenuOpen(false);
+    },
+    [onChange]
   );
-  const previousSelectedDays = usePrevious(selectedDays);
-  const handleSelectionChange = useCallback((days: number) => {
-    setSelectedDays(days);
-    setCurrentValue(days);
-    setIsDateMenuOpen(false);
-  }, []);
 
   const daysFilterMenuItems = useMemo(
     () =>
       Object.values(DEFAULT_LIST_OPTIONS).map((x) => ({
         id: x.toString(),
         label: "Last " + getOptionLabel(x),
-        isSelected: selectedDays === x,
+        isSelected: value === x,
         onClick: () => handleSelectionChange(x)
       })),
-    [handleSelectionChange, selectedDays]
+    [handleSelectionChange, value]
   );
-
-  useEffect(() => {
-    if (previousSelectedDays !== selectedDays) {
-      onChange(selectedDays ?? defaultValue);
-    }
-  }, [selectedDays, previousSelectedDays, onChange, defaultValue]);
 
   const handleMenuButtonClick = () => {
     sendUserActionTrackingEvent(
       prefixedTrackingEvents.DAYS_FILTER_BUTTON_CLICKED
     );
     setIsDateMenuOpen(!isDateMenuOpen);
-    setCurrentValue(selectedDays);
   };
 
   const handleCounterInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    const intValue = parseInt(newValue);
-    const days =
-      !newValue || Number.isNaN(intValue)
-        ? undefined
-        : intValue > MAX_VALUE
-        ? currentValue
-        : intValue;
-
     sendUserActionTrackingEvent(
       prefixedTrackingEvents.DAYS_FILTER_INPUT_VALUE_CHANGE
     );
-    setCurrentValue(days);
+
+    setInputValue(e.target.value);
   };
 
   const handleDecrement = () => {
-    if (currentValue === MIN_VALUE) {
-      return;
-    }
     sendUserActionTrackingEvent(
       prefixedTrackingEvents.DAYS_FILTER_DECREMENT_CLICKED
     );
-    setCurrentValue(currentValue ? currentValue - 1 : 0);
+    const newValue = parseInt(inputValue) - 1;
+    setInputValue(newValue.toString());
   };
 
   const handleIncrement = () => {
-    if (currentValue === MAX_VALUE) {
-      return;
-    }
-
     sendUserActionTrackingEvent(
       prefixedTrackingEvents.DAYS_FILTER_INCREMENT_CLICKED
     );
-    setCurrentValue(currentValue ? currentValue + 1 : 1);
+    const newValue = parseInt(inputValue) + 1;
+    setInputValue(newValue.toString());
   };
 
   const handleApplyClick = () => {
     sendUserActionTrackingEvent(trackingEvents.DAYS_FILTER_APPLY_BTN_CLICKED);
-
-    if (!currentValue) {
-      setCurrentValue(defaultValue);
-    } else {
-      setSelectedDays(currentValue);
-    }
+    onChange(parseInt(inputValue));
     setIsDateMenuOpen(false);
   };
 
@@ -127,18 +111,27 @@ export const DaysFilter = ({
                   buttonType={"secondaryBorderless"}
                   icon={() => <MinusIcon size={16} color={"currentColor"} />}
                   onClick={handleDecrement}
+                  isDisabled={
+                    !Number.isInteger(parseInt(inputValue)) ||
+                    parseInt(inputValue) <= MIN_VALUE
+                  }
                 />
                 <s.CounterInput
                   onChange={handleCounterInputChange}
                   $isActive={Boolean(
-                    selectedDays && !DEFAULT_LIST_OPTIONS.includes(selectedDays)
+                    isValueValid(inputValue) &&
+                      !DEFAULT_LIST_OPTIONS.includes(parseInt(inputValue))
                   )}
-                  value={currentValue?.toString()}
+                  value={inputValue}
                 />
                 <NewIconButton
                   buttonType={"secondaryBorderless"}
                   icon={() => <PlusIcon size={16} color={"currentColor"} />}
                   onClick={handleIncrement}
+                  isDisabled={
+                    !Number.isInteger(parseInt(inputValue)) ||
+                    parseInt(inputValue) >= MAX_VALUE
+                  }
                 />
                 <s.Text>Last days</s.Text>
               </s.Counter>
@@ -146,6 +139,7 @@ export const DaysFilter = ({
                 buttonType={"primary"}
                 label={"Apply filters"}
                 onClick={handleApplyClick}
+                isDisabled={!isValueValid(inputValue)}
               />
             </s.CustomCounterContainer>
           </s.ItemsContainer>
@@ -154,13 +148,13 @@ export const DaysFilter = ({
       placement={"bottom-end"}
     >
       <s.DateButton
-        $isActive={!isUndefined(selectedDays) && selectedDays > 0}
+        $isActive={!isNull(value)}
         icon={() => (
           <s.ButtonIconContainer>
             <CalendarIcon size={12} color={"currentColor"} />
           </s.ButtonIconContainer>
         )}
-        label={selectedDays ? getOptionLabel(selectedDays) : "Dates"}
+        label={!isNull(value) ? getOptionLabel(value) : "Dates"}
         buttonType={"secondary"}
         onClick={handleMenuButtonClick}
       />

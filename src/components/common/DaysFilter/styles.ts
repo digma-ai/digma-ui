@@ -28,6 +28,7 @@ export const DateButton = styled(NewButton)<DaysButtonProps>`
 
     return theme.colors.v3.surface.primary;
   }};
+  white-space: nowrap;
 `;
 
 export const DatePopup = styled(Popup)`

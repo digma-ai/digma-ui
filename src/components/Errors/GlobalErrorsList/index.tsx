@@ -7,7 +7,6 @@ import { useMount } from "../../../hooks/useMount";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import {
-  DAYS_FILTER_DEFAULT_VALUE,
   GlobalErrorsSortingCriterion,
   PAGE_SIZE,
   ViewMode
@@ -127,7 +126,7 @@ export const GlobalErrorsList = () => {
       searchCriteria: search,
       sortBy: sorting,
       page,
-      lastDays,
+      lastDays: isNumber(lastDays) ? lastDays : undefined,
       pageSize: PAGE_SIZE,
       dismissed: mode === ViewMode.OnlyDismissed,
       ...(areGlobalErrorsFiltersEnabled
@@ -282,7 +281,7 @@ export const GlobalErrorsList = () => {
     setGlobalErrorsSearch(search);
   };
 
-  const handleDayFilterChange = (days?: number) => {
+  const handleDayFilterChange = (days: number) => {
     setGlobalErrorsLastDays(days);
   };
 
@@ -391,8 +390,8 @@ export const GlobalErrorsList = () => {
             {isGlobalErrorsLastDaysFilterEnabled && (
               <DaysFilter
                 onChange={handleDayFilterChange}
-                defaultValue={DAYS_FILTER_DEFAULT_VALUE}
                 trackingPrefix={"global errors"}
+                value={lastDays}
               />
             )}
             <NewPopover

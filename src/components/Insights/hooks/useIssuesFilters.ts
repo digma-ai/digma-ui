@@ -5,6 +5,7 @@ import type { GetIssuesFiltersPayload } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../store/useStore";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { FeatureFlag } from "../../../types";
 import { ViewMode, type InsightFilterType } from "../InsightsCatalog/types";
 
@@ -72,7 +73,10 @@ export const useIssuesFilters = ({ isEnabled }: UseIssuesFiltersProps) => {
         isCriticalityLevelsFilterEnabled && filteredCriticalityLevels.length > 0
           ? filteredCriticalityLevels
           : undefined,
-      lastDays: isIssuesLastDaysFilterEnabled ? lastDays : undefined
+      lastDays:
+        isIssuesLastDaysFilterEnabled && isNumber(lastDays)
+          ? lastDays
+          : undefined
     };
   }, [
     search,
