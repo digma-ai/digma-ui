@@ -7,6 +7,10 @@ export const addPrefix = <T extends Record<string, string>>(
   entries: T,
   separator?: string
 ): PrefixedMap<T> => {
+  if (prefix.length === 0) {
+    return entries;
+  }
+
   const res = {} as PrefixedMap<T>;
 
   for (const [key, value] of Object.entries(entries)) {

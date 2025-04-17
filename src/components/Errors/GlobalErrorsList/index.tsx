@@ -19,6 +19,7 @@ import { FeatureFlag, ScopeChangeEvent } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
+import { DaysFilter } from "../../common/DaysFilter";
 import { OppositeArrowsIcon } from "../../common/icons/12px/OppositeArrowsIcon";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { Direction } from "../../common/icons/types";
@@ -33,7 +34,6 @@ import { actions } from "../actions";
 import { EmptyState } from "../EmptyState";
 import { NewErrorCard } from "../NewErrorCard";
 import { trackingEvents } from "../tracking";
-import { DaysFilter } from "./DaysFilter";
 import { GlobalErrorsFilters } from "./GlobalErrorsFilters";
 import * as s from "./styles";
 import type {
@@ -126,7 +126,7 @@ export const GlobalErrorsList = () => {
       searchCriteria: search,
       sortBy: sorting,
       page,
-      lastDays,
+      lastDays: isNumber(lastDays) ? lastDays : undefined,
       pageSize: PAGE_SIZE,
       dismissed: mode === ViewMode.OnlyDismissed,
       ...(areGlobalErrorsFiltersEnabled
@@ -281,7 +281,7 @@ export const GlobalErrorsList = () => {
     setGlobalErrorsSearch(search);
   };
 
-  const handleDayFilterChange = (days?: number) => {
+  const handleDayFilterChange = (days: number) => {
     setGlobalErrorsLastDays(days);
   };
 
@@ -388,7 +388,11 @@ export const GlobalErrorsList = () => {
             {areGlobalErrorsFiltersEnabled && <GlobalErrorsFilters />}
             <SearchInput value={search} onChange={handleSearchInputChange} />
             {isGlobalErrorsLastDaysFilterEnabled && (
-              <DaysFilter onChanged={handleDayFilterChange} />
+              <DaysFilter
+                onChange={handleDayFilterChange}
+                trackingPrefix={"global errors"}
+                value={lastDays}
+              />
             )}
             <NewPopover
               isOpen={isSortingMenuOpen}

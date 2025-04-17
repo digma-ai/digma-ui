@@ -6,7 +6,6 @@ import type {
 } from "../../components/Errors/GlobalErrorsList/types";
 
 export const PAGE_SIZE = 10;
-export const DAYS_FILTER_DEFAULT_VALUE = 7;
 
 export enum GlobalErrorsSortingCriterion {
   Criticality = "Criticality",
@@ -47,7 +46,7 @@ export interface ErrorsState {
   globalErrorsSelectedFilters: GlobalErrorsSelectedFiltersState | null;
   globalErrorsViewMode: ViewMode;
   errorDetailsWorkspaceItemsOnly: boolean;
-  globalErrorsLastDays?: number;
+  globalErrorsLastDays: number | null;
 }
 
 const globalErrorsWithoutFiltersInitialState: Omit<
@@ -67,7 +66,7 @@ const globalErrorsWithoutFiltersInitialState: Omit<
     errorTypes: null
   },
   globalErrorsViewMode: ViewMode.All,
-  globalErrorsLastDays: DAYS_FILTER_DEFAULT_VALUE
+  globalErrorsLastDays: null
 };
 
 const globalErrorsInitialState: Omit<
@@ -125,7 +124,7 @@ export const errorsSlice = createSlice({
     ) => set({ errorDetailsWorkspaceItemsOnly }),
     setGlobalErrorsViewMode: (mode: ViewMode) =>
       set({ globalErrorsViewMode: mode }),
-    setGlobalErrorsLastDays: (days?: number) =>
+    setGlobalErrorsLastDays: (days: number) =>
       set({ globalErrorsLastDays: days }),
     resetGlobalErrors: () => set({ ...globalErrorsWithoutFiltersInitialState })
   }

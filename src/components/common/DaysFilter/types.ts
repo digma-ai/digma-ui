@@ -1,5 +1,5 @@
-import type { ErrorFilter } from "../../../../store/errors/errorsSlice";
-import type { ButtonProps } from "../../../common/v3/NewButton/types";
+import type { ErrorFilter } from "../../../store/errors/errorsSlice";
+import type { ButtonProps } from "../v3/NewButton/types";
 
 export interface GetGlobalErrorsFiltersDataPayload {
   environment: string;
@@ -29,7 +29,9 @@ export interface DaysButtonProps extends ButtonProps {
 }
 
 export interface DaysFilterProps {
-  onChanged: (days?: number) => void;
+  onChange: (days: number) => void;
+  value: number | null;
+  trackingPrefix?: string;
 }
 
 export interface CounterInputProps {

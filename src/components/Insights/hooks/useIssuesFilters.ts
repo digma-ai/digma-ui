@@ -5,6 +5,7 @@ import type { GetIssuesFiltersPayload } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../store/useStore";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { FeatureFlag } from "../../../types";
 import { ViewMode, type InsightFilterType } from "../InsightsCatalog/types";
 
@@ -21,7 +22,8 @@ export const useIssuesFilters = ({ isEnabled }: UseIssuesFiltersProps) => {
     filteredCriticalityLevels: filteredCriticalityLevelsInSpanScope,
     filteredCriticalityLevelsInGlobalScope,
     viewMode,
-    filters
+    filters,
+    lastDays
   } = useInsightsSelector();
   const { setInsightsIssuesFilters: setData } = useStore.getState();
   const { environment, scope, backendInfo, selectedServices } =
@@ -32,6 +34,11 @@ export const useIssuesFilters = ({ isEnabled }: UseIssuesFiltersProps) => {
   const isCriticalityLevelsFilterEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled
+  );
+
+  const isIssuesLastDaysFilterEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IsIssuesLastDaysFilterEnabled
   );
 
   const payload: GetIssuesFiltersPayload = useMemo(() => {
@@ -65,6 +72,10 @@ export const useIssuesFilters = ({ isEnabled }: UseIssuesFiltersProps) => {
       criticalityFilter:
         isCriticalityLevelsFilterEnabled && filteredCriticalityLevels.length > 0
           ? filteredCriticalityLevels
+          : undefined,
+      lastDays:
+        isIssuesLastDaysFilterEnabled && isNumber(lastDays)
+          ? lastDays
           : undefined
     };
   }, [
@@ -78,7 +89,9 @@ export const useIssuesFilters = ({ isEnabled }: UseIssuesFiltersProps) => {
     filteredInsightTypesInSpanScope,
     filteredInsightTypesInGlobalScope,
     filteredCriticalityLevelsInSpanScope,
-    filteredCriticalityLevelsInGlobalScope
+    filteredCriticalityLevelsInGlobalScope,
+    isIssuesLastDaysFilterEnabled,
+    lastDays
   ]);
 
   const { data: issuesFiltersData } = useGetIssuesFiltersQuery(payload, {

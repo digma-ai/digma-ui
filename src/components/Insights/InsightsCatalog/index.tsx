@@ -19,6 +19,7 @@ import { isUndefined } from "../../../typeGuards/isUndefined";
 import { FeatureFlag } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
+import { DaysFilter } from "../../common/DaysFilter";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { EyeIcon } from "../../common/icons/16px/EyeIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
@@ -98,7 +99,8 @@ export const InsightsCatalog = ({
     setInsightsViewMode: setMode,
     setInsightsPage: setPage,
     setInsightsSorting: setSorting,
-    setInsightsSearch: setSearch
+    setInsightsSearch: setSearch,
+    setInsightsLastDays: setLastDays
   } = useStore.getState();
 
   const {
@@ -112,7 +114,8 @@ export const InsightsCatalog = ({
     filteredCriticalityLevelsInGlobalScope,
     data,
     viewMode: mode,
-    insightViewType
+    insightViewType,
+    lastDays
   } = useInsightsSelector();
 
   const { selectedServices, environment, environments, scope, backendInfo } =
@@ -138,7 +141,7 @@ export const InsightsCatalog = ({
   const [markScopeInsightsRead] = useMarkScopeInsightsReadMutation();
   const [isFiltersToolbarVisible, setIsFiltersToolbarVisible] = useState(false);
   const { data: insightStats } = useInsightsStats({
-    spanCodeObjectId: scopeSpanCodeObjectId ?? "",
+    spanCodeObjectId: scopeSpanCodeObjectId,
     environmentId: environment?.id,
     services: selectedServices ?? undefined
   });
@@ -150,6 +153,10 @@ export const InsightsCatalog = ({
   const isCriticalityLevelsFilterEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled
+  );
+  const isIssuesLastDaysFilterEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IsIssuesLastDaysFilterEnabled
   );
 
   const appliedFilterCount =
@@ -167,7 +174,8 @@ export const InsightsCatalog = ({
         selectedServices &&
         selectedServices.length > 0
           ? 1
-          : 0)
+          : 0) +
+        (isNumber(lastDays) ? 1 : 0)
       : 0) + (searchInputValue.length > 0 ? 1 : 0);
 
   const areSpanEnvironmentsEnabled = getFeatureFlagValue(
@@ -263,6 +271,10 @@ export const InsightsCatalog = ({
     setSorting(value);
   };
 
+  const handleDaysFilterChange = (days: number) => {
+    setLastDays(days);
+  };
+
   useEffect(() => {
     setSearch("");
   }, [scopeSpanCodeObjectId, setSearch]);
@@ -321,6 +333,13 @@ export const InsightsCatalog = ({
                 onChange={handleSearchInputChange}
                 value={searchInputValue}
               />
+              {isIssuesView && isIssuesLastDaysFilterEnabled && (
+                <DaysFilter
+                  onChange={handleDaysFilterChange}
+                  trackingPrefix={"issues"}
+                  value={lastDays}
+                />
+              )}
               {sortingOptions.length > 0 && (
                 <SortingSelector
                   onChange={handleSortingChange}

@@ -116,6 +116,7 @@ export interface ScopeWithMetricsReportContext extends Omit<Scope, "context"> {
     payload: {
       service: string;
       criticalityLevels: IssueCriticality[];
+      lastDays?: number;
     };
   };
 }

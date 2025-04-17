@@ -30,7 +30,8 @@ export enum FeatureFlag {
   IsHttpGetMethodSpanPercentilesHistogramEnabled,
   IsUserIdEnabled,
   IsIssuesCriticalityLevelsFilterEnabled,
-  IsNewBehaviorForMetricsTimeModesEnabled
+  IsNewBehaviorForMetricsTimeModesEnabled,
+  IsIssuesLastDaysFilterEnabled
 }
 
 export enum InsightType {

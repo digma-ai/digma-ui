@@ -16,6 +16,7 @@ import type { SendPluginEventPayload } from "../../types";
 import { ScopeChangeEvent } from "../../types";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { areBackendInfosEqual } from "../../utils/areBackendInfosEqual";
+import { useIssuesPersistence } from "../Insights/hooks/useIssuesPersistence";
 import { Navigation } from "../Navigation";
 import { TAB_IDS } from "../Navigation/Tabs/types";
 import type { Scope } from "../common/App/types";
@@ -85,14 +86,16 @@ export const Main = () => {
   const previousBackendInfo = usePrevious(backendInfo);
   const { goTo } = useHistory();
   const updateBrowserLocation = useBrowserLocationUpdater();
+  const { areFiltersRehydrated: areIssuesFiltersRehydrated } =
+    useIssuesPersistence();
   const [persistedServices, setPersistedServices] = usePersistence<string[]>(
     SERVICES_PERSISTENCE_KEY,
     "project"
   );
   const previousPersistedServices = usePrevious(persistedServices);
   const isInitialized = useMemo(
-    () => !isUndefined(persistedServices),
-    [persistedServices]
+    () => !isUndefined(persistedServices) && areIssuesFiltersRehydrated,
+    [persistedServices, areIssuesFiltersRehydrated]
   );
   const isNoEnvironments = useMemo(
     () => Boolean(!environments || environments.length === 0),
