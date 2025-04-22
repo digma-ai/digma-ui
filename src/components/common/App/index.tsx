@@ -13,6 +13,7 @@ import { initialState as insightsInitialState } from "../../../store/insights/in
 import { useStore } from "../../../store/useStore";
 import { isBoolean } from "../../../typeGuards/isBoolean";
 import { isNull } from "../../../typeGuards/isNull";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
 import { sendErrorTrackingEvent } from "../../../utils/actions/sendErrorTrackingEvent";
@@ -100,7 +101,8 @@ export const App = ({ theme, children, id }: AppProps) => {
     setInsightsFilteredInsightTypesInGlobalScope,
     setInsightsFilteredCriticalityLevels:
       setInsightsFilteredCriticalityLevelsInSpanScope,
-    setInsightsFilteredCriticalityLevelsInGlobalScope
+    setInsightsFilteredCriticalityLevelsInGlobalScope,
+    setInsightsLastDays
   } = useStore.getState();
 
   const handleError = (error: Error, info: ErrorInfo) => {
@@ -396,6 +398,15 @@ export const App = ({ theme, children, id }: AppProps) => {
           }
         }
 
+        const lastDaysToSelect = isScopeWithMetricsReportContext(scope)
+          ? scope.context.payload.lastDays
+          : undefined;
+
+        // Select time range from scope context
+        if (isNumber(lastDaysToSelect)) {
+          setInsightsLastDays(lastDaysToSelect);
+        }
+
         return {
           ...config,
           scope,
@@ -630,7 +641,8 @@ export const App = ({ theme, children, id }: AppProps) => {
     setInsightsFilteredInsightTypesInSpanScope,
     setInsightsFilteredInsightTypesInGlobalScope,
     setInsightsFilteredCriticalityLevelsInSpanScope,
-    setInsightsFilteredCriticalityLevelsInGlobalScope
+    setInsightsFilteredCriticalityLevelsInGlobalScope,
+    setInsightsLastDays
   ]);
 
   const styledComponentsTheme = getStyledComponentsTheme(

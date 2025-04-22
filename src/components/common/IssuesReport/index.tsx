@@ -188,7 +188,7 @@ export const IssuesReport = ({
         ? getEndpointDisplayName(endpointsIssues, value)
         : undefined;
 
-    onTileIssuesStatsClick(viewLevel, { value, displayName });
+    onTileIssuesStatsClick(viewLevel, timeMode, { value, displayName });
   };
 
   const handleGoBack = () => {

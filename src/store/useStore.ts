@@ -35,6 +35,7 @@ export const useStore = create(
             page: 0,
             search: "",
             filters: [],
+            lastDays: null,
             ...(spanCodeObjectId
               ? { filteredInsightTypes: [], filteredCriticalityLevels: [] }
               : {

@@ -18,4 +18,5 @@ export interface IssuesFilterQuery {
   services?: string[];
   criticalityFilter?: IssueCriticality[];
   criticalityFilterInGlobalScope?: IssueCriticality[];
+  lastDays?: number | null;
 }

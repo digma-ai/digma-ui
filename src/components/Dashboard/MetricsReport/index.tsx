@@ -113,6 +113,7 @@ export const MetricsReport = () => {
 
   const handleIssuesStatsClick = (
     _: IssuesReportViewLevel,
+    timeMode: IssuesReportTimeMode,
     target: TargetScope
   ) => {
     if (!selectedService) {
@@ -124,7 +125,8 @@ export const MetricsReport = () => {
           event: ScopeChangeEvent.MetricsServiceSelected,
           payload: {
             service: target.value,
-            criticalityLevels
+            criticalityLevels,
+            ...(timeMode ? { lastDays: periodInDays } : {})
           }
         }
       });

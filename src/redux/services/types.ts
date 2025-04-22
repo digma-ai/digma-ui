@@ -568,6 +568,7 @@ export interface GetInsightsStatsPayload {
   scopedSpanCodeObjectId?: string;
   directOnly?: boolean;
   environment?: string;
+  lastDays?: number;
 }
 
 export interface GetInsightsStatsResponse {
@@ -599,6 +600,7 @@ export interface GetIssuesPayload {
   page?: number;
   pageSize?: number;
   criticalityFilter?: IssueCriticality[];
+  lastDays?: number;
 }
 
 export interface GetIssuesFiltersPayload {
@@ -610,6 +612,7 @@ export interface GetIssuesFiltersPayload {
   displayName?: string;
   showDismissed?: boolean;
   environment?: string;
+  lastDays?: number;
 }
 
 export interface IssueTypeFilter {
