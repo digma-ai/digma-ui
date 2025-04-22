@@ -43,7 +43,7 @@ export const isChangeMeaningfulEnough = (
   return isChangeMeaningfulEnough;
 };
 
-export const getDurationDifferenceString = (
+const getDurationDifferenceString = (
   previousDuration: Duration,
   currentDuration: Duration
 ) => {

@@ -14,7 +14,7 @@ const meta: Meta<typeof EnvironmentIcon> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EnvironmentIcon>;
 
 const mockedEnvironment: Environment = {
   name: "Test",

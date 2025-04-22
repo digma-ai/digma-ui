@@ -26,7 +26,7 @@ const meta: Meta<typeof Status> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof Status>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Live: Story = {
@@ -50,7 +50,7 @@ export const Active: Story = {
   }
 };
 
-export const InActive: Story = {
+export const Inactive: Story = {
   args: {
     lastSeen: timeAgo({ days: 5 }),
     firstSeen: timeAgo({ days: 8 })

@@ -34,7 +34,7 @@ const mockedConfig = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof SpanDurationBreakdownInsightCard>;
 
 export const Default: Story = {
   args: {

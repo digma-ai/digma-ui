@@ -17,7 +17,7 @@ const meta: Meta<typeof GlobalErrorsList> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof GlobalErrorsList>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {

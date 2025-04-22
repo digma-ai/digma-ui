@@ -15,7 +15,7 @@ const meta: Meta<typeof EndpointChattyApiV2InsightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EndpointChattyApiV2InsightCard>;
 
 export const Default: Story = {
   args: {

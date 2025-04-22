@@ -18,7 +18,7 @@ const meta: Meta<typeof EndpointScalingWithSpanInsightTicket> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EndpointScalingWithSpanInsightTicket>;
 
 export const Default: Story = {
   args: {

@@ -15,7 +15,7 @@ const meta: Meta<typeof InsightStatusBadge> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof InsightStatusBadge>;
 
 export const Active: Story = {
   args: {

@@ -13,7 +13,7 @@ const meta: Meta<typeof CodeSnippet> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof CodeSnippet>;
 
 export const Default: Story = {
   args: {

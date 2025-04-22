@@ -15,7 +15,7 @@ const meta: Meta<typeof SpanPerformanceAnomalyInsightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof SpanPerformanceAnomalyInsightCard>;
 
 export const Default: Story = {
   args: {

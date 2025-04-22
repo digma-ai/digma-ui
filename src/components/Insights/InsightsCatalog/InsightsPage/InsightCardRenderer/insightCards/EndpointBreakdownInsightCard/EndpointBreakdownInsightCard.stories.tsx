@@ -16,7 +16,7 @@ const meta: Meta<typeof EndpointBreakdownInsightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EndpointBreakdownInsightCard>;
 
 export const Default: Story = {
   args: {

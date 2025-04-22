@@ -19,7 +19,7 @@ const meta: Meta<typeof SpanScalingByRootCauseInsightTicket> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof SpanScalingByRootCauseInsightTicket>;
 
 const DefaultInsight = {
   ...mockedSpanScalingInsight,

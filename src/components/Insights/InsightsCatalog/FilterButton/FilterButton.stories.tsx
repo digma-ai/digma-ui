@@ -13,6 +13,6 @@ const meta: Meta<typeof FilterButton> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof FilterButton>;
 
 export const Default: Story = {};

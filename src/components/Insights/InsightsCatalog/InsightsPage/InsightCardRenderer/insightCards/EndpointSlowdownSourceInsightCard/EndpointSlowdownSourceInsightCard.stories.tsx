@@ -15,7 +15,7 @@ const meta: Meta<typeof EndpointSlowdownSourceInsightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EndpointSlowdownSourceInsightCard>;
 
 export const Default: Story = {
   args: {

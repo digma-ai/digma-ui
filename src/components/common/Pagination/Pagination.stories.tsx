@@ -25,7 +25,7 @@ const meta: Meta<typeof Pagination> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof Pagination>;
 
 const props: PaginationProps = {
   itemsCount: 10,

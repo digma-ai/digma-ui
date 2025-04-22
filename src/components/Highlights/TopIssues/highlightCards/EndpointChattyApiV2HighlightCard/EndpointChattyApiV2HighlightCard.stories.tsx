@@ -14,7 +14,7 @@ const meta: Meta<typeof EndpointChattyApiV2HighlightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EndpointChattyApiV2HighlightCard>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 

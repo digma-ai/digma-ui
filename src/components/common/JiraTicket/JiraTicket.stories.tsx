@@ -13,7 +13,7 @@ const meta: Meta<typeof JiraTicket> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof JiraTicket>;
 
 export const Default: Story = {
   args: {

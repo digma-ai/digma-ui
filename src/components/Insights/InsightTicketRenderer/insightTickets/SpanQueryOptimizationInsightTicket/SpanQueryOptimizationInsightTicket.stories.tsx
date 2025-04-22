@@ -15,7 +15,7 @@ const meta: Meta<typeof SpanQueryOptimizationInsightTicket> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof SpanQueryOptimizationInsightTicket>;
 
 export const Default: Story = {
   args: {

@@ -14,7 +14,7 @@ const meta: Meta<typeof EnvironmentTab> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EnvironmentTab>;
 const env: ExtendedEnvironment = {
   name: "ENV_RENDER",
   id: "ENV_RENDER#ID#1",

@@ -15,7 +15,7 @@ const meta: Meta<typeof InsightHeader> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof InsightHeader>;
 
 export const Default: Story = {
   args: {

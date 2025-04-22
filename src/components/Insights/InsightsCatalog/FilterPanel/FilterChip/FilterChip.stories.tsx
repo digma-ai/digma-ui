@@ -13,7 +13,7 @@ const meta: Meta<typeof FilterChip> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof FilterChip>;
 
 export const All: Story = {
   args: {

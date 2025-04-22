@@ -15,7 +15,7 @@ const meta: Meta<typeof ScopeBar> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof ScopeBar>;
 
 const mockedScope: Scope = {
   span: {

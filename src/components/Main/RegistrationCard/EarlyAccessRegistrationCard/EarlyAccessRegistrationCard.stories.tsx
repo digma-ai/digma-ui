@@ -13,6 +13,6 @@ const meta: Meta<typeof EarlyAccessRegistrationCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EarlyAccessRegistrationCard>;
 
 export const Default: Story = {};

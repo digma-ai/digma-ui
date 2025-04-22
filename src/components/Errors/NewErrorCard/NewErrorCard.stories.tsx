@@ -16,7 +16,7 @@ const meta: Meta<typeof NewErrorCard> = {
 export default meta;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof NewErrorCard>;
 
 export const Default: Story = {
   args: {

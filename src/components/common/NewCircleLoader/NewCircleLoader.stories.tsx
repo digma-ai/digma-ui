@@ -13,7 +13,7 @@ const meta: Meta<typeof NewCircleLoader> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof NewCircleLoader>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {};

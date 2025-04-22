@@ -14,7 +14,7 @@ const meta: Meta<typeof TreeMap> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof TreeMap>;
 
 export const Default: Story = {
   args: {

@@ -16,7 +16,7 @@ const meta: Meta<typeof InsightStatusTooltipContent> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof InsightStatusTooltipContent>;
 
 export const Active: Story = {
   args: {

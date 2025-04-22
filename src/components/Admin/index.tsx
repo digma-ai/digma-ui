@@ -1,7 +1,7 @@
 import { usePostHog } from "posthog-js/react";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 import {
   useAdminDispatch,
   useAdminSelector

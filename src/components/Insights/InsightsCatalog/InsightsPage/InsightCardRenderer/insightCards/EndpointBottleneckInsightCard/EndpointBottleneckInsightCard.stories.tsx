@@ -15,7 +15,7 @@ const meta: Meta<typeof EndpointBottleneckInsightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EndpointBottleneckInsightCard>;
 
 export const Default: Story = {
   args: {

@@ -15,7 +15,7 @@ const meta: Meta<typeof NotificationCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof NotificationCard>;
 
 export const Default: Story = {
   args: {

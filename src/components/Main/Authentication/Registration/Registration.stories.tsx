@@ -14,7 +14,7 @@ const meta: Meta<typeof Registration> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof Registration>;
 
 export const Default: Story = {};
 

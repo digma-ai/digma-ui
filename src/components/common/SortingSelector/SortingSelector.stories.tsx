@@ -15,7 +15,7 @@ const meta: Meta<typeof SortingSelector> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof SortingSelector>;
 
 export const Default: Story = {
   args: {

@@ -1,4 +1,4 @@
-import intervalToDuration from "date-fns/intervalToDuration";
+import { intervalToDuration } from "date-fns";
 import { isNumber } from "../typeGuards/isNumber";
 import { formatUnit } from "./formatUnit";
 

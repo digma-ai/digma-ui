@@ -14,7 +14,7 @@ const meta: Meta<typeof EarlyAccessPromotionCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EarlyAccessPromotionCard>;
 
 export const Default: Story = {
   args: {}

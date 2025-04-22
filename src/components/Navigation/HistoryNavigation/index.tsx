@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import type { Location } from "react-router-dom";
-import { useLocation, useNavigate } from "react-router-dom";
+import type { Location } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { history } from "../../../containers/Main/history";
 import type { HistoryEntry } from "../../../history/History";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";

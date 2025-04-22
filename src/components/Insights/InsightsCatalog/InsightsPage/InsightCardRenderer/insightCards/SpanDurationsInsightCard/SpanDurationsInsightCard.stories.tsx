@@ -15,7 +15,7 @@ const meta: Meta<typeof SpanDurationsInsightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof SpanDurationsInsightCard>;
 
 export const WithAverage: Story = {
   args: {

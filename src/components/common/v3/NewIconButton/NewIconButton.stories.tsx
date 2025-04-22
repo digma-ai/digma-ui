@@ -14,7 +14,7 @@ const meta: Meta<typeof NewIconButton> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof NewIconButton>;
 
 export const Primary: Story = {
   args: {

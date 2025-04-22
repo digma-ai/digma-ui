@@ -1,4 +1,4 @@
-// Designed to use instead of react-router-dom's useSearchParams,
+// Designed to use instead of react-router's useSearchParams,
 // as setSearchParams function identity changes on re-renders.
 // More info: https://github.com/remix-run/react-router/issues/9991
 
@@ -7,8 +7,8 @@ import type {
   NavigateOptions,
   SetURLSearchParams,
   URLSearchParamsInit
-} from "react-router-dom";
-import { useSearchParams } from "react-router-dom";
+} from "react-router";
+import { useSearchParams } from "react-router";
 
 export function useStableSearchParams(
   defaultInit?: URLSearchParamsInit

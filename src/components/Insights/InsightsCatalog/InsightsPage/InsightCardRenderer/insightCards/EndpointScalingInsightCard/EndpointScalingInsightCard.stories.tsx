@@ -19,7 +19,7 @@ const meta: Meta<typeof EndpointScalingInsightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EndpointScalingInsightCard>;
 
 export const Default: Story = {
   args: {

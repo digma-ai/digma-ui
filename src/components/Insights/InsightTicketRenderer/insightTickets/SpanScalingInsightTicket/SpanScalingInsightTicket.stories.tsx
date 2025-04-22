@@ -19,7 +19,7 @@ const meta: Meta<typeof SpanScalingInsightTicket> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof SpanScalingInsightTicket>;
 
 const DefaultInsight = {
   ...mockedSpanScalingInsight,

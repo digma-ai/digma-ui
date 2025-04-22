@@ -13,7 +13,7 @@ const meta: Meta<typeof EmptyState> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EmptyState>;
 
 export const NothingToShow: Story = {
   args: {

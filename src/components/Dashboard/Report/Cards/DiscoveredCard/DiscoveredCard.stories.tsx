@@ -11,7 +11,7 @@ const meta: Meta<typeof DiscoveredCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof DiscoveredCard>;
 
 export const Default: Story = {
   args: {

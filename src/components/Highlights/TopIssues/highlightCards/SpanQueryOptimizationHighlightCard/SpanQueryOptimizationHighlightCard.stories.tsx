@@ -15,7 +15,7 @@ const meta: Meta<typeof SpanQueryOptimizationHighlightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof SpanQueryOptimizationHighlightCard>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 

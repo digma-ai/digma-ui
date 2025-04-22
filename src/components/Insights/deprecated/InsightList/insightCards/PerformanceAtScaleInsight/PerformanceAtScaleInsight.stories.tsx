@@ -16,7 +16,7 @@ const meta: Meta<typeof PerformanceAtScaleInsight> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof PerformanceAtScaleInsight>;
 
 export const Default: Story = {
   args: {

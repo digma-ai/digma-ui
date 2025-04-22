@@ -15,7 +15,7 @@ const meta: Meta<typeof IssueCompactCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof IssueCompactCard>;
 
 export const Default: Story = {
   args: {

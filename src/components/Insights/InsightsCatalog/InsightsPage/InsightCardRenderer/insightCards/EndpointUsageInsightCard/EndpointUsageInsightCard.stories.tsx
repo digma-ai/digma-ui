@@ -17,7 +17,7 @@ const meta: Meta<typeof EndpointUsageInsightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EndpointUsageInsightCard>;
 
 export const LowUsage: Story = {
   args: {

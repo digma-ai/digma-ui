@@ -14,7 +14,7 @@ const meta: Meta<typeof InsightsCatalog> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof InsightsCatalog>;
 
 export const Default: Story = {};
 

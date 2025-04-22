@@ -21,7 +21,7 @@ const meta: Meta<typeof Notifications> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof Notifications>;
 
 const notifications: Notification[] = [
   {

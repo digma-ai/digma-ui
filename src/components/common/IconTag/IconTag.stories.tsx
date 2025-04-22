@@ -14,7 +14,7 @@ const meta: Meta<typeof IconTag> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof IconTag>;
 
 export const Small: Story = {
   args: {

@@ -13,7 +13,7 @@ const meta: Meta<typeof EnvironmentSelector> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EnvironmentSelector>;
 
 export const Default: Story = {
   args: {

@@ -13,7 +13,7 @@ const meta: Meta<typeof Checkmark> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof Checkmark>;
 
 export const Default: Story = {
   args: {

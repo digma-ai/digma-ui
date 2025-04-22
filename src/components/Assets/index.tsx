@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { useMainDispatch } from "../../containers/Main/hooks";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";

@@ -15,7 +15,7 @@ const meta: Meta<typeof EndpointHighNumberOfQueriesInsightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EndpointHighNumberOfQueriesInsightCard>;
 
 export const Default: Story = {
   args: {

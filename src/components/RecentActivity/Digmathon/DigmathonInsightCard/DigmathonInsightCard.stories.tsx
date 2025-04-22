@@ -15,7 +15,7 @@ const meta: Meta<typeof DigmathonInsightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof DigmathonInsightCard>;
 
 const data = getDigmathonInsightCardData(InsightType.EndpointSpanNPlusOne);
 

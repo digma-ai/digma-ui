@@ -13,7 +13,7 @@ const meta: Meta<typeof AffectedEndpointsSelector> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof AffectedEndpointsSelector>;
 
 export const Default: Story = {
   args: {
@@ -22,7 +22,7 @@ export const Default: Story = {
       {
         route: "test",
         serviceName:
-          "someasasdasdasdasdasdasdawerereasdsadsadsadsadsadasdsadasdsadsdhfkjdhskjfgdf;lgjhdfhglkdfhgklhsdklfghkhgdfgkdfklghrthysdfhsbfheslkbyieryiobyrieuytirosynoiuybioyustest2",
+          "veryLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongServiceName1",
         spanCodeObjectId: "spanCodeObjectId1",
         metric: {
           value: 100,
@@ -31,7 +31,7 @@ export const Default: Story = {
       },
       {
         route:
-          "someasasdasdasdasdasdasdawerereasdsadsadsadsadsadasdsadasdsadsdhfkjdhskjfgdf;lgjhdfhglkdfhgklhsdklfghkhgdfgkdfklghrthysdfhsbfheslkbyieryiobyrieuytirosynoiuybioyustest",
+          "veryLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongServiceName2",
         serviceName: "test1",
         spanCodeObjectId: "spanCodeObjectId2",
         metric: {

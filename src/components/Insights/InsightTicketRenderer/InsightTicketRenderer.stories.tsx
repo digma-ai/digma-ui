@@ -13,6 +13,6 @@ const meta: Meta<typeof InsightTicketRenderer> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof InsightTicketRenderer>;
 
 export const Default: Story = {};

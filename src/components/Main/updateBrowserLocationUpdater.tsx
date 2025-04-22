@@ -1,11 +1,11 @@
-import type { To } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import type { To } from "react-router";
+import { useNavigate } from "react-router";
 
 export const useBrowserLocationUpdater = () => {
   const navigate = useNavigate();
 
   return (location: To) => {
-    navigate(location, {
+    void navigate(location, {
       replace: true,
       state: { navigatedWithCustomHistory: true }
     });

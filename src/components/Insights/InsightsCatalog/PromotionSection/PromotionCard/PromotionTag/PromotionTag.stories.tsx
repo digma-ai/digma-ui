@@ -13,7 +13,7 @@ const meta: Meta<typeof PromotionTag> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof PromotionTag>;
 
 export const Default: Story = {
   args: {}

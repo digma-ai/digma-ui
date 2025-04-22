@@ -14,7 +14,7 @@ const meta: Meta<typeof CommitInfos> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof CommitInfos>;
 
 export const Default: Story = {
   args: {

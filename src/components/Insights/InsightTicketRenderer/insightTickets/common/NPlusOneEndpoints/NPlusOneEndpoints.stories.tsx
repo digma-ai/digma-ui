@@ -15,7 +15,7 @@ const meta: Meta<typeof NPlusOneEndpoints> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof NPlusOneEndpoints>;
 
 export const Default: Story = {
   args: {

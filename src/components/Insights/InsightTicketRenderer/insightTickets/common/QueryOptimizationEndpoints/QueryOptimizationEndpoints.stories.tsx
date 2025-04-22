@@ -15,7 +15,7 @@ const meta: Meta<typeof QueryOptimizationEndpoints> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof QueryOptimizationEndpoints>;
 
 const mockedEndpoints = mockedSpanQueryOptimizationInsight.endpoints ?? [];
 
