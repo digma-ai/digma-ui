@@ -177,6 +177,7 @@ export const IssueCompactCard = ({
 
   return (
     <s.Container
+      className={"insight-card"}
       $isCritical={isCritical}
       $isRead={insight.isRead}
       onClick={handleContainerClick}
