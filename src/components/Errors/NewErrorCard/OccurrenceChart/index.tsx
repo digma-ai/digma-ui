@@ -156,7 +156,7 @@ export const OccurrenceChart = ({
                 axisLine={{ stroke: theme.colors.v3.stroke.tertiary }}
                 tickLine={false}
                 tick={XAxisTickLabelStyles}
-                tickFormatter={(x: string) => format(new Date(x), "MM/dd")}
+                tickFormatter={(x: string) => format(x, "MM/dd")}
               />
               <YAxis
                 axisLine={false}
@@ -185,7 +185,7 @@ export const OccurrenceChart = ({
                   return (
                     <s.TooltipContainer>
                       <span>Occurrences: {value}</span>
-                      <span>{format(new Date(date), "MM/dd/yyyy")}</span>
+                      <span>{format(date, "MM/dd/yyyy")}</span>
                     </s.TooltipContainer>
                   );
                 }}

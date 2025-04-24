@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { CancelConfirmation } from "../../../common/CancelConfirmation";
 import { Overlay } from "../../../common/Overlay";
 import { ChevronIcon } from "../../../common/icons/16px/ChevronIcon";
 import { Direction } from "../../../common/icons/types";
-import { trackingEvents } from "../../tracking";
+import { CancelConfirmationDialog } from "../CancelConfirmationDialog";
+import { trackingEvents } from "../tracking";
 import { Tab } from "./Tab";
 import * as s from "./styles";
 import type { CreateEnvironmentPanelProps } from "./types";
@@ -14,12 +14,18 @@ export const CreateEnvironmentPanel = ({
   tabs,
   onBack,
   backDisabled,
-  cancelDisabled
+  cancelDisabled,
+  isPanelTitleVisible,
+  isCancelConfirmationEnabled
 }: CreateEnvironmentPanelProps) => {
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
 
   const handleCancelButtonClick = () => {
-    setShowCancelConfirmation(true);
+    if (isCancelConfirmationEnabled) {
+      setShowCancelConfirmation(true);
+    } else {
+      onCancel();
+    }
   };
 
   const handleOverlayClose = () => {
@@ -51,8 +57,12 @@ export const CreateEnvironmentPanel = ({
         icon={(props) => <ChevronIcon {...props} direction={Direction.Left} />}
       />
       <s.Divider />
-      <s.Header>Add New Environment</s.Header>
-      <s.Divider />
+      {isPanelTitleVisible && (
+        <>
+          <s.Header>Add New Environment</s.Header>
+          <s.Divider />
+        </>
+      )}
       <s.ContentContainer>
         <s.TabPanel>
           {tabs.map((tab) => {
@@ -75,13 +85,9 @@ export const CreateEnvironmentPanel = ({
       </s.ContentContainer>
       {showCancelConfirmation && (
         <Overlay onClose={handleOverlayClose} tabIndex={-1}>
-          <CancelConfirmation
-            header={"Discard adding a new Environment?"}
-            description={
-              "Are you sure that you want to stop adding new environment?"
-            }
+          <CancelConfirmationDialog
             onClose={handleConfirmationClose}
-            onCancel={handleConfirmationAccept}
+            onConfirm={handleConfirmationAccept}
           />
         </Overlay>
       )}

@@ -36,8 +36,8 @@ import { isNull } from "../../../../typeGuards/isNull";
 import { FeatureFlag } from "../../../../types";
 import { IssuesReport } from "../../../common/IssuesReport";
 import type { TargetScope } from "../../../common/IssuesReport/types";
-import { MainSidebarOverlay } from "../../common/MainSidebarOverlay";
-import type { MainSidebarQuery } from "../../common/MainSidebarOverlay/types";
+import { RepositorySidebarOverlay } from "../../common/RepositorySidebarOverlay";
+import type { RepositorySidebarQuery } from "../../common/RepositorySidebarOverlay/types";
 import * as s from "./styles";
 
 export const MIN_SIDEBAR_WIDTH = 382; // in pixels
@@ -171,7 +171,7 @@ export const CodeIssues = () => {
     });
   };
 
-  const handleMainSidebarClose = () => {
+  const handleRepositorySidebarClose = () => {
     setScope(undefined);
   };
 
@@ -348,7 +348,7 @@ export const CodeIssues = () => {
     return id ? [id] : undefined;
   }, [spanCodeObjectId, scope?.value]);
 
-  const isMainSidebarOpen = Boolean(scope);
+  const isRepositorySidebarOpen = Boolean(scope);
 
   const isCriticalityLevelsFilterEnabled = getFeatureFlagValue(
     about,
@@ -360,7 +360,7 @@ export const CodeIssues = () => {
     FeatureFlag.IsIssuesLastDaysFilterEnabled
   );
 
-  const mainSidebarQuery: MainSidebarQuery = useMemo(
+  const repositorySidebarQuery: RepositorySidebarQuery = useMemo(
     () => ({
       query: {
         environment: selectedEnvironmentId ?? undefined,
@@ -423,10 +423,10 @@ export const CodeIssues = () => {
         showEnvironmentSelect={false}
         showServicesSelect={false}
       />
-      <MainSidebarOverlay
-        isSidebarOpen={isMainSidebarOpen}
-        onSidebarClose={handleMainSidebarClose}
-        mainSidebarQuery={mainSidebarQuery}
+      <RepositorySidebarOverlay
+        isSidebarOpen={isRepositorySidebarOpen}
+        onSidebarClose={handleRepositorySidebarClose}
+        sidebarQuery={repositorySidebarQuery}
         scopeDisplayName={scopeDisplayName}
       />
     </s.Container>

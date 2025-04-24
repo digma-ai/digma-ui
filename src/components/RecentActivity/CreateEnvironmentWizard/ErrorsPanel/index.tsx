@@ -1,4 +1,4 @@
-import { ErrorCard } from "../ErrorCard";
+import { ErrorCard } from "./ErrorCard";
 import * as s from "./styles";
 import type { ErrorsPanelProps } from "./types";
 

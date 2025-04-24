@@ -5,6 +5,8 @@ export interface CreateEnvironmentPanelProps {
   onBack: () => void;
   backDisabled: boolean;
   cancelDisabled: boolean;
+  isPanelTitleVisible: boolean;
+  isCancelConfirmationEnabled: boolean;
   tabs: {
     index: number;
     name: string;

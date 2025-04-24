@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router";
+import { CreateEnvironmentButton } from "./CreateEnvironmentButton";
 import { Greeting } from "./Greeting";
 import { HeaderContent } from "./HeaderContent";
+import { FilterToolbar } from "./HeaderContent/FilterToolbar";
 import * as s from "./styles";
 
 export const Header = () => (
@@ -9,7 +11,7 @@ export const Header = () => (
       <Route
         path={"home"}
         element={
-          <HeaderContent>
+          <HeaderContent toolbarContent={<FilterToolbar />}>
             <Greeting />
           </HeaderContent>
         }
@@ -18,12 +20,20 @@ export const Header = () => (
         <Route
           path={"*"}
           element={
-            <HeaderContent>
+            <HeaderContent toolbarContent={<FilterToolbar />}>
               <span>Reports</span>
             </HeaderContent>
           }
         />
       </Route>
+      <Route
+        path={"environments"}
+        element={
+          <HeaderContent toolbarContent={<CreateEnvironmentButton />}>
+            <span>Environments</span>
+          </HeaderContent>
+        }
+      />
     </Routes>
   </s.Header>
 );

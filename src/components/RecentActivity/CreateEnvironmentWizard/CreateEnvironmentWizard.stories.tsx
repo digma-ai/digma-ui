@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { CreateEnvironmentWizard } from ".";
 import { ConfigContext, initialState } from "../../common/App/ConfigContext";
 import { DeploymentType } from "../../common/App/types";
-import { actions } from "../actions";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof CreateEnvironmentWizard> = {
@@ -20,25 +19,6 @@ type Story = StoryObj<typeof CreateEnvironmentWizard>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {};
-
-export const WithError: Story = {
-  play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_CREATE_ENVIRONMENT_RESULT,
-        payload: {
-          errors: [
-            {
-              errorCode: "ExistingEnvironmentName",
-              errorDescription: "some error message"
-            }
-          ]
-        }
-      });
-    }, 1000);
-  }
-};
 
 export const WithoutRegisteredUser: Story = {
   decorators: [

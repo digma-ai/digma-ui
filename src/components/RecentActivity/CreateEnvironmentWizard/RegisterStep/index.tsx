@@ -7,7 +7,7 @@ import { isValidEmailFormat } from "../../../../utils/isValidEmailFormat";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
 import { UserIcon } from "../../../common/icons/UserIcon";
-import { trackingEvents } from "../../tracking";
+import { trackingEvents } from "../tracking";
 import { isWorkEmail } from "./isWorkEmail";
 import * as s from "./styles";
 import type { RegisterStepProps, RegistrationFormValues } from "./types";

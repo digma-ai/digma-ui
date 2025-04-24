@@ -6,9 +6,9 @@ const timeAgo = ({ minutes = 0, days = 0, weeks = 0 }) => {
   const now = new Date();
 
   const date = sub(now, {
-    minutes: minutes,
-    days: days,
-    weeks: weeks
+    minutes,
+    days,
+    weeks
   });
 
   return date.toISOString();

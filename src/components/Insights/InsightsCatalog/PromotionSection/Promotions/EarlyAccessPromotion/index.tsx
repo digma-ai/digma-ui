@@ -99,7 +99,7 @@ export const EarlyAccessPromotion = ({
               }
               cancelBtnText={"Yes, discard"}
               onClose={handleCancelConfirmationClose}
-              onCancel={handleCancelConfirmationAccept}
+              onConfirm={handleCancelConfirmationAccept}
             />
           </MainOverlay>,
           mainContainer

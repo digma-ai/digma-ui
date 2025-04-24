@@ -6,6 +6,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
   border-top: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
 `;
 

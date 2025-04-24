@@ -1,13 +1,15 @@
 import styled from "styled-components";
+import { bodyRegularTypography } from "../../../common/App/typographies";
 import type { ListItemIconContainerProps, ListItemProps } from "./types";
 
 export const List = styled.ul`
+  ${bodyRegularTypography}
+
   display: flex;
   flex-direction: column;
   user-select: none;
   margin: 0;
   padding: 0;
-  font-size: 14px;
 `;
 
 export const ListGroupName = styled.div`

@@ -1,7 +1,7 @@
-export interface DeleteEnvironmentConfirmationProps {
+export interface CancelConfirmationProps {
   header: string;
   description: string;
   cancelBtnText?: string;
   onClose: () => void;
-  onCancel: () => void;
+  onConfirm: () => void;
 }

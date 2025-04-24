@@ -17,7 +17,7 @@ import { setUser } from "../../redux/slices/authSlice";
 import { FeatureFlag } from "../../types";
 import { Spinner } from "../common/v3/Spinner";
 import { Header } from "./Header";
-import { Sidebar } from "./Sidebar";
+import { NavSidebar } from "./NavSidebar";
 import * as s from "./styles";
 
 export const Admin = () => {
@@ -64,7 +64,7 @@ export const Admin = () => {
       </Helmet>
       {isInitialized ? (
         <>
-          <Sidebar />
+          <NavSidebar />
           <s.ContentContainer>
             <Header />
             <s.MainContainer>

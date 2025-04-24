@@ -6,7 +6,11 @@ import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
-import type { Environment } from "../../redux/services/types";
+import { useDeleteEnvironmentMutation } from "../../redux/services/digma";
+import type {
+  Environment,
+  SlimEntrySpanData
+} from "../../redux/services/types";
 import { isBoolean } from "../../typeGuards/isBoolean";
 import { ScopeChangeEvent } from "../../types";
 import { changeScope } from "../../utils/actions/changeScope";
@@ -20,6 +24,7 @@ import type { RegistrationFormValues } from "../common/RegistrationDialog/types"
 import { ListIcon } from "../common/icons/ListIcon";
 import { TableIcon } from "../common/icons/TableIcon";
 import { ConfirmationDialog } from "./ConfirmationDialog";
+import { CreateEnvironmentFinishScreenContent } from "./CreateEnvironmentFinishScreenContent";
 import { CreateEnvironmentWizard } from "./CreateEnvironmentWizard";
 import { Digmathon } from "./Digmathon";
 import { EnvironmentInstructionsPanel } from "./EnvironmentInstructionsPanel";
@@ -36,7 +41,6 @@ import { actions } from "./actions";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import type {
-  EntrySpan,
   EnvironmentClearDataTimeStamps,
   EnvironmentInstructionsVisibility,
   ExtendedEnvironment,
@@ -93,6 +97,7 @@ export const RecentActivity = () => {
   const [environmentToClearData, setEnvironmentToClearData] =
     useState<string>();
   const { recentActivityData: data } = useRecentActivityData();
+  const [deleteEnvironment] = useDeleteEnvironmentMutation();
   const isEnvironmentConfirmationDialogVisible = Boolean(
     environmentToDelete ?? environmentToClearData
   );
@@ -103,6 +108,7 @@ export const RecentActivity = () => {
     ENVIRONMENT_CLEAR_DATA_TIMESTAMP_PERSISTENCE_KEY,
     "application"
   );
+  const [createdEnvironment, setCreatedEnvironment] = useState<Environment>();
 
   const config = useContext(ConfigContext);
   const previousUserRegistrationEmail = usePrevious(
@@ -129,17 +135,19 @@ export const RecentActivity = () => {
     keepOpen: false
   });
 
-  const filteredEntries = useMemo(() => {
-    return data?.entries.filter((entry) => {
-      const clearDataTimestamp =
-        persistedEnvironmentClearDataTimestamps?.[entry.environment];
+  const filteredEntries = useMemo(
+    () =>
+      data.entries.filter((entry) => {
+        const clearDataTimestamp =
+          persistedEnvironmentClearDataTimestamps?.[entry.environment];
 
-      return clearDataTimestamp
-        ? new Date(entry.latestTraceTimestamp).valueOf() >
-            new Date(clearDataTimestamp).valueOf()
-        : true;
-    });
-  }, [data, persistedEnvironmentClearDataTimestamps]);
+        return clearDataTimestamp
+          ? new Date(entry.latestTraceTimestamp).valueOf() >
+              new Date(clearDataTimestamp).valueOf()
+          : true;
+      }),
+    [data, persistedEnvironmentClearDataTimestamps]
+  );
 
   const environmentActivities = useMemo(
     () =>
@@ -149,14 +157,15 @@ export const RecentActivity = () => {
 
   const environments: ExtendedEnvironment[] = useMemo(
     () =>
-      data
-        ? data.environments.map((environment) => ({
-            ...environment,
-            hasRecentActivity: environmentActivities[environment.id]
-              ? environmentActivities[environment.id].some(isRecent)
-              : false
-          }))
-        : [],
+      data.environments.map((environment) => ({
+        ...environment,
+        additionToConfigResult: null,
+        serverApiUrl: null,
+        isOrgDigmaSetupFinished: false,
+        hasRecentActivity: environmentActivities[environment.id]
+          ? environmentActivities[environment.id].some(isRecent)
+          : false
+      })),
     [data, environmentActivities]
   );
 
@@ -301,7 +310,7 @@ export const RecentActivity = () => {
     );
   };
 
-  const handleSpanLinkClick = (span: EntrySpan) => {
+  const handleSpanLinkClick = (span: SlimEntrySpanData) => {
     if (selectedEnvironment) {
       changeScope({
         span: {
@@ -314,7 +323,7 @@ export const RecentActivity = () => {
     }
   };
 
-  const handleTraceButtonClick = (traceId: string, span: EntrySpan) => {
+  const handleTraceButtonClick = (traceId: string, span: SlimEntrySpanData) => {
     window.sendMessageToDigma({
       action: actions.GO_TO_TRACE,
       payload: {
@@ -340,11 +349,12 @@ export const RecentActivity = () => {
   };
 
   const handleConfirmEnvironmentDeletion = () => {
-    window.sendMessageToDigma({
-      action: actions.DELETE_ENVIRONMENT,
-      payload: {
-        environment: environmentToDelete
-      }
+    if (!environmentToDelete) {
+      return;
+    }
+
+    void deleteEnvironment({
+      id: environmentToDelete
     });
     setEnvironmentToDelete(undefined);
   };
@@ -485,26 +495,38 @@ export const RecentActivity = () => {
     return <WelcomeScreen />;
   }
 
+  const handleEnvironmentCreate = (environment: Environment) => {
+    setCreatedEnvironment(environment);
+  };
+
+  const handleCreateEnvironmentWizardClose = (id: string | null) => {
+    if (id) {
+      const newEnv = environments.find((x) => x.id === id);
+      if (newEnv) {
+        changeSelectedEnvironment(config.scope, config.environments, newEnv.id);
+        setEnvironmentInstructionsVisibility({
+          isOpen: true,
+          newlyCreatedEnvironmentId: newEnv.id,
+          keepOpen: false
+        });
+      }
+    }
+    setShowCreationWizard(false);
+    setCreatedEnvironment(undefined);
+  };
+
   return showCreationWizard ? (
     <CreateEnvironmentWizard
-      onClose={(newEnvId) => {
-        if (newEnvId) {
-          const newEnv = environments.find((x) => x.id === newEnvId);
-          if (newEnv) {
-            changeSelectedEnvironment(
-              config.scope,
-              config.environments,
-              newEnv.id
-            );
-            setEnvironmentInstructionsVisibility({
-              isOpen: true,
-              newlyCreatedEnvironmentId: newEnv.id,
-              keepOpen: false
-            });
-          }
-        }
-        setShowCreationWizard(false);
-      }}
+      onCreate={handleEnvironmentCreate}
+      finishScreenContent={
+        <CreateEnvironmentFinishScreenContent
+          onOpenEnvironment={handleCreateEnvironmentWizardClose}
+          environment={createdEnvironment}
+        />
+      }
+      isCentralizedDeployment={Boolean(config.backendInfo?.centralize)}
+      onClose={handleCreateEnvironmentWizardClose}
+      isCancelConfirmationEnabled={true}
     />
   ) : (
     <s.Container>
