@@ -8,8 +8,6 @@ export const trackingEvents = {
   FAILED_TO_CREATE_ENVIRONMENT: "failed to create environment",
   CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CONFIRM_CLICKED:
     "create environment cancel confirmation confirm clicked",
-  CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CANCEL_CLICKED:
-    "create environment cancel confirmation cancel clicked",
   CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CLOSE_CLICKED:
     "create environment cancel confirmation close clicked"
 };
