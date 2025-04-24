@@ -15,7 +15,7 @@ const meta: Meta<typeof EndpointQueryOptimizationV2HighlightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EndpointQueryOptimizationV2HighlightCard>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 

@@ -15,7 +15,7 @@ const meta: Meta<typeof SpanEndpointBottleneckInsightTicket> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof SpanEndpointBottleneckInsightTicket>;
 
 export const Default: Story = {
   args: {

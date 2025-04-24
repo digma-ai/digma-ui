@@ -14,7 +14,7 @@ const meta: Meta<typeof InstallationWizard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof InstallationWizard>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const NoDigmaInstalled: Story = {

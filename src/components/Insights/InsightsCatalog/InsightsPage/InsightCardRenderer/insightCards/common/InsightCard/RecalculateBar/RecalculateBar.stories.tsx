@@ -14,6 +14,6 @@ const meta: Meta<typeof RecalculateBar> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof RecalculateBar>;
 
 export const Default: Story = {};

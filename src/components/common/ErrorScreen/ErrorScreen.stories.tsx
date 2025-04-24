@@ -13,6 +13,6 @@ const meta: Meta<typeof ErrorScreen> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof ErrorScreen>;
 
 export const Default: Story = {};

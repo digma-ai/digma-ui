@@ -14,6 +14,6 @@ const meta: Meta<typeof AsyncTag> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof AsyncTag>;
 
 export const Default: Story = {};

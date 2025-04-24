@@ -17,7 +17,7 @@ const meta: Meta<typeof EnvironmentInstructionsPanel> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EnvironmentInstructionsPanel>;
 
 const mockedConfig: ConfigContextData = {
   ...initialState,

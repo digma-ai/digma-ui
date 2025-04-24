@@ -14,7 +14,7 @@ const meta: Meta<typeof DurationChange> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof DurationChange>;
 
 export const Degradation: Story = {
   args: {

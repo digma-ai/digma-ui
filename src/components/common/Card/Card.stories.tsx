@@ -15,7 +15,7 @@ const meta: Meta<typeof Card> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof Card>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 const props: CardProps = {

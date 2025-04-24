@@ -14,7 +14,7 @@ import { ThreeDotsVerticalIcon } from "../common/icons/ThreeDotsVerticalIcon";
 // import { CodeButton } from "./CodeButton";
 // import { CodeButtonMenu } from "./CodeButtonMenu";
 import useDimensions from "react-cool-dimensions";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import { getFeatureFlagValue } from "../../featureFlags";
 import { useGetSpanInfoQuery } from "../../redux/services/digma";
 import type { Environment } from "../../redux/services/types";

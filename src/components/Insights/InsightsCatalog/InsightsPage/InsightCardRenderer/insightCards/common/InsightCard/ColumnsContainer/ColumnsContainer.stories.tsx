@@ -15,7 +15,7 @@ const meta: Meta<typeof ColumnsContainer> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof ColumnsContainer>;
 
 export const Default: Story = {
   args: {

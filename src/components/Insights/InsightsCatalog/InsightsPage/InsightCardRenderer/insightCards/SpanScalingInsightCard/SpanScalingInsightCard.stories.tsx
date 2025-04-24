@@ -20,7 +20,7 @@ const meta: Meta<typeof SpanScalingInsightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof SpanScalingInsightCard>;
 
 export const Minimal: Story = {
   args: {

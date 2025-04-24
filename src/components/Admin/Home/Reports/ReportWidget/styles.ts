@@ -1,4 +1,4 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 import styled, { css } from "styled-components";
 import {
   caption1RegularTypography,

@@ -17,7 +17,7 @@ const meta: Meta<typeof InsightJiraTicket> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof InsightJiraTicket>;
 
 const insight: SpanUsagesInsight = {
   sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",

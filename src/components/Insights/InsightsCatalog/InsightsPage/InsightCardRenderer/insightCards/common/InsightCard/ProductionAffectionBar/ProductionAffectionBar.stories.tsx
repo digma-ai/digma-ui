@@ -14,7 +14,7 @@ const meta: Meta<typeof ProductionAffectionBar> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof ProductionAffectionBar>;
 
 export const WithoutTicket: Story = {};
 

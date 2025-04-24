@@ -16,7 +16,7 @@ const meta: Meta<typeof EnvironmentVariableCode> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EnvironmentVariableCode>;
 
 const mockedConfig: ConfigContextData = {
   ...initialState,

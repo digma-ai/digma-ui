@@ -17,7 +17,7 @@ const meta: Meta<typeof AssetList> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof AssetList>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 

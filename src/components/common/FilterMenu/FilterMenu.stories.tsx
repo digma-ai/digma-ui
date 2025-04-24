@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 import { useState } from "react";
 import { FilterMenu } from ".";
 
@@ -14,7 +15,7 @@ const meta: Meta<typeof FilterMenu> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof FilterMenu>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
@@ -80,13 +81,19 @@ export const Default: Story = {
         label: "Item 9",
         value: "item_9"
       }
-    ]
+    ],
+    isLoading: false,
+    onClose: fn(),
+    onItemClick: fn()
   }
 };
 
 export const NoItems: Story = {
   args: {
     title: "Filter by services",
-    items: []
+    items: [],
+    onItemClick: fn(),
+    onClose: fn(),
+    isLoading: false
   }
 };

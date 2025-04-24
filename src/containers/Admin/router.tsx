@@ -1,5 +1,5 @@
-import type { RouteObject } from "react-router-dom";
-import { Navigate, createBrowserRouter, useRouteError } from "react-router-dom";
+import type { RouteObject } from "react-router";
+import { Navigate, createBrowserRouter, useRouteError } from "react-router";
 import { Admin } from "../../components/Admin";
 import { Home } from "../../components/Admin/Home";
 import { CodeIssues } from "../../components/Admin/Reports/CodeIssues";

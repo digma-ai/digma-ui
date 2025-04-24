@@ -1,5 +1,5 @@
 import { useEffect, useState, type MouseEvent } from "react";
-import { useMatch } from "react-router-dom";
+import { useMatch } from "react-router";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { ArrowDownToRightIcon } from "../../../../common/icons/12px/ArrowDownToRightIcon";
 import { ChevronIcon } from "../../../../common/icons/16px/ChevronIcon";

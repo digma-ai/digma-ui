@@ -15,7 +15,7 @@ const meta: Meta<typeof SpaNPlusOneInsightTicket> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof SpaNPlusOneInsightTicket>;
 
 export const Default: Story = {
   args: {

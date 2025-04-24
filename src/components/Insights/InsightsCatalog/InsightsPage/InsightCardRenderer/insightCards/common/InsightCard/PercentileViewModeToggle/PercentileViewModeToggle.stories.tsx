@@ -14,7 +14,7 @@ const meta: Meta<typeof PercentileViewModeToggle> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof PercentileViewModeToggle>;
 
 export const Default: Story = {
   args: {

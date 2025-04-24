@@ -15,7 +15,7 @@ const meta: Meta<typeof ErrorsInsight> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof ErrorsInsight>;
 
 export const Default: Story = {
   args: {

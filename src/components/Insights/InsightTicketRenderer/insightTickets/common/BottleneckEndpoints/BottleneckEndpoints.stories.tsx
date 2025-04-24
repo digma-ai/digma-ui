@@ -15,7 +15,7 @@ const meta: Meta<typeof BottleneckEndpoints> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof BottleneckEndpoints>;
 
 export const Default: Story = {
   args: {

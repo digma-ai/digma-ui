@@ -16,7 +16,7 @@ const meta: Meta<typeof InsightsPage> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof InsightsPage>;
 
 const scope: Scope = {
   span: null,

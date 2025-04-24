@@ -13,6 +13,6 @@ const meta: Meta<typeof UdemyRegistrationCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof UdemyRegistrationCard>;
 
 export const Default: Story = {};

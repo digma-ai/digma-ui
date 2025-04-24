@@ -15,7 +15,7 @@ const meta: Meta<typeof EndpointSpanNPlusOneInsightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EndpointSpanNPlusOneInsightCard>;
 
 export const Default: Story = {
   args: {

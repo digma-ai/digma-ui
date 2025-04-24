@@ -15,7 +15,7 @@ const meta: Meta<typeof SpanNexusInsightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof SpanNexusInsightCard>;
 
 export const Default: Story = {
   args: {

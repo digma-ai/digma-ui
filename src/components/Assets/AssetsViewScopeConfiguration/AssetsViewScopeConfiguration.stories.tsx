@@ -13,7 +13,7 @@ const meta: Meta<typeof AssetsViewScopeConfiguration> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof AssetsViewScopeConfiguration>;
 
 export const Default: Story = {
   args: {

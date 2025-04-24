@@ -14,7 +14,7 @@ const meta: Meta<typeof EnvironmentChip> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EnvironmentChip>;
 
 const mockedEnvironment: Environment = {
   type: "Public",

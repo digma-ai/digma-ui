@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 import { useState } from "react";
 import { Select } from ".";
 
@@ -14,7 +15,7 @@ const meta: Meta<typeof Select> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof Select>;
 
 const mockedData = {
   counts: {
@@ -51,20 +52,23 @@ const mockedData = {
 
 export const Default: Story = {
   args: {
-    items: mockedData.items.map((x, i) => ({ ...x, enabled: i !== 0 }))
+    items: mockedData.items.map((x, i) => ({ ...x, enabled: i !== 0 })),
+    onChange: fn()
   }
 };
 
 export const Searchable: Story = {
   args: {
     searchable: true,
-    items: mockedData.items.map((x, i) => ({ ...x, enabled: i !== 0 }))
+    items: mockedData.items.map((x, i) => ({ ...x, enabled: i !== 0 })),
+    onChange: fn()
   }
 };
 
 export const Empty: Story = {
   args: {
-    items: []
+    items: [],
+    onChange: fn()
   }
 };
 

@@ -13,7 +13,7 @@ const meta: Meta<typeof ToggleSwitch> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof ToggleSwitch>;
 
 export const Default: Story = {
   args: {

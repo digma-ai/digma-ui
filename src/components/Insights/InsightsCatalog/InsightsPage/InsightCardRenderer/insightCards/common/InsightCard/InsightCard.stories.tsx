@@ -21,7 +21,7 @@ const meta: Meta<typeof InsightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof InsightCard>;
 
 export const Default: Story = {
   decorators: [

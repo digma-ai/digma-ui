@@ -1,5 +1,5 @@
-import type { NavigateOptions, To } from "react-router-dom";
-import { resolvePath } from "react-router-dom";
+import type { NavigateOptions, To } from "react-router";
+import { resolvePath } from "react-router";
 import { history } from "../../containers/Main/history";
 import type { HistoryEntry, HistoryEntryLocation } from "../../history/History";
 import { useConfigSelector } from "../../store/config/useConfigSelector";

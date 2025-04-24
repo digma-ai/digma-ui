@@ -13,6 +13,6 @@ const meta: Meta<typeof ReportCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof ReportCard>;
 
 export const Default: Story = {};

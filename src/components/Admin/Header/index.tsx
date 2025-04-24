@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router";
 import { Greeting } from "./Greeting";
 import { HeaderContent } from "./HeaderContent";
 import * as s from "./styles";
@@ -14,14 +14,16 @@ export const Header = () => (
           </HeaderContent>
         }
       />
-      <Route
-        path={"reports/*"}
-        element={
-          <HeaderContent>
-            <span>Reports</span>
-          </HeaderContent>
-        }
-      />
+      <Route path={"reports"}>
+        <Route
+          path={"*"}
+          element={
+            <HeaderContent>
+              <span>Reports</span>
+            </HeaderContent>
+          }
+        />
+      </Route>
     </Routes>
   </s.Header>
 );

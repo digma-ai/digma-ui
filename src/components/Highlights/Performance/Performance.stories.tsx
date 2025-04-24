@@ -13,7 +13,7 @@ const meta: Meta<typeof Performance> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof Performance>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 

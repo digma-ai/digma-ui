@@ -15,7 +15,7 @@ const meta: Meta<typeof OccurrenceChart> = {
 export default meta;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof OccurrenceChart>;
 
 export const Default: Story = {
   play: () => {

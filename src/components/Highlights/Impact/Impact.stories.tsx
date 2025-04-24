@@ -13,7 +13,7 @@ const meta: Meta<typeof Impact> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof Impact>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 

@@ -1,5 +1,5 @@
-import type { RouteObject } from "react-router-dom";
-import { Navigate, createHashRouter, useRouteError } from "react-router-dom";
+import type { RouteObject } from "react-router";
+import { Navigate, createHashRouter, useRouteError } from "react-router";
 import { Assets } from "../../components/Assets";
 import { Errors } from "../../components/Errors";
 import { Highlights } from "../../components/Highlights";

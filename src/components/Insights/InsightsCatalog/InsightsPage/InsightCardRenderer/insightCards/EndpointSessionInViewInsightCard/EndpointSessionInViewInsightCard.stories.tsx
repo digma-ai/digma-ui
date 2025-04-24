@@ -15,7 +15,7 @@ const meta: Meta<typeof EndpointSessionInViewInsightCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof EndpointSessionInViewInsightCard>;
 
 export const Default: Story = {
   args: {

@@ -14,7 +14,7 @@ const meta: Meta<typeof UdemyCoursePromotionCard> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof UdemyCoursePromotionCard>;
 
 export const Default: Story = {
   args: {}
