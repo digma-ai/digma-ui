@@ -1,9 +1,5 @@
 import type { ComponentType } from "react";
-import type {
-  Duration,
-  Environment,
-  EnvironmentType
-} from "../../redux/services/types";
+import type { Environment, EnvironmentType } from "../../redux/services/types";
 import type { InsightType } from "../../types";
 import type { IconProps } from "../common/icons/types";
 import type { AddToRunConfigState } from "./EnvironmentInstructionsPanel/types";
@@ -38,55 +34,19 @@ export interface ViewModeOption {
   icon: ComponentType<IconProps>;
 }
 
-export interface EntrySpan {
-  displayText: string;
-  serviceName: string;
-  scopeId: string;
-  spanCodeObjectId: string;
-  methodCodeObjectId: string | null;
-}
-
-export interface SlimInsight {
-  type: string;
-  codeObjectIds: string[];
-  importance: number;
-  criticality?: number;
-}
-
-export interface ActivityEntry {
-  environment: string;
-  traceFlowDisplayName: string;
-  firstEntrySpan: EntrySpan;
-  lastEntrySpan: EntrySpan | null;
-  latestTraceId: string;
-  latestTraceTimestamp: string;
-  latestTraceDuration: Duration;
-  slimAggregatedInsights: SlimInsight[];
-  spansCount?: number;
-}
-
 export interface ActivityEnvironment extends Environment {
   /** @deprecated */
-
   additionToConfigResult: AddToRunConfigState | null;
   /** @deprecated */
-
   token?: string | null;
   /** @deprecated */
-
   serverApiUrl: string | null;
   /** @deprecated */
-
   isOrgDigmaSetupFinished: boolean;
 }
 
 export interface ExtendedEnvironment extends ActivityEnvironment {
   hasRecentActivity: boolean;
-}
-
-export interface RecentActivityData {
-  environments: ActivityEnvironment[];
-  entries: ActivityEntry[];
 }
 
 export interface SetIsJaegerData {

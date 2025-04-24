@@ -7,20 +7,20 @@ export const useAddToRunConfig = (environment: string) => {
   const [addToConfigState, setAddToConfigState] =
     useState<AddToRunConfigState | null>(null);
   useEffect(() => {
-    const handleRecentActivityData = (data: unknown) => {
+    const handleAddEnvironmentToRunConfigResult = (data: unknown) => {
       const response = data as AddToConfigResult;
       setAddToConfigState(response.result);
     };
 
     dispatcher.addActionListener(
       actions.ADD_ENVIRONMENT_TO_RUN_CONFIG_RESULT,
-      handleRecentActivityData
+      handleAddEnvironmentToRunConfigResult
     );
 
     return () => {
       dispatcher.removeActionListener(
         actions.ADD_ENVIRONMENT_TO_RUN_CONFIG_RESULT,
-        handleRecentActivityData
+        handleAddEnvironmentToRunConfigResult
       );
     };
   }, []);

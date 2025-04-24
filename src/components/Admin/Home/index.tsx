@@ -10,8 +10,8 @@ import {
   setSelectedEnvironmentId,
   setSelectedServices
 } from "../../../redux/slices/issuesReportSlice";
-import { MainSidebarOverlay } from "../common/MainSidebarOverlay";
-import type { MainSidebarQuery } from "../common/MainSidebarOverlay/types";
+import { RepositorySidebarOverlay } from "../common/RepositorySidebarOverlay";
+import type { RepositorySidebarQuery } from "../common/RepositorySidebarOverlay/types";
 import { Environments } from "./Environments";
 import { Overview } from "./Overview";
 import { Reports } from "./Reports";
@@ -34,7 +34,7 @@ export const Home = () => {
     [searchParams]
   );
 
-  const queries: Record<string, MainSidebarQuery> = useMemo(
+  const queries: Record<string, RepositorySidebarQuery> = useMemo(
     () => ({
       "top-criticality": {
         query: {
@@ -62,7 +62,7 @@ export const Home = () => {
     setIssuesQuery("top-severity");
   };
 
-  const handleMainSidebarClose = () => {
+  const handleRepositorySidebarClose = () => {
     setIssuesQuery(undefined);
   };
 
@@ -111,7 +111,7 @@ export const Home = () => {
     });
   }, [setSearchParams, issuesQuery]);
 
-  const mainSidebarQuery = issuesQuery ? queries[issuesQuery] : undefined;
+  const repositorySidebarQuery = issuesQuery ? queries[issuesQuery] : undefined;
 
   return (
     <s.Container>
@@ -121,10 +121,10 @@ export const Home = () => {
       />
       <Reports />
       <Environments />
-      <MainSidebarOverlay
-        mainSidebarQuery={mainSidebarQuery}
-        isSidebarOpen={Boolean(mainSidebarQuery)}
-        onSidebarClose={handleMainSidebarClose}
+      <RepositorySidebarOverlay
+        sidebarQuery={repositorySidebarQuery}
+        isSidebarOpen={Boolean(repositorySidebarQuery)}
+        onSidebarClose={handleRepositorySidebarClose}
       />
     </s.Container>
   );

@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export const usePagination = <T>(
   items: T[],
@@ -12,7 +12,11 @@ export const usePagination = <T>(
   const pageStart = page * pageSize;
   const pageEnd = pageStart + pageSize;
 
-  const pageItems = items.slice(pageStart, pageEnd);
+  // TODO: remove unnecessary state in usages of usePagination
+  const pageItems = useMemo(
+    () => items.slice(pageStart, pageEnd),
+    [items, pageStart, pageEnd]
+  );
 
   useEffect(() => {
     if (page >= pageCount) {

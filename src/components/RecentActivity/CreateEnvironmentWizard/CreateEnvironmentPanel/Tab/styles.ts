@@ -15,6 +15,7 @@ export const Index = styled.div<IndexProps>`
   display: flex;
   width: 20px;
   height: 20px;
+  flex-shrink: 0;
   justify-content: center;
   border-radius: 12px;
   align-items: center;

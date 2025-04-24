@@ -1,17 +1,17 @@
 import { CrossIcon } from "../icons/12px/CrossIcon";
-import { Button } from "../v3/Button";
+import { NewButton } from "../v3/NewButton";
 import * as s from "./styles";
-import type { DeleteEnvironmentConfirmationProps } from "./types";
+import type { CancelConfirmationProps } from "./types";
 
 export const CancelConfirmation = ({
-  onCancel,
+  onConfirm,
   onClose,
   header,
   description,
   cancelBtnText
-}: DeleteEnvironmentConfirmationProps) => {
+}: CancelConfirmationProps) => {
   const handleConfirmButtonClick = () => {
-    onCancel();
+    onConfirm();
   };
 
   const handleCancelButtonClick = () => {
@@ -32,7 +32,7 @@ export const CancelConfirmation = ({
       </s.Header>
       <s.Description>{description}</s.Description>
       <s.ButtonsContainer>
-        <Button
+        <NewButton
           buttonType={"primary"}
           label={"No, continue"}
           onClick={handleCancelButtonClick}

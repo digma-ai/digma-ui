@@ -1,25 +1,20 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { dispatcher } from "../../../dispatcher";
+import { useCreateEnvironmentMutation } from "../../../redux/services/digma";
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { actions } from "../actions";
 import { RecentActivityContainerBackgroundGradient } from "../styles";
-import { trackingEvents } from "../tracking";
-import type {
-  CreateEnvironmentPayload,
-  EnvironmentCreatedData,
-  ErrorResponseData
-} from "../types";
+import type { ErrorResponseData } from "../types";
 import { CreateEnvironmentPanel } from "./CreateEnvironmentPanel";
-import { EnvironmentCreated } from "./EnvironmentCreated";
 import { EnvironmentNameStep } from "./EnvironmentNameStep";
 import { EnvironmentTypeStep } from "./EnvironmentTypeStep";
 import { ErrorsPanel } from "./ErrorsPanel";
 import type { ErrorData } from "./ErrorsPanel/types";
+import { FinishStep } from "./FinishStep";
 import { RegisterStep } from "./RegisterStep";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
 import type {
   CreateEnvironmentWizardProps,
   EnvironmentDraft,
@@ -31,10 +26,17 @@ const ENVIRONMENT_NAME_STEP = "environment name";
 const ENVIRONMENT_TYPE_STEP = "environment type";
 const REGISTER_STEP = "register";
 
+// TODO: move to common
 export const CreateEnvironmentWizard = ({
-  onClose
+  onClose,
+  isPanelTitleVisible = true,
+  isCentralizedDeployment,
+  finishScreenContent,
+  onCreate,
+  isCancelConfirmationEnabled = true
 }: CreateEnvironmentWizardProps) => {
   const config = useContext(ConfigContext);
+  const [createEnvironment] = useCreateEnvironmentMutation();
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [newEnvironment, setNewEnvironment] = useState<EnvironmentDraft>({
     name: "",
@@ -57,8 +59,7 @@ export const CreateEnvironmentWizard = ({
       name: "Register",
       status: "not-completed",
       errors: {},
-      isHidden:
-        Boolean(config.userRegistrationEmail) || config.backendInfo?.centralize
+      isHidden: Boolean(config.userRegistrationEmail) || isCentralizedDeployment
     },
     {
       key: ENVIRONMENT_TYPE_STEP,
@@ -68,96 +69,83 @@ export const CreateEnvironmentWizard = ({
     }
   ]);
 
-  useEffect(() => {
-    const getFailedSteps = (result: EnvironmentCreatedData) => {
-      return stepsStatus.filter((x) =>
-        result.errors?.find((e) => x.errors?.[e.errorCode])
-      );
-    };
+  const getFailedSteps = (errors: ErrorResponseData[]) =>
+    stepsStatus.filter((x) => errors.find((e) => x.errors?.[e.errorCode]));
 
-    const markFailedSteps = (steps: StepDefinitions[]) => {
-      setStepsStatus(
-        stepsStatus.map((step) => {
-          if (steps.find((x) => x.key === step.key)) {
-            return { ...step, status: "error" };
-          }
-          return { ...step };
-        })
-      );
-    };
+  const markFailedSteps = (steps: StepDefinitions[]) => {
+    setStepsStatus(
+      stepsStatus.map((step) => {
+        if (steps.find((x) => x.key === step.key)) {
+          return { ...step, status: "error" };
+        }
+        return { ...step };
+      })
+    );
+  };
 
-    const showErrors = (
-      steps: StepDefinitions[],
-      errors: ErrorResponseData[]
-    ) => {
-      const errorsDetails: ErrorDefinitions = steps.reduce(
-        (errorsMap, step) => {
-          return { ...errorsMap, ...step.errors };
-        },
-        {}
-      );
-
-      setErrors(
-        errors.map((x) => ({
-          id: uuidv4(),
-          title: errorsDetails[x.errorCode] || x.errorCode,
-          description: x.errorDescription
-        }))
-      );
-    };
-
-    const handleEnvironmentCreated = (data: unknown) => {
-      const result = data as EnvironmentCreatedData;
-      if (!result.errors) {
-        setCompleted(true);
-        setCurrentStep(-1);
-        setNewEnvironment({ ...newEnvironment, id: result.id });
-        return;
-      }
-
-      sendTrackingEvent(trackingEvents.FAILED_TO_CREATE_ENVIRONMENT, {
-        errors: result.errors
-      });
-
-      const failedSteps = getFailedSteps(result);
-      markFailedSteps(failedSteps);
-      showErrors(failedSteps, result.errors);
-    };
-
-    dispatcher.addActionListener(
-      actions.SET_CREATE_ENVIRONMENT_RESULT,
-      handleEnvironmentCreated
+  const showErrors = (
+    steps: StepDefinitions[],
+    errors: ErrorResponseData[]
+  ) => {
+    const errorsDetails: ErrorDefinitions = steps.reduce(
+      (errorsMap, step) => ({
+        ...errorsMap,
+        ...step.errors
+      }),
+      {}
     );
 
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_CREATE_ENVIRONMENT_RESULT,
-        handleEnvironmentCreated
-      );
-    };
-  }, [stepsStatus, newEnvironment]);
+    setErrors(
+      errors.map((x) => ({
+        id: uuidv4(),
+        title: errorsDetails[x.errorCode] || x.errorCode,
+        description: x.errorDescription
+      }))
+    );
+  };
 
-  const getSteps = () => stepsStatus.filter((x) => !x.isHidden);
+  const steps = stepsStatus.filter((x) => !x.isHidden);
 
   const goToNextStep = (isFinished?: boolean) => {
-    const step = getSteps()[currentStep];
+    const step = steps[currentStep];
     step.status = "completed";
     step.isFinished = isFinished;
     setStepsStatus(stepsStatus);
 
-    if (currentStep === getSteps().length - 1) {
+    if (currentStep === steps.length - 1 && newEnvironment.type) {
       setErrors([]);
-      window.sendMessageToDigma<CreateEnvironmentPayload>({
-        action: actions.CREATE_ENVIRONMENT,
-        payload: {
-          environment: newEnvironment.name,
-          type: newEnvironment.type
-        }
-      });
+      void createEnvironment({
+        environment: newEnvironment.name,
+        type: newEnvironment.type
+      })
+        .unwrap()
+        .then((data) => {
+          onCreate(data);
+          setCompleted(true);
+          setCurrentStep(-1);
+          setNewEnvironment({ ...newEnvironment, id: data.id });
+        })
+        .catch(() => {
+          const errors = [
+            {
+              errorCode: "Communication Error",
+              errorDescription: "Failed to create environment. Try again."
+            }
+          ];
+
+          sendTrackingEvent(trackingEvents.FAILED_TO_CREATE_ENVIRONMENT, {
+            errors
+          });
+
+          const failedSteps = getFailedSteps(errors);
+          markFailedSteps(failedSteps);
+          showErrors(failedSteps, errors);
+        });
 
       sendUserActionTrackingEvent(
         trackingEvents.CREATE_NEW_ENVIRONMENT_FORM_SUBMITTED
       );
+
       return;
     }
 
@@ -191,7 +179,7 @@ export const CreateEnvironmentWizard = ({
   };
 
   const getStepVisibility = (key: string) => {
-    const stepIndex = getSteps().findIndex((x) => x.key === key);
+    const stepIndex = steps.findIndex((x) => x.key === key);
     return stepIndex === currentStep;
   };
 
@@ -210,10 +198,6 @@ export const CreateEnvironmentWizard = ({
     onClose(null);
   };
 
-  const handleGoToEnvironment = () => {
-    onClose(newEnvironment.id);
-  };
-
   return (
     <s.Container>
       <CreateEnvironmentPanel
@@ -221,11 +205,13 @@ export const CreateEnvironmentWizard = ({
         onBack={handleGoBack}
         onCancel={handleCancel}
         cancelDisabled={completed}
-        tabs={getSteps().map((step, index) => ({
+        isPanelTitleVisible={isPanelTitleVisible}
+        tabs={steps.map((step, index) => ({
           name: step.name,
           index: index + 1,
           state: index === currentStep ? "active" : step.status
         }))}
+        isCancelConfirmationEnabled={isCancelConfirmationEnabled}
       />
       <s.StepContainer>
         <s.StepBackground />
@@ -258,6 +244,7 @@ export const CreateEnvironmentWizard = ({
               $isVisible={getStepVisibility(ENVIRONMENT_TYPE_STEP)}
             >
               <EnvironmentTypeStep
+                isCentralizedDeployment={isCentralizedDeployment}
                 handleEnvironmentTypeSelect={(type) => {
                   newEnvironment.type = type;
                   setNewEnvironment(newEnvironment);
@@ -268,7 +255,7 @@ export const CreateEnvironmentWizard = ({
           </>
         ) : (
           <s.Step key={"finish"} $isVisible={completed}>
-            <EnvironmentCreated goToEnvironment={handleGoToEnvironment} />
+            <FinishStep content={finishScreenContent} />
           </s.Step>
         )}
         {errors.length > 0 && <ErrorsPanel errors={errors} />}

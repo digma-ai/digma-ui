@@ -16,16 +16,19 @@ export const trackingEvents = addPrefix(
     TOP_ISSUES_WIDGET_BY_SEVERITY_BUTTON_CLICKED:
       "top issues widget by severity button clicked",
     REPORT_WIDGET_CLICKED: "report widget clicked",
-    MAIN_SIDEBAR_OVERLAY_CLICKED: "main sidebar overlay clicked",
-    MAIN_SIDEBAR_ESCAPE_KEY_PRESSED: "main sidebar escape key pressed",
-    MAIN_SIDEBAR_CLOSE_BUTTON_CLICKED: "main sidebar close button clicked",
-    MAIN_SIDEBAR_RESIZE_HANDLE_MOUSE_BUTTON_PRESSED:
-      "main sidebar resize handle mouse button pressed",
-    MAIN_SIDEBAR_RESIZE_HANDLE_MOUSE_BUTTON_RELEASED:
-      "main sidebar resize handle mouse button released",
-    MAIN_SIDEBAR_BACK_BUTTON_CLICKED: "main sidebar back button clicked",
-    MAIN_SIDEBAR_FORWARD_BUTTON_CLICKED: "main sidebar forward button clicked",
-    MAIN_SIDEBAR_HOME_BUTTON_CLICKED: "main sidebar home button clicked",
+    SIDEBAR_OVERLAY_CLICKED: "sidebar overlay clicked",
+    SIDEBAR_ESCAPE_KEY_PRESSED: "sidebar escape key pressed",
+    SIDEBAR_CLOSE_BUTTON_CLICKED: "sidebar close button clicked",
+    SIDEBAR_RESIZE_HANDLE_MOUSE_BUTTON_PRESSED:
+      "sidebar resize handle mouse button pressed",
+    SIDEBAR_RESIZE_HANDLE_MOUSE_BUTTON_RELEASED:
+      "sidebar resize handle mouse button released",
+    REPOSITORY_SIDEBAR_BACK_BUTTON_CLICKED:
+      "repository sidebar back button clicked",
+    REPOSITORY_SIDEBAR_FORWARD_BUTTON_CLICKED:
+      "repository sidebar forward button clicked",
+    REPOSITORY_SIDEBAR_HOME_BUTTON_CLICKED:
+      "repository sidebar home button clicked",
     ISSUES_PAGE_CHANGED: "issues page changed",
     ISSUES_SHOW_ONLY_DISMISSED_BUTTON_CLICKED:
       "issues show only dismissed button clicked",

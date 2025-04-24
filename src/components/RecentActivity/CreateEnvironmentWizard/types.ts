@@ -1,7 +1,18 @@
-import type { EnvironmentType } from "../../../redux/services/types";
+import type { ReactNode } from "react";
+import type {
+  Environment,
+  EnvironmentType
+} from "../../../redux/services/types";
 
 export interface CreateEnvironmentWizardProps {
   onClose: (id: string | null) => void;
+  isPanelTitleVisible?: boolean;
+  isCentralizedDeployment: boolean;
+  finishScreenContent: ReactNode;
+  onCreate: (environment: Environment) => void;
+  onCancel?: () => void;
+  isCancelConfirmationEnabled: boolean;
+  trackingPrefix?: string;
 }
 
 export interface StepProps {

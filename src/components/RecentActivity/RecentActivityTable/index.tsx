@@ -6,7 +6,12 @@ import {
 } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
-import type { Duration } from "../../../redux/services/types";
+import type {
+  Duration,
+  RecentActivityEntry,
+  SlimAggregatedInsightInfo,
+  SlimEntrySpanData
+} from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { FeatureFlag } from "../../../types";
@@ -20,14 +25,13 @@ import { Tooltip } from "../../common/Tooltip";
 import { TraceIcon } from "../../common/icons/12px/TraceIcon";
 import { Badge } from "../Badge";
 import type { ViewMode } from "../EnvironmentPanel/types";
-import type { ActivityEntry, EntrySpan, SlimInsight } from "../types";
 import { getTagType } from "./getTagType";
 import * as s from "./styles";
 import type { ColumnMeta, RecentActivityTableProps } from "./types";
 
-const columnHelper = createColumnHelper<ActivityEntry>();
+const columnHelper = createColumnHelper<RecentActivityEntry>();
 
-export const isRecent = (entry: ActivityEntry): boolean => {
+export const isRecent = (entry: RecentActivityEntry): boolean => {
   const MAX_DISTANCE = isNumber(window.recentActivityExpirationLimit)
     ? window.recentActivityExpirationLimit
     : 10 * 60 * 1000; // in milliseconds
@@ -73,7 +77,7 @@ const renderDuration = (duration: Duration, viewMode: ViewMode) =>
     </span>
   );
 
-const renderInsights = (insights: SlimInsight[]) => {
+const renderInsights = (insights: SlimAggregatedInsightInfo[]) => {
   const sortedInsights = [...insights].sort(
     (a, b) =>
       (b.criticality ?? 0) - (a.criticality ?? 0) ||
@@ -110,20 +114,21 @@ export const RecentActivityTable = ({
   headerHeight
 }: RecentActivityTableProps) => {
   const { backendInfo } = useConfigSelector();
-  const handleSpanLinkClick = (span: EntrySpan) => () => {
+  const handleSpanLinkClick = (span: SlimEntrySpanData) => () => {
     onSpanLinkClick(span);
   };
 
-  const handleTraceButtonClick = (traceId: string, span: EntrySpan) => () => {
-    onTraceButtonClick(traceId, span);
-  };
+  const handleTraceButtonClick =
+    (traceId: string, span: SlimEntrySpanData) => () => {
+      onTraceButtonClick(traceId, span);
+    };
 
   const spansCountEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.RecentActivitySpansCountEnabled
   );
 
-  const renderSpanLink = (span: EntrySpan) => (
+  const renderSpanLink = (span: SlimEntrySpanData) => (
     <s.SpanLinkContainer>
       <Tooltip title={span.displayText}>
         <s.SpanLink onClick={handleSpanLinkClick(span)}>
@@ -134,14 +139,14 @@ export const RecentActivityTable = ({
     </s.SpanLinkContainer>
   );
 
-  const renderSpanLinks = (entry: ActivityEntry) => (
+  const renderSpanLinks = (entry: RecentActivityEntry) => (
     <s.SpanLinksContainer>
       {renderSpanLink(entry.firstEntrySpan)}
       {entry.lastEntrySpan && <> to {renderSpanLink(entry.lastEntrySpan)}</>}
     </s.SpanLinksContainer>
   );
 
-  const renderTraceButton = (entry: ActivityEntry) => (
+  const renderTraceButton = (entry: RecentActivityEntry) => (
     <NewButton
       onClick={handleTraceButtonClick(
         entry.latestTraceId,

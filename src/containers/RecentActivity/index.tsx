@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { Provider } from "react-redux";
 import {
   cancelMessage,
   initializeDigmaMessageListener,
@@ -9,6 +10,7 @@ import { RecentActivity } from "../../components/RecentActivity";
 import { App } from "../../components/common/App";
 import { dispatcher } from "../../dispatcher";
 import { handleUncaughtError } from "../../utils/handleUncaughtError";
+import { store } from "./store";
 import { GlobalStyle } from "./styles";
 
 const APP_ID = "recentActivity";
@@ -28,10 +30,12 @@ if (rootElement) {
   const root = createRoot(rootElement);
   root.render(
     <StrictMode>
-      <App id={APP_ID}>
-        <GlobalStyle />
-        <RecentActivity />
-      </App>
+      <Provider store={store}>
+        <App id={APP_ID}>
+          <GlobalStyle />
+          <RecentActivity />
+        </App>
+      </Provider>
     </StrictMode>
   );
 }

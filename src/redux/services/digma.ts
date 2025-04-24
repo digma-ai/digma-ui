@@ -1,6 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { isString } from "../../typeGuards/isString";
 import type {
+  CreateEnvironmentPayload,
+  CreateEnvironmentResponse,
+  DeleteEnvironmentPayload,
+  DeleteEnvironmentResponse,
   DismissUndismissInsightPayload,
   ExtendedGetInsightsPayload,
   ExtendedGetInsightsResponse,
@@ -32,6 +36,8 @@ import type {
   GetMetricsReportDataPayloadV2,
   GetPerformanceHighlightsPayload,
   GetPerformanceHighlightsResponse,
+  GetRecentActivityPayload,
+  GetRecentActivityResponse,
   GetScalingHighlightsPayload,
   GetScalingHighlightsResponse,
   GetServiceEndpointsPayload,
@@ -65,7 +71,13 @@ import type {
 } from "./types";
 
 export const digmaApi = createApi({
-  tagTypes: ["Asset", "AssetCategory", "Insight"],
+  tagTypes: [
+    "Asset",
+    "AssetCategory",
+    "Environment",
+    "Insight",
+    "RecentActivity"
+  ],
   reducerPath: "digmaApi",
   baseQuery: fetchBaseQuery({
     baseUrl: isString(window.digmaApiProxyPrefix)
@@ -116,6 +128,16 @@ export const digmaApi = createApi({
         body: data
       })
     }),
+    getRecentActivity: builder.query<
+      GetRecentActivityResponse,
+      GetRecentActivityPayload
+    >({
+      query: (data) => ({
+        url: `/CodeAnalytics/codeObjects/recent_activity`,
+        method: "POST",
+        body: data
+      })
+    }),
     getSpanCodeLocations: builder.query<
       GetSpanCodeLocationsResponse,
       GetSpanCodeLocationsPayload
@@ -145,7 +167,29 @@ export const digmaApi = createApi({
       invalidatesTags: ["Insight"]
     }),
     getEnvironments: builder.query<GetEnvironmentsResponse, void>({
-      query: () => "Environments"
+      query: () => "Environments",
+      providesTags: ["Environment"]
+    }),
+    createEnvironment: builder.mutation<
+      CreateEnvironmentResponse,
+      CreateEnvironmentPayload
+    >({
+      query: (data) => ({
+        url: `/Environments`,
+        method: "POST",
+        body: data
+      }),
+      invalidatesTags: ["Environment", "RecentActivity"]
+    }),
+    deleteEnvironment: builder.mutation<
+      DeleteEnvironmentResponse,
+      DeleteEnvironmentPayload
+    >({
+      query: ({ id }) => ({
+        url: `/Environments/${window.encodeURIComponent(id)}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ["Environment", "RecentActivity"]
     }),
     getSpanPercentilesHistogram: builder.query<
       string,
@@ -220,15 +264,14 @@ export const digmaApi = createApi({
       ExtendedGetInsightsResponse,
       ExtendedGetInsightsPayload
     >({
-      query: ({ data }) => {
-        return { url: `/Insights/get_insights_view`, params: data };
-      },
-      transformResponse: (response: GetInsightsResponse, meta, arg) => {
-        return {
-          data: response,
-          extra: arg.extra
-        };
-      },
+      query: ({ data }) => ({
+        url: `/Insights/get_insights_view`,
+        params: data
+      }),
+      transformResponse: (response: GetInsightsResponse, meta, arg) => ({
+        data: response,
+        extra: arg.extra
+      }),
       providesTags: ["Insight"]
     }),
     getInsightsStats: builder.query<
@@ -239,14 +282,12 @@ export const digmaApi = createApi({
         url: `/Insights/statistics`,
         params: data
       }),
-      transformResponse: (response: GetInsightsStatsResponse, meta, arg) => {
-        return {
-          data: response,
-          extra: {
-            spanCodeObjectId: arg.scopedSpanCodeObjectId
-          }
-        };
-      },
+      transformResponse: (response: GetInsightsStatsResponse, meta, arg) => ({
+        data: response,
+        extra: {
+          spanCodeObjectId: arg.scopedSpanCodeObjectId
+        }
+      }),
       providesTags: ["Insight"]
     }),
     getIssues: builder.query<GetIssuesResponse, GetIssuesPayload>({
@@ -352,7 +393,7 @@ export const digmaApi = createApi({
       GetServiceEndpointsPayload
     >({
       query: ({ service, environment }) => ({
-        url: `Services/${service}/endpoints`,
+        url: `Services/${window.encodeURIComponent(service)}/endpoints`,
         params: {
           environment
         }
@@ -362,10 +403,12 @@ export const digmaApi = createApi({
       SetServiceEnvironmentsPayload,
       GetServiceEnvironmentsPayload
     >({
-      query: ({ service }) => `Services/${service}/environments`
+      query: ({ service }) =>
+        `Services/${window.encodeURIComponent(service)}/environments`
     }),
     getSpanById: builder.query<GetSpanByIdResponse, GetSpanByIdPayload>({
-      query: ({ id }) => ({ url: `/Spans/spanCodeObjectId/${id}` })
+      query: ({ id }) =>
+        `/Spans/spanCodeObjectId/${window.encodeURIComponent(id)}`
     }),
     getSpanInfo: builder.query<GetSpanInfoResponse, GetSpanInfoPayload>({
       query: (data) => ({
@@ -381,14 +424,16 @@ export const digmaApi = createApi({
         url: `/Spans/environments`,
         params: data
       }),
-      transformResponse: (response: GetSpanEnvironmentsResponse, meta, arg) => {
-        return {
-          data: response,
-          extra: {
-            spanCodeObjectId: arg.spanCodeObjectId
-          }
-        };
-      }
+      transformResponse: (
+        response: GetSpanEnvironmentsResponse,
+        meta,
+        arg
+      ) => ({
+        data: response,
+        extra: {
+          spanCodeObjectId: arg.spanCodeObjectId
+        }
+      })
     }),
     getIssueRecommendations: builder.query<
       GetIssueRecommendationsResponse,
@@ -409,10 +454,13 @@ export const {
   useGetAssetsQuery,
   useGetUserProfileQuery,
   useResendConfirmationEmailMutation,
+  useGetRecentActivityQuery,
   useGetSpanCodeLocationsQuery,
   useGetSpanInsightQuery,
   useRecheckInsightMutation,
   useGetEnvironmentsQuery,
+  useCreateEnvironmentMutation,
+  useDeleteEnvironmentMutation,
   useLazyGetSpanPercentilesHistogramQuery,
   useGetTopIssuesHighlightsQuery,
   useGetTopIssuesHighlightsV2Query,

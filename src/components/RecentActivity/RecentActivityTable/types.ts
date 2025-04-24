@@ -1,10 +1,13 @@
+import type {
+  RecentActivityEntry,
+  SlimEntrySpanData
+} from "../../../redux/services/types";
 import type { ViewMode } from "../EnvironmentPanel/types";
-import type { ActivityEntry, EntrySpan } from "../types";
 
 export interface RecentActivityTableProps {
-  data: ActivityEntry[];
-  onSpanLinkClick: (span: EntrySpan) => void;
-  onTraceButtonClick: (traceId: string, span: EntrySpan) => void;
+  data: RecentActivityEntry[];
+  onSpanLinkClick: (span: SlimEntrySpanData) => void;
+  onTraceButtonClick: (traceId: string, span: SlimEntrySpanData) => void;
   viewMode: ViewMode;
   isTraceButtonVisible: boolean;
   headerHeight: number;

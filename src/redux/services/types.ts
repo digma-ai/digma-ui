@@ -30,6 +30,7 @@ export interface Environment {
   id: string;
   name: string;
   type: EnvironmentType;
+  lastActive?: string | null;
 }
 
 export interface Features {
@@ -176,6 +177,44 @@ export interface GetUserProfileResponse {
   uid?: string;
 }
 
+export interface SlimEntrySpanData {
+  displayText: string;
+  serviceName: string;
+  scopeId: string;
+  scopeDisplayName: string;
+  spanCodeObjectId: string;
+  methodCodeObjectId: string | null;
+}
+
+export interface SlimAggregatedInsightInfo {
+  type: string;
+  importance: number;
+  codeObjectIds: string[];
+  criticality?: number;
+}
+
+export interface RecentActivityEntry {
+  environment: string;
+  traceFlowDisplayName: string;
+  firstEntrySpan: SlimEntrySpanData;
+  lastEntrySpan: SlimEntrySpanData | null;
+  latestTraceId: string;
+  latestTraceTimestamp: string;
+  latestTraceDuration: Duration;
+  slimAggregatedInsights: SlimAggregatedInsightInfo[];
+  spansCount?: number;
+}
+
+export interface GetRecentActivityResponse {
+  accountId: string;
+  entries: RecentActivityEntry[];
+}
+
+export interface GetRecentActivityPayload {
+  environments: string[];
+  maxEntriesPerEnvironment?: number;
+}
+
 export interface ResendConfirmationEmailPayload {
   email: string;
 }
@@ -262,6 +301,22 @@ export interface GetEnvironmentServicesPayload {
 }
 
 export type GetEnvironmentServicesResponse = string[];
+
+export type CreateEnvironmentResponse = Environment;
+
+export interface CreateEnvironmentPayload {
+  environment: string;
+  type: EnvironmentType;
+  forceCreate?: boolean;
+}
+
+export interface DeleteEnvironmentResponse {
+  statusCode: number;
+}
+
+export interface DeleteEnvironmentPayload {
+  id: string;
+}
 
 export interface GetTopIssuesHighlightsPayload {
   environments: string[];

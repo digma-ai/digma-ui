@@ -1,9 +1,9 @@
-import type { ChangeEvent } from "react";
-import { useEffect, useState } from "react";
+import type { ChangeEvent, KeyboardEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import { isNull } from "../../../../typeGuards/isNull";
 import { CheckmarkCircleIcon } from "../../../common/icons/12px/CheckmarkCircleIcon";
 import { ErrorIcon } from "../../../common/icons/12px/ErrorIcon";
-import { Button } from "../../../common/v3/Button";
+import { NewButton } from "../../../common/v3/NewButton";
 import * as s from "./styles";
 import type { EnvironmentNameStepProps } from "./types";
 
@@ -16,6 +16,7 @@ export const EnvironmentNameStep = ({
 }: EnvironmentNameStepProps) => {
   const [name, setName] = useState<string | null>(null);
   const [isValid, setIsValid] = useState(!isInvalid);
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setIsValid(!isInvalid);
@@ -53,8 +54,14 @@ export const EnvironmentNameStep = ({
     );
   };
 
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleNext();
+    }
+  };
+
   return (
-    <s.Container>
+    <s.Container onKeyDown={handleKeyDown}>
       <s.Info>
         <s.Title>Name your Environment</s.Title>
         <s.Description>
@@ -64,11 +71,12 @@ export const EnvironmentNameStep = ({
       </s.Info>
       <s.InputContainer>
         <s.NameInput
+          ref={nameInputRef}
           onChange={changeHandler}
           inputEndContent={getInputState()}
           isInvalid={!isValid}
         />
-        <Button
+        <NewButton
           buttonType={"primary"}
           onClick={handleNext}
           isDisabled={!isValid || isNull(name)}

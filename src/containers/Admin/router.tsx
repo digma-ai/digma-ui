@@ -1,6 +1,7 @@
 import type { RouteObject } from "react-router";
 import { Navigate, createBrowserRouter, useRouteError } from "react-router";
 import { Admin } from "../../components/Admin";
+import { Environments } from "../../components/Admin/Environments";
 import { Home } from "../../components/Admin/Home";
 import { CodeIssues } from "../../components/Admin/Reports/CodeIssues";
 
@@ -29,6 +30,10 @@ export const routes: RouteObject[] = [
             element: <CodeIssues />
           }
         ]
+      },
+      {
+        path: "environments",
+        element: <Environments />
       },
       {
         path: "*",

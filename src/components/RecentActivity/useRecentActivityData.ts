@@ -1,27 +1,28 @@
-import { useEffect, useState } from "react";
-import { dispatcher } from "../../dispatcher";
-import { actions } from "./actions";
-import type { RecentActivityData } from "./types";
+import {
+  useGetEnvironmentsQuery,
+  useGetRecentActivityQuery
+} from "../../redux/services/digma";
+
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 export const useRecentActivityData = () => {
-  const [data, setData] = useState<RecentActivityData>();
-
-  useEffect(() => {
-    const handleRecentActivityData = (data: unknown) => {
-      setData(data as RecentActivityData);
-    };
-
-    dispatcher.addActionListener(actions.SET_DATA, handleRecentActivityData);
-
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_DATA,
-        handleRecentActivityData
-      );
-    };
-  }, []);
+  const { data: environments } = useGetEnvironmentsQuery(undefined, {
+    pollingInterval: REFRESH_INTERVAL
+  });
+  const { data: recentActivityData } = useGetRecentActivityQuery(
+    {
+      environments: environments?.map((env) => env.id) ?? []
+    },
+    {
+      skip: !environments || environments.length === 0,
+      pollingInterval: REFRESH_INTERVAL
+    }
+  );
 
   return {
-    recentActivityData: data
+    recentActivityData: {
+      environments: environments ?? [],
+      entries: recentActivityData?.entries ?? []
+    }
   };
 };

@@ -34,7 +34,8 @@ export const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
   [FeatureFlag.IsUserIdEnabled]: "0.3.212",
   [FeatureFlag.IsIssuesCriticalityLevelsFilterEnabled]: "0.3.214",
   [FeatureFlag.IsNewBehaviorForMetricsTimeModesEnabled]: "0.3.274",
-  [FeatureFlag.IsIssuesLastDaysFilterEnabled]: "0.3.277"
+  [FeatureFlag.IsIssuesLastDaysFilterEnabled]: "0.3.277",
+  [FeatureFlag.IsEnvironmentLastActiveTimestampEnabled]: "0.3.284"
 };
 
 export const getFeatureFlagValue = (

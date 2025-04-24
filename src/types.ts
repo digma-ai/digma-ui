@@ -31,7 +31,8 @@ export enum FeatureFlag {
   IsUserIdEnabled,
   IsIssuesCriticalityLevelsFilterEnabled,
   IsNewBehaviorForMetricsTimeModesEnabled,
-  IsIssuesLastDaysFilterEnabled
+  IsIssuesLastDaysFilterEnabled,
+  IsEnvironmentLastActiveTimestampEnabled
 }
 
 export enum InsightType {

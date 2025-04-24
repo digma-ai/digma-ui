@@ -62,9 +62,7 @@ export const CommitInfos = ({ insight, commitInfos }: CommitInfosProps) => {
           <s.ListItem key={x.label}>
             <div>{x.label}</div>
             <div>{renderCommit(commitInfos, x.id)}</div>
-            {x.dateTime && (
-              <div>{format(new Date(x.dateTime), "MM/dd/yyyy HH:mm")}</div>
-            )}
+            {x.dateTime && <div>{format(x.dateTime, "MM/dd/yyyy HH:mm")}</div>}
           </s.ListItem>
         )),
         (i) => (
