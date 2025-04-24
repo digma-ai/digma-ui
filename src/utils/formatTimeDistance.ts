@@ -53,10 +53,16 @@ export const getTimeDistance = (
   date: string,
   dateTimeToCompare: string
 ): { value: number; unit: TimeUnit } | undefined => {
+  const dateValues = [
+    new Date(date).valueOf(),
+    new Date(dateTimeToCompare).valueOf()
+  ];
+  const start = Math.min(...dateValues);
+  const end = Math.max(...dateValues);
   const { years, months, weeks, days, hours, minutes, seconds } =
     intervalToDuration({
-      start: new Date(date),
-      end: new Date(dateTimeToCompare)
+      start,
+      end
     });
 
   let value: number | undefined;
