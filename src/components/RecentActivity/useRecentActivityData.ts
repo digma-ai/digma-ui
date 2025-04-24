@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   useGetEnvironmentsQuery,
   useGetRecentActivityQuery
@@ -19,10 +20,15 @@ export const useRecentActivityData = () => {
     }
   );
 
-  return {
-    recentActivityData: {
+  const data = useMemo(
+    () => ({
       environments: environments ?? [],
       entries: recentActivityData?.entries ?? []
-    }
+    }),
+    [environments, recentActivityData]
+  );
+
+  return {
+    recentActivityData: data
   };
 };
