@@ -13,7 +13,6 @@ import type {
   SlimEntrySpanData
 } from "../../../redux/services/types";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
-import { isNumber } from "../../../typeGuards/isNumber";
 import { FeatureFlag } from "../../../types";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
@@ -30,11 +29,9 @@ import * as s from "./styles";
 import type { ColumnMeta, RecentActivityTableProps } from "./types";
 
 const columnHelper = createColumnHelper<RecentActivityEntry>();
+export const MAX_DISTANCE = 10 * 60 * 1000; // in milliseconds
 
-export const isRecent = (entry: RecentActivityEntry): boolean => {
-  const MAX_DISTANCE = isNumber(window.recentActivityExpirationLimit)
-    ? window.recentActivityExpirationLimit
-    : 10 * 60 * 1000; // in milliseconds
+const isRecent = (entry: RecentActivityEntry): boolean => {
   const now = new Date();
   return (
     now.valueOf() - new Date(entry.latestTraceTimestamp).valueOf() <=

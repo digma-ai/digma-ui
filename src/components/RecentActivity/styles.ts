@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Spinner as CommonSpinner } from "../common/v3/Spinner";
 
 const RECENT_ACTIVITY_NO_DATA_PADDING_TOP = 39; // in pixels
 const RECENT_ACTIVITY_MIN_WIDTH = 550; // in pixels
@@ -124,6 +125,17 @@ export const RecentActivityContainerBackgroundGradient = styled.div`
     rgb(79 93 163 / 0%) 100%
   );
   filter: blur(5px);
+`;
+
+export const LoadingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 60px;
+`;
+
+export const Spinner = styled(CommonSpinner)`
+  color: ${({ theme }) => theme.colors.v3.surface.gray};
 `;
 
 export const ClearDataMessageContainer = styled.div`
