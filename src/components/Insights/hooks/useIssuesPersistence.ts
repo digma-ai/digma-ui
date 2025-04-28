@@ -160,6 +160,6 @@ export const useIssuesPersistence = () => {
   ]);
 
   return {
-    areFiltersRehydrated: persistedFilters !== null
+    areFiltersRehydrated: !isUndefined(persistedFilters)
   };
 };
