@@ -17,7 +17,10 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
 import { sendErrorTrackingEvent } from "../../../utils/actions/sendErrorTrackingEvent";
-import { isScopeWithMetricsReportContext } from "../../Main/typeGuards";
+import {
+  isScopeWithCodeLensContext,
+  isScopeWithMetricsReportContext
+} from "../../Main/typeGuards";
 import { ErrorScreen } from "../ErrorScreen";
 import { ConfigContext } from "./ConfigContext";
 import { getStyledComponentsTheme } from "./getTheme";
@@ -102,7 +105,8 @@ export const App = ({ theme, children, id }: AppProps) => {
     setInsightsFilteredCriticalityLevels:
       setInsightsFilteredCriticalityLevelsInSpanScope,
     setInsightsFilteredCriticalityLevelsInGlobalScope,
-    setInsightsLastDays
+    setInsightsLastDays,
+    setGlobalErrorsSearch
   } = useStore.getState();
 
   const handleError = (error: Error, info: ErrorInfo) => {
@@ -405,6 +409,19 @@ export const App = ({ theme, children, id }: AppProps) => {
         // Select time range from scope context
         if (isNumber(lastDaysToSelect)) {
           setInsightsLastDays(lastDaysToSelect);
+        }
+
+        const errorsSearch =
+          isScopeWithCodeLensContext(scope) &&
+          scope.context.payload.codeLens.lensTitle
+            .toLocaleLowerCase()
+            .includes("error hotspot")
+            ? scope.context.payload.codeLens.codeMethod
+            : undefined;
+
+        // Set global errors search from scope context
+        if (isString(errorsSearch)) {
+          setGlobalErrorsSearch(errorsSearch);
         }
 
         return {

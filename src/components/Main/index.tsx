@@ -45,6 +45,10 @@ const getURLToNavigateOnCodeLensClick = (scope: Scope): string | undefined => {
     return;
   }
 
+  if (codeLens.lensTitle.toLocaleLowerCase().includes("error hotspot")) {
+    return `/${TAB_IDS.ERRORS}`;
+  }
+
   if (codeLens.importance <= 4) {
     return `/${TAB_IDS.ISSUES}`;
   }
@@ -250,7 +254,18 @@ export const Main = () => {
           case ScopeChangeEvent.IdeCodeLensClicked: {
             const url = getURLToNavigateOnCodeLensClick(scope);
             if (url) {
-              goTo(url, { state });
+              // Navigate to global scope if code lens type is "Error Hotspot"
+              const newState: HistoryState =
+                isScopeWithCodeLensContext(scope) &&
+                scope.context.payload.codeLens.lensTitle
+                  .toLocaleLowerCase()
+                  .includes("error hotspot")
+                  ? {
+                      environmentId: scope.environmentId ?? environment?.id
+                    }
+                  : state;
+
+              goTo(url, { state: newState });
               break;
             }
             defaultGoTo(scope, state);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   useGetEnvironmentsQuery,
   useGetRecentActivityQuery
@@ -7,6 +7,7 @@ import type {
   Environment,
   RecentActivityEntry
 } from "../../redux/services/types";
+import { ConfigContext } from "../common/App/ConfigContext";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
@@ -18,6 +19,8 @@ interface RecentActivityData {
 }
 
 export const useRecentActivityData = (environmentId: string | undefined) => {
+  const { backendInfo, userInfo } = useContext(ConfigContext);
+
   const [data, setData] = useState<RecentActivityData>({
     environments: undefined,
     entries: undefined,
@@ -27,7 +30,8 @@ export const useRecentActivityData = (environmentId: string | undefined) => {
 
   const { data: environments, isFetching: areEnvironmentsFetching } =
     useGetEnvironmentsQuery(undefined, {
-      pollingInterval: REFRESH_INTERVAL
+      pollingInterval: REFRESH_INTERVAL,
+      skip: !userInfo?.id && backendInfo?.centralize
     });
 
   const { data: recentActivityData, isFetching: isRecentActivityDataFetching } =
