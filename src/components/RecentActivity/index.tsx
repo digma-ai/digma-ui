@@ -7,6 +7,7 @@ import { dispatcher } from "../../dispatcher";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { useDeleteEnvironmentMutation } from "../../redux/services/digma";
+import { useToggleRecentIndicatorMutation } from "../../redux/services/plugin";
 import type {
   Environment,
   SlimEntrySpanData
@@ -34,7 +35,7 @@ import type { ViewMode } from "./EnvironmentPanel/types";
 import { LiveView } from "./LiveView";
 import { NoData } from "./NoData";
 import { ObservabilityStatusBadge } from "./ObservabilityStatusBadge";
-import { RecentActivityTable, isRecent } from "./RecentActivityTable";
+import { MAX_DISTANCE, RecentActivityTable } from "./RecentActivityTable";
 import { Toggle } from "./Toggle";
 import { WelcomeScreen } from "./WelcomeScreen";
 import { actions } from "./actions";
@@ -96,8 +97,9 @@ export const RecentActivity = () => {
   const [environmentToDelete, setEnvironmentToDelete] = useState<string>();
   const [environmentToClearData, setEnvironmentToClearData] =
     useState<string>();
-  const { recentActivityData: data } = useRecentActivityData();
+  const recentActivityData = useRecentActivityData(selectedEnvironment?.id);
   const [deleteEnvironment] = useDeleteEnvironmentMutation();
+  const [toggleRecentIndicator] = useToggleRecentIndicatorMutation();
   const isEnvironmentConfirmationDialogVisible = Boolean(
     environmentToDelete ?? environmentToClearData
   );
@@ -137,7 +139,7 @@ export const RecentActivity = () => {
 
   const filteredEntries = useMemo(
     () =>
-      data.entries.filter((entry) => {
+      recentActivityData.entries?.filter((entry) => {
         const clearDataTimestamp =
           persistedEnvironmentClearDataTimestamps?.[entry.environment];
 
@@ -145,29 +147,42 @@ export const RecentActivity = () => {
           ? new Date(entry.latestTraceTimestamp).valueOf() >
               new Date(clearDataTimestamp).valueOf()
           : true;
-      }),
-    [data, persistedEnvironmentClearDataTimestamps]
+      }) ?? [],
+    [recentActivityData.entries, persistedEnvironmentClearDataTimestamps]
   );
 
   const environmentActivities = useMemo(
-    () =>
-      filteredEntries ? groupBy(filteredEntries, (x) => x.environment) : {},
+    () => groupBy(filteredEntries, (x) => x.environment),
     [filteredEntries]
   );
 
-  const environments: ExtendedEnvironment[] = useMemo(
-    () =>
-      data.environments.map((environment) => ({
+  const environments: ExtendedEnvironment[] = useMemo(() => {
+    const now = new Date();
+
+    return (
+      recentActivityData.environments?.map((environment) => ({
         ...environment,
         additionToConfigResult: null,
         serverApiUrl: null,
         isOrgDigmaSetupFinished: false,
-        hasRecentActivity: environmentActivities[environment.id]
-          ? environmentActivities[environment.id].some(isRecent)
-          : false
-      })),
-    [data, environmentActivities]
-  );
+        hasRecentActivity: Boolean(
+          environment.lastActive &&
+            now.valueOf() - new Date(environment.lastActive).valueOf() <=
+              MAX_DISTANCE
+        )
+      })) ?? []
+    );
+  }, [recentActivityData.environments]);
+
+  useEffect(() => {
+    const isAnyRecentActivity = environments.some(
+      (environment) => environment.hasRecentActivity
+    );
+
+    void toggleRecentIndicator({
+      status: isAnyRecentActivity
+    });
+  }, [environments, toggleRecentIndicator]);
 
   useEffect(() => {
     if (selectedEnvironment?.id) {
@@ -445,6 +460,22 @@ export const RecentActivity = () => {
               : undefined
           }
         />
+      );
+    }
+
+    if (
+      recentActivityData.areEntriesLoading &&
+      recentActivityData.entries === undefined
+    ) {
+      return (
+        <>
+          <s.NoDataRecentActivityContainerBackground>
+            <s.NoDataRecentActivityContainerBackgroundGradient />
+          </s.NoDataRecentActivityContainerBackground>
+          <s.LoadingContainer>
+            <s.Spinner size={32} />
+          </s.LoadingContainer>
+        </>
       );
     }
 
