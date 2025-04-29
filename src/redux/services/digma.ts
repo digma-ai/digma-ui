@@ -94,7 +94,7 @@ export const digmaApi = createApi({
       GetAssetsFiltersPayload
     >({
       query: (data) => ({
-        url: `/Assets/get_filter`,
+        url: "Assets/get_filter",
         params: data
       })
     }),
@@ -103,14 +103,14 @@ export const digmaApi = createApi({
       GetAssetsCategoriesPayload
     >({
       query: (data) => ({
-        url: `/Assets/get_categories`,
+        url: "Assets/get_categories",
         params: data
       }),
       providesTags: ["AssetCategory"]
     }),
     getAssets: builder.query<GetAssetsResponse, GetAssetsPayload>({
       query: (data) => ({
-        url: `/Assets/get_assets`,
+        url: "Assets/get_assets",
         params: data
       }),
       providesTags: ["Asset"]
@@ -133,7 +133,7 @@ export const digmaApi = createApi({
       GetRecentActivityPayload
     >({
       query: (data) => ({
-        url: `/CodeAnalytics/codeObjects/recent_activity`,
+        url: "CodeAnalytics/codeObjects/recent_activity",
         method: "POST",
         body: data
       })
@@ -143,7 +143,7 @@ export const digmaApi = createApi({
       GetSpanCodeLocationsPayload
     >({
       query: (data) => ({
-        url: "/CodeAnalytics/codeObjects/span_navigation",
+        url: "CodeAnalytics/codeObjects/span_navigation",
         method: "POST",
         body: data
       })
@@ -153,7 +153,7 @@ export const digmaApi = createApi({
       GetSpanInsightPayload
     >({
       query: (data) => ({
-        url: "/CodeAnalytics/codeObjects/insight",
+        url: "CodeAnalytics/codeObjects/insight",
         params: data
       }),
       providesTags: ["Insight"]
@@ -175,7 +175,7 @@ export const digmaApi = createApi({
       CreateEnvironmentPayload
     >({
       query: (data) => ({
-        url: `/Environments`,
+        url: "Environments",
         method: "POST",
         body: data
       }),
@@ -186,7 +186,7 @@ export const digmaApi = createApi({
       DeleteEnvironmentPayload
     >({
       query: ({ id }) => ({
-        url: `/Environments/${window.encodeURIComponent(id)}`,
+        url: `Environments/${window.encodeURIComponent(id)}`,
         method: "DELETE"
       }),
       invalidatesTags: ["Environment", "RecentActivity"]
@@ -196,7 +196,7 @@ export const digmaApi = createApi({
       GetSpanPercentilesHistogramPayload
     >({
       query: (data) => ({
-        url: "/Graphs/graphForSpanPercentiles",
+        url: "Graphs/graphForSpanPercentiles",
         method: "POST",
         body: data,
         responseHandler: "text"
@@ -207,7 +207,7 @@ export const digmaApi = createApi({
       GetTopIssuesHighlightsPayload
     >({
       query: (data) => ({
-        url: `/Highlights/topInsights`,
+        url: "Highlights/topInsights",
         params: data
       })
     }),
@@ -216,7 +216,7 @@ export const digmaApi = createApi({
       GetTopIssuesHighlightsV2Payload
     >({
       query: (data) => ({
-        url: `/Highlights/topInsights`,
+        url: "Highlights/topInsights",
         method: "POST",
         body: data
       })
@@ -226,7 +226,7 @@ export const digmaApi = createApi({
       GetPerformanceHighlightsPayload
     >({
       query: (data) => ({
-        url: `/Highlights/performance`,
+        url: "Highlights/performance",
         params: data
       })
     }),
@@ -235,7 +235,7 @@ export const digmaApi = createApi({
       GetPerformanceHighlightsPayload
     >({
       query: (data) => ({
-        url: `/Highlights/performance`,
+        url: "Highlights/performance",
         method: "POST",
         body: data
       })
@@ -245,7 +245,7 @@ export const digmaApi = createApi({
       GetImpactHighlightsPayload
     >({
       query: (data) => ({
-        url: `/Highlights/impact`,
+        url: "Highlights/impact",
         method: "POST",
         body: data
       })
@@ -255,7 +255,7 @@ export const digmaApi = createApi({
       GetScalingHighlightsPayload
     >({
       query: (data) => ({
-        url: `/Highlights/scaling`,
+        url: "Highlights/scaling",
         method: "POST",
         body: data
       })
@@ -265,7 +265,7 @@ export const digmaApi = createApi({
       ExtendedGetInsightsPayload
     >({
       query: ({ data }) => ({
-        url: `/Insights/get_insights_view`,
+        url: "Insights/get_insights_view",
         params: data
       }),
       transformResponse: (response: GetInsightsResponse, meta, arg) => ({
@@ -279,7 +279,7 @@ export const digmaApi = createApi({
       GetInsightsStatsPayload
     >({
       query: (data) => ({
-        url: `/Insights/statistics`,
+        url: "Insights/statistics",
         params: data
       }),
       transformResponse: (response: GetInsightsStatsResponse, meta, arg) => ({
@@ -299,13 +299,13 @@ export const digmaApi = createApi({
       GetIssuesFiltersPayload
     >({
       query: (data) => ({
-        url: `/Insights/issues/filters`,
+        url: "Insights/issues/filters",
         params: data
       })
     }),
     markInsightRead: builder.mutation<void, MarkInsightReadPayload>({
       query: (data) => ({
-        url: `Insights/markRead`,
+        url: "Insights/markRead",
         method: "POST",
         body: data
       }),
@@ -314,7 +314,7 @@ export const digmaApi = createApi({
     markScopeInsightsRead: builder.mutation<void, MarkScopeInsightsReadPayload>(
       {
         query: (data) => ({
-          url: `Insights/markAllRead`,
+          url: "Insights/markAllRead",
           method: "POST",
           body: data
         }),
@@ -326,7 +326,7 @@ export const digmaApi = createApi({
       LinkTicketToIssuePayload
     >({
       query: (data) => ({
-        url: `/InsightsActions/link-ticket`,
+        url: "InsightsActions/link-ticket",
         method: "PUT",
         body: data
       }),
@@ -337,7 +337,7 @@ export const digmaApi = createApi({
       UnlinkTicketFromIssuePayload
     >({
       query: (data) => ({
-        url: `/InsightsActions/unlink-ticket`,
+        url: "InsightsActions/unlink-ticket",
         method: "PUT",
         body: data
       }),
@@ -345,7 +345,7 @@ export const digmaApi = createApi({
     }),
     dismissInsight: builder.mutation<void, DismissUndismissInsightPayload>({
       query: (data) => ({
-        url: `InsightsActions/dismiss`,
+        url: "InsightsActions/dismiss",
         method: "PUT",
         body: data
       }),
@@ -353,7 +353,7 @@ export const digmaApi = createApi({
     }),
     undismissInsight: builder.mutation<void, DismissUndismissInsightPayload>({
       query: (data) => ({
-        url: `InsightsActions/unDismiss`,
+        url: "InsightsActions/unDismiss",
         method: "PUT",
         body: data
       }),
@@ -408,11 +408,11 @@ export const digmaApi = createApi({
     }),
     getSpanById: builder.query<GetSpanByIdResponse, GetSpanByIdPayload>({
       query: ({ id }) =>
-        `/Spans/spanCodeObjectId/${window.encodeURIComponent(id)}`
+        `Spans/spanCodeObjectId/${window.encodeURIComponent(id)}`
     }),
     getSpanInfo: builder.query<GetSpanInfoResponse, GetSpanInfoPayload>({
       query: (data) => ({
-        url: `/Spans/info`,
+        url: "Spans/info",
         params: data
       })
     }),
@@ -421,7 +421,7 @@ export const digmaApi = createApi({
       GetSpanEnvironmentsPayload
     >({
       query: (data) => ({
-        url: `/Spans/environments`,
+        url: "Spans/environments",
         params: data
       }),
       transformResponse: (

@@ -32,6 +32,7 @@ import type {
   PersistedState,
   RunConfiguration,
   Scope,
+  ScopeWithCodeLensContext,
   UserInfo
 } from "./types";
 
@@ -313,10 +314,26 @@ export const App = ({ theme, children, id }: AppProps) => {
 
     const handleSetScope = (data: unknown) => {
       setConfig((config) => {
-        const scope = data as Scope;
+        let scope = data as Scope;
         const environment = scope.environmentId
           ? config.environments?.find((x) => x.id === scope.environmentId)
           : config.environment;
+
+        // Change scope to the global one if "Error Hotspot" code lens click is the trigger
+        if (
+          isScopeWithCodeLensContext(scope) &&
+          scope.context.payload.codeLens.lensTitle
+            .toLocaleLowerCase()
+            .includes("error hotspot")
+        ) {
+          const newScope: ScopeWithCodeLensContext = {
+            ...scope,
+            span: null
+          };
+          scope = newScope;
+
+          setGlobalErrorsSearch(newScope.context.payload.codeLens.codeMethod);
+        }
 
         setScope(scope);
         setEnvironment(environment ?? null);
@@ -409,19 +426,6 @@ export const App = ({ theme, children, id }: AppProps) => {
         // Select time range from scope context
         if (isNumber(lastDaysToSelect)) {
           setInsightsLastDays(lastDaysToSelect);
-        }
-
-        const errorsSearch =
-          isScopeWithCodeLensContext(scope) &&
-          scope.context.payload.codeLens.lensTitle
-            .toLocaleLowerCase()
-            .includes("error hotspot")
-            ? scope.context.payload.codeLens.codeMethod
-            : undefined;
-
-        // Set global errors search from scope context
-        if (isString(errorsSearch)) {
-          setGlobalErrorsSearch(errorsSearch);
         }
 
         return {
@@ -659,7 +663,8 @@ export const App = ({ theme, children, id }: AppProps) => {
     setInsightsFilteredInsightTypesInGlobalScope,
     setInsightsFilteredCriticalityLevelsInSpanScope,
     setInsightsFilteredCriticalityLevelsInGlobalScope,
-    setInsightsLastDays
+    setInsightsLastDays,
+    setGlobalErrorsSearch
   ]);
 
   const styledComponentsTheme = getStyledComponentsTheme(

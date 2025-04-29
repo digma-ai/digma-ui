@@ -254,18 +254,7 @@ export const Main = () => {
           case ScopeChangeEvent.IdeCodeLensClicked: {
             const url = getURLToNavigateOnCodeLensClick(scope);
             if (url) {
-              // Navigate to global scope if code lens type is "Error Hotspot"
-              const newState: HistoryState =
-                isScopeWithCodeLensContext(scope) &&
-                scope.context.payload.codeLens.lensTitle
-                  .toLocaleLowerCase()
-                  .includes("error hotspot")
-                  ? {
-                      environmentId: scope.environmentId ?? environment?.id
-                    }
-                  : state;
-
-              goTo(url, { state: newState });
+              goTo(url, { state });
               break;
             }
             defaultGoTo(scope, state);
