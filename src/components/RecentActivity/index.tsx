@@ -175,18 +175,6 @@ export const RecentActivity = () => {
   }, [recentActivityData.environments]);
 
   useEffect(() => {
-    if (!config.userInfo?.id && config.backendInfo?.centralize) {
-      void toggleRecentIndicator({
-        status: false
-      });
-    }
-  }, [
-    config.backendInfo?.centralize,
-    config.userInfo?.id,
-    toggleRecentIndicator
-  ]);
-
-  useEffect(() => {
     const isAnyRecentActivity = environments.some(
       (environment) => environment.hasRecentActivity
     );

@@ -45,6 +45,10 @@ const getURLToNavigateOnCodeLensClick = (scope: Scope): string | undefined => {
     return;
   }
 
+  if (codeLens.lensTitle.toLocaleLowerCase().includes("error hotspot")) {
+    return `/${TAB_IDS.ERRORS}`;
+  }
+
   if (codeLens.importance <= 4) {
     return `/${TAB_IDS.ISSUES}`;
   }

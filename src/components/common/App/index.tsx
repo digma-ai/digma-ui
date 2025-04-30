@@ -17,7 +17,10 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
 import { sendErrorTrackingEvent } from "../../../utils/actions/sendErrorTrackingEvent";
-import { isScopeWithMetricsReportContext } from "../../Main/typeGuards";
+import {
+  isScopeWithCodeLensContext,
+  isScopeWithMetricsReportContext
+} from "../../Main/typeGuards";
 import { ErrorScreen } from "../ErrorScreen";
 import { ConfigContext } from "./ConfigContext";
 import { getStyledComponentsTheme } from "./getTheme";
@@ -29,6 +32,7 @@ import type {
   PersistedState,
   RunConfiguration,
   Scope,
+  ScopeWithCodeLensContext,
   UserInfo
 } from "./types";
 
@@ -102,7 +106,8 @@ export const App = ({ theme, children, id }: AppProps) => {
     setInsightsFilteredCriticalityLevels:
       setInsightsFilteredCriticalityLevelsInSpanScope,
     setInsightsFilteredCriticalityLevelsInGlobalScope,
-    setInsightsLastDays
+    setInsightsLastDays,
+    setGlobalErrorsSearch
   } = useStore.getState();
 
   const handleError = (error: Error, info: ErrorInfo) => {
@@ -309,10 +314,26 @@ export const App = ({ theme, children, id }: AppProps) => {
 
     const handleSetScope = (data: unknown) => {
       setConfig((config) => {
-        const scope = data as Scope;
+        let scope = data as Scope;
         const environment = scope.environmentId
           ? config.environments?.find((x) => x.id === scope.environmentId)
           : config.environment;
+
+        // Change scope to the global one if "Error Hotspot" code lens click is the trigger
+        if (
+          isScopeWithCodeLensContext(scope) &&
+          scope.context.payload.codeLens.lensTitle
+            .toLocaleLowerCase()
+            .includes("error hotspot")
+        ) {
+          const newScope: ScopeWithCodeLensContext = {
+            ...scope,
+            span: null
+          };
+          scope = newScope;
+
+          setGlobalErrorsSearch(newScope.context.payload.codeLens.codeMethod);
+        }
 
         setScope(scope);
         setEnvironment(environment ?? null);
@@ -642,7 +663,8 @@ export const App = ({ theme, children, id }: AppProps) => {
     setInsightsFilteredInsightTypesInGlobalScope,
     setInsightsFilteredCriticalityLevelsInSpanScope,
     setInsightsFilteredCriticalityLevelsInGlobalScope,
-    setInsightsLastDays
+    setInsightsLastDays,
+    setGlobalErrorsSearch
   ]);
 
   const styledComponentsTheme = getStyledComponentsTheme(
