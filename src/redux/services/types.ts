@@ -771,6 +771,198 @@ export interface GetSpanCodeLocationsResponse {
   };
 }
 
+export interface GetErrorsPayload {
+  codeObjectId: string[];
+  environment: string;
+}
+
+export interface ScoreInfo {
+  score: number;
+  scoreParams: Record<string, number> | null;
+}
+
+export interface Error {
+  uid: string;
+  name: string | null;
+  scoreInfo: ScoreInfo;
+  codeObjectId: string | null;
+  sourceCodeObjectId: string | null;
+  characteristic: string | null;
+  startsHere: boolean;
+  endsHere: boolean;
+  latestTraceId: string | null;
+  firstOccurenceTime: string;
+  lastOccurenceTime: string;
+}
+
+export type GetErrorsResponse = Error[];
+
+export interface GetErrorPayload {
+  id: string;
+}
+
+export interface ParamStats {
+  paramName: string;
+  alwaysNoneValue: boolean;
+}
+
+export interface ErrorFlowFrame {
+  moduleName: string | null;
+  functionName: string | null;
+  lineNumber: number;
+  executedCode: string | null;
+  codeObjectId: string | null;
+  parameters: (ParamStats | null)[]; // TODO: check if this is correct
+  repeat: number;
+  spanName: string | null;
+  spanKind: string | null;
+  moduleLogicalPath: string | null;
+  modulePhysicalPath: string | null;
+  className: string | null;
+}
+
+export interface ErrorFlowFrameStack {
+  exceptionType: string | null;
+  frames: (ErrorFlowFrame | null)[]; // TODO: check if this is correct
+  exceptionMessage: string | null;
+}
+
+export interface ErrorFlowInfo {
+  frameStacks: (ErrorFlowFrameStack | null)[]; // TODO: check if this is correct
+  stackTrace: string | null;
+  lastInstanceCommitId: string | null;
+  latestTraceId: string | null;
+}
+
+export interface ErrorOriginService {
+  serviceName: string | null;
+}
+
+export interface GetErrorResponse {
+  name: string | null;
+  sourceCodeObjectId: string | null;
+  latestTraceId?: string | null;
+  firstOccurenceTime: string;
+  lastOccurenceTime: string;
+  dayAvg: number | null;
+  scoreInfo: ScoreInfo;
+  errors: (ErrorFlowInfo | null)[]; // TODO: check if this is correct
+  originServices: (ErrorOriginService | null)[]; // TODO: check if this is correct
+}
+
+export enum GlobalErrorsSortingCriterion {
+  Criticality = "Criticality",
+  Latest = "Latest"
+}
+
+export type ErrorHandlingType = "Handled" | "Unhandled";
+export type ErrorCriticality = "High" | "Medium" | "Low";
+
+export interface GetGlobalErrorsPayload {
+  environment: string;
+  codeObjectId?: string;
+  searchCriteria?: string;
+  sortBy?: GlobalErrorsSortingCriterion;
+  sortOrder?: SortingOrder;
+  page?: number;
+  pageSize?: number;
+  services?: string[];
+  endpoints?: string[];
+  errorTypes?: string[];
+  criticalities?: ErrorCriticality[];
+  handlingTypes?: ErrorHandlingType[];
+  lastDays?: number;
+  dismissed?: boolean;
+}
+
+export interface ErrorAffectedEndpoint {
+  displayName: string;
+  service: string;
+  spanCodeObjectId: string;
+}
+
+export interface ErrorListItem {
+  id: string;
+  errorType: string;
+  fromDisplayName: string;
+  fromFullyQualifiedName?: string;
+  fromCodeObjectId: string;
+  fromSpanCodeObjectId?: string | null;
+  status: string;
+  firstDetected: string;
+  lastDetected: string;
+  affectedEndpoints: ErrorAffectedEndpoint[];
+  score: ScoreInfo;
+  unhandled?: boolean;
+  pinnedAt?: string;
+  unexpected: boolean;
+  isDismissed?: boolean;
+}
+
+export interface GetGlobalErrorsResponse {
+  totalCount: number;
+  dismissedCount?: number;
+  list: ErrorListItem[];
+}
+
+export interface GetGlobalErrorsFiltersPayload {
+  environment: string;
+  filterName?: string;
+  filterData?: {
+    services?: string[];
+    values: string[];
+  };
+}
+
+export type ErrorFilterName = "Services" | "Endpoints" | "ErrorTypes";
+
+export interface ErrorFilter<T> {
+  filterName: ErrorFilterName;
+  values: T[];
+}
+
+export interface EndpointFilterData {
+  spanCodeObjectId: string;
+  displayName: string;
+}
+
+export interface GetGlobalErrorsFiltersResponse {
+  filters: ErrorFilter<string | EndpointFilterData>[];
+}
+
+export interface GetErrorTimeseriesPayload {
+  id: string;
+  environment: string;
+  spanCodeObjectId: string;
+  service: string;
+}
+
+export interface ErrorsTimeseriesRecord {
+  date: string;
+  value: number;
+}
+
+export interface GetErrorsTimeseriesResponse {
+  errorId: string;
+  dailyOccurrence: ErrorsTimeseriesRecord[];
+}
+
+export interface PinErrorPayload {
+  id: string;
+}
+
+export interface UnpinErrorPayload {
+  id: string;
+}
+
+export interface DismissErrorPayload {
+  id: string;
+}
+
+export interface UndismissErrorPayload {
+  id: string;
+}
+
 export interface GetSpanInsightPayload {
   spanCodeObjectId: string;
   insightType: InsightType;

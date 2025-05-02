@@ -1,8 +1,8 @@
+import type { ErrorOriginService } from "../../../../../../redux/services/digmaCodeGen";
 import { isObject } from "../../../../../../typeGuards/isObject";
 import { isString } from "../../../../../../typeGuards/isString";
-import type { ServiceInfo } from "../../../types";
 
 export const isServiceInfoWithName = (
-  x: ServiceInfo | null
-): x is Omit<ServiceInfo, "serviceName"> & { serviceName: string } =>
+  x: ErrorOriginService | null
+): x is Omit<ErrorOriginService, "serviceName"> & { serviceName: string } =>
   isObject(x) && isString(x.serviceName);

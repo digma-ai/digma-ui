@@ -2,6 +2,10 @@ import { useEffect, useMemo, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { DataFetcherConfiguration } from "../../../../../hooks/useFetchData";
 import { useFetchData } from "../../../../../hooks/useFetchData";
+import type {
+  ErrorFlowFrame,
+  ErrorFlowFrameStack
+} from "../../../../../redux/services/types";
 import { useErrorsSelector } from "../../../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../../../store/useStore";
 import { isNull } from "../../../../../typeGuards/isNull";
@@ -15,8 +19,6 @@ import { actions } from "../../../actions";
 import { trackingEvents } from "../../../tracking";
 import type {
   FilesURIsMap,
-  Frame,
-  FrameStack,
   GetFilesURIsPayload,
   GoToCodeLocationPayload,
   GoToTracePayload,
@@ -41,7 +43,7 @@ export const FlowStack = ({ data }: FlowStackProps) => {
   const stacksContainerRef = useRef<HTMLDivElement>(null);
 
   const frameStacks = useMemo(
-    () => data.frameStacks.filter(Boolean) as FrameStack[],
+    () => data.frameStacks.filter(Boolean) as ErrorFlowFrameStack[],
     [data]
   );
 
@@ -131,7 +133,7 @@ export const FlowStack = ({ data }: FlowStackProps) => {
     <s.Container>
       <s.StacksContainer ref={stacksContainerRef}>
         {frameStacks.map((x) => {
-          const frames = x.frames.filter(Boolean) as Frame[];
+          const frames = x.frames.filter(Boolean) as ErrorFlowFrame[];
           const visibleFrames = showWorkspaceOnly
             ? frames.filter((x) => x.codeObjectId && filesURIs[x.codeObjectId])
             : frames;
@@ -143,7 +145,7 @@ export const FlowStack = ({ data }: FlowStackProps) => {
               acc[acc.length - 1].push(frame);
             }
             return acc;
-          }, [] as Frame[][]);
+          }, [] as ErrorFlowFrame[][]);
 
           return (
             <s.StackContainer key={uuidv4()}>

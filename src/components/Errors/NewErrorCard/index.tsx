@@ -19,15 +19,14 @@ import { PinFillIcon } from "../../common/icons/16px/PinFillIcon";
 import { PinIcon } from "../../common/icons/16px/PinIcon";
 import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
-import { actions } from "../actions";
 import { TimestampKeyValue } from "../ErrorCard/TimestampKeyValue";
 import { usePinning } from "../GlobalErrorsList/usePinning";
 import { getTagType, HIGH_SEVERITY_SCORE_THRESHOLD } from "../Score";
 import { trackingEvents } from "../tracking";
-import { useDismissal } from "./hooks/useDismissal";
 import { OccurrenceChart } from "./OccurrenceChart";
 import * as s from "./styles";
 import type { NewErrorCardProps } from "./types";
+import { actions, useDismissal } from "./useDismissal";
 
 export const getStatusString = (status: string) =>
   status.toLowerCase().startsWith("recent") ? "Recent" : status;
@@ -86,7 +85,7 @@ export const NewErrorCard = ({
 
   const statusTagType = getTagType(score.score);
   const {
-    isDismissalChangeInProgress,
+    isInProgress: isDismissalChangeInProgress,
     dismiss,
     show,
     data: dismissalData
@@ -121,7 +120,7 @@ export const NewErrorCard = ({
       onDismissStatusChange(dismissalData.payload.id);
 
       if (
-        dismissalData.action === actions.SET_UNDISMISS_ERROR_RESULT &&
+        dismissalData.action === actions.UNDISMISS_ERROR &&
         globalErrorsList?.length === 1 &&
         globalErrorsList[0].id === dismissalData.payload.id
       ) {

@@ -1,6 +1,6 @@
-import type { SetGlobalErrorsDataPayload } from "./types";
+import type { GetGlobalErrorsResponse } from "../../../redux/services/types";
 
-export const DefaultErrorList: SetGlobalErrorsDataPayload = {
+export const DefaultErrorList: GetGlobalErrorsResponse = {
   totalCount: 2,
   list: [
     {
@@ -30,7 +30,8 @@ export const DefaultErrorList: SetGlobalErrorsDataPayload = {
           Unhandled: 50
         }
       },
-      unhandled: true
+      unhandled: true,
+      unexpected: false
     },
     {
       id: "00219416-9134-11ef-82aa-0242ac130002",
@@ -61,12 +62,13 @@ export const DefaultErrorList: SetGlobalErrorsDataPayload = {
           Unhandled: 0
         }
       },
-      unhandled: false
+      unhandled: false,
+      unexpected: false
     }
   ]
 };
 
-export const DismissedErrorList: SetGlobalErrorsDataPayload = {
+export const DismissedErrorList: GetGlobalErrorsResponse = {
   totalCount: 2,
   dismissedCount: 1,
   list: [
@@ -97,7 +99,8 @@ export const DismissedErrorList: SetGlobalErrorsDataPayload = {
           Unhandled: 50
         }
       },
-      unhandled: true
+      unhandled: true,
+      unexpected: false
     }
   ]
 };

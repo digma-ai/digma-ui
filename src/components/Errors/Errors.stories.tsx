@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Errors } from ".";
 import { ConfigContext, initialState } from "../common/App/ConfigContext";
 import type { ConfigContextData } from "../common/App/types";
-import { mockedErrorDetails } from "./ErrorDetails/mockData";
 import { actions } from "./actions";
 import { mockedErrorsData } from "./mockData";
 
@@ -64,15 +63,6 @@ export const ErrorsList: Story = {
 export const ErrorDetails: Story = {
   args: {
     errorId: "1"
-  },
-  play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_ERROR_DETAILS,
-        payload: mockedErrorDetails
-      });
-    }, 1000);
   }
 };
 

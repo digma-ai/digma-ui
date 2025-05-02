@@ -1,31 +1,31 @@
 import { useCallback, useState } from "react";
 import {
-  usePinErrorMutation,
-  useUnpinErrorMutation
+  useDismissErrorMutation,
+  useUndismissErrorMutation
 } from "../../../redux/services/digma";
-import type { SetPinUnpinErrorResultPayload } from "./types";
+import type { DismissUndismissResultPayload } from "./types";
 
 export const actions = {
-  PIN_ERROR: "PIN_ERROR",
-  UNPIN_ERROR: "UNPIN_ERROR"
+  DISMISS_ERROR: "DISMISS_ERROR",
+  UNDISMISS_ERROR: "UNDISMISS_ERROR"
 };
 
-export const usePinning = (errorId: string) => {
+export const useDismissal = (errorId: string) => {
   const [data, setData] = useState<{
     action: string;
-    payload: SetPinUnpinErrorResultPayload;
+    payload: DismissUndismissResultPayload;
   } | null>(null);
-  const [pinError, pinErrorResult] = usePinErrorMutation();
-  const [unpinError, unpinErrorResult] = useUnpinErrorMutation();
+  const [dismissError, dismissErrorResult] = useDismissErrorMutation();
+  const [undismissError, undismissErrorResult] = useUndismissErrorMutation();
 
-  const pin = useCallback(() => {
-    pinError({
+  const dismiss = useCallback(() => {
+    dismissError({
       id: errorId
     })
       .unwrap()
       .then(() => {
         setData({
-          action: actions.PIN_ERROR,
+          action: actions.DISMISS_ERROR,
           payload: {
             id: errorId,
             status: "success"
@@ -34,23 +34,23 @@ export const usePinning = (errorId: string) => {
       })
       .catch(() => {
         setData({
-          action: actions.PIN_ERROR,
+          action: actions.DISMISS_ERROR,
           payload: {
             id: errorId,
             status: "failure"
           }
         });
       });
-  }, [errorId, pinError]);
+  }, [errorId, dismissError]);
 
-  const unpin = useCallback(() => {
-    unpinError({
+  const show = useCallback(() => {
+    undismissError({
       id: errorId
     })
       .unwrap()
       .then(() => {
         setData({
-          action: actions.UNPIN_ERROR,
+          action: actions.UNDISMISS_ERROR,
           payload: {
             id: errorId,
             status: "success"
@@ -59,19 +59,19 @@ export const usePinning = (errorId: string) => {
       })
       .catch(() => {
         setData({
-          action: actions.UNPIN_ERROR,
+          action: actions.UNDISMISS_ERROR,
           payload: {
             id: errorId,
             status: "failure"
           }
         });
       });
-  }, [errorId, unpinError]);
+  }, [errorId, undismissError]);
 
   return {
-    pin,
-    unpin,
+    dismiss,
+    show,
     data,
-    isInProgress: pinErrorResult.isLoading || unpinErrorResult.isLoading
+    isInProgress: dismissErrorResult.isLoading || undismissErrorResult.isLoading
   };
 };

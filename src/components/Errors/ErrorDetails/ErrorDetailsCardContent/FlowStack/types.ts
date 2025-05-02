@@ -1,7 +1,7 @@
-import type { FlowInfo } from "../../types";
+import type { ErrorFlowInfo } from "../../../../../redux/services/types";
 
 export interface FlowProps {
-  data: FlowInfo;
+  data: ErrorFlowInfo;
 }
 
 export interface ShowOnlyWorkspaceErrorStackTraceItemsPayload {

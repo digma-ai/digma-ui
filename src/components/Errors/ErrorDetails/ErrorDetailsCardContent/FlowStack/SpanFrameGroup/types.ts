@@ -1,4 +1,5 @@
-import type { FilesURIsMap, Frame } from "../../../types";
+import type { ErrorFlowFrame } from "../../../../../../redux/services/types";
+import type { FilesURIsMap } from "../../../types";
 
 export interface FrameItemCodeLocation {
   URI: string;
@@ -7,7 +8,7 @@ export interface FrameItemCodeLocation {
 
 export interface SpanFrameGroupProps {
   spanName: string;
-  frames: Frame[];
+  frames: ErrorFlowFrame[];
   filesURIs: FilesURIsMap;
   onGoCodeLocation: (location: FrameItemCodeLocation) => void;
 }

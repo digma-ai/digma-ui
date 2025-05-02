@@ -5,6 +5,7 @@ import type {
   CreateEnvironmentResponse,
   DeleteEnvironmentPayload,
   DeleteEnvironmentResponse,
+  DismissErrorPayload,
   DismissUndismissInsightPayload,
   ExtendedGetInsightsPayload,
   ExtendedGetInsightsResponse,
@@ -21,6 +22,16 @@ import type {
   GetEnvironmentServicesPayload,
   GetEnvironmentServicesResponse,
   GetEnvironmentsResponse,
+  GetErrorPayload,
+  GetErrorResponse,
+  GetErrorsPayload,
+  GetErrorsResponse,
+  GetErrorsTimeseriesResponse,
+  GetErrorTimeseriesPayload,
+  GetGlobalErrorsFiltersPayload,
+  GetGlobalErrorsFiltersResponse,
+  GetGlobalErrorsPayload,
+  GetGlobalErrorsResponse,
   GetImpactHighlightsPayload,
   GetImpactHighlightsResponse,
   GetInsightsResponse,
@@ -61,13 +72,16 @@ import type {
   LinkTicketToIssuePayload,
   MarkInsightReadPayload,
   MarkScopeInsightsReadPayload,
+  PinErrorPayload,
   RecheckInsightPayload,
   ResendConfirmationEmailPayload,
   SetEndpointsIssuesPayload,
   SetMetricsReportDataPayload,
   SetServiceEndpointsPayload,
   SetServiceEnvironmentsPayload,
-  UnlinkTicketFromIssuePayload
+  UndismissErrorPayload,
+  UnlinkTicketFromIssuePayload,
+  UnpinErrorPayload
 } from "./types";
 
 export const digmaApi = createApi({
@@ -75,6 +89,7 @@ export const digmaApi = createApi({
     "Asset",
     "AssetCategory",
     "Environment",
+    "Error",
     "Insight",
     "RecentActivity"
   ],
@@ -128,6 +143,90 @@ export const digmaApi = createApi({
         body: data
       })
     }),
+    getErrors: builder.query<GetErrorsResponse, GetErrorsPayload>({
+      query: (data) => ({
+        url: "CodeAnalytics/codeObjects/errors",
+        params: {
+          environment: data.environment,
+          codeObjectId: data.codeObjectId
+        }
+      }),
+      providesTags: ["Error"]
+    }),
+    getError: builder.query<GetErrorResponse, GetErrorPayload>({
+      query: ({ id }) => ({
+        url: `CodeAnalytics/codeObjects/errors/${window.encodeURIComponent(id)}`
+      }),
+      providesTags: ["Error"]
+    }),
+    getGlobalErrors: builder.query<
+      GetGlobalErrorsResponse,
+      GetGlobalErrorsPayload
+    >({
+      query: (data) => ({
+        url: "Errors",
+        method: "POST",
+        body: data
+      }),
+      providesTags: ["Error"]
+    }),
+    getGlobalErrorFilters: builder.query<
+      GetGlobalErrorsFiltersResponse,
+      GetGlobalErrorsFiltersPayload
+    >({
+      query: (data) => ({
+        url: "Errors/filters",
+        method: "POST",
+        body: data
+      })
+    }),
+    getErrorTimeseries: builder.query<
+      GetErrorsTimeseriesResponse,
+      GetErrorTimeseriesPayload
+    >({
+      query: ({ id, ...data }) => ({
+        url: `errors/${window.encodeURIComponent(id)}/timeseries`,
+        params: data
+      })
+    }),
+    pinError: builder.mutation<void, PinErrorPayload>({
+      query: ({ id }) => ({
+        url: `errors/${window.encodeURIComponent(id)}/pin`,
+        method: "POST"
+      }),
+      invalidatesTags: ["Error"]
+    }),
+    unpinError: builder.mutation<void, UnpinErrorPayload>({
+      query: ({ id }) => ({
+        url: `errors/${window.encodeURIComponent(id)}/unpin`,
+        method: "POST"
+      }),
+      invalidatesTags: ["Error"]
+    }),
+    dismissError: builder.mutation<void, DismissErrorPayload>({
+      query: ({ id }) => ({
+        url: `errors/${window.encodeURIComponent(id)}/dismiss`,
+        method: "POST"
+      }),
+      invalidatesTags: ["Error"]
+    }),
+    undismissError: builder.mutation<void, UndismissErrorPayload>({
+      query: ({ id }) => ({
+        url: `errors/${window.encodeURIComponent(id)}/undismiss`,
+        method: "POST"
+      }),
+      invalidatesTags: ["Error"]
+    }),
+    getSpanInsight: builder.query<
+      GetSpanInsightResponse,
+      GetSpanInsightPayload
+    >({
+      query: (data) => ({
+        url: "CodeAnalytics/codeObjects/insight",
+        params: data
+      }),
+      providesTags: ["Insight"]
+    }),
     getRecentActivity: builder.query<
       GetRecentActivityResponse,
       GetRecentActivityPayload
@@ -147,16 +246,6 @@ export const digmaApi = createApi({
         method: "POST",
         body: data
       })
-    }),
-    getSpanInsight: builder.query<
-      GetSpanInsightResponse,
-      GetSpanInsightPayload
-    >({
-      query: (data) => ({
-        url: "CodeAnalytics/codeObjects/insight",
-        params: data
-      }),
-      providesTags: ["Insight"]
     }),
     recheckInsight: builder.mutation<void, RecheckInsightPayload>({
       query: (data) => ({
@@ -454,9 +543,18 @@ export const {
   useGetAssetsQuery,
   useGetUserProfileQuery,
   useResendConfirmationEmailMutation,
+  useGetErrorsQuery,
+  useGetErrorQuery,
+  useGetGlobalErrorsQuery,
+  useGetGlobalErrorFiltersQuery,
+  useGetErrorTimeseriesQuery,
+  usePinErrorMutation,
+  useUnpinErrorMutation,
+  useDismissErrorMutation,
+  useUndismissErrorMutation,
+  useGetSpanInsightQuery,
   useGetRecentActivityQuery,
   useGetSpanCodeLocationsQuery,
-  useGetSpanInsightQuery,
   useRecheckInsightMutation,
   useGetEnvironmentsQuery,
   useCreateEnvironmentMutation,

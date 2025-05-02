@@ -1,6 +1,9 @@
-import type { FrameStack, SetErrorDetailsPayload } from "./types";
+import type {
+  ErrorFlowFrameStack,
+  GetErrorResponse
+} from "../../../redux/services/types";
 
-export const mockedFrameStack: FrameStack = {
+export const mockedFrameStack: ErrorFlowFrameStack = {
   exceptionType: "exceptionType1",
   frames: [
     {
@@ -26,52 +29,50 @@ export const mockedFrameStack: FrameStack = {
   exceptionMessage: "exceptionMessage1"
 };
 
-export const mockedErrorDetails: SetErrorDetailsPayload = {
-  details: {
-    name: "Very long long long long long long long long long long long error name",
-    sourceCodeObjectId: "test$_$VeryLongLongLongLongSourceCodeObjectId1",
-    latestTraceId: "latestTraceId1",
-    firstOccurenceTime: "2021-01-01T00:00:00.000Z",
-    lastOccurenceTime: "2024-01-01T00:00:00.000Z",
-    dayAvg: 1,
-    scoreInfo: {
-      score: 90,
-      scoreParams: {
-        param1: "value1"
-      }
+export const mockedErrorDetails: GetErrorResponse = {
+  name: "Very long long long long long long long long long long long error name",
+  sourceCodeObjectId: "test$_$VeryLongLongLongLongSourceCodeObjectId1",
+  latestTraceId: "latestTraceId1",
+  firstOccurenceTime: "2021-01-01T00:00:00.000Z",
+  lastOccurenceTime: "2024-01-01T00:00:00.000Z",
+  dayAvg: 1,
+  scoreInfo: {
+    score: 90,
+    scoreParams: {
+      param1: 1
+    }
+  },
+  errors: [
+    {
+      frameStacks: [
+        mockedFrameStack,
+        mockedFrameStack,
+        mockedFrameStack,
+        mockedFrameStack,
+        mockedFrameStack,
+        mockedFrameStack
+      ],
+      stackTrace: "stackTrace1",
+      lastInstanceCommitId: "lastInstanceCommitId1",
+      latestTraceId: "latestTraceId1"
     },
-    errors: [
-      {
-        frameStacks: [
-          mockedFrameStack,
-          mockedFrameStack,
-          mockedFrameStack,
-          mockedFrameStack,
-          mockedFrameStack,
-          mockedFrameStack
-        ],
-        stackTrace: "stackTrace1",
-        lastInstanceCommitId: "lastInstanceCommitId1",
-        latestTraceId: "latestTraceId1"
-      },
-      {
-        frameStacks: [
-          mockedFrameStack,
-          mockedFrameStack,
-          mockedFrameStack,
-          mockedFrameStack,
-          mockedFrameStack,
-          mockedFrameStack
-        ],
-        stackTrace: "stackTrace1",
-        lastInstanceCommitId: "lastInstanceCommitId1",
-        latestTraceId: "latestTraceId1"
-      }
-    ],
-    originServices: [
-      {
-        serviceName: "serviceName1"
-      }
-    ]
-  }
+    {
+      frameStacks: [
+        mockedFrameStack,
+        mockedFrameStack,
+        mockedFrameStack,
+        mockedFrameStack,
+        mockedFrameStack,
+        mockedFrameStack
+      ],
+      stackTrace: "stackTrace1",
+      lastInstanceCommitId: "lastInstanceCommitId1",
+      latestTraceId: "latestTraceId1"
+    }
+  ],
+  originServices: [
+    {
+      serviceName: "serviceName1"
+    }
+  ]
 };

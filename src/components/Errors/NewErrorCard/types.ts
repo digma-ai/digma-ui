@@ -1,7 +1,7 @@
-import type { GlobalErrorData } from "../GlobalErrorsList/types";
+import type { ErrorListItem } from "../../../redux/services/types";
 
 export interface NewErrorCardProps {
-  data: GlobalErrorData;
+  data: ErrorListItem;
   onSourceLinkClick: (
     codeObjectId: string,
     spanCodeObjectId?: string | null
@@ -21,7 +21,7 @@ export interface OccurrenceChartContainerProps {
   $transitionClassName: string;
 }
 
-export interface PinUnpinErrorPayload {
+export interface DismissUndismissResultPayload {
   id: string;
-  environment: string;
+  status: "success" | "failure";
 }
