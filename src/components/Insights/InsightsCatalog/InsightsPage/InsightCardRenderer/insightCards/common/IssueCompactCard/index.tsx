@@ -186,6 +186,8 @@ export const IssueCompactCard = ({
         {insightTypeInfo && (
           <InsightIcon
             insightTypeInfo={insightTypeInfo}
+            severity={insight.severity}
+            impact={insight.impact}
             criticality={insight.criticality}
           />
         )}
