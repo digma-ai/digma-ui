@@ -4,5 +4,4 @@ import { isString } from "../../../../../../typeGuards/isString";
 
 export const isServiceInfoWithName = (
   x: ErrorOriginService | null
-): x is Omit<ErrorOriginService, "serviceName"> & { serviceName: string } =>
-  isObject(x) && isString(x.serviceName);
+): x is { serviceName: string } => isObject(x) && isString(x.serviceName);
