@@ -22,6 +22,7 @@ import {
   setEnvironmentToDelete,
   setIsSidebarOpen
 } from "../../../redux/slices/environmentsSlice";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { FeatureFlag } from "../../../types";
 import { sortEnvironments } from "../../common/IssuesReport/utils";
 import { Pagination } from "../../common/v3/Pagination";
@@ -37,6 +38,7 @@ const columnHelper = createColumnHelper<Environment>();
 export const Environments = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { data: about } = useGetAboutQuery();
+  const { isSandboxModeEnabled } = useConfigSelector();
   const isCreateEnvironmentSidebarOpen = useAdminSelector(
     (state) => state.environmentsSlice.isSidebarOpen
   );
@@ -63,7 +65,7 @@ export const Environments = () => {
     columnHelper.accessor("name", {
       header: "Name",
       meta: {
-        width: isEnvironmentLastActiveTimestampEnabled ? "60%" : "80%",
+        width: "100%",
         minWidth: 60
       },
       cell: (info) => {
@@ -103,18 +105,22 @@ export const Environments = () => {
         return <s.EnvironmentType>{value}</s.EnvironmentType>;
       }
     }),
-    columnHelper.accessor((row) => row, {
-      header: "Actions",
-      meta: {
-        width: "10%",
-        minWidth: 60,
-        textAlign: "right"
-      },
-      cell: (info) => {
-        const value = info.getValue();
-        return <ActionsMenuButton environment={value} />;
-      }
-    })
+    ...(isSandboxModeEnabled
+      ? []
+      : [
+          columnHelper.accessor((row) => row, {
+            header: "Actions",
+            meta: {
+              width: "10%",
+              minWidth: 60,
+              textAlign: "right"
+            },
+            cell: (info) => {
+              const value = info.getValue();
+              return <ActionsMenuButton environment={value} />;
+            }
+          })
+        ])
   ];
 
   const table = useReactTable({
