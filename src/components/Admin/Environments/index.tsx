@@ -22,10 +22,12 @@ import {
   setEnvironmentToDelete,
   setIsSidebarOpen
 } from "../../../redux/slices/environmentsSlice";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { FeatureFlag } from "../../../types";
 import { sortEnvironments } from "../../common/IssuesReport/utils";
 import { Pagination } from "../../common/v3/Pagination";
 import { ConfirmationDialog } from "../../RecentActivity/ConfirmationDialog";
+import { ActionsMenuButton } from "./ActionsMenuButton";
 import { CreateEnvironmentSidebarOverlay } from "./CreateEnvironmentSidebarOverlay";
 import * as s from "./styles";
 import type { ColumnMeta } from "./types";
@@ -36,6 +38,7 @@ const columnHelper = createColumnHelper<Environment>();
 export const Environments = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { data: about } = useGetAboutQuery();
+  const { isSandboxModeEnabled } = useConfigSelector();
   const isCreateEnvironmentSidebarOpen = useAdminSelector(
     (state) => state.environmentsSlice.isSidebarOpen
   );
@@ -62,7 +65,7 @@ export const Environments = () => {
     columnHelper.accessor("name", {
       header: "Name",
       meta: {
-        width: isEnvironmentLastActiveTimestampEnabled ? "70%" : "90%",
+        width: "100%",
         minWidth: 60
       },
       cell: (info) => {
@@ -101,19 +104,23 @@ export const Environments = () => {
         const value = info.getValue();
         return <s.EnvironmentType>{value}</s.EnvironmentType>;
       }
-    })
-    // columnHelper.accessor((row) => row, {
-    //   header: "Actions",
-    //   meta: {
-    //     width: "10%",
-    //     minWidth: 60,
-    //     textAlign: "right"
-    //   },
-    //   cell: (info) => {
-    //     const value = info.getValue();
-    //     return <ActionsMenuButton environment={value} />;
-    //   }
-    // })
+    }),
+    ...(isSandboxModeEnabled
+      ? []
+      : [
+          columnHelper.accessor((row) => row, {
+            header: "Actions",
+            meta: {
+              width: "10%",
+              minWidth: 60,
+              textAlign: "right"
+            },
+            cell: (info) => {
+              const value = info.getValue();
+              return <ActionsMenuButton environment={value} />;
+            }
+          })
+        ])
   ];
 
   const table = useReactTable({
