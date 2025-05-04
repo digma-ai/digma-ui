@@ -26,7 +26,6 @@ import { FeatureFlag } from "../../../types";
 import { sortEnvironments } from "../../common/IssuesReport/utils";
 import { Pagination } from "../../common/v3/Pagination";
 import { ConfirmationDialog } from "../../RecentActivity/ConfirmationDialog";
-import { ActionsMenuButton } from "./ActionsMenuButton";
 import { CreateEnvironmentSidebarOverlay } from "./CreateEnvironmentSidebarOverlay";
 import * as s from "./styles";
 import type { ColumnMeta } from "./types";
@@ -63,7 +62,7 @@ export const Environments = () => {
     columnHelper.accessor("name", {
       header: "Name",
       meta: {
-        width: isEnvironmentLastActiveTimestampEnabled ? "60%" : "80%",
+        width: isEnvironmentLastActiveTimestampEnabled ? "70%" : "90%",
         minWidth: 60
       },
       cell: (info) => {
@@ -102,19 +101,19 @@ export const Environments = () => {
         const value = info.getValue();
         return <s.EnvironmentType>{value}</s.EnvironmentType>;
       }
-    }),
-    columnHelper.accessor((row) => row, {
-      header: "Actions",
-      meta: {
-        width: "10%",
-        minWidth: 60,
-        textAlign: "right"
-      },
-      cell: (info) => {
-        const value = info.getValue();
-        return <ActionsMenuButton environment={value} />;
-      }
     })
+    // columnHelper.accessor((row) => row, {
+    //   header: "Actions",
+    //   meta: {
+    //     width: "10%",
+    //     minWidth: 60,
+    //     textAlign: "right"
+    //   },
+    //   cell: (info) => {
+    //     const value = info.getValue();
+    //     return <ActionsMenuButton environment={value} />;
+    //   }
+    // })
   ];
 
   const table = useReactTable({
