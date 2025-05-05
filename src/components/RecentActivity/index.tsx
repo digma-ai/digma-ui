@@ -22,8 +22,6 @@ import type { Scope } from "../common/App/types";
 import { Overlay } from "../common/Overlay";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import type { RegistrationFormValues } from "../common/RegistrationDialog/types";
-import { ListIcon } from "../common/icons/ListIcon";
-import { TableIcon } from "../common/icons/TableIcon";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 import { CreateEnvironmentFinishScreenContent } from "./CreateEnvironmentFinishScreenContent";
 import { CreateEnvironmentWizard } from "./CreateEnvironmentWizard";
@@ -34,9 +32,8 @@ import { getEnvironmentTabId } from "./EnvironmentPanel/EnvironmentTab/getEnviro
 import type { ViewMode } from "./EnvironmentPanel/types";
 import { LiveView } from "./LiveView";
 import { NoData } from "./NoData";
-import { ObservabilityStatusBadge } from "./ObservabilityStatusBadge";
 import { MAX_DISTANCE, RecentActivityTable } from "./RecentActivityTable";
-import { Toggle } from "./Toggle";
+import { RecentActivityHeader } from "./RecentActivityToolbar";
 import { WelcomeScreen } from "./WelcomeScreen";
 import { actions } from "./actions";
 import * as s from "./styles";
@@ -44,25 +41,13 @@ import { trackingEvents } from "./tracking";
 import type {
   EnvironmentClearDataTimeStamps,
   EnvironmentInstructionsVisibility,
-  ExtendedEnvironment,
-  ViewModeOption
+  ExtendedEnvironment
 } from "./types";
 import { useDigmathonProgressData } from "./useDigmathonProgressData";
 import { useLiveData } from "./useLiveData";
 import { useRecentActivityData } from "./useRecentActivityData";
 
 export const RECENT_ACTIVITY_CONTAINER_ID = "recent-activity";
-
-const viewModeOptions: ViewModeOption[] = [
-  {
-    value: "table",
-    icon: TableIcon
-  },
-  {
-    value: "list",
-    icon: ListIcon
-  }
-];
 
 const changeSelectedEnvironment = (
   scope: Scope | undefined,
@@ -488,6 +473,13 @@ export const RecentActivity = () => {
           <s.NoDataRecentActivityContainerBackground>
             <s.NoDataRecentActivityContainerBackgroundGradient />
           </s.NoDataRecentActivityContainerBackground>
+          {selectedEnvironment && (
+            <s.NoDataRecentActivityHeader
+              viewMode={viewMode}
+              onViewModeChange={handleViewModeChange}
+              environment={selectedEnvironment}
+            />
+          )}
           <s.NoDataContainer>
             <NoData />
           </s.NoDataContainer>
@@ -499,20 +491,12 @@ export const RecentActivity = () => {
 
     return (
       <>
-        <s.RecentActivityToolbarContainer>
-          <s.RecentActivityToolbar>
-            <span>Recent Activity</span>
-            <Toggle
-              value={viewMode}
-              options={viewModeOptions}
-              onChange={handleViewModeChange}
-            />
-          </s.RecentActivityToolbar>
-          {!config.isObservabilityEnabled &&
-            selectedEnvironment.type === "Private" && (
-              <ObservabilityStatusBadge />
-            )}
-        </s.RecentActivityToolbarContainer>
+        <RecentActivityHeader
+          showToolbar={true}
+          viewMode={viewMode}
+          onViewModeChange={handleViewModeChange}
+          environment={selectedEnvironment}
+        />
         <RecentActivityTable
           viewMode={viewMode}
           data={environmentActivities[selectedEnvironment.id]}
@@ -575,7 +559,7 @@ export const RecentActivity = () => {
       ) : (
         <Allotment defaultSizes={[70, 30]}>
           <s.RecentActivityContainer id={RECENT_ACTIVITY_CONTAINER_ID}>
-            <s.RecentActivityHeader ref={observe}>
+            <s.EnvironmentPanelContainer ref={observe}>
               <EnvironmentPanel
                 environments={environments}
                 selectedEnvironment={selectedEnvironment}
@@ -588,7 +572,7 @@ export const RecentActivity = () => {
                 }
                 onEnvironmentClearData={handleEnvironmentClearData}
               />
-            </s.RecentActivityHeader>
+            </s.EnvironmentPanelContainer>
             <s.RecentActivityContentContainer>
               {renderContent()}
             </s.RecentActivityContentContainer>
