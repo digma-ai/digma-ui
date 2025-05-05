@@ -508,7 +508,10 @@ export const RecentActivity = () => {
               onChange={handleViewModeChange}
             />
           </s.RecentActivityToolbar>
-          {!config.isObservabilityEnabled && <ObservabilityStatusBadge />}
+          {!config.isObservabilityEnabled &&
+            selectedEnvironment.type === "Private" && (
+              <ObservabilityStatusBadge />
+            )}
         </s.RecentActivityToolbarContainer>
         <RecentActivityTable
           viewMode={viewMode}
