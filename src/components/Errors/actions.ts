@@ -3,8 +3,6 @@ import { addPrefix } from "../../utils/addPrefix";
 const ACTION_PREFIX = "ERRORS";
 
 export const actions = addPrefix(ACTION_PREFIX, {
-  GET_ERRORS_DATA: "GET_ERRORS_DATA", // TODO: refactor to HTTP API call
-  SET_ERRORS_DATA: "SET_ERRORS_DATA",
   GO_TO_TRACE: "GO_TO_TRACE",
   OPEN_RAW_ERROR_STACK_TRACE_IN_EDITOR: "OPEN_RAW_ERROR_STACK_TRACE_IN_EDITOR",
   GO_TO_CODE_LOCATION: "GO_TO_CODE_LOCATION",
