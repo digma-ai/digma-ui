@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Spinner as CommonSpinner } from "../common/v3/Spinner";
+import { RecentActivityHeader } from "./RecentActivityToolbar";
 
 const RECENT_ACTIVITY_NO_DATA_PADDING_TOP = 39; // in pixels
 const RECENT_ACTIVITY_MIN_WIDTH = 550; // in pixels
@@ -39,7 +40,7 @@ export const RecentActivityContainer = styled.div`
   box-sizing: border-box;
 `;
 
-export const RecentActivityHeader = styled.div`
+export const EnvironmentPanelContainer = styled.div`
   box-sizing: border-box;
   z-index: 1;
   position: sticky;
@@ -51,19 +52,8 @@ export const RecentActivityHeader = styled.div`
   height: 44px;
 `;
 
-export const RecentActivityToolbarContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 16px 12px 20px;
-`;
-
-export const RecentActivityToolbar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  font-weight: 500;
-  font-size: 14px;
-  color: ${({ theme }) => theme.colors.recentActivity.header.text};
+export const NoDataRecentActivityHeader = styled(RecentActivityHeader)`
+  position: relative;
 `;
 
 export const RecentActivityContentContainer = styled.div`

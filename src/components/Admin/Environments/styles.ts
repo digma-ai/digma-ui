@@ -45,7 +45,6 @@ export const TableHeaderCell = styled.div`
 
   &:last-child {
     padding-right: 18px;
-    text-align: right;
   }
 `;
 
