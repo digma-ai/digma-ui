@@ -812,7 +812,7 @@ export interface ErrorFlowFrame {
   lineNumber: number;
   executedCode: string | null;
   codeObjectId: string | null;
-  parameters: (ParamStats | null)[]; // TODO: check if this is correct
+  parameters: ParamStats[] | null;
   repeat: number;
   spanName: string | null;
   spanKind: string | null;
@@ -823,12 +823,12 @@ export interface ErrorFlowFrame {
 
 export interface ErrorFlowFrameStack {
   exceptionType: string | null;
-  frames: (ErrorFlowFrame | null)[]; // TODO: check if this is correct
+  frames: ErrorFlowFrame[] | null;
   exceptionMessage: string | null;
 }
 
 export interface ErrorFlowInfo {
-  frameStacks: (ErrorFlowFrameStack | null)[]; // TODO: check if this is correct
+  frameStacks: ErrorFlowFrameStack[] | null;
   stackTrace: string | null;
   lastInstanceCommitId: string | null;
   latestTraceId: string | null;
@@ -846,8 +846,8 @@ export interface GetErrorResponse {
   lastOccurenceTime: string;
   dayAvg: number | null;
   scoreInfo: ScoreInfo;
-  errors: (ErrorFlowInfo | null)[]; // TODO: check if this is correct
-  originServices: (ErrorOriginService | null)[]; // TODO: check if this is correct
+  errors: ErrorFlowInfo[] | null;
+  originServices: ErrorOriginService[] | null;
 }
 
 export enum GlobalErrorsSortingCriterion {
