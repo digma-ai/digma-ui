@@ -1,42 +1,32 @@
-import type { InsightTypeInfo } from "../../../../../../../../../../utils/getInsightTypeInfo";
-import { roundTo } from "../../../../../../../../../../utils/roundTo";
 import { Tag } from "../../../../../../../../../common/v3/Tag";
 import type { TagType } from "../../../../../../../../../common/v3/Tag/types";
+import { getValueLabel } from "./getValueLabel";
+import { InsightIconTooltip } from "./InsightIconTooltip";
 import * as s from "./styles";
-import type { InsightIconProps } from "./types";
+import type { InsightIconProps, ValueLabel } from "./types";
 
-export const getTagType = (criticality: number): TagType => {
-  if (criticality < 0.2) {
-    return "lowSeverity";
+const getTagType = (valueLabel: ValueLabel): TagType => {
+  switch (valueLabel) {
+    case "Low":
+      return "lowSeverity";
+    case "Medium":
+      return "mediumSeverity";
+    case "High":
+      return "highSeverity";
   }
-
-  if (criticality < 0.6) {
-    return "mediumSeverity";
-  }
-
-  return "highSeverity";
-};
-
-export const getTagTitle = (
-  insightTypeInfo: InsightTypeInfo | undefined,
-  criticality: number
-) => {
-  const title = `${
-    insightTypeInfo ? `${insightTypeInfo.label}\n` : ""
-  }Criticality: ${roundTo(criticality * 100, 0)}%`;
-
-  return <s.TagTitle>{title}</s.TagTitle>;
 };
 
 export const InsightIcon = ({
   insightTypeInfo,
+  severity,
+  impact,
   criticality
 }: InsightIconProps) => {
-  const tagTitle = getTagTitle(insightTypeInfo, criticality);
-  const tagType = getTagType(criticality);
+  const tagType = getTagType(getValueLabel(criticality));
+
   return (
     <Tag
-      title={tagTitle}
+      title={<InsightIconTooltip {...{ severity, impact, criticality }} />}
       type={tagType}
       content={
         <s.InsightIconContainer>
