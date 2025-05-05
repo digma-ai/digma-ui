@@ -31,10 +31,14 @@ export const routes: RouteObject[] = [
           }
         ]
       },
-      {
-        path: "environments",
-        element: <Environments />
-      },
+      ...(window.isSandboxModeEnabled === true
+        ? []
+        : [
+            {
+              path: "environments",
+              element: <Environments />
+            }
+          ]),
       {
         path: "*",
         element: <Navigate to={"/"} replace={true} />
