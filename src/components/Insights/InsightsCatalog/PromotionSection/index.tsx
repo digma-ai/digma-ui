@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { actions as globalActions } from "../../../../actions";
 import { dispatcher } from "../../../../dispatcher";
+import { useNow } from "../../../../hooks/useNow";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { PLUGIN_EVENTS } from "../../../../pluginEvents";
 import type { SendPluginEventPayload } from "../../../../types";
@@ -18,20 +19,24 @@ const PROMOTION_COMPLETED_PERSISTENCE_KEY = "PROMOTION_COMPLETED";
 const PROMOTION_INTERVAL_DAYS = 30;
 const INTERVAL_BETWEEN_PROMOTIONS_DAYS = 1;
 
-const isPromotionEnabled = (dismissalDate: number | null | undefined) => {
-  return dateReachesInterval(PROMOTION_INTERVAL_DAYS, dismissalDate);
-};
+const isPromotionEnabled = (
+  dismissalDate: number | null | undefined,
+  now: number
+) => dateReachesInterval(PROMOTION_INTERVAL_DAYS, dismissalDate, now);
 
 const dateReachesInterval = (
   days: number,
-  dismissalDate: number | null | undefined
+  dismissalDate: number | null | undefined,
+  now: number
 ) => {
   const interval = days * 24 * 60 * 60 * 1000; // in milliseconds
-  return !dismissalDate || Math.abs(dismissalDate - Date.now()) > interval;
+  return !dismissalDate || Math.abs(dismissalDate - now) > interval;
 };
 
 export const PromotionSection = () => {
   const [showPromotion, setShowPromotion] = useState<PromotionType>("udemy");
+
+  const now = useNow();
 
   const [earlyAccessPromotionDetails, setEarlyAccessPromotionDetails] =
     usePersistence<EarlyAccessPromotionDetails>(
@@ -60,7 +65,7 @@ export const PromotionSection = () => {
 
       if (
         earlyAccessPromotionDetails?.dismissalDate &&
-        !isPromotionEnabled(earlyAccessPromotionDetails.dismissalDate)
+        !isPromotionEnabled(earlyAccessPromotionDetails.dismissalDate, now)
       ) {
         return;
       }
@@ -82,7 +87,8 @@ export const PromotionSection = () => {
   }, [
     earlyAccessPromotionDetails?.completionDate,
     earlyAccessPromotionDetails?.dismissalDate,
-    setShowPromotion
+    setShowPromotion,
+    now
   ]);
 
   const handleUdemyRegistrationComplete = () => {
@@ -123,19 +129,20 @@ export const PromotionSection = () => {
 
   const isUdemyPromotionVisible =
     !udemyPromotionCompleted &&
-    isPromotionEnabled(udemyDismissalDate) &&
+    isPromotionEnabled(udemyDismissalDate, now) &&
     showPromotion === "udemy" &&
     (!earlyAccessPromotionDetails?.isCompleted ||
       (earlyAccessPromotionDetails.isCompleted &&
         dateReachesInterval(
           INTERVAL_BETWEEN_PROMOTIONS_DAYS,
-          earlyAccessPromotionDetails.completionDate
+          earlyAccessPromotionDetails.completionDate,
+          now
         )));
 
   const isEarlyAccessPromotionIsVisible =
     !earlyAccessPromotionDetails?.isCompleted &&
     showPromotion === "early-access" &&
-    isPromotionEnabled(earlyAccessPromotionDetails?.dismissalDate);
+    isPromotionEnabled(earlyAccessPromotionDetails?.dismissalDate, now);
 
   return (
     <ToolbarRow>

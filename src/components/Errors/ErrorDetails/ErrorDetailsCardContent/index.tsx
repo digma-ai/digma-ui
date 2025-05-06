@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNow } from "../../../../hooks/useNow";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { isNull } from "../../../../typeGuards/isNull";
 import { isNumber } from "../../../../typeGuards/isNumber";
@@ -24,6 +25,7 @@ export const ErrorDetailsCardContent = ({
 }: ErrorDetailsCardContentProps) => {
   const previousId = usePrevious(id);
   const [currentFlowStack, setCurrentFlowStack] = useState(0);
+  const now = useNow();
 
   useEffect(() => {
     if (isString(previousId) && previousId !== id) {
@@ -35,9 +37,9 @@ export const ErrorDetailsCardContent = ({
     .filter(isServiceInfoWithName)
     .map((x) => x.serviceName);
   const startedTooltip = new Date(data.firstOccurenceTime).toString();
-  const startedString = formatTimeDistance(data.firstOccurenceTime);
+  const startedString = formatTimeDistance(data.firstOccurenceTime, now);
   const lastTooltip = new Date(data.lastOccurenceTime).toString();
-  const lastString = formatTimeDistance(data.lastOccurenceTime);
+  const lastString = formatTimeDistance(data.lastOccurenceTime, now);
   const avgPerDay = data.dayAvg;
 
   const flows = data.errors.filter((x) => !isNull(x));

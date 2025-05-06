@@ -1,4 +1,5 @@
 import { getFeatureFlagValue } from "../../../../featureFlags";
+import { useNow } from "../../../../hooks/useNow";
 import { AssetsSortingCriterion } from "../../../../redux/services/types";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isNumber } from "../../../../typeGuards/isNumber";
@@ -25,6 +26,7 @@ export const AssetEntry = ({
   sortingCriterion
 }: AssetEntryProps) => {
   const { backendInfo } = useConfigSelector();
+  const now = useNow();
   const isNewImpactScoreCalculationEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.IsNewImpactScoreCalculationEnabled
@@ -62,14 +64,14 @@ export const AssetEntry = ({
 
   const servicesTitle = entry.services.join(", ");
 
-  const timeDistanceString = formatTimeDistance(lastSeenDateTime, {
+  const timeDistanceString = formatTimeDistance(lastSeenDateTime, now, {
     format: "short",
     withDescriptiveWords: false
   }).replace(" ", "");
   const timeDistanceTitle = new Date(lastSeenDateTime).toString();
 
   const isNew = isString(entry.firstDetected)
-    ? Date.now() - new Date(entry.firstDetected).valueOf() < IS_NEW_TIME_LIMIT
+    ? now - new Date(entry.firstDetected).valueOf() < IS_NEW_TIME_LIMIT
     : false;
 
   return (

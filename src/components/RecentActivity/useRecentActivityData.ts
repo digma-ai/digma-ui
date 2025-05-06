@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useRecentActivityDispatch } from "../../containers/RecentActivity/hooks";
 import { usePrevious } from "../../hooks/usePrevious";
+import { logger } from "../../logging";
 import {
   digmaApi,
   useGetEnvironmentsQuery,
@@ -25,9 +26,13 @@ interface RecentActivityData {
 
 export const useRecentActivityData = (environmentId: string | undefined) => {
   const { backendInfo, userInfo } = useContext(ConfigContext);
+  const previousUserId = usePrevious(userInfo?.id);
   const previousBackendInfo = usePrevious(backendInfo);
+  const previousEnvironmentId = usePrevious(environmentId);
   const [toggleRecentIndicator] = useToggleRecentIndicatorMutation();
   const dispatch = useRecentActivityDispatch();
+
+  const isInitialized = userInfo?.id && backendInfo;
 
   const [data, setData] = useState<RecentActivityData>({
     environments: undefined,
@@ -36,24 +41,8 @@ export const useRecentActivityData = (environmentId: string | undefined) => {
     areEntriesLoading: false
   });
 
-  const { data: environments, isFetching: areEnvironmentsFetching } =
-    useGetEnvironmentsQuery(undefined, {
-      pollingInterval: REFRESH_INTERVAL,
-      skip: !userInfo?.id && backendInfo?.centralize
-    });
-
-  const { data: recentActivityData, isFetching: isRecentActivityDataFetching } =
-    useGetRecentActivityQuery(
-      {
-        environments: environmentId ? [environmentId] : []
-      },
-      {
-        skip: !environments || environments.length === 0 || !environmentId,
-        pollingInterval: REFRESH_INTERVAL
-      }
-    );
-
   const clearData = useCallback(() => {
+    logger.info("Clearing recent activity data");
     setData((prevData) => ({
       ...prevData,
       environments: undefined,
@@ -72,54 +61,69 @@ export const useRecentActivityData = (environmentId: string | undefined) => {
       backendInfo &&
       !areBackendInfosEqual(previousBackendInfo, backendInfo)
     ) {
+      logger.info("Backend info changed, clearing recent activity data");
+      logger.info("Previous Backend Info:", previousBackendInfo);
+      logger.info("Current Backend Info:", backendInfo);
       clearData();
     }
   }, [previousBackendInfo, backendInfo, clearData]);
 
   // Clear data on user change
   useEffect(() => {
-    clearData();
-  }, [userInfo?.id, clearData]);
+    if (previousUserId !== userInfo?.id) {
+      logger.info("User info changed, clearing recent activity data");
+      logger.info("User ID:", userInfo?.id);
+      clearData();
+    }
+  }, [previousUserId, userInfo?.id, clearData]);
 
   // Clear recent activity data on environment change
   useEffect(() => {
-    if (environmentId) {
+    if (previousEnvironmentId !== environmentId) {
+      logger.info("Environment ID changed, clearing recent activity data");
+      logger.info("Environment ID:", environmentId);
       setData((prevData) => ({
         ...prevData,
         entries: undefined
       }));
     }
-  }, [environmentId, dispatch]);
+  }, [previousEnvironmentId, environmentId, dispatch]);
+
+  const { data: environments, isFetching: areEnvironmentsFetching } =
+    useGetEnvironmentsQuery(undefined, {
+      pollingInterval: REFRESH_INTERVAL,
+      skip: !isInitialized
+    });
+
+  const { data: recentActivityData, isFetching: isRecentActivityDataFetching } =
+    useGetRecentActivityQuery(
+      {
+        environments: environmentId ? [environmentId] : []
+      },
+      {
+        skip:
+          !isInitialized ||
+          !environments ||
+          environments.length === 0 ||
+          !environmentId,
+        pollingInterval: REFRESH_INTERVAL,
+        refetchOnMountOrArgChange: true
+      }
+    );
 
   useEffect(() => {
-    setData((prevData) => ({
-      ...prevData,
-      areEnvironmentsLoading: areEnvironmentsFetching
-    }));
-  }, [areEnvironmentsFetching]);
-
-  useEffect(() => {
-    setData((prevData) => ({
-      ...prevData,
+    setData({
+      environments,
+      entries: recentActivityData?.entries,
+      areEnvironmentsLoading: areEnvironmentsFetching,
       areEntriesLoading: isRecentActivityDataFetching
-    }));
-  }, [isRecentActivityDataFetching]);
-
-  useEffect(() => {
-    if (environments) {
-      setData((prevData) => ({
-        ...prevData,
-        environments
-      }));
-    }
-  }, [environments]);
-
-  useEffect(() => {
-    setData((prevData) => ({
-      ...prevData,
-      entries: recentActivityData?.entries
-    }));
-  }, [recentActivityData]);
+    });
+  }, [
+    environments,
+    recentActivityData?.entries,
+    areEnvironmentsFetching,
+    isRecentActivityDataFetching
+  ]);
 
   return data;
 };

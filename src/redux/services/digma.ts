@@ -179,7 +179,7 @@ export const digmaApi = createApi({
         method: "POST",
         body: data
       }),
-      invalidatesTags: ["Environment", "RecentActivity"]
+      invalidatesTags: ["Environment"]
     }),
     deleteEnvironment: builder.mutation<
       DeleteEnvironmentResponse,

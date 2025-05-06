@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useNow } from "../../../../hooks/useNow";
 import { useGetUserProfileQuery } from "../../../../redux/services/digma";
 import * as s from "./styles";
 
@@ -19,17 +19,9 @@ const getGreetingText = (dateTime: number) => {
 };
 
 export const Greeting = () => {
+  const now = useNow(REFRESH_INTERVAL);
   const { data: userProfile } = useGetUserProfileQuery();
-  const [currentDateTime, setCurrentDateTime] = useState(Date.now());
-  const greetingText = getGreetingText(currentDateTime);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentDateTime(Date.now());
-    }, REFRESH_INTERVAL);
-
-    return () => clearInterval(intervalId);
-  }, []);
+  const greetingText = getGreetingText(now);
 
   if (!userProfile) {
     return null;

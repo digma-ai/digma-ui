@@ -4,6 +4,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
+import { useNow } from "../../hooks/useNow";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { useDeleteEnvironmentMutation } from "../../redux/services/digma";
@@ -16,7 +17,6 @@ import { isBoolean } from "../../typeGuards/isBoolean";
 import { ScopeChangeEvent } from "../../types";
 import { changeScope } from "../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
-import { groupBy } from "../../utils/groupBy";
 import { ConfigContext } from "../common/App/ConfigContext";
 import type { Scope } from "../common/App/types";
 import { Overlay } from "../common/Overlay";
@@ -32,7 +32,10 @@ import { getEnvironmentTabId } from "./EnvironmentPanel/EnvironmentTab/getEnviro
 import type { ViewMode } from "./EnvironmentPanel/types";
 import { LiveView } from "./LiveView";
 import { NoData } from "./NoData";
-import { MAX_DISTANCE, RecentActivityTable } from "./RecentActivityTable";
+import {
+  IS_RECENT_TIME_LIMIT,
+  RecentActivityTable
+} from "./RecentActivityTable";
 import { RecentActivityHeader } from "./RecentActivityToolbar";
 import { WelcomeScreen } from "./WelcomeScreen";
 import { actions } from "./actions";
@@ -101,6 +104,7 @@ export const RecentActivity = () => {
   const previousUserRegistrationEmail = usePrevious(
     config.userRegistrationEmail
   );
+  const now = useNow();
 
   const [viewMode, setViewMode] = useState<ViewMode>("table");
   const { liveData, closeLiveView } = useLiveData();
@@ -136,15 +140,8 @@ export const RecentActivity = () => {
     [recentActivityData.entries, persistedEnvironmentClearDataTimestamps]
   );
 
-  const environmentActivities = useMemo(
-    () => groupBy(filteredEntries, (x) => x.environment),
-    [filteredEntries]
-  );
-
-  const environments: ExtendedEnvironment[] = useMemo(() => {
-    const now = new Date();
-
-    return (
+  const extendedEnvironments: ExtendedEnvironment[] = useMemo(
+    () =>
       recentActivityData.environments?.map((environment) => ({
         ...environment,
         additionToConfigResult: null,
@@ -152,22 +149,22 @@ export const RecentActivity = () => {
         isOrgDigmaSetupFinished: false,
         hasRecentActivity: Boolean(
           environment.lastActive &&
-            now.valueOf() - new Date(environment.lastActive).valueOf() <=
-              MAX_DISTANCE
+            now - new Date(environment.lastActive).valueOf() <=
+              IS_RECENT_TIME_LIMIT
         )
-      })) ?? []
-    );
-  }, [recentActivityData.environments]);
+      })) ?? [],
+    [recentActivityData.environments, now]
+  );
 
   useEffect(() => {
-    const isAnyRecentActivity = environments.some(
+    const isAnyRecentActivity = extendedEnvironments.some(
       (environment) => environment.hasRecentActivity
     );
 
     void toggleRecentIndicator({
       status: isAnyRecentActivity
     });
-  }, [environments, toggleRecentIndicator]);
+  }, [extendedEnvironments, toggleRecentIndicator]);
 
   useEffect(() => {
     if (selectedEnvironment?.id) {
@@ -187,7 +184,7 @@ export const RecentActivity = () => {
   useEffect(() => {
     if (
       selectedEnvironment &&
-      environmentActivities[selectedEnvironment?.id] &&
+      filteredEntries &&
       environmentInstructionsVisibility.isOpen &&
       !environmentInstructionsVisibility.keepOpen
     ) {
@@ -196,11 +193,7 @@ export const RecentActivity = () => {
         keepOpen: false
       });
     }
-  }, [
-    environmentActivities,
-    environmentInstructionsVisibility,
-    selectedEnvironment
-  ]);
+  }, [filteredEntries, environmentInstructionsVisibility, selectedEnvironment]);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -238,7 +231,7 @@ export const RecentActivity = () => {
 
   useEffect(() => {
     const currentEnvironmentId = config.environment?.id;
-    const environmentToSelect = environments.find(
+    const environmentToSelect = extendedEnvironments.find(
       (x) => x.id === currentEnvironmentId
     );
 
@@ -268,20 +261,20 @@ export const RecentActivity = () => {
         }
       }
 
-      if (environments.length > 0) {
+      if (extendedEnvironments.length > 0) {
         changeScope({
           span: config.scope?.span
             ? {
                 spanCodeObjectId: config.scope.span.spanCodeObjectId
               }
             : null,
-          environmentId: environments[0].id
+          environmentId: extendedEnvironments[0].id
         });
       }
     }
   }, [
     config.environment?.id,
-    environments,
+    extendedEnvironments,
     config.scope?.span,
     environmentInstructionsVisibility.newlyCreatedEnvironmentId,
     environmentToClearData,
@@ -305,7 +298,7 @@ export const RecentActivity = () => {
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
     changeSelectedEnvironment(
       config.scope,
-      config.environments,
+      extendedEnvironments,
       environment.id
     );
   };
@@ -464,10 +457,7 @@ export const RecentActivity = () => {
       );
     }
 
-    if (
-      !selectedEnvironment ||
-      !environmentActivities[selectedEnvironment.id]
-    ) {
+    if (!selectedEnvironment || filteredEntries.length === 0) {
       return (
         <>
           <s.NoDataRecentActivityContainerBackground>
@@ -499,7 +489,7 @@ export const RecentActivity = () => {
         />
         <RecentActivityTable
           viewMode={viewMode}
-          data={environmentActivities[selectedEnvironment.id]}
+          data={filteredEntries}
           onSpanLinkClick={handleSpanLinkClick}
           onTraceButtonClick={handleTraceButtonClick}
           isTraceButtonVisible={config.isJaegerEnabled}
@@ -519,9 +509,13 @@ export const RecentActivity = () => {
 
   const handleCreateEnvironmentWizardClose = (id: string | null) => {
     if (id) {
-      const newEnv = environments.find((x) => x.id === id);
+      const newEnv = extendedEnvironments.find((x) => x.id === id);
       if (newEnv) {
-        changeSelectedEnvironment(config.scope, config.environments, newEnv.id);
+        changeSelectedEnvironment(
+          config.scope,
+          extendedEnvironments,
+          newEnv.id
+        );
         setEnvironmentInstructionsVisibility({
           isOpen: true,
           newlyCreatedEnvironmentId: newEnv.id,
@@ -561,7 +555,7 @@ export const RecentActivity = () => {
           <s.RecentActivityContainer id={RECENT_ACTIVITY_CONTAINER_ID}>
             <s.EnvironmentPanelContainer ref={observe}>
               <EnvironmentPanel
-                environments={environments}
+                environments={extendedEnvironments}
                 selectedEnvironment={selectedEnvironment}
                 onEnvironmentSelect={handleEnvironmentSelect}
                 onEnvironmentAdd={handleEnvironmentAdd}
