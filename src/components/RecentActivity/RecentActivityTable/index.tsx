@@ -4,7 +4,7 @@ import {
   getCoreRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useNow } from "../../../hooks/useNow";
 import type {
@@ -13,12 +13,12 @@ import type {
   SlimAggregatedInsightInfo,
   SlimEntrySpanData
 } from "../../../redux/services/types";
-import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { FeatureFlag } from "../../../types";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../utils/getInsightTypeOrderPriority";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { NewButton } from "../../common/NewButton";
 import { Tag } from "../../common/Tag";
 import { Tooltip } from "../../common/Tooltip";
@@ -30,7 +30,7 @@ import * as s from "./styles";
 import type { ColumnMeta, RecentActivityTableProps } from "./types";
 
 const columnHelper = createColumnHelper<RecentActivityEntry>();
-export const IS_RECENT_TIME_LIMIT = 10 * 60 * 1000; // in milliseconds
+export const IS_RECENT_TIME_LIMIT = 30 * 1000; // in milliseconds
 
 const isRecent = (entry: RecentActivityEntry, now: number): boolean =>
   now - new Date(entry.latestTraceTimestamp).valueOf() <= IS_RECENT_TIME_LIMIT;
@@ -111,7 +111,7 @@ export const RecentActivityTable = ({
   headerHeight
 }: RecentActivityTableProps) => {
   const now = useNow();
-  const { backendInfo } = useConfigSelector();
+  const { backendInfo } = useContext(ConfigContext);
   const handleSpanLinkClick = (span: SlimEntrySpanData) => () => {
     onSpanLinkClick(span);
   };

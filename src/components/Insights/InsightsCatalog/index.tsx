@@ -187,7 +187,8 @@ export const InsightsCatalog = ({
     { spanCodeObjectId: scopeSpanCodeObjectId ?? "" },
     {
       skip: !areSpanEnvironmentsEnabled || !scopeSpanCodeObjectId,
-      pollingInterval: REFRESH_INTERVAL
+      pollingInterval: REFRESH_INTERVAL,
+      refetchOnReconnect: true
     }
   );
 

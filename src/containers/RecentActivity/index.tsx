@@ -24,6 +24,13 @@ window.addEventListener("error", (e) => {
   handleUncaughtError(APP_ID, e);
 });
 
+window.addEventListener("online", (event) => {
+  // eslint-disable-next-line no-console
+  console.log("You are now connected to the network.");
+  // eslint-disable-next-line no-console
+  console.log("Event: ", event);
+});
+
 const rootElement = document.getElementById("root");
 
 if (rootElement) {

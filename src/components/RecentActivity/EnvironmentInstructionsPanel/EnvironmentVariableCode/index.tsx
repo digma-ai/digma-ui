@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import { getFeatureFlagValue } from "../../../../featureFlags";
-import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isString } from "../../../../typeGuards/isString";
 import { FeatureFlag } from "../../../../types";
 import { intersperse } from "../../../../utils/intersperse";
+import { ConfigContext } from "../../../common/App/ConfigContext";
 import { HighlightedCode } from "../styles";
 import type { DigmaAttribute } from "./types";
 
@@ -90,7 +90,7 @@ const renderEnvironmentVariables = (
 
 export const EnvironmentVariableCode = () => {
   const { environment, backendInfo, userInfo, runConfig, isMicrometerProject } =
-    useConfigSelector();
+    useContext(ConfigContext);
   const isMicrometerProjectValue = isMicrometerProject ?? false;
   const userId = userInfo?.id;
 

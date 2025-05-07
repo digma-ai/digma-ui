@@ -166,7 +166,7 @@ export const digmaApi = createApi({
       }),
       invalidatesTags: ["Insight"]
     }),
-    getEnvironments: builder.query<GetEnvironmentsResponse, void>({
+    getEnvironments: builder.query<GetEnvironmentsResponse, string | void>({
       query: () => "Environments",
       providesTags: ["Environment"]
     }),

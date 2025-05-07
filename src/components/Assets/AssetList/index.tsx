@@ -154,7 +154,8 @@ export const AssetList = ({
 
   const { data } = useGetAssetsQuery(payload, {
     skip: !environmentId,
-    pollingInterval: REFRESH_INTERVAL
+    pollingInterval: REFRESH_INTERVAL,
+    refetchOnReconnect: true
   });
 
   const filteredCount = data?.filteredCount ?? 0;
