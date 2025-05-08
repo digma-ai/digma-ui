@@ -17,7 +17,7 @@ export const getTagType = (score: number): TagType => {
   return "highSeverity";
 };
 
-const renderScoreTagTitle = (scoreParams: Record<string, string> | null) => {
+const renderScoreTagTitle = (scoreParams: Record<string, number> | null) => {
   if (!scoreParams || Object.keys(scoreParams).length === 0) {
     return null;
   }

@@ -35,7 +35,7 @@ export const IS_RECENT_TIME_LIMIT = isNumber(
   window.recentActivityExpirationLimit
 )
   ? window.recentActivityExpirationLimit
-  : 30 * 1000; // in milliseconds
+  : 10 * 60 * 1000; // in milliseconds
 
 const isRecent = (entry: RecentActivityEntry, now: number): boolean =>
   now - new Date(entry.latestTraceTimestamp).valueOf() <= IS_RECENT_TIME_LIMIT;

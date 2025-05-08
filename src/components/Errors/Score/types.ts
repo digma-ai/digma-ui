@@ -1,5 +1,5 @@
-import type { ErrorScoreInfo } from "../types";
+import type { ScoreInfo } from "../../../redux/services/types";
 
 export interface ScoreProps {
-  data: ErrorScoreInfo;
+  data: ScoreInfo;
 }

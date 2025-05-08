@@ -1,25 +1,19 @@
 import { createSlice } from "zustand-slices";
-import type { EndpointFilterData } from "../../components/Errors/GlobalErrorsList/GlobalErrorsFilters/types";
 import type {
-  GlobalErrorData,
-  SetGlobalErrorsDataPayload
-} from "../../components/Errors/GlobalErrorsList/types";
+  EndpointFilterData,
+  ErrorCriticality,
+  ErrorHandlingType,
+  ErrorListItem,
+  GetGlobalErrorsResponse
+} from "../../redux/services/types";
+import { GlobalErrorsSortingCriterion } from "../../redux/services/types";
 
 export const PAGE_SIZE = 10;
-
-export enum GlobalErrorsSortingCriterion {
-  Criticality = "Criticality",
-  Latest = "Latest"
-}
 
 export enum ViewMode {
   All,
   OnlyDismissed
 }
-
-export type ErrorFilter = "Services" | "Endpoints" | "ErrorTypes";
-export type ErrorHandlingType = "Handled" | "Unhandled";
-export type ErrorCriticality = "High" | "Medium" | "Low";
 
 export interface GlobalErrorsFiltersState {
   services: string[] | null;
@@ -35,7 +29,7 @@ export interface GlobalErrorsSelectedFiltersState {
 }
 
 export interface ErrorsState {
-  globalErrorsList: GlobalErrorData[] | null;
+  globalErrorsList: ErrorListItem[] | null;
   globalErrorsTotalCount: number;
   areGlobalErrorsLoading: boolean;
   globalErrorsSearch: string;
@@ -91,7 +85,7 @@ export const errorsSlice = createSlice({
   name: "errors",
   value: initialState,
   actions: {
-    setGlobalErrorsData: (data: SetGlobalErrorsDataPayload | null) =>
+    setGlobalErrorsData: (data: GetGlobalErrorsResponse | null) =>
       set({
         globalErrorsList: data?.list ?? [],
         globalErrorsTotalCount: data?.totalCount ?? 0

@@ -1,16 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
-import type { DataFetcherConfiguration } from "../../../hooks/useFetchData";
-import { useFetchData } from "../../../hooks/useFetchData";
 import { useMount } from "../../../hooks/useMount";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { useGetGlobalErrorsQuery } from "../../../redux/services/digma";
 import {
   GlobalErrorsSortingCriterion,
-  PAGE_SIZE,
-  ViewMode
-} from "../../../store/errors/errorsSlice";
+  type GetGlobalErrorsPayload
+} from "../../../redux/services/types";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { PAGE_SIZE, ViewMode } from "../../../store/errors/errorsSlice";
 import { useErrorsSelector } from "../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../store/useStore";
 import { isNumber } from "../../../typeGuards/isNumber";
@@ -30,17 +28,13 @@ import { Pagination } from "../../common/v3/Pagination";
 import { useHistory } from "../../Main/useHistory";
 import { MenuList } from "../../Navigation/common/MenuList";
 import { Popup } from "../../Navigation/common/Popup";
-import { actions } from "../actions";
 import { EmptyState } from "../EmptyState";
 import { NewErrorCard } from "../NewErrorCard";
 import { trackingEvents } from "../tracking";
 import { GlobalErrorsFilters } from "./GlobalErrorsFilters";
 import * as s from "./styles";
-import type {
-  GetGlobalErrorsDataPayload,
-  SetGlobalErrorsDataPayload
-} from "./types";
 
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 const PIN_UNPIN_ANIMATION_DURATION = 250;
 
 export const GlobalErrorsList = () => {
@@ -109,18 +103,7 @@ export const GlobalErrorsList = () => {
     })
   );
 
-  const dataFetcherConfiguration: DataFetcherConfiguration = useMemo(
-    () => ({
-      requestAction: actions.GET_GLOBAL_ERRORS_DATA,
-      responseAction: actions.SET_GLOBAL_ERRORS_DATA,
-      refreshWithInterval: true,
-      refreshOnPayloadChange: true,
-      isEnabled: Boolean(environmentId)
-    }),
-    [environmentId]
-  );
-
-  const payload: GetGlobalErrorsDataPayload = useMemo(
+  const payload: GetGlobalErrorsPayload = useMemo(
     () => ({
       environment: environmentId ?? "",
       searchCriteria: search,
@@ -160,33 +143,16 @@ export const GlobalErrorsList = () => {
     ]
   );
 
-  const { data, getData } = useFetchData<
-    GetGlobalErrorsDataPayload,
-    SetGlobalErrorsDataPayload
-  >(dataFetcherConfiguration, payload);
+  const { data, refetch } = useGetGlobalErrorsQuery(payload, {
+    skip: !environmentId,
+    pollingInterval: REFRESH_INTERVAL
+  });
 
   const isDismissalViewModeButtonVisible =
     isDismissEnabled &&
     data &&
     !isUndefined(data.dismissedCount) &&
     data.dismissedCount > 0;
-
-  // Refresh data after pin/unpin actions
-  useEffect(() => {
-    dispatcher.addActionListener(actions.SET_UNDISMISS_ERROR_RESULT, getData);
-    dispatcher.addActionListener(actions.SET_DISMISS_ERROR_RESULT, getData);
-
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_UNDISMISS_ERROR_RESULT,
-        getData
-      );
-      dispatcher.removeActionListener(
-        actions.SET_DISMISS_ERROR_RESULT,
-        getData
-      );
-    };
-  }, [getData]);
 
   // Cleanup errors store slice on unmount
   useMount(() => {
@@ -331,11 +297,11 @@ export const GlobalErrorsList = () => {
 
   const handlePinStatusChange = (errorId: string) => {
     setLatestPinChangedId(errorId);
-    getData();
+    void refetch();
   };
 
   const handleDismissalStatusChange = () => {
-    getData();
+    void refetch();
   };
 
   const areAnyFiltersApplied =

@@ -1,4 +1,4 @@
-import type { Error } from "../types";
+import type { Error } from "../../../redux/services/types";
 
 export const mockedError: Error = {
   uid: "1",
@@ -6,8 +6,8 @@ export const mockedError: Error = {
   scoreInfo: {
     score: 100,
     scoreParams: {
-      param1: "value1",
-      param2: "value2"
+      param1: 1,
+      param2: 2
     }
   },
   codeObjectId: "codeObjectId1",

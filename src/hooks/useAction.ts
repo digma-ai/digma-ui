@@ -5,6 +5,7 @@ interface Identifier {
   id: string;
 }
 
+/** @deprecated */
 export const useAction = <
   TPayload extends Identifier,
   TResponse extends Identifier

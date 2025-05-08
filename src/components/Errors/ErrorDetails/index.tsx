@@ -1,35 +1,18 @@
-import { useMemo } from "react";
-import type { DataFetcherConfiguration } from "../../../hooks/useFetchData";
-import { useFetchData } from "../../../hooks/useFetchData";
-import { actions } from "../actions";
+import { useGetErrorQuery } from "../../../redux/services/digma";
 import { EmptyState } from "../EmptyState";
 import { ErrorDetailsCardContent } from "./ErrorDetailsCardContent";
 import { ErrorDetailsCardHeader } from "./ErrorDetailsCardHeader";
 import * as s from "./styles";
-import type {
-  ErrorDetailsProps,
-  GetErrorDetailsPayload,
-  SetErrorDetailsPayload
-} from "./types";
+import type { ErrorDetailsProps } from "./types";
 
-const dataFetcherConfiguration: DataFetcherConfiguration = {
-  requestAction: actions.GET_ERROR_DETAILS,
-  responseAction: actions.SET_ERROR_DETAILS,
-  refreshWithInterval: true,
-  refreshOnPayloadChange: true
-};
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 export const ErrorDetails = ({ id, onGoToAllErrors }: ErrorDetailsProps) => {
-  const payload = useMemo(
-    () => ({
-      errorId: id
-    }),
-    [id]
-  );
-
-  const { data } = useFetchData<GetErrorDetailsPayload, SetErrorDetailsPayload>(
-    dataFetcherConfiguration,
-    payload
+  const { data } = useGetErrorQuery(
+    { id },
+    {
+      pollingInterval: REFRESH_INTERVAL
+    }
   );
 
   if (!data) {
@@ -44,10 +27,8 @@ export const ErrorDetails = ({ id, onGoToAllErrors }: ErrorDetailsProps) => {
   return (
     <s.Container>
       <s.ErrorDetailsCard
-        header={
-          <ErrorDetailsCardHeader onGoBack={handleGoBack} data={data.details} />
-        }
-        content={<ErrorDetailsCardContent id={id} data={data.details} />}
+        header={<ErrorDetailsCardHeader onGoBack={handleGoBack} data={data} />}
+        content={<ErrorDetailsCardContent id={id} data={data} />}
       />
     </s.Container>
   );

@@ -1,46 +1,43 @@
 import { useMemo } from "react";
-import type { DataFetcherConfiguration } from "../../../hooks/useFetchData";
-import { useFetchData } from "../../../hooks/useFetchData";
+import { useGetErrorsQuery } from "../../../redux/services/digma";
+import type { GetErrorsPayload } from "../../../redux/services/types";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { EmptyState } from "../EmptyState";
 import { ErrorCard } from "../ErrorCard";
-import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
-import type { GetErrorsDataPayload, SetErrorsDataPayload } from "../types";
 import * as s from "./styles";
 import type { ErrorsListProps } from "./types";
 
-const dataFetcherConfiguration: DataFetcherConfiguration = {
-  requestAction: actions.GET_ERRORS_DATA,
-  responseAction: actions.SET_ERRORS_DATA,
-  refreshWithInterval: true,
-  refreshOnPayloadChange: true
-};
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 export const ErrorsList = ({
   onErrorSelect,
   spanCodeObjectId,
   methodId
 }: ErrorsListProps) => {
-  const payload = useMemo(
+  const { environment } = useConfigSelector();
+
+  const payload: GetErrorsPayload = useMemo(
     () => ({
-      spanCodeObjectId,
-      methodId
+      codeObjectId: [spanCodeObjectId, methodId].filter(isString),
+      environment: environment?.id ?? ""
     }),
-    [spanCodeObjectId, methodId]
+    [spanCodeObjectId, methodId, environment?.id]
   );
 
-  const { data } = useFetchData<GetErrorsDataPayload, SetErrorsDataPayload>(
-    dataFetcherConfiguration,
-    payload
-  );
+  const { data } = useGetErrorsQuery(payload, {
+    pollingInterval: REFRESH_INTERVAL,
+    skip: !environment?.id
+  });
 
   if (!data) {
     // TODO: replace with skeletons
     return <EmptyState preset={"loading"} />;
   }
 
-  if (data.errors.length === 0) {
+  if (data.length === 0) {
     return <EmptyState preset={"noData"} />;
   }
 
@@ -51,7 +48,7 @@ export const ErrorsList = ({
 
   return (
     <s.Container>
-      {data.errors.map((x) => (
+      {data.map((x) => (
         <ErrorCard key={x.uid} data={x} onClick={handleErrorCardClick} />
       ))}
     </s.Container>

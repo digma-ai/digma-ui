@@ -2,8 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { GlobalErrorsList } from ".";
 import { ViewMode } from "../../../store/errors/errorsSlice";
 import { useStore } from "../../../store/useStore";
-import { actions } from "../actions";
-import { DefaultErrorList, DismissedErrorList } from "./mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof GlobalErrorsList> = {
@@ -24,13 +22,6 @@ export const Default: Story = {
   play: () => {
     const { setEnvironment } = useStore.getState();
     setEnvironment({ id: "test-env-id", name: "test", type: "Public" });
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_GLOBAL_ERRORS_DATA,
-        payload: DefaultErrorList
-      });
-    }, 100);
   }
 };
 
@@ -39,13 +30,5 @@ export const Dismissed: Story = {
     const { setEnvironment, setGlobalErrorsViewMode } = useStore.getState();
     setEnvironment({ id: "test-env-id", name: "test", type: "Public" });
     setGlobalErrorsViewMode(ViewMode.OnlyDismissed);
-
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_GLOBAL_ERRORS_DATA,
-        payload: DismissedErrorList
-      });
-    }, 100);
   }
 };

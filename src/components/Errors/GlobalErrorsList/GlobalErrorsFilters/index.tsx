@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { getFeatureFlagValue } from "../../../../featureFlags";
 import { usePrevious } from "../../../../hooks/usePrevious";
-import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import type {
   ErrorCriticality,
   ErrorHandlingType
-} from "../../../../store/errors/errorsSlice";
+} from "../../../../redux/services/types";
+import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { useErrorsSelector } from "../../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../../store/useStore";
 import { FeatureFlag } from "../../../../types";
@@ -19,15 +19,14 @@ import { EndpointIcon } from "../../../common/icons/EndpointIcon";
 import type { IconProps } from "../../../common/icons/types";
 import type { SelectItem } from "../../../common/v3/Select/types";
 import { trackingEvents } from "../../tracking";
-import { getFiltersOptions } from "./getFiltersOptions";
 import * as s from "./styles";
+import { useFiltersOptions } from "./useFiltersOptions";
 
 const getSelectPlaceholder = (options: SelectItem[], placeholder: string) =>
   options.filter((x) => x.selected).length > 0 ? placeholder : "All";
 
 export const GlobalErrorsFilters = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const previousIsPopupOpen = usePrevious(isPopupOpen);
   const {
     environment,
     backendInfo,
@@ -51,7 +50,6 @@ export const GlobalErrorsFilters = () => {
   const previousEnvironmentId = usePrevious(environmentId);
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
-  const [areFilterOptionsLoaded, setAreFiltersOptionsLoaded] = useState(false);
   const [selectedServices, setSelectedServices] = useState<string[]>(
     globallySelectedServices ?? []
   );
@@ -68,46 +66,20 @@ export const GlobalErrorsFilters = () => {
     ErrorHandlingType[]
   >(globalErrorsSelectedFilters?.handlingTypes ?? []);
 
-  const getOptions = useCallback(async () => {
-    if (!environmentId || !isPopupOpen) {
-      return;
-    }
-
-    const filterOptions = await getFiltersOptions(
+  const isFilterOptionsFetchingEnabled = Boolean(environmentId && isPopupOpen);
+  const { data: filtersOptions, isLoaded: areFiltersOptionsLoaded } =
+    useFiltersOptions(
       environmentId,
       selectedServices,
-      selectedEndpoints
+      selectedEndpoints,
+      isFilterOptionsFetchingEnabled
     );
 
-    setGlobalErrorsFilters(filterOptions);
-  }, [
-    isPopupOpen,
-    environmentId,
-    selectedServices,
-    selectedEndpoints,
-    setGlobalErrorsFilters
-  ]);
-
-  // Get filter options on popup open
   useEffect(() => {
-    if (!previousIsPopupOpen && isPopupOpen) {
-      void getOptions().then(() => {
-        setAreFiltersOptionsLoaded(true);
-      });
+    if (filtersOptions) {
+      setGlobalErrorsFilters(filtersOptions);
     }
-  }, [previousIsPopupOpen, isPopupOpen, getOptions]);
-
-  // Get filter options on selected services/endpoints change
-  useEffect(() => {
-    void getOptions();
-  }, [getOptions]);
-
-  // Clear filter options loaded state on popup close
-  useEffect(() => {
-    if (!isPopupOpen && previousIsPopupOpen) {
-      setAreFiltersOptionsLoaded(false);
-    }
-  }, [isPopupOpen, previousIsPopupOpen, setGlobalErrorsFilters]);
+  }, [filtersOptions, setGlobalErrorsFilters]);
 
   useEffect(() => {
     setSelectedServices(globallySelectedServices ?? []);
@@ -316,7 +288,7 @@ export const GlobalErrorsFilters = () => {
             </s.SelectItemIconContainer>
           )}
           disabled={
-            servicesFilterOptions?.length === 0 || !areFilterOptionsLoaded
+            servicesFilterOptions?.length === 0 || !areFiltersOptionsLoaded
           }
         />
       )
@@ -340,7 +312,7 @@ export const GlobalErrorsFilters = () => {
             </s.SelectItemIconContainer>
           )}
           disabled={
-            endpointsFilterOptions?.length === 0 || !areFilterOptionsLoaded
+            endpointsFilterOptions?.length === 0 || !areFiltersOptionsLoaded
           }
         />
       )
@@ -363,7 +335,7 @@ export const GlobalErrorsFilters = () => {
             </s.SelectItemIconContainer>
           )}
           disabled={
-            errorTypesFilterOptions?.length === 0 || !areFilterOptionsLoaded
+            errorTypesFilterOptions?.length === 0 || !areFiltersOptionsLoaded
           }
         />
       )
@@ -387,7 +359,7 @@ export const GlobalErrorsFilters = () => {
                     <WarningTriangleIcon {...props} />
                   </s.SelectItemIconContainer>
                 )}
-                disabled={!areFilterOptionsLoaded}
+                disabled={!areFiltersOptionsLoaded}
               />
             )
           },
@@ -404,7 +376,7 @@ export const GlobalErrorsFilters = () => {
                     <EyeIcon {...props} />
                   </s.SelectItemIconContainer>
                 )}
-                disabled={!areFilterOptionsLoaded}
+                disabled={!areFiltersOptionsLoaded}
               />
             )
           }

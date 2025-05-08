@@ -1,6 +1,6 @@
-import type { GlobalErrorData } from "../GlobalErrorsList/types";
+import type { ErrorListItem } from "../../../redux/services/types";
 
-export const mockedGlobalErrorData: GlobalErrorData = {
+export const mockedGlobalErrorData: ErrorListItem = {
   id: "034b64a4-83de-11ef-bc2a-0242ac160003",
   errorType: "java.util.InvalidPropertiesFormatException",
   fromDisplayName: "Check",
@@ -37,5 +37,6 @@ export const mockedGlobalErrorData: GlobalErrorData = {
       Recent: 10,
       Unhandled: 50
     }
-  }
+  },
+  unexpected: false
 };

@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { ErrorDetails } from ".";
 import { actions } from "../actions";
-import { mockedErrorDetails } from "./mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof ErrorDetails> = {
@@ -20,13 +19,6 @@ type Story = StoryObj<typeof ErrorDetails>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
   play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_ERROR_DETAILS,
-        payload: mockedErrorDetails
-      });
-    }, 1000);
     window.setTimeout(() => {
       window.postMessage({
         type: "digma",
