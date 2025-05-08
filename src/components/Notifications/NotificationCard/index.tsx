@@ -1,5 +1,6 @@
 import type { DefaultTheme } from "styled-components";
 import { useTheme } from "styled-components";
+import { useNow } from "../../../hooks/useNow";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { InsightScope } from "../../Insights/types";
@@ -80,6 +81,7 @@ export const NotificationCard = ({
 }: NotificationCardProps) => {
   const theme = useTheme();
   const badgeStyles = getBadgeStyles(theme);
+  const now = useNow();
 
   const handleLinkClick = () => {
     const codeObjectData = getCodeObjectData(data.data);
@@ -92,7 +94,7 @@ export const NotificationCard = ({
 
   const title = data.title;
   const linkName = getLinkName(data.data);
-  const timeDistanceString = formatTimeDistance(data.timestamp, {
+  const timeDistanceString = formatTimeDistance(data.timestamp, now, {
     format: "medium"
   });
 

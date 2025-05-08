@@ -115,15 +115,16 @@ export const getTimeDistance = (
 
 export const formatTimeDistance = (
   dateTime: string,
+  now: number,
   options?: {
     format?: "short" | "medium" | "long";
     withDescriptiveWords?: boolean;
   }
 ) => {
-  const now = new Date();
+  const currentDate = new Date(now);
   const dateTimeToCompare = new Date(dateTime).valueOf();
 
-  const distance = getTimeDistance(now.toISOString(), dateTime);
+  const distance = getTimeDistance(currentDate.toISOString(), dateTime);
 
   if (!distance) {
     return "";
@@ -143,11 +144,11 @@ export const formatTimeDistance = (
   const distanceString = distance ? `${distance.value} ${unitString}` : "";
 
   if (withDescriptiveWords) {
-    if (dateTimeToCompare > now.valueOf()) {
+    if (dateTimeToCompare > now) {
       return `in ${distanceString}`;
     }
 
-    if (dateTimeToCompare < now.valueOf()) {
+    if (dateTimeToCompare < now) {
       return `${distanceString} ago`;
     }
 

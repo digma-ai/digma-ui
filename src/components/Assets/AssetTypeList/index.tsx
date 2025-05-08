@@ -56,7 +56,8 @@ export const AssetTypeList = ({
 
   const { data } = useGetAssetsCategoriesQuery(payload, {
     skip: !environmentId,
-    pollingInterval: REFRESH_INTERVAL
+    pollingInterval: REFRESH_INTERVAL,
+    refetchOnReconnect: true
   });
 
   const previousData = usePrevious(data);

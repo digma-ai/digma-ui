@@ -20,4 +20,5 @@ const FilterButtonComponent = (
     </Tooltip>
   </div>
 );
+
 export const FilterButton = forwardRef(FilterButtonComponent);

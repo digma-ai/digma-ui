@@ -54,6 +54,7 @@ export const appData: AppData = {
   // },
   ["recent-activity"]: {
     entry: path.resolve(__dirname, "./src/containers/RecentActivity/index.tsx"),
+    environmentVariables: ["recentActivityExpirationLimit"],
     platforms: ["jetbrains"]
   },
   troubleshooting: {

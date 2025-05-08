@@ -4,7 +4,7 @@ import {
   getCoreRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import type {
   Duration,
@@ -12,12 +12,13 @@ import type {
   SlimAggregatedInsightInfo,
   SlimEntrySpanData
 } from "../../../redux/services/types";
-import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { FeatureFlag } from "../../../types";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../utils/getInsightTypeOrderPriority";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { NewButton } from "../../common/NewButton";
 import { Tag } from "../../common/Tag";
 import { Tooltip } from "../../common/Tooltip";
@@ -29,15 +30,15 @@ import * as s from "./styles";
 import type { ColumnMeta, RecentActivityTableProps } from "./types";
 
 const columnHelper = createColumnHelper<RecentActivityEntry>();
-export const MAX_DISTANCE = 10 * 60 * 1000; // in milliseconds
 
-const isRecent = (entry: RecentActivityEntry): boolean => {
-  const now = new Date();
-  return (
-    now.valueOf() - new Date(entry.latestTraceTimestamp).valueOf() <=
-    MAX_DISTANCE
-  );
-};
+export const IS_RECENT_TIME_LIMIT = isNumber(
+  window.recentActivityExpirationLimit
+)
+  ? window.recentActivityExpirationLimit
+  : 10 * 60 * 1000; // in milliseconds
+
+const isRecent = (entry: RecentActivityEntry, now: number): boolean =>
+  now - new Date(entry.latestTraceTimestamp).valueOf() <= IS_RECENT_TIME_LIMIT;
 
 const renderBadge = () => (
   <s.BadgeContainer>
@@ -45,9 +46,13 @@ const renderBadge = () => (
   </s.BadgeContainer>
 );
 
-const renderTimeDistance = (timestamp: string, viewMode: ViewMode) => {
+const renderTimeDistance = (
+  timestamp: string,
+  now: number,
+  viewMode: ViewMode
+) => {
   const title = new Date(timestamp).toString();
-  const timeDistanceString = formatTimeDistance(timestamp, {
+  const timeDistanceString = formatTimeDistance(timestamp, now, {
     format: "medium",
     withDescriptiveWords: false
   });
@@ -108,9 +113,10 @@ export const RecentActivityTable = ({
   onTraceButtonClick,
   viewMode,
   isTraceButtonVisible,
-  headerHeight
+  headerHeight,
+  now
 }: RecentActivityTableProps) => {
-  const { backendInfo } = useConfigSelector();
+  const { backendInfo } = useContext(ConfigContext);
   const handleSpanLinkClick = (span: SlimEntrySpanData) => () => {
     onSpanLinkClick(span);
   };
@@ -166,7 +172,7 @@ export const RecentActivityTable = ({
         const entry = info.getValue();
         return (
           <>
-            {isRecent(entry) && renderBadge()}
+            {isRecent(entry, now) && renderBadge()}
             {renderSpanLinks(entry)}
           </>
         );
@@ -195,7 +201,7 @@ export const RecentActivityTable = ({
         width: "10%",
         minWidth: 100
       },
-      cell: (info) => <>{renderTimeDistance(info.getValue(), viewMode)}</>
+      cell: (info) => <>{renderTimeDistance(info.getValue(), now, viewMode)}</>
     }),
     columnHelper.accessor("latestTraceDuration", {
       header: "Duration",
@@ -274,7 +280,7 @@ export const RecentActivityTable = ({
       </s.TableHead>
       <s.TableBody>
         {table.getRowModel().rows.map((row) => (
-          <s.TableBodyRow key={row.id} $isRecent={isRecent(row.original)}>
+          <s.TableBodyRow key={row.id} $isRecent={isRecent(row.original, now)}>
             {row.getVisibleCells().map((cell) => {
               const meta = cell.column.columnDef.meta as ColumnMeta;
 
@@ -298,9 +304,9 @@ export const RecentActivityTable = ({
     <s.ListContainer>
       <s.List>
         {sortedData.map((entry, i) => (
-          <s.ListItem key={i} $isRecent={isRecent(entry)}>
-            {isRecent(entry) && renderBadge()}
-            {renderTimeDistance(entry.latestTraceTimestamp, viewMode)}
+          <s.ListItem key={i} $isRecent={isRecent(entry, now)}>
+            {isRecent(entry, now) && renderBadge()}
+            {renderTimeDistance(entry.latestTraceTimestamp, now, viewMode)}
             {renderSpanLinks(entry)}
             {renderDuration(entry.latestTraceDuration, viewMode)}
             <s.ListInsightsContainer>

@@ -4,19 +4,18 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
+import { useNow } from "../../hooks/useNow";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
-import { useDeleteEnvironmentMutation } from "../../redux/services/digma";
-import { useToggleRecentIndicatorMutation } from "../../redux/services/plugin";
-import type {
-  Environment,
-  SlimEntrySpanData
-} from "../../redux/services/types";
+import {
+  useDeleteEnvironmentMutation,
+  useGetEnvironmentsQuery
+} from "../../redux/services/digma";
+import type { Environment } from "../../redux/services/types";
 import { isBoolean } from "../../typeGuards/isBoolean";
-import { ScopeChangeEvent } from "../../types";
 import { changeScope } from "../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
-import { groupBy } from "../../utils/groupBy";
+import { areBackendInfosEqual } from "../../utils/areBackendInfosEqual";
 import { ConfigContext } from "../common/App/ConfigContext";
 import type { Scope } from "../common/App/types";
 import { Overlay } from "../common/Overlay";
@@ -26,14 +25,12 @@ import { ConfirmationDialog } from "./ConfirmationDialog";
 import { CreateEnvironmentFinishScreenContent } from "./CreateEnvironmentFinishScreenContent";
 import { CreateEnvironmentWizard } from "./CreateEnvironmentWizard";
 import { Digmathon } from "./Digmathon";
-import { EnvironmentInstructionsPanel } from "./EnvironmentInstructionsPanel";
 import { EnvironmentPanel } from "./EnvironmentPanel";
 import { getEnvironmentTabId } from "./EnvironmentPanel/EnvironmentTab/getEnvironmentTabIdPrefix";
 import type { ViewMode } from "./EnvironmentPanel/types";
 import { LiveView } from "./LiveView";
-import { NoData } from "./NoData";
-import { MAX_DISTANCE, RecentActivityTable } from "./RecentActivityTable";
-import { RecentActivityHeader } from "./RecentActivityToolbar";
+import { RecentActivityContent } from "./RecentActivityContent";
+import { IS_RECENT_TIME_LIMIT } from "./RecentActivityTable";
 import { WelcomeScreen } from "./WelcomeScreen";
 import { actions } from "./actions";
 import * as s from "./styles";
@@ -45,9 +42,9 @@ import type {
 } from "./types";
 import { useDigmathonProgressData } from "./useDigmathonProgressData";
 import { useLiveData } from "./useLiveData";
-import { useRecentActivityData } from "./useRecentActivityData";
 
 export const RECENT_ACTIVITY_CONTAINER_ID = "recent-activity";
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 const changeSelectedEnvironment = (
   scope: Scope | undefined,
@@ -82,9 +79,8 @@ export const RecentActivity = () => {
   const [environmentToDelete, setEnvironmentToDelete] = useState<string>();
   const [environmentToClearData, setEnvironmentToClearData] =
     useState<string>();
-  const recentActivityData = useRecentActivityData(selectedEnvironment?.id);
   const [deleteEnvironment] = useDeleteEnvironmentMutation();
-  const [toggleRecentIndicator] = useToggleRecentIndicatorMutation();
+  const [environments, setEnvironments] = useState<Environment[]>();
   const isEnvironmentConfirmationDialogVisible = Boolean(
     environmentToDelete ?? environmentToClearData
   );
@@ -96,13 +92,15 @@ export const RecentActivity = () => {
     "application"
   );
   const [createdEnvironment, setCreatedEnvironment] = useState<Environment>();
-
-  const config = useContext(ConfigContext);
-  const previousUserRegistrationEmail = usePrevious(
-    config.userRegistrationEmail
-  );
-
   const [viewMode, setViewMode] = useState<ViewMode>("table");
+  const { userInfo, backendInfo, userRegistrationEmail, environment, scope } =
+    useContext(ConfigContext);
+  const isInitialized = userInfo?.id && backendInfo;
+  const previousUserId = usePrevious(userInfo?.id);
+  const previousBackendInfo = usePrevious(backendInfo);
+  const previousUserRegistrationEmail = usePrevious(userRegistrationEmail);
+  const now = useNow();
+
   const { liveData, closeLiveView } = useLiveData();
 
   const [isDigmathonMode, setIsDigmathonMode] = useState(false);
@@ -122,52 +120,68 @@ export const RecentActivity = () => {
     keepOpen: false
   });
 
-  const filteredEntries = useMemo(
+  const clearDataTimestamp = selectedEnvironment
+    ? persistedEnvironmentClearDataTimestamps?.[selectedEnvironment.id]
+    : undefined;
+
+  const getEnvironmentsQueryCacheKey = `${JSON.stringify(backendInfo)}-${
+    userInfo?.id
+  }`;
+
+  const {
+    data,
+    refetch,
+    isUninitialized: isQueryUninitialized
+  } = useGetEnvironmentsQuery(getEnvironmentsQueryCacheKey, {
+    pollingInterval: REFRESH_INTERVAL,
+    skip: !isInitialized,
+    refetchOnReconnect: true
+  });
+
+  const extendedEnvironments: ExtendedEnvironment[] = useMemo(
     () =>
-      recentActivityData.entries?.filter((entry) => {
-        const clearDataTimestamp =
-          persistedEnvironmentClearDataTimestamps?.[entry.environment];
-
-        return clearDataTimestamp
-          ? new Date(entry.latestTraceTimestamp).valueOf() >
-              new Date(clearDataTimestamp).valueOf()
-          : true;
-      }) ?? [],
-    [recentActivityData.entries, persistedEnvironmentClearDataTimestamps]
-  );
-
-  const environmentActivities = useMemo(
-    () => groupBy(filteredEntries, (x) => x.environment),
-    [filteredEntries]
-  );
-
-  const environments: ExtendedEnvironment[] = useMemo(() => {
-    const now = new Date();
-
-    return (
-      recentActivityData.environments?.map((environment) => ({
+      environments?.map((environment) => ({
         ...environment,
         additionToConfigResult: null,
         serverApiUrl: null,
         isOrgDigmaSetupFinished: false,
         hasRecentActivity: Boolean(
           environment.lastActive &&
-            now.valueOf() - new Date(environment.lastActive).valueOf() <=
-              MAX_DISTANCE
+            now - new Date(environment.lastActive).valueOf() <=
+              IS_RECENT_TIME_LIMIT
         )
-      })) ?? []
-    );
-  }, [recentActivityData.environments]);
+      })) ?? [],
+    [environments, now]
+  );
 
   useEffect(() => {
-    const isAnyRecentActivity = environments.some(
-      (environment) => environment.hasRecentActivity
-    );
+    if (data) {
+      setEnvironments(data);
+    }
+  }, [data]);
 
-    void toggleRecentIndicator({
-      status: isAnyRecentActivity
-    });
-  }, [environments, toggleRecentIndicator]);
+  // Clear the environments on backend or user change
+  useEffect(() => {
+    if (
+      (previousUserId && previousUserId !== userInfo?.id) ||
+      (previousBackendInfo &&
+        !areBackendInfosEqual(previousBackendInfo, backendInfo ?? null))
+    ) {
+      setEnvironments([]);
+
+      if (isInitialized && !isQueryUninitialized) {
+        void refetch();
+      }
+    }
+  }, [
+    userInfo?.id,
+    previousUserId,
+    backendInfo,
+    previousBackendInfo,
+    refetch,
+    isInitialized,
+    isQueryUninitialized
+  ]);
 
   useEffect(() => {
     if (selectedEnvironment?.id) {
@@ -185,28 +199,10 @@ export const RecentActivity = () => {
   }, [selectedEnvironment?.id]);
 
   useEffect(() => {
-    if (
-      selectedEnvironment &&
-      environmentActivities[selectedEnvironment?.id] &&
-      environmentInstructionsVisibility.isOpen &&
-      !environmentInstructionsVisibility.keepOpen
-    ) {
-      setEnvironmentInstructionsVisibility({
-        isOpen: false,
-        keepOpen: false
-      });
-    }
-  }, [
-    environmentActivities,
-    environmentInstructionsVisibility,
-    selectedEnvironment
-  ]);
-
-  useEffect(() => {
     window.sendMessageToDigma({
       action: actions.INITIALIZE
     });
-  }, [config.userInfo?.id]);
+  }, [userInfo?.id]);
 
   useEffect(() => {
     const handleOpenRegistrationDialog = () => {
@@ -237,8 +233,8 @@ export const RecentActivity = () => {
   }, [previousIsDigmathonCompleted, isDigmathonCompleted]);
 
   useEffect(() => {
-    const currentEnvironmentId = config.environment?.id;
-    const environmentToSelect = environments.find(
+    const currentEnvironmentId = environment?.id;
+    const environmentToSelect = extendedEnvironments.find(
       (x) => x.id === currentEnvironmentId
     );
 
@@ -268,21 +264,21 @@ export const RecentActivity = () => {
         }
       }
 
-      if (environments.length > 0) {
+      if (extendedEnvironments.length > 0) {
         changeScope({
-          span: config.scope?.span
+          span: scope?.span
             ? {
-                spanCodeObjectId: config.scope.span.spanCodeObjectId
+                spanCodeObjectId: scope.span.spanCodeObjectId
               }
             : null,
-          environmentId: environments[0].id
+          environmentId: extendedEnvironments[0].id
         });
       }
     }
   }, [
-    config.environment?.id,
-    environments,
-    config.scope?.span,
+    environment?.id,
+    extendedEnvironments,
+    scope?.span,
     environmentInstructionsVisibility.newlyCreatedEnvironmentId,
     environmentToClearData,
     environmentToDelete
@@ -290,54 +286,24 @@ export const RecentActivity = () => {
 
   useEffect(() => {
     if (
-      previousUserRegistrationEmail !== config.userRegistrationEmail &&
+      previousUserRegistrationEmail !== userRegistrationEmail &&
       isRegistrationInProgress
     ) {
       setIsRegistrationPopupVisible(false);
       setIsRegistrationInProgress(false);
     }
   }, [
-    config.userRegistrationEmail,
+    userRegistrationEmail,
     isRegistrationInProgress,
     previousUserRegistrationEmail
   ]);
 
-  const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
-    changeSelectedEnvironment(
-      config.scope,
-      config.environments,
-      environment.id
-    );
-  };
-
-  const handleSpanLinkClick = (span: SlimEntrySpanData) => {
-    if (selectedEnvironment) {
-      changeScope({
-        span: {
-          spanCodeObjectId: span.spanCodeObjectId
-        },
-        context: {
-          event: ScopeChangeEvent.RecentActivitySpanLinkClicked
-        }
-      });
-    }
-  };
-
-  const handleTraceButtonClick = (traceId: string, span: SlimEntrySpanData) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_TRACE,
-      payload: {
-        traceId,
-        span: {
-          scopeId: span.scopeId,
-          displayText: span.displayText
-        }
-      }
-    });
-  };
-
   const handleViewModeChange = (mode: ViewMode) => {
     setViewMode(mode);
+  };
+
+  const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
+    changeSelectedEnvironment(scope, extendedEnvironments, environment.id);
   };
 
   const handleEnvironmentAdd = () => {
@@ -434,82 +400,7 @@ export const RecentActivity = () => {
     setIsRegistrationInProgress(true);
   };
 
-  const renderContent = () => {
-    if (selectedEnvironment && environmentInstructionsVisibility.isOpen) {
-      return (
-        <EnvironmentInstructionsPanel
-          environment={selectedEnvironment}
-          onClose={
-            environmentInstructionsVisibility.keepOpen
-              ? handleEnvironmentSetupInstructionsClose
-              : undefined
-          }
-        />
-      );
-    }
-
-    if (
-      recentActivityData.areEntriesLoading &&
-      recentActivityData.entries === undefined
-    ) {
-      return (
-        <>
-          <s.NoDataRecentActivityContainerBackground>
-            <s.NoDataRecentActivityContainerBackgroundGradient />
-          </s.NoDataRecentActivityContainerBackground>
-          <s.LoadingContainer>
-            <s.Spinner size={32} />
-          </s.LoadingContainer>
-        </>
-      );
-    }
-
-    if (
-      !selectedEnvironment ||
-      !environmentActivities[selectedEnvironment.id]
-    ) {
-      return (
-        <>
-          <s.NoDataRecentActivityContainerBackground>
-            <s.NoDataRecentActivityContainerBackgroundGradient />
-          </s.NoDataRecentActivityContainerBackground>
-          {selectedEnvironment && (
-            <s.NoDataRecentActivityHeader
-              viewMode={viewMode}
-              onViewModeChange={handleViewModeChange}
-              environment={selectedEnvironment}
-            />
-          )}
-          <s.NoDataContainer>
-            <NoData />
-          </s.NoDataContainer>
-        </>
-      );
-    }
-
-    const headerHeight = entry?.target.clientHeight ?? 0;
-
-    return (
-      <>
-        <RecentActivityHeader
-          showToolbar={true}
-          viewMode={viewMode}
-          onViewModeChange={handleViewModeChange}
-          environment={selectedEnvironment}
-        />
-        <RecentActivityTable
-          viewMode={viewMode}
-          data={environmentActivities[selectedEnvironment.id]}
-          onSpanLinkClick={handleSpanLinkClick}
-          onTraceButtonClick={handleTraceButtonClick}
-          isTraceButtonVisible={config.isJaegerEnabled}
-          headerHeight={headerHeight}
-        />
-      </>
-    );
-  };
-
-  if (!config.userInfo?.id && config.backendInfo?.centralize) {
+  if (!userInfo?.id && backendInfo?.centralize) {
     return <WelcomeScreen />;
   }
 
@@ -519,9 +410,9 @@ export const RecentActivity = () => {
 
   const handleCreateEnvironmentWizardClose = (id: string | null) => {
     if (id) {
-      const newEnv = environments.find((x) => x.id === id);
+      const newEnv = extendedEnvironments.find((x) => x.id === id);
       if (newEnv) {
-        changeSelectedEnvironment(config.scope, config.environments, newEnv.id);
+        changeSelectedEnvironment(scope, extendedEnvironments, newEnv.id);
         setEnvironmentInstructionsVisibility({
           isOpen: true,
           newlyCreatedEnvironmentId: newEnv.id,
@@ -533,6 +424,8 @@ export const RecentActivity = () => {
     setCreatedEnvironment(undefined);
   };
 
+  const headerHeight = entry?.target.clientHeight ?? 0;
+
   return showCreationWizard ? (
     <CreateEnvironmentWizard
       onCreate={handleEnvironmentCreate}
@@ -542,7 +435,7 @@ export const RecentActivity = () => {
           environment={createdEnvironment}
         />
       }
-      isCentralizedDeployment={Boolean(config.backendInfo?.centralize)}
+      isCentralizedDeployment={Boolean(backendInfo?.centralize)}
       onClose={handleCreateEnvironmentWizardClose}
       isCancelConfirmationEnabled={true}
     />
@@ -561,7 +454,7 @@ export const RecentActivity = () => {
           <s.RecentActivityContainer id={RECENT_ACTIVITY_CONTAINER_ID}>
             <s.EnvironmentPanelContainer ref={observe}>
               <EnvironmentPanel
-                environments={environments}
+                environments={extendedEnvironments}
                 selectedEnvironment={selectedEnvironment}
                 onEnvironmentSelect={handleEnvironmentSelect}
                 onEnvironmentAdd={handleEnvironmentAdd}
@@ -574,7 +467,20 @@ export const RecentActivity = () => {
               />
             </s.EnvironmentPanelContainer>
             <s.RecentActivityContentContainer>
-              {renderContent()}
+              <RecentActivityContent
+                environment={selectedEnvironment}
+                environmentInstructionsVisibility={
+                  environmentInstructionsVisibility
+                }
+                headerHeight={headerHeight}
+                clearDataTimestamp={clearDataTimestamp}
+                onEnvironmentSetupInstructionsClose={
+                  handleEnvironmentSetupInstructionsClose
+                }
+                now={now}
+                viewMode={viewMode}
+                onViewModeChange={handleViewModeChange}
+              />
             </s.RecentActivityContentContainer>
           </s.RecentActivityContainer>
           <Allotment.Pane visible={Boolean(liveData)} minSize={450}>

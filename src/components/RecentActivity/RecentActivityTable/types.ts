@@ -11,6 +11,7 @@ export interface RecentActivityTableProps {
   viewMode: ViewMode;
   isTraceButtonVisible: boolean;
   headerHeight: number;
+  now: number;
 }
 
 export interface ColumnMeta {

@@ -59,7 +59,8 @@ export const useInsightsStats = ({
     },
     {
       skip: !environmentId,
-      pollingInterval: REFRESH_INTERVAL
+      pollingInterval: REFRESH_INTERVAL,
+      refetchOnReconnect: true
     }
   );
 

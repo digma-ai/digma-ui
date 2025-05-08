@@ -1,3 +1,4 @@
+import { useNow } from "../../../hooks/useNow";
 import { isString } from "../../../typeGuards/isString";
 import { ScopeChangeEvent } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
@@ -63,6 +64,8 @@ export const TestCard = ({
   onTicketInfoOpen,
   spanContexts
 }: TestCardProps) => {
+  const now = useNow();
+
   const handleTestNameClick = () => {
     sendUserActionTrackingEvent(trackingEvents.TEST_NAME_LINK_CLICKED);
 
@@ -143,7 +146,7 @@ export const TestCard = ({
             <s.IconContainer>
               <TimerIcon size={16} />
             </s.IconContainer>
-            <s.StatValue>{formatTimeDistance(runAt)}</s.StatValue>
+            <s.StatValue>{formatTimeDistance(runAt, now)}</s.StatValue>
           </s.Stat>
         </Tooltip>
         <Tooltip title={durationString}>

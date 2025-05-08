@@ -5,7 +5,6 @@ import {
 } from "../../../../../containers/Admin/hooks";
 import { useGetEnvironmentsQuery } from "../../../../../redux/services/digma";
 import { setSelectedEnvironmentId } from "../../../../../redux/slices/issuesReportSlice";
-import { setEnvironmentId } from "../../../../../redux/slices/scopeSlice";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { EnvironmentIcon } from "../../../../common/EnvironmentIcon";
 import { ChevronIcon } from "../../../../common/icons/16px/ChevronIcon";
@@ -53,9 +52,13 @@ export const EnvironmentSelect = () => {
       sortedEnvironments.length > 0 &&
       !selectedEnvironmentId
     ) {
-      dispatch(setEnvironmentId(sortedEnvironments[0].id));
+      dispatch(setSelectedEnvironmentId(sortedEnvironments[0].id));
     }
   }, [dispatch, sortedEnvironments, selectedEnvironmentId]);
+
+  if (!selectedEnvironmentId) {
+    return null;
+  }
 
   return (
     <NewPopover
@@ -79,7 +82,9 @@ export const EnvironmentSelect = () => {
             {selectedEnvironment && (
               <EnvironmentIcon environment={selectedEnvironment} size={16} />
             )}
-            <s.EnvironmentName>{selectedEnvironment?.name}</s.EnvironmentName>
+            <s.EnvironmentName>
+              {selectedEnvironment?.name ?? selectedEnvironmentId}
+            </s.EnvironmentName>
             <s.ChevronIconContainer>
               <ChevronIcon
                 direction={isMenuOpen ? Direction.Up : Direction.Down}

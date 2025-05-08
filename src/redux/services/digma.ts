@@ -255,7 +255,7 @@ export const digmaApi = createApi({
       }),
       invalidatesTags: ["Insight"]
     }),
-    getEnvironments: builder.query<GetEnvironmentsResponse, void>({
+    getEnvironments: builder.query<GetEnvironmentsResponse, string | void>({
       query: () => "Environments",
       providesTags: ["Environment"]
     }),
@@ -268,7 +268,7 @@ export const digmaApi = createApi({
         method: "POST",
         body: data
       }),
-      invalidatesTags: ["Environment", "RecentActivity"]
+      invalidatesTags: ["Environment"]
     }),
     deleteEnvironment: builder.mutation<
       DeleteEnvironmentResponse,
