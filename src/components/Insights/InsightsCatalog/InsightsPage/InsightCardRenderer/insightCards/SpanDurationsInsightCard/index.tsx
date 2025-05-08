@@ -11,6 +11,7 @@ import {
 import type { DefaultTheme } from "styled-components";
 import { useTheme } from "styled-components";
 import { PERCENTILES } from "../../../../../../../constants";
+import { useNow } from "../../../../../../../hooks/useNow";
 import type { Duration } from "../../../../../../../redux/services/types";
 import { isNumber } from "../../../../../../../typeGuards/isNumber";
 import { convertToDuration } from "../../../../../../../utils/convertToDuration";
@@ -37,7 +38,7 @@ import { DIVIDER, LABEL_HEIGHT } from "./constants";
 import * as s from "./styles";
 import type { SpanDurationsInsightCardProps, TickData } from "./types";
 
-const LAST_CALL_TIME_DISTANCE_LIMIT = 60 * 1000; // in milliseconds
+const LAST_CALL_TIME_LIMIT = 60 * 1000; // in milliseconds
 
 // in pixels
 const MIN_BAR_HEIGHT = 5;
@@ -142,6 +143,7 @@ export const SpanDurationsInsightCard = ({
   tooltipBoundaryRef
 }: SpanDurationsInsightCardProps) => {
   const theme = useTheme();
+  const now = useNow();
   const { observe, width } = useDimensions();
 
   const sortedPercentiles = [...insight.percentiles].sort(
@@ -168,8 +170,7 @@ ${getDurationString(insight.average)}${
   const traces: Trace[] = [];
 
   const isLastCallRecent = spanLastCall
-    ? Date.now() - new Date(spanLastCall.startTime).valueOf() <
-      LAST_CALL_TIME_DISTANCE_LIMIT
+    ? now - new Date(spanLastCall.startTime).valueOf() < LAST_CALL_TIME_LIMIT
     : false;
 
   const chartData = insight.histogramPlot
@@ -299,7 +300,7 @@ ${getDurationString(insight.average)}${
                   title={
                     isLastCallRecent
                       ? "Moments ago"
-                      : formatTimeDistance(spanLastCall.startTime)
+                      : formatTimeDistance(spanLastCall.startTime, now)
                   }
                 >
                   <Tag

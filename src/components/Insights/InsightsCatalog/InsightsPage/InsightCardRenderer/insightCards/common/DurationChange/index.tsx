@@ -1,4 +1,5 @@
 import { formatDuration, intervalToDuration } from "date-fns";
+import { useNow } from "../../../../../../../../hooks/useNow";
 import type { Duration } from "../../../../../../../../redux/services/types";
 import { formatTimeDistance } from "../../../../../../../../utils/formatTimeDistance";
 import { roundTo } from "../../../../../../../../utils/roundTo";
@@ -74,6 +75,8 @@ export const DurationChange = ({
   previousDuration,
   changeTime
 }: DurationChangeProps) => {
+  const now = useNow();
+
   const isChangeMeaningful = isChangeMeaningfulEnough(
     currentDuration,
     previousDuration,
@@ -90,7 +93,7 @@ export const DurationChange = ({
       {previousDuration && changeTime && isChangeMeaningful && (
         <Tag
           type={getTagType(direction)}
-          title={formatTimeDistance(changeTime)}
+          title={formatTimeDistance(changeTime, now)}
           content={
             <s.Container>
               <s.ArrowContainer>

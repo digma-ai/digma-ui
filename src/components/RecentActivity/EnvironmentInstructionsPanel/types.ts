@@ -1,7 +1,7 @@
-import type { ExtendedEnvironment } from "../types";
+import type { Environment } from "../../../redux/services/types";
 
 export interface EnvironmentInstructionsPanelProps {
-  environment: ExtendedEnvironment;
+  environment: Environment;
   onAddEnvironmentToRunConfig?: (environment: string) => void;
   onClose?: () => void;
 }

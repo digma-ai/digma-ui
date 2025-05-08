@@ -2,6 +2,7 @@ import type { Row } from "@tanstack/react-table";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
+import { useNow } from "../../../hooks/useNow";
 import {
   useGetPerformanceHighlightsQuery,
   useGetPerformanceHighlightsV2Query
@@ -28,6 +29,7 @@ import * as s from "./styles";
 
 export const Performance = () => {
   const { scope, environments, backendInfo } = useConfigSelector();
+  const now = useNow();
 
   const areImpactHighlightsEnabled = getFeatureFlagValue(
     backendInfo,
@@ -125,7 +127,7 @@ export const Performance = () => {
             return null;
           }
 
-          const value = formatTimeDistance(lastCallDateTime, {
+          const value = formatTimeDistance(lastCallDateTime, now, {
             format: "short",
             withDescriptiveWords: false
           }).replace(" ", "");

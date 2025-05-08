@@ -1,3 +1,4 @@
+import { useNow } from "../../../../hooks/useNow";
 import {
   formatTimeDistance,
   getTimeDistance
@@ -7,11 +8,8 @@ import * as s from "./styles";
 import type { StatusProps } from "./types";
 import { StatusState } from "./types";
 
-const getStatus = (lastSeen: Date) => {
-  const interval = getTimeDistance(
-    new Date().toISOString(),
-    lastSeen.toISOString()
-  );
+const getStatus = (lastSeen: Date, now: Date) => {
+  const interval = getTimeDistance(now.toISOString(), lastSeen.toISOString());
 
   if (!interval) {
     return null;
@@ -43,7 +41,8 @@ const getStatus = (lastSeen: Date) => {
 };
 
 export const Status = ({ firstSeen, lastSeen }: StatusProps) => {
-  const status = getStatus(new Date(lastSeen));
+  const now = useNow();
+  const status = getStatus(new Date(lastSeen), new Date(now));
   if (!status) {
     return null;
   }
@@ -54,14 +53,14 @@ export const Status = ({ firstSeen, lastSeen }: StatusProps) => {
         <s.InfoContainer>
           <s.Row>
             <s.Label>First seen:</s.Label>
-            {formatTimeDistance(firstSeen, {
+            {formatTimeDistance(firstSeen, now, {
               format: "medium",
               withDescriptiveWords: true
             })}
           </s.Row>
           <s.Row>
             <s.Label>Last seen:</s.Label>
-            {formatTimeDistance(lastSeen, {
+            {formatTimeDistance(lastSeen, now, {
               format: "medium",
               withDescriptiveWords: true
             })}

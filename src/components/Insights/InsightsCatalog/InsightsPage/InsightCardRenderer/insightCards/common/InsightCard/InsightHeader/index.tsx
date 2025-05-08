@@ -1,3 +1,4 @@
+import { useNow } from "../../../../../../../../../hooks/useNow";
 import { useConfigSelector } from "../../../../../../../../../store/config/useConfigSelector";
 import { isString } from "../../../../../../../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../../../../../../../utils/formatTimeDistance";
@@ -43,8 +44,9 @@ export const InsightHeader = ({
 
   const insightTypeInfo = getInsightTypeInfo(insight.type, insight.subType);
   const statusTooltipContent = renderInsightStatusTooltipContent(insight);
+  const now = useNow();
   const isNew = isString(insight.firstDetected)
-    ? Date.now() - new Date(insight.firstDetected).valueOf() < IS_NEW_TIME_LIMIT
+    ? now - new Date(insight.firstDetected).valueOf() < IS_NEW_TIME_LIMIT
     : false;
   const spanInfo =
     isSpanInsight(insight) || isEndpointInsight(insight)
@@ -74,7 +76,7 @@ export const InsightHeader = ({
             <s.Description>
               Updated:
               <Tooltip title={new Date(lastUpdateTimer).toString()}>
-                <span>{formatTimeDistance(lastUpdateTimer)}</span>
+                <span>{formatTimeDistance(lastUpdateTimer, now)}</span>
               </Tooltip>
             </s.Description>
           )}

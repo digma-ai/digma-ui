@@ -128,7 +128,8 @@ export const useInsightsData = () => {
     },
     {
       skip: !isAppReadyToGetData || isIssuesQueryActive,
-      pollingInterval: REFRESH_INTERVAL
+      pollingInterval: REFRESH_INTERVAL,
+      refetchOnReconnect: true
     }
   );
 
@@ -161,7 +162,8 @@ export const useInsightsData = () => {
     },
     {
       skip: !isAppReadyToGetData || !isIssuesQueryActive,
-      pollingInterval: REFRESH_INTERVAL
+      pollingInterval: REFRESH_INTERVAL,
+      refetchOnReconnect: true
     }
   );
 
@@ -175,7 +177,8 @@ export const useInsightsData = () => {
         !isAppReadyToGetData ||
         !spanCodeObjectId ||
         !areSpanEnvironmentsEnabled,
-      pollingInterval: REFRESH_INTERVAL
+      pollingInterval: REFRESH_INTERVAL,
+      refetchOnReconnect: true
     }
   );
 

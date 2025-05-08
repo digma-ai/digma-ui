@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { PERCENTILES } from "../../../../../constants";
+import { useNow } from "../../../../../hooks/useNow";
 import { isString } from "../../../../../typeGuards/isString";
 import { ScopeChangeEvent } from "../../../../../types";
 import { changeScope } from "../../../../../utils/actions/changeScope";
@@ -53,6 +54,7 @@ export const InsightCard = ({
     useState<number>(DEFAULT_PERCENTILE);
   const [isRecalculatingStarted, setIsRecalculatingStarted] = useState(false);
   const { scope } = useContext(ConfigContext);
+  const now = useNow();
 
   const insightTypeInfo = getInsightTypeInfo(data.type);
 
@@ -123,7 +125,7 @@ export const InsightCard = ({
         <Description>
           Data from:{" "}
           <Tooltip title={title}>
-            <span>{formatTimeDistance(actualStartTime)}</span>
+            <span>{formatTimeDistance(actualStartTime, now)}</span>
           </Tooltip>
         </Description>
       );
@@ -131,7 +133,7 @@ export const InsightCard = ({
   };
 
   const isNew = isString(data.firstDetected)
-    ? Date.now() - new Date(data.firstDetected).valueOf() < IS_NEW_TIME_LIMIT
+    ? now - new Date(data.firstDetected).valueOf() < IS_NEW_TIME_LIMIT
     : false;
 
   const handleTitleLinkClick = () => {
