@@ -6,13 +6,13 @@ import {
 } from "@tanstack/react-table";
 import { useContext, useMemo } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
-import { useNow } from "../../../hooks/useNow";
 import type {
   Duration,
   RecentActivityEntry,
   SlimAggregatedInsightInfo,
   SlimEntrySpanData
 } from "../../../redux/services/types";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { FeatureFlag } from "../../../types";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
@@ -30,7 +30,12 @@ import * as s from "./styles";
 import type { ColumnMeta, RecentActivityTableProps } from "./types";
 
 const columnHelper = createColumnHelper<RecentActivityEntry>();
-export const IS_RECENT_TIME_LIMIT = 30 * 1000; // in milliseconds
+
+export const IS_RECENT_TIME_LIMIT = isNumber(
+  window.recentActivityExpirationLimit
+)
+  ? window.recentActivityExpirationLimit
+  : 30 * 1000; // in milliseconds
 
 const isRecent = (entry: RecentActivityEntry, now: number): boolean =>
   now - new Date(entry.latestTraceTimestamp).valueOf() <= IS_RECENT_TIME_LIMIT;
@@ -108,9 +113,9 @@ export const RecentActivityTable = ({
   onTraceButtonClick,
   viewMode,
   isTraceButtonVisible,
-  headerHeight
+  headerHeight,
+  now
 }: RecentActivityTableProps) => {
-  const now = useNow();
   const { backendInfo } = useContext(ConfigContext);
   const handleSpanLinkClick = (span: SlimEntrySpanData) => () => {
     onSpanLinkClick(span);

@@ -58,6 +58,7 @@ declare global {
     documentationPage?: unknown;
     initialRoutePath?: unknown;
     notificationsViewMode?: unknown;
+    recentActivityExpirationLimit?: unknown;
     wizardSkipInstallationStep?: unknown;
     wizardFirstLaunch?: unknown;
     productKey?: unknown;

@@ -11,7 +11,6 @@ import {
   useDeleteEnvironmentMutation,
   useGetEnvironmentsQuery
 } from "../../redux/services/digma";
-import { useToggleRecentIndicatorMutation } from "../../redux/services/plugin";
 import type { Environment } from "../../redux/services/types";
 import { isBoolean } from "../../typeGuards/isBoolean";
 import { changeScope } from "../../utils/actions/changeScope";
@@ -28,6 +27,7 @@ import { CreateEnvironmentWizard } from "./CreateEnvironmentWizard";
 import { Digmathon } from "./Digmathon";
 import { EnvironmentPanel } from "./EnvironmentPanel";
 import { getEnvironmentTabId } from "./EnvironmentPanel/EnvironmentTab/getEnvironmentTabIdPrefix";
+import type { ViewMode } from "./EnvironmentPanel/types";
 import { LiveView } from "./LiveView";
 import { RecentActivityContent } from "./RecentActivityContent";
 import { IS_RECENT_TIME_LIMIT } from "./RecentActivityTable";
@@ -80,7 +80,6 @@ export const RecentActivity = () => {
   const [environmentToClearData, setEnvironmentToClearData] =
     useState<string>();
   const [deleteEnvironment] = useDeleteEnvironmentMutation();
-  const [toggleRecentIndicator] = useToggleRecentIndicatorMutation();
   const [environments, setEnvironments] = useState<Environment[]>();
   const isEnvironmentConfirmationDialogVisible = Boolean(
     environmentToDelete ?? environmentToClearData
@@ -93,7 +92,7 @@ export const RecentActivity = () => {
     "application"
   );
   const [createdEnvironment, setCreatedEnvironment] = useState<Environment>();
-
+  const [viewMode, setViewMode] = useState<ViewMode>("table");
   const { userInfo, backendInfo, userRegistrationEmail, environment, scope } =
     useContext(ConfigContext);
   const isInitialized = userInfo?.id && backendInfo;
@@ -157,8 +156,6 @@ export const RecentActivity = () => {
 
   useEffect(() => {
     if (data) {
-      // eslint-disable-next-line no-console
-      console.log("Environments data received", data);
       setEnvironments(data);
     }
   }, [data]);
@@ -170,19 +167,9 @@ export const RecentActivity = () => {
       (previousBackendInfo &&
         !areBackendInfosEqual(previousBackendInfo, backendInfo ?? null))
     ) {
-      // eslint-disable-next-line no-console
-      console.log(
-        "User or backend info changed, clearing environments and refetching",
-        previousUserId,
-        userInfo?.id,
-        previousBackendInfo,
-        backendInfo
-      );
       setEnvironments([]);
 
       if (isInitialized && !isQueryUninitialized) {
-        // eslint-disable-next-line no-console
-        console.log("Refetching environments");
         void refetch();
       }
     }
@@ -195,16 +182,6 @@ export const RecentActivity = () => {
     isInitialized,
     isQueryUninitialized
   ]);
-
-  useEffect(() => {
-    const isAnyRecentActivity = extendedEnvironments.some(
-      (environment) => environment.hasRecentActivity
-    );
-
-    void toggleRecentIndicator({
-      status: isAnyRecentActivity
-    });
-  }, [extendedEnvironments, toggleRecentIndicator]);
 
   useEffect(() => {
     if (selectedEnvironment?.id) {
@@ -320,6 +297,10 @@ export const RecentActivity = () => {
     isRegistrationInProgress,
     previousUserRegistrationEmail
   ]);
+
+  const handleViewModeChange = (mode: ViewMode) => {
+    setViewMode(mode);
+  };
 
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
     changeSelectedEnvironment(scope, extendedEnvironments, environment.id);
@@ -496,6 +477,9 @@ export const RecentActivity = () => {
                 onEnvironmentSetupInstructionsClose={
                   handleEnvironmentSetupInstructionsClose
                 }
+                now={now}
+                viewMode={viewMode}
+                onViewModeChange={handleViewModeChange}
               />
             </s.RecentActivityContentContainer>
           </s.RecentActivityContainer>

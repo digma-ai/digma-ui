@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { useGetRecentActivityQuery } from "../../../redux/services/digma";
 import type { SlimEntrySpanData } from "../../../redux/services/types";
 import { isUndefined } from "../../../typeGuards/isUndefined";
@@ -21,9 +21,11 @@ export const RecentActivityContent = ({
   environmentInstructionsVisibility,
   headerHeight,
   clearDataTimestamp,
-  onEnvironmentSetupInstructionsClose
+  onEnvironmentSetupInstructionsClose,
+  now,
+  viewMode,
+  onViewModeChange
 }: RecentActivityContentProps) => {
-  const [viewMode, setViewMode] = useState<ViewMode>("table");
   const { isJaegerEnabled, backendInfo, userInfo } = useContext(ConfigContext);
 
   const { data, isLoading } = useGetRecentActivityQuery(
@@ -50,7 +52,7 @@ export const RecentActivityContent = ({
   );
 
   const handleViewModeChange = (mode: ViewMode) => {
-    setViewMode(mode);
+    onViewModeChange(mode);
   };
 
   const handleSpanLinkClick = (span: SlimEntrySpanData) => {
@@ -161,6 +163,7 @@ export const RecentActivityContent = ({
         onTraceButtonClick={handleTraceButtonClick}
         isTraceButtonVisible={Boolean(isJaegerEnabled)}
         headerHeight={headerHeight}
+        now={now}
       />
     </>
   );
