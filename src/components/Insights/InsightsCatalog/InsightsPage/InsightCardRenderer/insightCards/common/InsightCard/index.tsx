@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useRef, useState } from "react";
-import { NOT_SUPPORTED_IN_SANDBOX_MODE_MESSAGE } from "../../../../../../../../constants";
 import { usePrevious } from "../../../../../../../../hooks/usePrevious";
 import { platform } from "../../../../../../../../platform";
 import {
@@ -76,8 +75,6 @@ export const InsightCard = ({
   } = useConfigSelector();
   const cardRef = useRef<HTMLDivElement>(null);
   const [showInfo, setShowInfo] = useState(false);
-  const [isIdeSandboxTooltipVisible, setIsIdeSandboxTooltipVisible] =
-    useState(false);
 
   const isCritical = insight.criticality > HIGH_CRITICALITY_THRESHOLD;
 
@@ -100,11 +97,6 @@ export const InsightCard = ({
   };
 
   const handleIdeButtonClick = () => {
-    if (isSandboxModeEnabled) {
-      setIsIdeSandboxTooltipVisible(true);
-      return;
-    }
-
     if (
       (isSpanInsight(insight) || isEndpointInsight(insight)) &&
       insight.spanInfo
@@ -171,10 +163,6 @@ export const InsightCard = ({
     if (!isSandboxModeEnabled) {
       dismiss();
     }
-  };
-
-  const handleIdeActionButtonTooltipDismiss = () => {
-    setIsIdeSandboxTooltipVisible(false);
   };
 
   const handleShowClick = () => {
@@ -340,21 +328,13 @@ export const InsightCard = ({
         );
       case "ide":
         return (
-          <Tooltip
-            title={NOT_SUPPORTED_IN_SANDBOX_MODE_MESSAGE}
-            isOpen={isIdeSandboxTooltipVisible}
-            onDismiss={handleIdeActionButtonTooltipDismiss}
-          >
-            <div>
-              <ActionButton
-                type={type}
-                icon={CodeIcon}
-                label={"IDE"}
-                title={isIdeSandboxTooltipVisible ? undefined : "Open in IDE"}
-                onClick={handleIdeButtonClick}
-              />
-            </div>
-          </Tooltip>
+          <ActionButton
+            type={type}
+            icon={CodeIcon}
+            label={"IDE"}
+            title={"Open in IDE"}
+            onClick={handleIdeButtonClick}
+          />
         );
       case "viewTicketInfo":
         return (
