@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { DataFetcherConfiguration } from "../../../../../hooks/useFetchData";
 import { useFetchData } from "../../../../../hooks/useFetchData";
+import type { ErrorFlowFrame } from "../../../../../redux/services/types";
 import { useErrorsSelector } from "../../../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../../../store/useStore";
 import { isNull } from "../../../../../typeGuards/isNull";
@@ -15,8 +16,6 @@ import { actions } from "../../../actions";
 import { trackingEvents } from "../../../tracking";
 import type {
   FilesURIsMap,
-  Frame,
-  FrameStack,
   GetFilesURIsPayload,
   GoToCodeLocationPayload,
   GoToTracePayload,
@@ -40,15 +39,12 @@ export const FlowStack = ({ data }: FlowStackProps) => {
   const { setErrorDetailsWorkspaceItemsOnly } = useStore.getState();
   const stacksContainerRef = useRef<HTMLDivElement>(null);
 
-  const frameStacks = useMemo(
-    () => data.frameStacks.filter(Boolean) as FrameStack[],
-    [data]
-  );
+  const frameStacks = useMemo(() => data.frameStacks ?? [], [data]);
 
   const filesURIsPayload = useMemo(
     () => ({
       codeObjectIds: frameStacks
-        .map((stack) => stack.frames.map((x) => x?.codeObjectId))
+        .map((stack) => stack.frames?.map((x) => x?.codeObjectId) ?? [])
         .flat()
         .filter(isString)
     }),
@@ -83,9 +79,10 @@ export const FlowStack = ({ data }: FlowStackProps) => {
         payload: {
           traceId,
           spanName:
-            frameStacks[0].frames[0]?.spanName ??
+            frameStacks[0].frames?.[0]?.spanName ??
             `Sample trace for error ${exceptionType ?? ""}`.trim(),
-          spanCodeObjectId: frameStacks[0].frames[0]?.codeObjectId ?? undefined
+          spanCodeObjectId:
+            frameStacks[0].frames?.[0]?.codeObjectId ?? undefined
         }
       });
     }
@@ -131,7 +128,7 @@ export const FlowStack = ({ data }: FlowStackProps) => {
     <s.Container>
       <s.StacksContainer ref={stacksContainerRef}>
         {frameStacks.map((x) => {
-          const frames = x.frames.filter(Boolean) as Frame[];
+          const frames = x.frames ?? [];
           const visibleFrames = showWorkspaceOnly
             ? frames.filter((x) => x.codeObjectId && filesURIs[x.codeObjectId])
             : frames;
@@ -143,7 +140,7 @@ export const FlowStack = ({ data }: FlowStackProps) => {
               acc[acc.length - 1].push(frame);
             }
             return acc;
-          }, [] as Frame[][]);
+          }, [] as ErrorFlowFrame[][]);
 
           return (
             <s.StackContainer key={uuidv4()}>

@@ -1,5 +1,6 @@
 import { dispatcher } from "../dispatcher";
 
+/** @deprecated */
 export const fetchData = async <T, K>(
   config: {
     requestAction: string;

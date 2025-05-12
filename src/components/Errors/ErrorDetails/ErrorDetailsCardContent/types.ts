@@ -1,6 +1,6 @@
-import type { ErrorDetails } from "../types";
+import type { GetErrorResponse } from "../../../../redux/services/types";
 
 export interface ErrorDetailsCardContentProps {
   id: string;
-  data: ErrorDetails;
+  data: GetErrorResponse;
 }

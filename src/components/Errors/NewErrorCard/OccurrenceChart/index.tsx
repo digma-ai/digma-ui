@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import type { SVGProps } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import {
   Bar,
   BarChart,
@@ -11,20 +11,19 @@ import {
   YAxis
 } from "recharts";
 import { useTheme } from "styled-components";
-import type { DataFetcherConfiguration } from "../../../../hooks/useFetchData";
-import { useFetchData } from "../../../../hooks/useFetchData";
+import { useGetErrorTimeseriesQuery } from "../../../../redux/services/digma";
+import type {
+  ErrorsTimeseriesRecord,
+  GetErrorTimeseriesPayload
+} from "../../../../redux/services/types";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { measureTextWidth } from "../../../../utils/measureTextWidth";
 import { HistogramIcon } from "../../../common/icons/30px/HistogramIcon";
-import { actions } from "../../actions";
 import * as s from "./styles";
 import type {
-  ErrorOccurrenceRecord,
-  GetErrorTimeSeriesDataPayload,
   HorizontalCoordinatesGeneratorProps,
-  OccurrenceChartProps,
-  SetErrorTimeSeriesDataPayload
+  OccurrenceChartProps
 } from "./types";
 
 const MAX_BAR_WIDTH = 32;
@@ -36,10 +35,6 @@ export const OccurrenceChart = ({
   service
 }: OccurrenceChartProps) => {
   const theme = useTheme();
-  const [chartData, setChartData] = useState<
-    SetErrorTimeSeriesDataPayload | undefined
-  >();
-
   const { environment } = useConfigSelector();
   const environmentId = environment?.id;
 
@@ -60,44 +55,26 @@ export const OccurrenceChart = ({
     fontWeight: theme.typographies.captionOne.fontWeight.regular
   };
 
-  const dataFetcherConfiguration: DataFetcherConfiguration = useMemo(
+  const payload: GetErrorTimeseriesPayload = useMemo(
     () => ({
-      requestAction: actions.GET_ERROR_TIME_SERIES_DATA,
-      responseAction: actions.SET_ERROR_TIME_SERIES_DATA,
-      refreshOnPayloadChange: true
-    }),
-    []
-  );
-
-  const payload: GetErrorTimeSeriesDataPayload = useMemo(
-    () => ({
-      errorId,
-      scope: {
-        spanCodeObjectId,
-        service,
-        environment: environmentId ?? ""
-      }
+      id: errorId,
+      spanCodeObjectId,
+      service,
+      environment: environmentId ?? ""
     }),
     [errorId, spanCodeObjectId, service, environmentId]
   );
 
-  const { data } = useFetchData<
-    GetErrorTimeSeriesDataPayload,
-    SetErrorTimeSeriesDataPayload
-  >(dataFetcherConfiguration, payload);
-
-  useEffect(() => {
-    if (data && data.errorId === errorId) {
-      setChartData(data);
-    }
-  }, [data, errorId]);
+  const { data } = useGetErrorTimeseriesQuery(payload, {
+    skip: !environmentId
+  });
 
   const maxOccurrence = useMemo(
     () =>
-      chartData?.dailyOccurrence.reduce((acc, cur) => {
+      data?.dailyOccurrence.reduce((acc, cur) => {
         return acc >= cur.value ? acc : cur.value;
       }, 0) ?? 0,
-    [chartData]
+    [data]
   );
 
   const maxYAxisTickDigitsNumber = useMemo(
@@ -120,13 +97,10 @@ export const OccurrenceChart = ({
       <s.HistogramHeader>
         <s.HistogramTitle>Occurrence over time</s.HistogramTitle>
       </s.HistogramHeader>
-      {chartData?.dailyOccurrence ? (
-        chartData.dailyOccurrence.length > 0 ? (
+      {data?.dailyOccurrence ? (
+        data.dailyOccurrence.length > 0 ? (
           <ResponsiveContainer width={"100%"} height={"100%"}>
-            <BarChart
-              data={chartData.dailyOccurrence}
-              maxBarSize={MAX_BAR_WIDTH}
-            >
+            <BarChart data={data.dailyOccurrence} maxBarSize={MAX_BAR_WIDTH}>
               <CartesianGrid
                 vertical={false}
                 stroke={theme.colors.v3.stroke.tertiary}
@@ -180,7 +154,7 @@ export const OccurrenceChart = ({
                   }
 
                   const { date, value } = payload[0]
-                    .payload as ErrorOccurrenceRecord;
+                    .payload as ErrorsTimeseriesRecord;
 
                   return (
                     <s.TooltipContainer>

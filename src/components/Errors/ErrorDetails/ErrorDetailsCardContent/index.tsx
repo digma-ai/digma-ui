@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNow } from "../../../../hooks/useNow";
 import { usePrevious } from "../../../../hooks/usePrevious";
-import { isNull } from "../../../../typeGuards/isNull";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isString } from "../../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
@@ -33,20 +32,21 @@ export const ErrorDetailsCardContent = ({
     }
   }, [previousId, id]);
 
-  const services = data.originServices
-    .filter(isServiceInfoWithName)
-    .map((x) => x.serviceName);
+  const services =
+    data.originServices
+      ?.filter(isServiceInfoWithName)
+      .map((x) => x.serviceName) ?? [];
   const startedTooltip = new Date(data.firstOccurenceTime).toString();
   const startedString = formatTimeDistance(data.firstOccurenceTime, now);
   const lastTooltip = new Date(data.lastOccurenceTime).toString();
   const lastString = formatTimeDistance(data.lastOccurenceTime, now);
   const avgPerDay = data.dayAvg;
 
-  const flows = data.errors.filter((x) => !isNull(x));
+  const flows = data.errors ?? [];
   const currentFlow = flows[currentFlowStack];
 
   const isPreviousFlowButtonDisabled = currentFlowStack === 0;
-  const isNextFlowButtonDisabled = currentFlowStack === flows.length - 1;
+  const isNextFlowButtonDisabled = currentFlowStack >= flows.length - 1;
 
   const handleFlowPaginationButtonClick = (flowNumber: number) => () => {
     sendUserActionTrackingEvent(trackingEvents.FLOW_PAGINATION_BUTTON_CLICKED);
@@ -101,8 +101,10 @@ export const ErrorDetailsCardContent = ({
           <span>
             Flow Stacks{" "}
             <s.FlowsCountNumber>
-              <s.CurrentFlowNumber>{currentFlowStack + 1}</s.CurrentFlowNumber>/
-              {data.errors.length}
+              <s.CurrentFlowNumber>
+                {flows.length > 0 ? currentFlowStack + 1 : 0}
+              </s.CurrentFlowNumber>
+              /{flows.length}
             </s.FlowsCountNumber>
           </span>
           <s.IconButton
@@ -116,7 +118,9 @@ export const ErrorDetailsCardContent = ({
             />
           </s.IconButton>
         </s.FlowPagination>
-        <FlowStack data={currentFlow} key={currentFlowStack} />
+        {flows.length > 0 && (
+          <FlowStack data={currentFlow} key={currentFlowStack} />
+        )}
       </s.FlowsContainer>
     </s.Container>
   );
