@@ -11,7 +11,7 @@ import {
   useAdminSelector
 } from "../../../containers/Admin/hooks";
 import { getFeatureFlagValue } from "../../../featureFlags";
-import { usePagination } from "../../../hooks/usePagination";
+import { usePageParam } from "../../../hooks/usePageParam";
 import {
   useDeleteEnvironmentMutation,
   useGetAboutQuery,
@@ -40,6 +40,7 @@ export const Environments = () => {
   const isCreateEnvironmentSidebarOpen = useAdminSelector(
     (state) => state.environmentsSlice.isSidebarOpen
   );
+
   const dispatch = useAdminDispatch();
   const isEnvironmentLastActiveTimestampEnabled = getFeatureFlagValue(
     about,
@@ -50,14 +51,23 @@ export const Environments = () => {
     (state) => state.environmentsSlice.environmentToDelete
   );
   const { data: environments } = useGetEnvironmentsQuery();
+
+  const { page, setPage } = usePageParam({
+    data: environments,
+    pageSize: PAGE_SIZE,
+    total: environments?.length ?? 0
+  });
+
   const sortedEnvironments = useMemo(
     () => sortEnvironments(environments ?? []),
     [environments]
   );
-  const [pageItems, page, setPage] = usePagination(
-    sortedEnvironments,
-    PAGE_SIZE
-  );
+
+  const pageItems = useMemo(() => {
+    const startIndex = page * PAGE_SIZE;
+
+    return sortedEnvironments.slice(startIndex, startIndex + PAGE_SIZE);
+  }, [sortedEnvironments, page]);
 
   const columns = [
     columnHelper.accessor("name", {
@@ -217,6 +227,7 @@ export const Environments = () => {
             onPageChange={handlePageChange}
             pageSize={PAGE_SIZE}
             withDescription={true}
+            extendedNavigation={true}
           />
         </>
       )}

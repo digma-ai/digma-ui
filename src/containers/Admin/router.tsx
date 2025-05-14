@@ -4,6 +4,7 @@ import { Admin } from "../../components/Admin";
 import { Environments } from "../../components/Admin/Environments";
 import { Home } from "../../components/Admin/Home";
 import { CodeIssues } from "../../components/Admin/Reports/CodeIssues";
+import { RejectedTraces } from "../../components/Admin/Troubleshooting/RejectedTraces";
 
 export const routes: RouteObject[] = [
   {
@@ -39,6 +40,19 @@ export const routes: RouteObject[] = [
               element: <Environments />
             }
           ]),
+      {
+        path: "troubleshooting",
+        children: [
+          {
+            index: true,
+            element: <Navigate replace={true} to={"rejected-traces"} />
+          },
+          {
+            path: "rejected-traces",
+            element: <RejectedTraces />
+          }
+        ]
+      },
       {
         path: "*",
         element: <Navigate to={"/"} replace={true} />
