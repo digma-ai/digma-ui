@@ -74,9 +74,3 @@ export const TableBodyCell = styled.div`
     justify-content: flex-end;
   }
 `;
-
-export const TruncatedText = styled.span`
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-`;
