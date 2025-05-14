@@ -34,6 +34,24 @@ export const Header = () => (
           </HeaderContent>
         }
       />
+      <Route path={"troubleshooting"}>
+        <Route
+          path={"rejected-traces"}
+          element={
+            <HeaderContent>
+              <span>Rejected Traces</span>
+            </HeaderContent>
+          }
+        />
+        <Route
+          path={"*"}
+          element={
+            <HeaderContent>
+              <span>Troubleshooting</span>
+            </HeaderContent>
+          }
+        />
+      </Route>
     </Routes>
   </s.Header>
 );

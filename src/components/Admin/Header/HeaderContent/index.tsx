@@ -8,7 +8,9 @@ export const HeaderContent = ({
   return (
     <s.Container>
       {children}
-      <s.FilterContainer>{toolbarContent}</s.FilterContainer>
+      {toolbarContent && (
+        <s.FilterContainer>{toolbarContent}</s.FilterContainer>
+      )}
     </s.Container>
   );
 };

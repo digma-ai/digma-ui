@@ -1058,3 +1058,29 @@ export interface ExtendedGetSpanEnvironmentsResponse {
     spanCodeObjectId: string;
   };
 }
+
+export interface GetBlockedTracesPayload {
+  page: number;
+  pageSize: number;
+}
+
+export interface BlockedTrace {
+  asset: {
+    span: string;
+    scope: string;
+    service: string;
+  };
+  spans: number;
+  firstSpanTimestamp: string;
+  lastSpanTimestamp: string;
+  duration?: Duration;
+  reason: string;
+  traceId: string;
+}
+
+export interface GetBlockedTracesResponse {
+  traces: BlockedTrace[];
+  page: number;
+  pageSize: number;
+  total: number;
+}

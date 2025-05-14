@@ -18,6 +18,8 @@ import type {
   GetAssetsFiltersResponse,
   GetAssetsPayload,
   GetAssetsResponse,
+  GetBlockedTracesPayload,
+  GetBlockedTracesResponse,
   GetEndpointsIssuesPayload,
   GetEnvironmentServicesPayload,
   GetEnvironmentServicesResponse,
@@ -159,64 +161,6 @@ export const digmaApi = createApi({
       }),
       providesTags: ["Error"]
     }),
-    getGlobalErrors: builder.query<
-      GetGlobalErrorsResponse,
-      GetGlobalErrorsPayload
-    >({
-      query: (data) => ({
-        url: "Errors",
-        method: "POST",
-        body: data
-      }),
-      providesTags: ["Error"]
-    }),
-    getGlobalErrorFilters: builder.query<
-      GetGlobalErrorsFiltersResponse,
-      GetGlobalErrorsFiltersPayload
-    >({
-      query: (data) => ({
-        url: "Errors/filters",
-        method: "POST",
-        body: data
-      })
-    }),
-    getErrorTimeseries: builder.query<
-      GetErrorsTimeseriesResponse,
-      GetErrorTimeseriesPayload
-    >({
-      query: ({ id, ...data }) => ({
-        url: `errors/${window.encodeURIComponent(id)}/timeseries`,
-        params: data
-      })
-    }),
-    pinError: builder.mutation<void, PinErrorPayload>({
-      query: ({ id }) => ({
-        url: `errors/${window.encodeURIComponent(id)}/pin`,
-        method: "POST"
-      }),
-      invalidatesTags: ["Error"]
-    }),
-    unpinError: builder.mutation<void, UnpinErrorPayload>({
-      query: ({ id }) => ({
-        url: `errors/${window.encodeURIComponent(id)}/unpin`,
-        method: "POST"
-      }),
-      invalidatesTags: ["Error"]
-    }),
-    dismissError: builder.mutation<void, DismissErrorPayload>({
-      query: ({ id }) => ({
-        url: `errors/${window.encodeURIComponent(id)}/dismiss`,
-        method: "POST"
-      }),
-      invalidatesTags: ["Error"]
-    }),
-    undismissError: builder.mutation<void, UndismissErrorPayload>({
-      query: ({ id }) => ({
-        url: `errors/${window.encodeURIComponent(id)}/undismiss`,
-        method: "POST"
-      }),
-      invalidatesTags: ["Error"]
-    }),
     getSpanInsight: builder.query<
       GetSpanInsightResponse,
       GetSpanInsightPayload
@@ -255,6 +199,16 @@ export const digmaApi = createApi({
       }),
       invalidatesTags: ["Insight"]
     }),
+    getBlockedTraces: builder.query<
+      GetBlockedTracesResponse,
+      GetBlockedTracesPayload
+    >({
+      query: (data) => ({
+        url: "Diagnostic/blocked-traces",
+        method: "POST",
+        body: data
+      })
+    }),
     getEnvironments: builder.query<GetEnvironmentsResponse, string | void>({
       query: () => "Environments",
       providesTags: ["Environment"]
@@ -279,6 +233,64 @@ export const digmaApi = createApi({
         method: "DELETE"
       }),
       invalidatesTags: ["Environment", "RecentActivity"]
+    }),
+    getErrorTimeseries: builder.query<
+      GetErrorsTimeseriesResponse,
+      GetErrorTimeseriesPayload
+    >({
+      query: ({ id, ...data }) => ({
+        url: `errors/${window.encodeURIComponent(id)}/timeseries`,
+        params: data
+      })
+    }),
+    pinError: builder.mutation<void, PinErrorPayload>({
+      query: ({ id }) => ({
+        url: `errors/${window.encodeURIComponent(id)}/pin`,
+        method: "POST"
+      }),
+      invalidatesTags: ["Error"]
+    }),
+    unpinError: builder.mutation<void, UnpinErrorPayload>({
+      query: ({ id }) => ({
+        url: `errors/${window.encodeURIComponent(id)}/unpin`,
+        method: "POST"
+      }),
+      invalidatesTags: ["Error"]
+    }),
+    dismissError: builder.mutation<void, DismissErrorPayload>({
+      query: ({ id }) => ({
+        url: `errors/${window.encodeURIComponent(id)}/dismiss`,
+        method: "POST"
+      }),
+      invalidatesTags: ["Error"]
+    }),
+    undismissError: builder.mutation<void, UndismissErrorPayload>({
+      query: ({ id }) => ({
+        url: `errors/${window.encodeURIComponent(id)}/undismiss`,
+        method: "POST"
+      }),
+      invalidatesTags: ["Error"]
+    }),
+    getGlobalErrors: builder.query<
+      GetGlobalErrorsResponse,
+      GetGlobalErrorsPayload
+    >({
+      query: (data) => ({
+        url: "Errors",
+        method: "POST",
+        body: data
+      }),
+      providesTags: ["Error"]
+    }),
+    getGlobalErrorFilters: builder.query<
+      GetGlobalErrorsFiltersResponse,
+      GetGlobalErrorsFiltersPayload
+    >({
+      query: (data) => ({
+        url: "Errors/filters",
+        method: "POST",
+        body: data
+      })
     }),
     getSpanPercentilesHistogram: builder.query<
       string,
@@ -543,6 +555,7 @@ export const {
   useGetAssetsQuery,
   useGetUserProfileQuery,
   useResendConfirmationEmailMutation,
+  useGetBlockedTracesQuery,
   useGetErrorsQuery,
   useGetErrorQuery,
   useGetGlobalErrorsQuery,

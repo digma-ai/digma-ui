@@ -1,5 +1,8 @@
 import { useMemo } from "react";
+import { getFeatureFlagValue } from "../../../../featureFlags";
+import { useGetAboutQuery } from "../../../../redux/services/digma";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
+import { FeatureFlag } from "../../../../types";
 import { GlobeIcon } from "../../../common/icons/16px/GlobeIcon";
 import { HomeIcon } from "../../../common/icons/16px/HomeIcon";
 import { MeterHighIcon } from "../../../common/icons/16px/MeterHighIcon";
@@ -9,6 +12,12 @@ import * as s from "./styles";
 
 export const NavMenu = () => {
   const { isSandboxModeEnabled } = useConfigSelector();
+  const { data: about } = useGetAboutQuery();
+
+  const isTroubleshootingEnabled = getFeatureFlagValue(
+    about,
+    FeatureFlag.AreBlockedTracesEnabled
+  );
 
   const navigationItems: NavigationItem[] = useMemo(
     () => [
@@ -40,9 +49,25 @@ export const NavMenu = () => {
             route: "/reports/code-issues"
           }
         ]
-      }
+      },
+      ...(isTroubleshootingEnabled
+        ? [
+            {
+              id: "troubleshooting",
+              name: "Troubleshooting",
+              route: "/troubleshooting",
+              items: [
+                {
+                  id: "rejectedTraces",
+                  name: "Rejected traces",
+                  route: "/troubleshooting/rejected-traces"
+                }
+              ]
+            }
+          ]
+        : [])
     ],
-    [isSandboxModeEnabled]
+    [isSandboxModeEnabled, isTroubleshootingEnabled]
   );
 
   return (
