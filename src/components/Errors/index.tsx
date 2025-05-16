@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { getFeatureFlagValue } from "../../featureFlags";
+import { useMount } from "../../hooks/useMount";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
@@ -51,8 +52,11 @@ export const Errors = () => {
   const previousErrorDetailsWorkspaceItemsOnly = usePrevious(
     errorDetailsWorkspaceItemsOnly
   );
-  const { setErrorDetailsWorkspaceItemsOnly, setGlobalErrorsSelectedFilters } =
-    useStore.getState();
+  const {
+    setErrorDetailsWorkspaceItemsOnly,
+    setGlobalErrorsSelectedFilters,
+    resetGlobalErrors
+  } = useStore.getState();
   const spanCodeObjectId = scope?.span?.spanCodeObjectId;
   const methodId = scope?.span?.methodId ?? undefined;
   const { goTo } = useHistory();
@@ -126,6 +130,13 @@ export const Errors = () => {
     setPersistedShowWorkspaceItemsOnly,
     isErrorDetailsWorkspaceItemsOnlyRehydrated
   ]);
+
+  // Cleanup errors store slice on unmount
+  useMount(() => {
+    return () => {
+      resetGlobalErrors();
+    };
+  });
 
   const handleErrorSelect = (errorId: string) => {
     goTo(errorId);

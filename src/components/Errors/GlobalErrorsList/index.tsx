@@ -69,7 +69,6 @@ export const GlobalErrorsList = () => {
     setGlobalErrorsSearch,
     setGlobalErrorsSorting,
     setGlobalErrorsPage,
-    resetGlobalErrors,
     resetGlobalErrorsSelectedFilters,
     setGlobalErrorsViewMode,
     setGlobalErrorsLastDays,
@@ -154,10 +153,8 @@ export const GlobalErrorsList = () => {
     !isUndefined(data.dismissedCount) &&
     data.dismissedCount > 0;
 
-  // Cleanup errors store slice on unmount
   useMount(() => {
     return () => {
-      resetGlobalErrors();
       window.clearTimeout(animationDelayTimerId.current);
     };
   });

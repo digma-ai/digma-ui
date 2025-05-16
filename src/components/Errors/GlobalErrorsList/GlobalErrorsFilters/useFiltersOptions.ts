@@ -63,7 +63,7 @@ export const useFiltersOptions = (
         }
       },
       {
-        skip: !isEnabled || !selectedServices || selectedServices.length === 0
+        skip: !isEnabled
       }
     );
 
@@ -78,7 +78,7 @@ export const useFiltersOptions = (
         }
       },
       {
-        skip: !isEnabled || !selectedEndpoints || selectedEndpoints.length === 0
+        skip: !isEnabled
       }
     );
 
