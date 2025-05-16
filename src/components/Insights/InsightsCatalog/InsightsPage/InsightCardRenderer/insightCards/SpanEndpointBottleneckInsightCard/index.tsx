@@ -72,7 +72,7 @@ export const SpanEndpointBottleneckInsightCard = ({
   useEffect(() => {
     const newOption = selectedEndpointKey
       ? selectorOptions.find((x) => getEndpointKey(x) === selectedEndpointKey)
-      : undefined;
+      : selectorOptions[0];
 
     setSelectedEndpointKey(newOption ? getEndpointKey(newOption) : undefined);
   }, [selectorOptions, selectedEndpointKey]);

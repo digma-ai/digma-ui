@@ -65,7 +65,7 @@ export const SpaNPlusOneInsightCard = ({
   useEffect(() => {
     const option = selectedEndpointKey
       ? selectorOptions.find((x) => getEndpointKey(x) === selectedEndpointKey)
-      : undefined;
+      : selectorOptions[0];
 
     setSelectedEndpointKey(option ? getEndpointKey(option) : undefined);
   }, [selectorOptions, selectedEndpointKey]);
