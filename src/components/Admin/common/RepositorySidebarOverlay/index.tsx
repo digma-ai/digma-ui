@@ -7,6 +7,7 @@ import History, {
   type HistoryEntry,
   type HistoryEntryLocation
 } from "../../../../history/History";
+import { usePrevious } from "../../../../hooks/usePrevious";
 import {
   digmaApi,
   useGetSpanInfoQuery
@@ -70,18 +71,10 @@ export const RepositorySidebarOverlay = ({
   );
   const { resetInsights, resetAssets, resetGlobalErrors } = useStore.getState();
   const dispatch = useAdminDispatch();
-  const [history] = useState(
-    () =>
-      new History<RepositorySidebarHistoryState>([
-        {
-          location: window.location,
-          state: {
-            spanCodeObjectId: currentSpanCodeObjectId,
-            tabLocation: currentTabLocation
-          }
-        }
-      ])
+  const [history, setHistory] = useState(
+    () => new History<RepositorySidebarHistoryState>([])
   );
+  const previousIsSidebarOpen = usePrevious(isSidebarOpen);
 
   const { data: spanInfo } = useGetSpanInfoQuery(
     { spanCodeObjectId: currentSpanCodeObjectId ?? "" },
@@ -172,17 +165,21 @@ export const RepositorySidebarOverlay = ({
     resetInsights();
     resetAssets();
     resetGlobalErrors();
-    history.clear();
-    setCurrentTabLocation(initialTabLocation);
     setCurrentSpanCodeObjectId(undefined);
+    setCurrentTabLocation(initialTabLocation);
     onSidebarClose();
+  }, [dispatch, onSidebarClose, resetAssets, resetGlobalErrors, resetInsights]);
+
+  // Reset history on sidebar open
+  useEffect(() => {
+    if (!previousIsSidebarOpen && isSidebarOpen) {
+      setHistory(new History<RepositorySidebarHistoryState>([]));
+    }
   }, [
-    dispatch,
-    onSidebarClose,
-    resetAssets,
-    resetGlobalErrors,
-    resetInsights,
-    history
+    previousIsSidebarOpen,
+    isSidebarOpen,
+    currentSpanCodeObjectId,
+    currentTabLocation
   ]);
 
   useEffect(() => {

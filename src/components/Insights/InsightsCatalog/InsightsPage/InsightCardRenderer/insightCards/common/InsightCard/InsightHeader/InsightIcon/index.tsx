@@ -27,7 +27,7 @@ export const InsightIcon = ({
   return (
     <Tag
       title={<InsightIconTooltip {...{ severity, impact, criticality }} />}
-      titlePlacement={"bottom"}
+      titlePlacement={"bottom-start"}
       type={tagType}
       content={
         <s.InsightIconContainer>
