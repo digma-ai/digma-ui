@@ -21,6 +21,7 @@ import {
   setIssuesInsightInfoToOpenTicket
 } from "../../../../redux/slices/repositorySlice";
 import { useStore } from "../../../../store/useStore";
+import { isString } from "../../../../typeGuards/isString";
 import { ScopeChangeEvent } from "../../../../types";
 import type { ChangeScopePayload } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
@@ -279,7 +280,12 @@ export const RepositorySidebarOverlay = ({
         updateHistory({ payload, tabLocation: { id: TAB_IDS.ANALYTICS } });
         break;
       case ScopeChangeEvent.ErrorCardLinkClicked: {
-        const errorId = payload.context.payload?.id as string; // TODO: avoid casting
+        const errorId = payload.context.payload?.id;
+
+        if (!isString(errorId)) {
+          break;
+        }
+
         updateHistory({
           payload,
           tabLocation: { id: TAB_IDS.ERRORS, path: errorId }
