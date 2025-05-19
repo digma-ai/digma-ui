@@ -2,12 +2,15 @@ import { useEffect, useMemo, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { DataFetcherConfiguration } from "../../../../../hooks/useFetchData";
 import { useFetchData } from "../../../../../hooks/useFetchData";
+import { platform } from "../../../../../platform";
 import type { ErrorFlowFrame } from "../../../../../redux/services/types";
 import { useErrorsSelector } from "../../../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../../../store/useStore";
 import { isNull } from "../../../../../typeGuards/isNull";
 import { isString } from "../../../../../typeGuards/isString";
+import { openJaegerTraceInDefaultBrowser } from "../../../../../utils/actions/openJaegerTraceInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
+import { openBrowserTabWithContent } from "../../../../../utils/openBrowserTabWithContent";
 import { TraceIcon } from "../../../../common/icons/16px/TraceIcon";
 import { NewButton } from "../../../../common/v3/NewButton";
 import { ToggleSwitch } from "../../../../common/v3/ToggleSwitch";
@@ -74,6 +77,14 @@ export const FlowStack = ({ data }: FlowStackProps) => {
     sendUserActionTrackingEvent(trackingEvents.TRACE_BUTTON_CLICKED);
 
     if (isString(traceId)) {
+      if (platform === "Web") {
+        openJaegerTraceInDefaultBrowser(
+          traceId,
+          frameStacks[0].frames?.[0]?.codeObjectId ?? undefined
+        );
+        return;
+      }
+
       window.sendMessageToDigma<GoToTracePayload>({
         action: actions.GO_TO_TRACE,
         payload: {
@@ -94,6 +105,13 @@ export const FlowStack = ({ data }: FlowStackProps) => {
     );
 
     if (isString(data.stackTrace)) {
+      if (platform === "Web") {
+        // TODO: replace with URL
+        openBrowserTabWithContent(`
+          <html><body><pre>${data.stackTrace}</pre></body></html>`);
+        return;
+      }
+
       window.sendMessageToDigma<OpenRawErrorStackTraceInEditorPayload>({
         action: actions.OPEN_RAW_ERROR_STACK_TRACE_IN_EDITOR,
         payload: {
@@ -176,16 +194,18 @@ export const FlowStack = ({ data }: FlowStackProps) => {
         })}
       </s.StacksContainer>
       <s.Footer>
-        <ToggleSwitch
-          label={
-            <s.WorkspaceOnlyToggleLabel>
-              Workspace only
-            </s.WorkspaceOnlyToggleLabel>
-          }
-          checked={showWorkspaceOnly}
-          onChange={handleWorkspaceOnlyToggleSwitchChange}
-          labelPosition={"end"}
-        />
+        {platform === "JetBrains" && (
+          <ToggleSwitch
+            label={
+              <s.WorkspaceOnlyToggleLabel>
+                Workspace only
+              </s.WorkspaceOnlyToggleLabel>
+            }
+            checked={showWorkspaceOnly}
+            onChange={handleWorkspaceOnlyToggleSwitchChange}
+            labelPosition={"end"}
+          />
+        )}
         <s.FooterButtonsContainer>
           <NewButton
             buttonType={"secondary"}

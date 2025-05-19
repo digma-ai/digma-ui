@@ -1,9 +1,11 @@
 import type {
   AssetsSortingCriterion,
   AssetType,
+  GetAboutResponse,
   GetEnvironmentsResponse
 } from "../../../redux/services/types";
 import type { ChangeScopePayload } from "../../../utils/actions/changeScope";
+import type { BackendInfo, ScopeSpanRole } from "../../common/App/types";
 import type { Sorting } from "../../common/SortingSelector/types";
 
 export interface AssetsContentProps {
@@ -21,4 +23,6 @@ export interface AssetsContentProps {
   selectedAssetTypeId?: string;
   areFiltersEnabled: boolean;
   className?: string;
+  backendInfo?: BackendInfo | GetAboutResponse | null;
+  spanRole?: ScopeSpanRole;
 }

@@ -1,12 +1,12 @@
 import { getFeatureFlagValue } from "../../../../../featureFlags";
 import { platform } from "../../../../../platform";
 import { useLazyGetSpanPercentilesHistogramQuery } from "../../../../../redux/services/digma";
-import { isString } from "../../../../../typeGuards/isString";
 import {
   FeatureFlag,
   InsightType,
   ScopeChangeEvent
 } from "../../../../../types";
+import { openJaegerTraceInDefaultBrowser } from "../../../../../utils/actions/openJaegerTraceInDefaultBrowser";
 import { openURLInDefaultBrowser } from "../../../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { openBrowserTabWithContent } from "../../../../../utils/openBrowserTabWithContent";
@@ -150,17 +150,8 @@ export const InsightCardRenderer = ({
     insightType: InsightType,
     spanCodeObjectId?: string
   ) => {
-    if (
-      platform === "Web" &&
-      isString(window.jaegerURL) &&
-      window.jaegerURL.length > 0
-    ) {
-      let url = `${window.jaegerURL}/trace/${trace.id}`;
-
-      if (spanCodeObjectId) {
-        url = url.concat(`?uiFind=${spanCodeObjectId}`);
-      }
-      openURLInDefaultBrowser(url);
+    if (platform === "Web") {
+      openJaegerTraceInDefaultBrowser(trace.id, spanCodeObjectId);
       return;
     }
 

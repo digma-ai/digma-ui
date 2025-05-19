@@ -165,8 +165,8 @@ export const NewPopover = ({
             ref={refs.setFloating}
             style={{
               ...floatingStyles,
-              minWidth,
-              maxWidth,
+              minWidth: width ?? minWidth,
+              maxWidth: width ?? maxWidth,
               zIndex: LAYERS.MODAL
             }}
             {...getFloatingProps()}

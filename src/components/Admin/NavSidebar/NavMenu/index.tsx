@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { getFeatureFlagValue } from "../../../../featureFlags";
 import { useGetAboutQuery } from "../../../../redux/services/digma";
-import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { FeatureFlag } from "../../../../types";
 import { GlobeIcon } from "../../../common/icons/16px/GlobeIcon";
 import { HomeIcon } from "../../../common/icons/16px/HomeIcon";
@@ -11,7 +10,6 @@ import type { NavigationItem } from "./NavMenuItem/types";
 import * as s from "./styles";
 
 export const NavMenu = () => {
-  const { isSandboxModeEnabled } = useConfigSelector();
   const { data: about } = useGetAboutQuery();
 
   const isTroubleshootingEnabled = getFeatureFlagValue(
@@ -27,7 +25,7 @@ export const NavMenu = () => {
         route: "/home",
         icon: <HomeIcon size={16} color={"currentColor"} />
       },
-      ...(isSandboxModeEnabled
+      ...(window.isSandboxModeEnabled === true
         ? []
         : [
             {
@@ -67,7 +65,7 @@ export const NavMenu = () => {
           ]
         : [])
     ],
-    [isSandboxModeEnabled, isTroubleshootingEnabled]
+    [isTroubleshootingEnabled]
   );
 
   return (

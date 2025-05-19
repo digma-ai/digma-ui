@@ -10,16 +10,13 @@ import type {
   GetAssetsFiltersResponse
 } from "../../../redux/services/types";
 import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
-import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useStore } from "../../../store/useStore";
-import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
 import type { InsightType } from "../../../types";
 import { FeatureFlag } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
-import { FilterPopup } from "../../common/FilterPopup";
 import { WrenchIcon } from "../../common/icons/12px/WrenchIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { SparkleIcon } from "../../common/icons/SparkleIcon";
@@ -64,7 +61,14 @@ const renderFilterCategory = (
 };
 
 // TODO: move to AssetsContent
-export const AssetsFilter = ({ popupBoundaryRef }: AssetsFilterProps) => {
+export const AssetsFilter = ({
+  spanCodeObjectId: scopeSpanCodeObjectId,
+  backendInfo,
+  environmentId,
+  selectedServices: globallySelectedServices,
+  popupBoundaryRef,
+  width
+}: AssetsFilterProps) => {
   const [data, setData] = useState<GetAssetsFiltersResponse | null>();
   const previousData = usePrevious(data);
   const { filters, search: searchQuery, viewMode } = useAssetsSelector();
@@ -73,13 +77,6 @@ export const AssetsFilter = ({ popupBoundaryRef }: AssetsFilterProps) => {
     setSelectedServices: setGloballySelectedServices
   } = useStore.getState();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const {
-    selectedServices: globallySelectedServices,
-    environment,
-    scope,
-    backendInfo
-  } = useConfigSelector();
-  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const isServicesFilterEnabled = !scopeSpanCodeObjectId;
   const [selectedServices, setSelectedServices] = useState<string[]>(
     isServicesFilterEnabled ? globallySelectedServices ?? [] : []
@@ -96,8 +93,8 @@ export const AssetsFilter = ({ popupBoundaryRef }: AssetsFilterProps) => {
   const [selectedInsights, setSelectedInsights] = useState<InsightType[]>(
     filters?.insights ?? []
   );
-  const previousEnvironment = usePrevious(environment);
-  const previousScope = usePrevious(scope);
+  const previousEnvironmentId = usePrevious(environmentId);
+  const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
   const areExtendedAssetsFiltersEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.AreExtendedAssetsFiltersEnabled
@@ -129,7 +126,7 @@ export const AssetsFilter = ({ popupBoundaryRef }: AssetsFilterProps) => {
         areExtendedAssetsFiltersEnabled && searchQuery.length > 0
           ? searchQuery
           : undefined,
-      environment: environment?.id
+      environment: environmentId
     };
   }, [
     isServicesFilterEnabled,
@@ -142,11 +139,11 @@ export const AssetsFilter = ({ popupBoundaryRef }: AssetsFilterProps) => {
     searchQuery,
     scopeSpanCodeObjectId,
     areExtendedAssetsFiltersEnabled,
-    environment
+    environmentId
   ]);
 
   const { data: assetsFiltersData } = useGetAssetsFiltersQuery(payload, {
-    skip: !environment || !isPopupOpen
+    skip: !environmentId || !isPopupOpen
   });
 
   useEffect(() => {
@@ -157,10 +154,7 @@ export const AssetsFilter = ({ popupBoundaryRef }: AssetsFilterProps) => {
 
   // Clear filters when environment is changed
   useEffect(() => {
-    if (
-      isEnvironment(previousEnvironment) &&
-      previousEnvironment.id !== environment?.id
-    ) {
+    if (previousEnvironmentId && previousEnvironmentId !== environmentId) {
       const defaultFilters = {
         services: [],
         endpoints: [],
@@ -173,18 +167,15 @@ export const AssetsFilter = ({ popupBoundaryRef }: AssetsFilterProps) => {
     }
   }, [
     setFilters,
-    previousEnvironment,
-    environment,
+    previousEnvironmentId,
+    environmentId,
     isServicesFilterEnabled,
     setGloballySelectedServices
   ]);
 
   // Clear filters when scope is changed, but keep selected services
   useEffect(() => {
-    if (
-      previousScope &&
-      previousScope.span?.spanCodeObjectId !== scopeSpanCodeObjectId
-    ) {
+    if (previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId) {
       setFilters({
         services: selectedServices,
         endpoints: [],
@@ -199,7 +190,7 @@ export const AssetsFilter = ({ popupBoundaryRef }: AssetsFilterProps) => {
   }, [
     setFilters,
     setGloballySelectedServices,
-    previousScope,
+    previousScopeSpanCodeObjectId,
     scopeSpanCodeObjectId,
     selectedServices,
     isServicesFilterEnabled
@@ -219,18 +210,18 @@ export const AssetsFilter = ({ popupBoundaryRef }: AssetsFilterProps) => {
   // Close popup on environment or scope changes
   useEffect(() => {
     if (
-      previousEnvironment?.id !== environment?.id ||
-      previousScope?.span?.spanCodeObjectId !== scopeSpanCodeObjectId
+      previousEnvironmentId !== environmentId ||
+      previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId
     ) {
       setIsPopupOpen(false);
 
       discardChanges();
     }
   }, [
-    environment,
+    environmentId,
     scopeSpanCodeObjectId,
-    previousEnvironment,
-    previousScope,
+    previousEnvironmentId,
+    previousScopeSpanCodeObjectId,
     discardChanges
   ]);
 
@@ -495,7 +486,7 @@ export const AssetsFilter = ({ popupBoundaryRef }: AssetsFilterProps) => {
   }
 
   return (
-    <FilterPopup
+    <s.StyledFilterPopup
       onApply={handleApplyButtonClick}
       onClose={handleCloseButtonClick}
       onClearAll={handleClearFiltersButtonClick}
@@ -506,6 +497,7 @@ export const AssetsFilter = ({ popupBoundaryRef }: AssetsFilterProps) => {
       isOpen={isPopupOpen}
       onFiltersButtonClick={handleFiltersButtonClick}
       boundaryRef={popupBoundaryRef}
+      width={width}
     />
   );
 };

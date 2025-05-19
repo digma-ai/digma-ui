@@ -11,8 +11,7 @@ import {
   type BlockedTrace,
   type GetBlockedTracesResponse
 } from "../../../../redux/services/types";
-import { isString } from "../../../../typeGuards/isString";
-import { openURLInDefaultBrowser } from "../../../../utils/actions/openURLInDefaultBrowser";
+import { openJaegerTraceInDefaultBrowser } from "../../../../utils/actions/openJaegerTraceInDefaultBrowser";
 import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../../utils/getDurationString";
 import { TraceIcon } from "../../../common/icons/16px/TraceIcon";
@@ -139,14 +138,7 @@ export const RejectedTraces = () => {
         const value = info.getValue();
 
         const handleTraceButtonClick = () => {
-          if (isString(window.jaegerURL) && window.jaegerURL.length > 0) {
-            let url = `${window.jaegerURL}/trace/${value.traceId}`;
-
-            if (value.asset.span) {
-              url = url.concat(`?uiFind=${value.asset.span}`);
-            }
-            openURLInDefaultBrowser(url);
-          }
+          openJaegerTraceInDefaultBrowser(value.traceId, value.asset.span);
         };
 
         return (

@@ -37,7 +37,7 @@ const tabs: BaseTabData[] = [
   {
     title: "Errors",
     id: TAB_IDS.ERRORS,
-    platforms: ["JetBrains"]
+    platforms: ["JetBrains", "Web"]
   },
   {
     title: "Tests",

@@ -15,7 +15,6 @@ export const Container = styled.div`
   box-shadow: 0 2px 4px 0 rgb(0 0 0 / 29%);
   font-size: 14px;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
-  margin: 0 8px;
 `;
 
 export const Header = styled.div`

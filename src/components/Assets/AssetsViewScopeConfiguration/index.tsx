@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
-import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useStore } from "../../../store/useStore";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { formatUnit } from "../../../utils/formatUnit";
@@ -13,17 +12,17 @@ import type { AssetsViewScopeConfigurationProps, ViewMode } from "./types";
 
 // TODO: move to AssetsContent
 export const AssetsViewScopeConfiguration = ({
-  assetsCount
+  assetsCount,
+  spanRole
 }: AssetsViewScopeConfigurationProps) => {
-  const { scope } = useConfigSelector();
   const { viewMode } = useAssetsSelector();
   const { setAssetsViewMode } = useStore.getState();
 
   useEffect(() => {
-    const isEntryPoint = !scope || scope.span?.role === "Entry";
+    const isEntryPoint = spanRole === "Entry";
 
     setAssetsViewMode(isEntryPoint ? "descendants" : "children");
-  }, [scope, setAssetsViewMode]);
+  }, [spanRole, setAssetsViewMode]);
 
   const handleToggleOptionChange = (value: ViewMode) => {
     setAssetsViewMode(value);

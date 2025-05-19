@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   useAdminDispatch,
   useAdminSelector
@@ -16,9 +16,12 @@ import type {
   GetIssuesPayload
 } from "../../../../redux/services/types";
 import {
+  clear,
   setIssuesInsightIdToOpenSuggestion,
   setIssuesInsightInfoToOpenTicket
 } from "../../../../redux/slices/repositorySlice";
+import { useStore } from "../../../../store/useStore";
+import { isString } from "../../../../typeGuards/isString";
 import { ScopeChangeEvent } from "../../../../types";
 import type { ChangeScopePayload } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
@@ -29,6 +32,7 @@ import { trackingEvents } from "../../tracking";
 import { SidebarOverlay } from "../SidebarOverlay";
 import { Analytics } from "./RepositorySidebar/Analytics";
 import { Assets } from "./RepositorySidebar/Assets";
+import { Errors } from "./RepositorySidebar/Errors";
 import { Header } from "./RepositorySidebar/Header";
 import { Issues } from "./RepositorySidebar/Issues";
 import * as s from "./styles";
@@ -42,6 +46,10 @@ const SIDEBAR_CLASSNAME = "issues-sidebar"; // For Product Fruits selector
 const TRACKING_PREFIX = "repository";
 const prefixedTrackingEvents = addPrefix(TRACKING_PREFIX, trackingEvents, " ");
 
+const initialTabLocation: TabLocation = {
+  id: TAB_IDS.ISSUES
+};
+
 export const RepositorySidebarOverlay = ({
   isSidebarOpen,
   onSidebarClose,
@@ -49,9 +57,8 @@ export const RepositorySidebarOverlay = ({
   scopeDisplayName
 }: RepositorySidebarOverlayProps) => {
   const [isSidebarTransitioning, setIsSidebarTransitioning] = useState(false);
-  const [currentTabLocation, setCurrentTabLocation] = useState<TabLocation>({
-    id: TAB_IDS.ISSUES
-  });
+  const [currentTabLocation, setCurrentTabLocation] =
+    useState<TabLocation>(initialTabLocation);
   const [currentSpanCodeObjectId, setCurrentSpanCodeObjectId] = useState(
     sidebarQuery?.query?.scopedSpanCodeObjectId
   );
@@ -61,6 +68,7 @@ export const RepositorySidebarOverlay = ({
   const insightIdToOpenSuggestion = useAdminSelector(
     (state) => state.repositorySlice.issues.insightIdToOpenSuggestion
   );
+  const { resetInsights, resetAssets, resetGlobalErrors } = useStore.getState();
   const dispatch = useAdminDispatch();
   const [history] = useState(
     () =>
@@ -159,6 +167,24 @@ export const RepositorySidebarOverlay = ({
     );
   }, [history, sidebarQuery?.query?.scopedSpanCodeObjectId]);
 
+  const handleSidebarClose = useCallback(() => {
+    dispatch(clear());
+    resetInsights();
+    resetAssets();
+    resetGlobalErrors();
+    history.clear();
+    setCurrentTabLocation(initialTabLocation);
+    setCurrentSpanCodeObjectId(undefined);
+    onSidebarClose();
+  }, [
+    dispatch,
+    onSidebarClose,
+    resetAssets,
+    resetGlobalErrors,
+    resetInsights,
+    history
+  ]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -170,7 +196,7 @@ export const RepositorySidebarOverlay = ({
         } else if (insightIdToOpenSuggestion) {
           dispatch(setIssuesInsightIdToOpenSuggestion(null));
         } else {
-          onSidebarClose();
+          handleSidebarClose();
         }
       }
     };
@@ -183,7 +209,7 @@ export const RepositorySidebarOverlay = ({
   }, [
     insightInfoToOpenTicket,
     insightIdToOpenSuggestion,
-    onSidebarClose,
+    handleSidebarClose,
     dispatch
   ]);
 
@@ -253,6 +279,19 @@ export const RepositorySidebarOverlay = ({
       case ScopeChangeEvent.AssetsEmptyCategoryParentLinkClicked:
         updateHistory({ payload, tabLocation: { id: TAB_IDS.ANALYTICS } });
         break;
+      case ScopeChangeEvent.ErrorCardLinkClicked: {
+        const errorId = payload.context.payload?.id;
+
+        if (!isString(errorId)) {
+          break;
+        }
+
+        updateHistory({
+          payload,
+          tabLocation: { id: TAB_IDS.ERRORS, path: errorId }
+        });
+        break;
+      }
       case ScopeChangeEvent.InsightsInsightCardTitleAssetLinkClicked:
       case ScopeChangeEvent.InsightsInsightCardAssetLinkClicked:
       default: {
@@ -294,6 +333,12 @@ export const RepositorySidebarOverlay = ({
       handleSelectedAssetTypeIdChange(undefined);
     };
 
+    const handleSelectedErrorIdChange = (errorId?: string) => {
+      updateHistory({
+        tabLocation: { id: TAB_IDS.ERRORS, path: errorId }
+      });
+    };
+
     const currentQuery: GetIssuesPayload = {
       ...sidebarQuery?.query,
       scopedSpanCodeObjectId: currentSpanCodeObjectId
@@ -317,6 +362,16 @@ export const RepositorySidebarOverlay = ({
             onScopeChange={handleScopeChange}
             query={currentQuery}
             onGoToAssets={handleGoToAssets}
+          />
+        );
+      case TAB_IDS.ERRORS:
+        return (
+          <Errors
+            query={currentQuery}
+            onScopeChange={handleScopeChange}
+            onSelectedErrorIdChange={handleSelectedErrorIdChange}
+            onGoToAssets={handleGoToAssets}
+            selectedErrorId={currentTabLocation.path}
           />
         );
       case TAB_IDS.ISSUES:
@@ -356,7 +411,7 @@ export const RepositorySidebarOverlay = ({
   return (
     <SidebarOverlay
       isSidebarOpen={isSidebarOpen}
-      onSidebarClose={onSidebarClose}
+      onSidebarClose={handleSidebarClose}
       onSidebarTransitionStart={handleSidebarTransitionStart}
       onSidebarTransitionEnd={handleSidebarTransitionEnd}
       sidebar={sidebarProps}

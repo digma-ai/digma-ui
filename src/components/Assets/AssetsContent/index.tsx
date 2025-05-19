@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import useDimensions from "react-cool-dimensions";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { usePrevious } from "../../../hooks/usePrevious";
 import {
@@ -46,6 +47,8 @@ export const AssetsContent = ({
   onRefresh,
   selectedAssetTypeId,
   areFiltersEnabled,
+  backendInfo,
+  spanRole,
   className
 }: AssetsContentProps) => {
   const {
@@ -55,7 +58,8 @@ export const AssetsContent = ({
     assets,
     assetCategoriesData
   } = useAssetsSelector();
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const { observe, width } = useDimensions();
   const { setAssetsSearch: setSearch } = useStore.getState();
   const [searchInputValue, setSearchInputValue] = useState(search);
   const debouncedSearchInputValue = useDebounce(
@@ -123,6 +127,7 @@ export const AssetsContent = ({
           environmentId={environmentId}
           spanCodeObjectId={spanCodeObjectId}
           services={services}
+          onScopeChange={onScopeChange}
         />
       );
     }
@@ -142,12 +147,20 @@ export const AssetsContent = ({
     );
   };
 
+  const getContainerRef = (el: HTMLDivElement | null) => {
+    containerRef.current = el;
+    observe(el);
+  };
+
   return (
-    <s.Container ref={containerRef} className={className}>
+    <s.Container ref={getContainerRef} className={className}>
       <s.Header>
         {spanCodeObjectId && (
           <s.HeaderItem>
-            <AssetsViewScopeConfiguration assetsCount={assetsCount} />
+            <AssetsViewScopeConfiguration
+              assetsCount={assetsCount}
+              spanRole={spanRole}
+            />
           </s.HeaderItem>
         )}
         {showAssetsHeaderToolBox && (
@@ -158,7 +171,14 @@ export const AssetsContent = ({
                 value={searchInputValue}
               />
               {areFiltersEnabled && (
-                <AssetsFilter popupBoundaryRef={containerRef} />
+                <AssetsFilter
+                  popupBoundaryRef={containerRef}
+                  spanCodeObjectId={spanCodeObjectId}
+                  environmentId={environmentId}
+                  backendInfo={backendInfo}
+                  selectedServices={services}
+                  width={width}
+                />
               )}
               <Tooltip title={"Refresh"}>
                 <NewIconButton

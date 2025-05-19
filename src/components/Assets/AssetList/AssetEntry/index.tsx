@@ -1,7 +1,6 @@
 import { getFeatureFlagValue } from "../../../../featureFlags";
 import { useNow } from "../../../../hooks/useNow";
 import { AssetsSortingCriterion } from "../../../../redux/services/types";
-import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isString } from "../../../../typeGuards/isString";
 import { FeatureFlag, InsightType } from "../../../../types";
@@ -23,9 +22,9 @@ export const AssetEntry = ({
   onAssetLinkClick,
   entry,
   isImpactHidden,
-  sortingCriterion
+  sortingCriterion,
+  backendInfo
 }: AssetEntryProps) => {
-  const { backendInfo } = useConfigSelector();
   const now = useNow();
   const isNewImpactScoreCalculationEnabled = getFeatureFlagValue(
     backendInfo,
