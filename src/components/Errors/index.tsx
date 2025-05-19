@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { getFeatureFlagValue } from "../../featureFlags";
 import { useMount } from "../../hooks/useMount";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -8,19 +7,12 @@ import { useConfigSelector } from "../../store/config/useConfigSelector";
 import type { GlobalErrorsSelectedFiltersState } from "../../store/errors/errorsSlice";
 import { useErrorsSelector } from "../../store/errors/useErrorsSelector";
 import { useStore } from "../../store/useStore";
-import { trackingEvents as globalEvents } from "../../trackingEvents";
 import { isUndefined } from "../../typeGuards/isUndefined";
-import { FeatureFlag } from "../../types";
-import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
-import { NewButton } from "../common/v3/NewButton";
+import { changeScope } from "../../utils/actions/changeScope";
 import { useHistory } from "../Main/useHistory";
 import { TAB_IDS } from "../Navigation/Tabs/types";
-import { EmptyState } from "./EmptyState";
-import { ErrorDetails } from "./ErrorDetails";
 import type { ShowOnlyWorkspaceErrorStackTraceItemsPayload } from "./ErrorDetails/ErrorDetailsCardContent/FlowStack/types";
-import { ErrorsList } from "./ErrorsList";
-import { GlobalErrorsList } from "./GlobalErrorsList";
-import * as s from "./styles";
+import { ErrorsContent } from "./ErrorsContent";
 
 const PERSISTENCE_KEY = "globalErrorsFilters";
 const SHOW_ONLY_WORKSPACE_ERROR_STACK_TRACE_ITEMS_PERSISTENCE_KEY =
@@ -46,7 +38,8 @@ export const Errors = () => {
   const previousPersistedShowWorkspaceItemsOnly = usePrevious(
     persistedShowWorkspaceItemsOnly
   );
-  const { scope, backendInfo, selectedServices } = useConfigSelector();
+  const { scope, backendInfo, selectedServices, environment } =
+    useConfigSelector();
   const { errorDetailsWorkspaceItemsOnly, globalErrorsSelectedFilters } =
     useErrorsSelector();
   const previousErrorDetailsWorkspaceItemsOnly = usePrevious(
@@ -62,10 +55,6 @@ export const Errors = () => {
   const { goTo } = useHistory();
   const params = useParams();
   const selectedErrorId = params.id;
-  const isGlobalErrorsViewEnabled = getFeatureFlagValue(
-    backendInfo,
-    FeatureFlag.AreGlobalErrorsEnabled
-  );
   const isInitialized = Boolean(globalErrorsSelectedFilters);
 
   useEffect(() => {
@@ -146,10 +135,7 @@ export const Errors = () => {
     goTo("..");
   };
 
-  const handleSeeAllAssetsClick = () => {
-    sendUserActionTrackingEvent(globalEvents.GO_TO_ALL_ASSETS_CLICKED, {
-      source: "Error tab"
-    });
+  const handleGoToAssets = () => {
     goTo(`/${TAB_IDS.ASSETS}`);
   };
 
@@ -157,43 +143,18 @@ export const Errors = () => {
     return null;
   }
 
-  const renderContent = () => {
-    if (selectedErrorId) {
-      return (
-        <ErrorDetails
-          id={selectedErrorId}
-          onGoToAllErrors={handleGoToAllErrors}
-        />
-      );
-    }
-
-    if (!spanCodeObjectId) {
-      if (isGlobalErrorsViewEnabled) {
-        return <GlobalErrorsList />;
-      }
-
-      return (
-        <EmptyState
-          preset={"selectAsset"}
-          customContent={
-            <NewButton
-              buttonType={"primary"}
-              onClick={handleSeeAllAssetsClick}
-              label={"See all assets"}
-            />
-          }
-        />
-      );
-    }
-
-    return (
-      <ErrorsList
-        onErrorSelect={handleErrorSelect}
-        spanCodeObjectId={spanCodeObjectId}
-        methodId={methodId}
-      />
-    );
-  };
-
-  return <s.Container>{renderContent()}</s.Container>;
+  return (
+    <ErrorsContent
+      onGoToAssets={handleGoToAssets}
+      onGoToErrors={handleGoToAllErrors}
+      onErrorSelect={handleErrorSelect}
+      spanCodeObjectId={spanCodeObjectId}
+      methodId={methodId}
+      errorId={selectedErrorId}
+      backendInfo={backendInfo}
+      selectedServices={selectedServices ?? undefined}
+      onScopeChange={changeScope}
+      environmentId={environment?.id}
+    />
+  );
 };

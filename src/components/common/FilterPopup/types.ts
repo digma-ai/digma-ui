@@ -14,4 +14,6 @@ export interface FilterPopupProps {
   }[];
   isOpen: boolean;
   boundaryRef?: RefObject<HTMLElement>;
+  width?: number;
+  className?: string;
 }

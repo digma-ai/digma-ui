@@ -4,6 +4,7 @@ export interface OccurrenceChartProps {
   errorId: string;
   spanCodeObjectId: string;
   service: string;
+  environmentId?: string;
 }
 
 export interface HorizontalCoordinatesGeneratorProps {

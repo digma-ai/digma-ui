@@ -8,7 +8,6 @@ import { useStore } from "../../../../../store/useStore";
 import { FeatureFlag, type InsightType } from "../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
-import { FilterPopup } from "../../../../common/FilterPopup";
 import { EyeIcon } from "../../../../common/icons/12px/EyeIcon";
 import { FourPointedStarIcon } from "../../../../common/icons/12px/FourPointedStarIcon";
 import { WrenchIcon } from "../../../../common/icons/12px/WrenchIcon";
@@ -461,7 +460,7 @@ export const IssuesFilter = () => {
   ];
 
   return (
-    <FilterPopup
+    <s.StyledFilterPopup
       isOpen={isPopupOpen}
       onApply={handleApplyFiltersButtonClick}
       onClearAll={handleClearFiltersButtonClick}

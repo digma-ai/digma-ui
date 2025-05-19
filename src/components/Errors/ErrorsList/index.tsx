@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { useGetErrorsQuery } from "../../../redux/services/digma";
 import type { GetErrorsPayload } from "../../../redux/services/types";
-import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { EmptyState } from "../EmptyState";
@@ -15,21 +14,20 @@ const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 export const ErrorsList = ({
   onErrorSelect,
   spanCodeObjectId,
-  methodId
+  methodId,
+  environmentId
 }: ErrorsListProps) => {
-  const { environment } = useConfigSelector();
-
   const payload: GetErrorsPayload = useMemo(
     () => ({
       codeObjectId: [spanCodeObjectId, methodId].filter(isString),
-      environment: environment?.id ?? ""
+      environment: environmentId ?? ""
     }),
-    [spanCodeObjectId, methodId, environment?.id]
+    [spanCodeObjectId, methodId, environmentId]
   );
 
   const { data } = useGetErrorsQuery(payload, {
     pollingInterval: REFRESH_INTERVAL,
-    skip: !environment?.id
+    skip: !environmentId
   });
 
   if (!data) {

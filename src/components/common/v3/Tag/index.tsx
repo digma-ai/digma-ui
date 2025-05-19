@@ -5,11 +5,11 @@ import * as s from "./styles";
 import type { TagProps } from "./types";
 
 const TagComponent = (
-  { className, type, content, title }: TagProps,
+  { className, type, content, title, titlePlacement }: TagProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => (
   <s.Container className={className} $type={type} ref={ref}>
-    <Tooltip title={title} isDisabled={!title}>
+    <Tooltip title={title} isDisabled={!title} placement={titlePlacement}>
       <s.ValueContainer>{content}</s.ValueContainer>
     </Tooltip>
   </s.Container>

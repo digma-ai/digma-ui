@@ -77,12 +77,12 @@ export const Footer = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  justify-content: space-between;
   margin-top: auto;
   padding: 0 8px;
 `;
 
 export const FooterButtonsContainer = styled.div`
+  margin-left: auto;
   display: flex;
   align-items: center;
   gap: 8px;

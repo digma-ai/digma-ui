@@ -16,7 +16,6 @@ import type {
   ErrorsTimeseriesRecord,
   GetErrorTimeseriesPayload
 } from "../../../../redux/services/types";
-import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { measureTextWidth } from "../../../../utils/measureTextWidth";
 import { HistogramIcon } from "../../../common/icons/30px/HistogramIcon";
@@ -32,11 +31,10 @@ const Y_AXIS_PADDING = 4;
 export const OccurrenceChart = ({
   errorId,
   spanCodeObjectId,
-  service
+  service,
+  environmentId
 }: OccurrenceChartProps) => {
   const theme = useTheme();
-  const { environment } = useConfigSelector();
-  const environmentId = environment?.id;
 
   const tickLabelStyles: SVGProps<SVGTextElement> = {
     fill: theme.colors.v3.text.secondary,

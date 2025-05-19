@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useTheme } from "styled-components";
 import { useAdminDispatch } from "../../../containers/Admin/hooks";
 import { useLogoutMutation } from "../../../redux/services/auth";
-import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getThemeKind } from "../../common/App/styles";
 import { LogoutIcon } from "../../common/icons/16px/LogoutIcon";
@@ -17,7 +16,6 @@ export const NavSidebar = () => {
   const themeKind = getThemeKind(theme);
   const [logout, result] = useLogoutMutation();
   const dispatch = useAdminDispatch();
-  const { isSandboxModeEnabled } = useConfigSelector();
   const posthog = usePostHog();
 
   const handleLogoLinkClick = () => {
@@ -58,7 +56,7 @@ export const NavSidebar = () => {
       </s.LogoLink>
       <NavMenu />
       <s.Footer>
-        {isSandboxModeEnabled && <TrialPromotionCard />}
+        {window.isSandboxModeEnabled === true && <TrialPromotionCard />}
         <s.LogoutButton onClick={handleLogoutButtonClick}>
           <LogoutIcon size={16} color={"currentColor"} />
           Log out

@@ -2,12 +2,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { ViewMode } from "../../../store/errors/errorsSlice";
 import { useErrorsSelector } from "../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../store/useStore";
 import { FeatureFlag } from "../../../types";
-import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import {
   AffectedEndpointsSelector,
@@ -36,11 +34,13 @@ export const NewErrorCard = ({
   onSourceLinkClick,
   onPinStatusChange,
   onDismissStatusChange,
-  onPinStatusToggle
+  onPinStatusToggle,
+  backendInfo,
+  onScopeChange,
+  environmentId
 }: NewErrorCardProps) => {
   const [isHistogramVisible, setIsHistogramVisible] = useState(false);
   const chartContainerRef = useRef<HTMLDivElement>(null);
-  const { backendInfo } = useConfigSelector();
   const { globalErrorsList } = useErrorsSelector();
   const { setGlobalErrorsViewMode } = useStore.getState();
   const [isPinned, setIsPinned] = useState(Boolean(data.pinnedAt));
@@ -166,7 +166,7 @@ export const NewErrorCard = ({
       trackingEvents.ERROR_CARD_AFFECTED_ENDPOINT_LINK_CLICKED
     );
 
-    changeScope({
+    onScopeChange({
       span: {
         spanCodeObjectId
       }
@@ -318,6 +318,7 @@ export const NewErrorCard = ({
                   service={selectedOption.serviceName}
                   spanCodeObjectId={selectedOption.spanCodeObjectId}
                   errorId={id}
+                  environmentId={environmentId}
                 />
               </s.OccurrenceChartContainer>
             </CSSTransition>

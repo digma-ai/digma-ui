@@ -5,7 +5,6 @@ import type {
   ErrorCriticality,
   ErrorHandlingType
 } from "../../../../redux/services/types";
-import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { useErrorsSelector } from "../../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../../store/useStore";
 import { FeatureFlag } from "../../../../types";
@@ -20,19 +19,21 @@ import type { IconProps } from "../../../common/icons/types";
 import type { SelectItem } from "../../../common/v3/Select/types";
 import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
+import type { GlobalErrorsFiltersProps } from "./types";
 import { useFiltersOptions } from "./useFiltersOptions";
 
 const getSelectPlaceholder = (options: SelectItem[], placeholder: string) =>
   options.filter((x) => x.selected).length > 0 ? placeholder : "All";
 
-export const GlobalErrorsFilters = () => {
+export const GlobalErrorsFilters = ({
+  environmentId,
+  backendInfo,
+  selectedServices: globallySelectedServices,
+  spanCodeObjectId: scopeSpanCodeObjectId,
+  popupBoundaryRef,
+  width
+}: GlobalErrorsFiltersProps) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const {
-    environment,
-    backendInfo,
-    selectedServices: globallySelectedServices,
-    scope
-  } = useConfigSelector();
   const areGlobalErrorsCriticalityAndUnhandledFiltersEnabled =
     getFeatureFlagValue(
       backendInfo,
@@ -46,9 +47,7 @@ export const GlobalErrorsFilters = () => {
     setSelectedServices: setGloballySelectedServices
   } = useStore.getState();
   const { services, endpoints, errorTypes } = globalErrorsFilters;
-  const environmentId = environment?.id;
   const previousEnvironmentId = usePrevious(environmentId);
-  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
   const [selectedServices, setSelectedServices] = useState<string[]>(
     globallySelectedServices ?? []
@@ -461,6 +460,8 @@ export const GlobalErrorsFilters = () => {
       filters={filters}
       isOpen={isPopupOpen}
       onFiltersButtonClick={handleFiltersButtonClick}
+      boundaryRef={popupBoundaryRef}
+      width={width}
     />
   );
 };

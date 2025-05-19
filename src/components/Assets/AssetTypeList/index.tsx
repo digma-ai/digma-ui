@@ -9,7 +9,6 @@ import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
 import { useStore } from "../../../store/useStore";
 import { isNull } from "../../../typeGuards/isNull";
 import { ScopeChangeEvent } from "../../../types";
-import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { EmptyState } from "../EmptyState";
 import { trackingEvents } from "../tracking";
@@ -25,7 +24,8 @@ export const AssetTypeList = ({
   onAssetTypeSelect,
   services,
   spanCodeObjectId,
-  environmentId
+  environmentId,
+  onScopeChange
 }: AssetTypeListProps) => {
   const { search, viewMode, filters } = useAssetsSelector();
   const { setAssetCategoriesData: setData, setShowAssetsHeaderToolBox } =
@@ -96,7 +96,7 @@ export const AssetTypeList = ({
 
   const handleAssetLinkClick = (spanCodeObjectId: string) => () => {
     sendUserActionTrackingEvent(trackingEvents.ALL_ASSETS_LINK_CLICKED);
-    changeScope({
+    onScopeChange({
       span: { spanCodeObjectId },
       context: {
         event: ScopeChangeEvent.AssetsEmptyCategoryParentLinkClicked

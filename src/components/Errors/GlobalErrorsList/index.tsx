@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import useDimensions from "react-cool-dimensions";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useMount } from "../../../hooks/useMount";
 import { usePrevious } from "../../../hooks/usePrevious";
@@ -7,14 +8,12 @@ import {
   GlobalErrorsSortingCriterion,
   type GetGlobalErrorsPayload
 } from "../../../redux/services/types";
-import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { PAGE_SIZE, ViewMode } from "../../../store/errors/errorsSlice";
 import { useErrorsSelector } from "../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../store/useStore";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { FeatureFlag, ScopeChangeEvent } from "../../../types";
-import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
 import { DaysFilter } from "../../common/DaysFilter";
@@ -25,7 +24,6 @@ import { NewPopover } from "../../common/NewPopover";
 import { SearchInput } from "../../common/SearchInput";
 import { NewButton } from "../../common/v3/NewButton";
 import { Pagination } from "../../common/v3/Pagination";
-import { useHistory } from "../../Main/useHistory";
 import { MenuList } from "../../Navigation/common/MenuList";
 import { Popup } from "../../Navigation/common/Popup";
 import { EmptyState } from "../EmptyState";
@@ -33,17 +31,25 @@ import { NewErrorCard } from "../NewErrorCard";
 import { trackingEvents } from "../tracking";
 import { GlobalErrorsFilters } from "./GlobalErrorsFilters";
 import * as s from "./styles";
+import type { GlobalErrorsListProps } from "./types";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 const PIN_UNPIN_ANIMATION_DURATION = 250;
 
-export const GlobalErrorsList = () => {
-  const { goTo } = useHistory();
+export const GlobalErrorsList = ({
+  backendInfo,
+  environmentId,
+  services,
+  spanCodeObjectId,
+  onScopeChange,
+  onErrorSelect
+}: GlobalErrorsListProps) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const { observe, width } = useDimensions();
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
   const listContainerRef = useRef<HTMLDivElement | null>(null);
   const [latestPinChangedId, setLatestPinChangedId] = useState<string>();
   const [areAnimationsEnabled, setAreAnimationsEnabled] = useState(false);
-  const { environment, backendInfo, selectedServices } = useConfigSelector();
   const animationDelayTimerId = useRef<number>();
   const isDismissEnabled = getFeatureFlagValue(
     backendInfo,
@@ -91,7 +97,6 @@ export const GlobalErrorsList = () => {
       FeatureFlag.AreGlobalErrorsCriticalityAndUnhandledFiltersEnabled
     );
 
-  const environmentId = environment?.id;
   const previousEnvironmentId = usePrevious(environmentId);
 
   const sortingMenuItems = Object.values(GlobalErrorsSortingCriterion).map(
@@ -113,7 +118,7 @@ export const GlobalErrorsList = () => {
       dismissed: mode === ViewMode.OnlyDismissed,
       ...(areGlobalErrorsFiltersEnabled
         ? {
-            services: selectedServices ?? [],
+            services: services ?? [],
             endpoints: selectedFilters?.endpoints ?? [],
             errorTypes: selectedFilters?.errorTypes ?? []
           }
@@ -133,7 +138,7 @@ export const GlobalErrorsList = () => {
       mode,
       lastDays,
       areGlobalErrorsFiltersEnabled,
-      selectedServices,
+      services,
       selectedFilters?.endpoints,
       selectedFilters?.errorTypes,
       selectedFilters?.criticalities,
@@ -142,7 +147,7 @@ export const GlobalErrorsList = () => {
     ]
   );
 
-  const { data, refetch } = useGetGlobalErrorsQuery(payload, {
+  const { data, refetch, isLoading } = useGetGlobalErrorsQuery(payload, {
     skip: !environmentId,
     pollingInterval: REFRESH_INTERVAL
   });
@@ -195,7 +200,7 @@ export const GlobalErrorsList = () => {
     environmentId,
     search,
     setGlobalErrorsPage,
-    selectedServices,
+    services,
     selectedFilters?.endpoints,
     selectedFilters?.errorTypes,
     selectedFilters?.criticalities,
@@ -221,9 +226,9 @@ export const GlobalErrorsList = () => {
     spanCodeObjectId?: string | null
   ) => {
     if (spanCodeObjectId) {
-      changeScope({
+      onScopeChange({
         span: {
-          spanCodeObjectId: spanCodeObjectId
+          spanCodeObjectId
         },
         context: {
           event: ScopeChangeEvent.ErrorCardLinkClicked,
@@ -233,7 +238,7 @@ export const GlobalErrorsList = () => {
         }
       });
     } else {
-      goTo(errorId);
+      onErrorSelect(errorId);
     }
   };
 
@@ -304,7 +309,7 @@ export const GlobalErrorsList = () => {
   const areAnyFiltersApplied =
     search ||
     [
-      selectedServices ?? [],
+      services ?? [],
       selectedFilters?.endpoints ?? [],
       selectedFilters?.errorTypes ?? [],
       selectedFilters?.criticalities ?? [],
@@ -325,8 +330,13 @@ export const GlobalErrorsList = () => {
     />
   );
 
+  const getContainerRef = (el: HTMLDivElement | null) => {
+    containerRef.current = el;
+    observe(el);
+  };
+
   return (
-    <s.Container>
+    <s.Container ref={getContainerRef}>
       {mode === ViewMode.OnlyDismissed && isNumber(data?.dismissedCount) && (
         <s.ViewModeToolbarRow>
           <s.BackToAllErrorsButton onClick={handleBackToAllInsightsButtonClick}>
@@ -348,7 +358,16 @@ export const GlobalErrorsList = () => {
       {list ? (
         <>
           <s.ToolbarContainer>
-            {areGlobalErrorsFiltersEnabled && <GlobalErrorsFilters />}
+            {areGlobalErrorsFiltersEnabled && (
+              <GlobalErrorsFilters
+                selectedServices={services}
+                spanCodeObjectId={spanCodeObjectId}
+                backendInfo={backendInfo}
+                environmentId={environmentId}
+                popupBoundaryRef={containerRef}
+                width={width}
+              />
+            )}
             <SearchInput value={search} onChange={handleSearchInputChange} />
             {isGlobalErrorsLastDaysFilterEnabled && (
               <DaysFilter
@@ -393,6 +412,9 @@ export const GlobalErrorsList = () => {
                   onPinStatusChange={handlePinStatusChange}
                   onPinStatusToggle={handlePinStatusToggle}
                   onDismissStatusChange={handleDismissalStatusChange}
+                  backendInfo={backendInfo}
+                  onScopeChange={onScopeChange}
+                  environmentId={environmentId}
                 />
               ))}
             </s.ListContainer>
@@ -430,6 +452,8 @@ export const GlobalErrorsList = () => {
         </>
       ) : !environmentId ? (
         <EmptyState preset={"noData"} />
+      ) : isLoading ? (
+        <EmptyState preset={"loading"} />
       ) : null}
     </s.Container>
   );

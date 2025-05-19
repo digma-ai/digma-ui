@@ -1,3 +1,4 @@
+import type { Placement } from "@floating-ui/react";
 import type { ReactNode } from "react";
 
 export type TagType =
@@ -13,6 +14,7 @@ export interface TagProps {
   type?: TagType;
   className?: string;
   title?: ReactNode;
+  titlePlacement?: Placement;
 }
 
 export interface ContainerProps {

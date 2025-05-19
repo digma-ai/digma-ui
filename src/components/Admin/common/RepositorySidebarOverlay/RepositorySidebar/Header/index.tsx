@@ -109,11 +109,13 @@ export const Header = ({
         />
       </s.ToolbarRow>
       {!isAtHome && isSpanInfoEnabled && spanInfo && isSpanInfoVisible && (
-        <SpanInfo
-          data={spanInfo}
-          onCollapse={handleSpanInfoCollapse}
-          spanCodeObjectId={spanCodeObjectId}
-        />
+        <s.ToolbarRow>
+          <SpanInfo
+            data={spanInfo}
+            onCollapse={handleSpanInfoCollapse}
+            spanCodeObjectId={spanCodeObjectId}
+          />
+        </s.ToolbarRow>
       )}
       <s.TabsContainer>
         <Tabs
