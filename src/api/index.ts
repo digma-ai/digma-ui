@@ -65,8 +65,6 @@ export const initializeDigmaMessageListener = (
       break;
   }
 
-  window.addEventListener("message", handleDigmaMessage);
-
   return () => {
     switch (platform) {
       case "Visual Studio":

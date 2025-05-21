@@ -54,7 +54,7 @@ export const Filters = styled(Row)`
 
 const StyledToggle = styled(Toggle)`
   align-items: center;
-  background-color: transparent;
+  background: transparent;
   border-radius: 8px;
   border-color: ${({ theme }) => theme.colors.v3.stroke.primaryLight};
 `;

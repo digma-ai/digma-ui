@@ -99,6 +99,7 @@ export const NewPopover = ({
             setMinWidth(rects.reference.width);
             setMaxWidth(rects.reference.width);
           } else {
+            // TODO: Check if needed
             const safeAvailableWidth = Math.max(availableWidth, 0);
             const viewportWidth = window.innerWidth;
             const anchorLeft = rects.reference.x;

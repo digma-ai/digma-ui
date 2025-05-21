@@ -91,13 +91,13 @@ if (process.env.JAEGER_UI_PATH) {
   if (!fs.existsSync(customJaegerUIPath)) {
     // eslint-disable-next-line no-console
     console.error(
-      `Jaeger UI distributive has not been found at ${customJaegerUIPath}`
+      `Jaeger UI distribution has not been found at ${customJaegerUIPath}`
     );
     process.exit(1);
   }
 
   // eslint-disable-next-line no-console
-  console.log(`Using Jaeger UI distributive from ${customJaegerUIPath}`);
+  console.log(`Using Jaeger UI distribution from ${customJaegerUIPath}`);
 
   fs.copySync(customJaegerUIPath, extractPath);
 

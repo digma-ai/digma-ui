@@ -41,7 +41,7 @@ const getURLToNavigateOnCodeLensClick = (scope: Scope): string | undefined => {
   }
 
   const codeLens = scope.context.payload.codeLens;
-  if (!codeLens.scopeCodeObjectId.startsWith("span:")) {
+  if (!codeLens.scopeCodeObjectId?.startsWith("span:")) {
     return;
   }
 
