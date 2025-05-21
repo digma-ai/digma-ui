@@ -32,7 +32,7 @@ export const Admin = () => {
     FeatureFlag.IsUserIdEnabled
   );
 
-  // Clear issues report state when user changes
+  // Clear state when user changes
   useEffect(() => {
     if (isUserIdEnabled && userProfile) {
       if (currentUser?.uid !== userProfile?.uid) {

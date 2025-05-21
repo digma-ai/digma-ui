@@ -1,5 +1,7 @@
 # Digma UI
 
+Digma UI is a React-based frontend for the Digma continuous feedback platform. The project is a monorepo for multiple React applications and provides the distributions for different platforms: Web and IDEs (JetBrains, Visual Studio and VS Code)
+
 Install dependencies:
 
 ```shell
@@ -57,7 +59,7 @@ To set environment variables use .env file
 
 ## Jaeger UI
 
-The Digma UI distributive includes a [Digma fork of Jaeger UI](https://github.com/digma-ai/jaeger-ui). You can find the linked version in the [./dependencies.json](./dependencies.json) file.
+The Digma UI distribution includes a [Digma fork of Jaeger UI](https://github.com/digma-ai/jaeger-ui). You can find the linked version in the [./dependencies.json](./dependencies.json) file.
 
 To use a custom build of Jaeger UI during development set `JAEGER_UI_PATH` environment variable.
 

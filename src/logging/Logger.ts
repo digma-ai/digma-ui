@@ -20,13 +20,17 @@ export class Logger {
     return format(new Date(), "HH:mm:ss");
   }
 
-  private getLogLevelTag(): string {
-    return LogLevel[this.minLogLevel];
+  private getLogLevelTag(level: LogLevel): string {
+    return LogLevel[level];
   }
 
-  private getFormattedMessage(tags: string[], message: unknown): string {
+  private getFormattedMessage(
+    level: LogLevel,
+    tags: string[],
+    message: unknown
+  ): string {
     if (this.showLogLevel) {
-      tags.unshift(this.getLogLevelTag());
+      tags.unshift(this.getLogLevelTag(level));
     }
 
     if (this.showTimeStamp) {
@@ -48,7 +52,7 @@ export class Logger {
     message?: unknown,
     ...optionalParams: unknown[]
   ): void {
-    const formattedMessage = this.getFormattedMessage(tags, message);
+    const formattedMessage = this.getFormattedMessage(level, tags, message);
 
     if (this.minLogLevel > level) {
       return;

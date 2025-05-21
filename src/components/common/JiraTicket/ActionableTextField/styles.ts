@@ -15,7 +15,7 @@ export const TextFieldContainer = styled.div`
 
 export const RelativeTextField = styled(TextField)`
   position: relative;
-  background-color: transparent;
+  background: transparent;
   border: 1px solid ${({ theme }) => theme.colors.field.border};
 
   & > input {
