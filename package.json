@@ -126,6 +126,7 @@
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.5.0",
     "@tanstack/react-table": "^8.7.8",
+    "@xyflow/react": "^12.6.4",
     "allotment": "^1.19.0",
     "axios": "^1.8.4",
     "copy-to-clipboard": "^3.3.3",

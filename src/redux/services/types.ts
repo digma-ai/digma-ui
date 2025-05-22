@@ -1084,3 +1084,46 @@ export interface GetBlockedTracesResponse {
   pageSize: number;
   total: number;
 }
+
+export interface IncidentResponseItem {
+  id: string;
+  name: string;
+  active_status: "active" | "paused" | "closed";
+  created_at: string;
+  closed_at: string | null;
+}
+
+export interface GetIncidentsResponse {
+  items: IncidentResponseItem[];
+}
+
+export interface GetIncidentPayload {
+  id: string;
+}
+
+export interface GetIncidentResponse {
+  status: string;
+  summary: string;
+}
+
+export type AgentStatus = "pending" | "active" | "inactive";
+
+export interface Agent {
+  name: string;
+  displayName: string;
+  running: boolean;
+  status: AgentStatus;
+  mcpServers: {
+    id: string;
+    name: string;
+    status: boolean;
+  }[];
+}
+
+export interface GetIncidentAgentsPayload {
+  id: string;
+}
+
+export interface GetIncidentAgentsResponse {
+  agents: Agent[];
+}
