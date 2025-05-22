@@ -41,12 +41,13 @@ const getURLToNavigateOnCodeLensClick = (scope: Scope): string | undefined => {
   }
 
   const codeLens = scope.context.payload.codeLens;
-  if (!codeLens.scopeCodeObjectId?.startsWith("span:")) {
-    return;
-  }
 
   if (codeLens.lensTitle.toLocaleLowerCase().includes("error hotspot")) {
     return `/${TAB_IDS.ERRORS}`;
+  }
+
+  if (!codeLens.scopeCodeObjectId?.startsWith("span:")) {
+    return;
   }
 
   if (codeLens.importance <= 4) {
