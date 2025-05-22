@@ -57,14 +57,8 @@ export interface ScopeSpan {
   role: ScopeSpanRole | null;
 }
 
-export interface MethodScope {
-  methodId: string;
-  displayName: string | null;
-}
-
 export interface Scope {
   span: ScopeSpan | null;
-  method?: MethodScope;
   code: {
     relatedCodeDetailsList: CodeDetails[];
     codeDetailsList: CodeDetails[];

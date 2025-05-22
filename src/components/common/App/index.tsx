@@ -332,9 +332,7 @@ export const App = ({ theme, children, id }: AppProps) => {
           };
           scope = newScope;
 
-          if (newScope.method?.methodId) {
-            setGlobalErrorsSearch(newScope.method?.methodId);
-          }
+          setGlobalErrorsSearch(newScope.context.payload.codeLens.codeMethod);
         }
 
         setScope(scope);
