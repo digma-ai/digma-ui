@@ -44,6 +44,7 @@ export const BottomContentContainer = styled.div`
   display: flex;
   gap: 24px;
   height: 100%;
+  overflow: auto;
 `;
 
 export const Breadcrumbs = styled.div`
@@ -93,7 +94,6 @@ export const SummaryContainer = styled.div`
   gap: 24px;
   border-radius: 16px;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
-  overflow: auto;
   width: 60%;
 `;
 
