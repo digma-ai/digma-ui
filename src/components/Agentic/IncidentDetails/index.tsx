@@ -1,11 +1,17 @@
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import { useTheme } from "styled-components";
-import { useAgenticSelector } from "../../../containers/Agentic/hooks";
+import {
+  useAgenticDispatch,
+  useAgenticSelector
+} from "../../../containers/Agentic/hooks";
 import { useGetIncidentQuery } from "../../../redux/services/digma";
+import { setAgentId } from "../../../redux/slices/incidentsSlice";
 import { TwoVerticalLinesIcon } from "../../common/icons/16px/TwoVerticalLinesIcon";
 import { Direction } from "../../common/icons/types";
+import { NewButton } from "../../common/v3/NewButton";
 import { AgentFlowChart } from "./AgentFlowChart";
+import { AgentLiveStream } from "./AgentLiveStream";
 import * as s from "./styles";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
@@ -13,14 +19,20 @@ const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 export const IncidentDetails = () => {
   const theme = useTheme();
   const incidentId = useAgenticSelector((state) => state.incidents.incidentId);
+  const agentId = useAgenticSelector((state) => state.incidents.agentId);
+  const dispatch = useAgenticDispatch();
 
-  const { data } = useGetIncidentQuery(
+  const { data: incidentData } = useGetIncidentQuery(
     { id: incidentId ?? "" },
     {
       pollingInterval: REFRESH_INTERVAL,
       skip: !incidentId
     }
   );
+
+  const handleGoBackToSummaryButtonClick = () => {
+    dispatch(setAgentId(null));
+  };
 
   if (!incidentId) {
     return null;
@@ -39,9 +51,19 @@ export const IncidentDetails = () => {
             />
           </s.Holder>
           <s.StepSummaryContentContainer>
-            <s.StatusBar>{data?.status}</s.StatusBar>
+            <s.StatusBar>{incidentData?.status}</s.StatusBar>
             <s.StepSummaryTextContainer>
-              {data?.summary}
+              {agentId ? (
+                <>
+                  <NewButton
+                    label={"Go back to summary"}
+                    onClick={handleGoBackToSummaryButtonClick}
+                  />
+                  <AgentLiveStream />
+                </>
+              ) : (
+                incidentData?.summary
+              )}
             </s.StepSummaryTextContainer>
           </s.StepSummaryContentContainer>
         </s.StepSummaryContainer>

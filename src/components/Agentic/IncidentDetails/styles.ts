@@ -30,7 +30,7 @@ export const StepSummaryContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  flex-grow: 1;
+  height: 100%;
 `;
 
 export const Holder = styled.div`
@@ -61,4 +61,5 @@ export const StepSummaryTextContainer = styled.div`
   gap: 24px;
   border-radius: 16px;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
+  overflow: auto;
 `;

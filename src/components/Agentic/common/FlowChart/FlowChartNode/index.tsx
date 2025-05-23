@@ -1,5 +1,10 @@
-import { Position, type Node, type NodeProps } from "@xyflow/react";
-import { Fragment, type ReactNode } from "react";
+import {
+  NodeToolbar,
+  Position,
+  type Node,
+  type NodeProps
+} from "@xyflow/react";
+import { type ReactNode } from "react";
 import { ChevronIcon } from "../../../../common/icons/16px/ChevronIcon";
 import { Direction } from "../../../../common/icons/types";
 import * as s from "./styles";
@@ -14,21 +19,19 @@ export type FlowChartNodeData = {
   type?: "default" | "input" | "output";
   isActive?: boolean;
   isDisabled?: boolean;
-  onClick: () => void;
-  sideElements?: ReactNode[];
+  sideContainer?: {
+    element: ReactNode;
+    isVisible: boolean;
+    position?: Position;
+  };
 };
 
 export type FlowChartNode = Node<FlowChartNodeData, "flowChart">;
 
 export const FlowChartNode = ({ data }: NodeProps<FlowChartNode>) => {
-  const handleClick = () => {
-    data.onClick();
-  };
-
   return (
     <s.Container
       $orientation={data.orientation}
-      onClick={handleClick}
       $isActive={data.isActive}
       $isDisabled={data.isDisabled}
     >
@@ -48,13 +51,12 @@ export const FlowChartNode = ({ data }: NodeProps<FlowChartNode>) => {
       {data.type !== "output" && (
         <s.OutputHandle type={"source"} position={Position.Right} id={"b"} />
       )}
-      {data.sideElements && data.sideElements.length > 0 && (
-        <s.SideElementsContainer>
-          {data.sideElements.map((x, index) => (
-            <Fragment key={index}>{x}</Fragment>
-          ))}
-        </s.SideElementsContainer>
-      )}
+      <NodeToolbar
+        isVisible={Boolean(data.sideContainer)}
+        position={data.sideContainer?.position}
+      >
+        {data.sideContainer?.element}
+      </NodeToolbar>
     </s.Container>
   );
 };

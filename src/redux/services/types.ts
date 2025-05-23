@@ -1114,9 +1114,9 @@ export interface Agent {
   running: boolean;
   status: AgentStatus;
   mcpServers: {
-    id: string;
     name: string;
-    status: boolean;
+    displayName: string;
+    active: boolean;
   }[];
 }
 
@@ -1127,3 +1127,15 @@ export interface GetIncidentAgentsPayload {
 export interface GetIncidentAgentsResponse {
   agents: Agent[];
 }
+
+export interface GetIncidentAgentLiveStreamPayload {
+  incidentId: string;
+  agentId: string;
+}
+
+export type GetIncidentAgentLiveStreamResponse = {
+  type: "token" | "tool";
+  agent_name: string;
+  message: string;
+  name: null;
+}[];

@@ -6,7 +6,7 @@ import {
 } from "../../../containers/Agentic/hooks";
 import { useGetIncidentsQuery } from "../../../redux/services/digma";
 import type { IncidentResponseItem } from "../../../redux/services/types";
-import { setIncidentId } from "../../../redux/slices/incidentsSlice";
+import { clear, setIncidentId } from "../../../redux/slices/incidentsSlice";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getThemeKind } from "../../common/App/styles";
 import { Tooltip } from "../../common/v3/Tooltip";
@@ -34,6 +34,7 @@ export const Sidebar = () => {
   };
 
   const handleIncidentListItemClick = (id: string) => () => {
+    dispatch(clear());
     dispatch(setIncidentId(id));
   };
 
@@ -54,7 +55,7 @@ export const Sidebar = () => {
     if (sortedIncidents.length > 0) {
       dispatch(setIncidentId(sortedIncidents[0].id));
     } else {
-      dispatch(setIncidentId(null));
+      dispatch(clear());
     }
   }, [sortedIncidents, dispatch]);
 

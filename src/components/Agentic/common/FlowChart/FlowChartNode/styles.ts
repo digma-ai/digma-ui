@@ -66,8 +66,3 @@ export const OutputHandle = styled(Handle)`
   border-radius: 0%;
   background: #3e404a;
 `;
-
-export const SideElementsContainer = styled.div`
-  display: flex;
-  gap: 12px;
-`;

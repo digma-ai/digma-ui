@@ -3,21 +3,20 @@ import {
   Position,
   ReactFlow,
   StepEdge,
-  type NodeProps,
+  type Edge,
   type NodeTypes
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import { useMemo, type MouseEvent } from "react";
 import { useTheme } from "styled-components";
 import { getThemeKind } from "../../../common/App/styles";
 import { FlowChartNode } from "./FlowChartNode";
 import * as s from "./styles";
 import type { FlowChartProps } from "./types";
 
-const nodeDefaults: Partial<NodeProps> = {
+const nodeDefaults: Partial<FlowChartNode> = {
   sourcePosition: Position.Right,
   targetPosition: Position.Left,
-  selectable: true,
-  draggable: false,
   type: "flowChart"
 };
 
@@ -25,32 +24,46 @@ const nodeTypes: NodeTypes = {
   flowChart: FlowChartNode
 };
 
-export const FlowChart = ({ nodes, edges, onNodeSelect }: FlowChartProps) => {
+export const FlowChart = ({ nodes, edges, onNodeClick }: FlowChartProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
 
-  const extendedNodes = nodes.map((node) => ({
-    ...nodeDefaults,
-    ...node,
-    data: {
-      ...nodeDefaults.data,
-      ...node.data,
-      onClick: () => {
-        onNodeSelect?.(node.id);
-      }
+  const handleNodeClick = (e: MouseEvent, node: FlowChartNode) => {
+    if (onNodeClick) {
+      onNodeClick(node.id);
     }
-  }));
+  };
+
+  const extendedNodes: FlowChartNode[] = useMemo(
+    () =>
+      nodes.map((node) => ({
+        ...nodeDefaults,
+        ...node
+      })),
+    [nodes]
+  );
+
+  const extendedEdges: Edge[] = useMemo(
+    () =>
+      edges.map((edge) => ({
+        ...edge,
+        selectable: false
+      })),
+    [edges]
+  );
 
   return (
     <s.Container>
       <ReactFlow
         nodes={extendedNodes}
-        edges={edges}
+        edges={extendedEdges}
         nodeTypes={nodeTypes}
         proOptions={{ hideAttribution: true }}
         fitView={true}
         colorMode={themeKind}
         connectionLineType={ConnectionLineType.Step}
+        onNodeClick={handleNodeClick}
+        nodesConnectable={false}
         defaultEdgeOptions={{
           animated: true
         }}
