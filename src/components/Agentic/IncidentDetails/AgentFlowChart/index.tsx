@@ -182,7 +182,20 @@ export const AgentFlowChart = () => {
   const data = mockData; // TODO: remove this line and uncomment the above line
 
   const handleNodeClick = (id: string) => {
-    dispatch(setAgentId(id));
+    switch (id) {
+      case "digma":
+        dispatch(setAgentId(null));
+        break;
+      case "watchman":
+      case "triager":
+      case "infra_resolver":
+      case "code_resolver":
+        dispatch(setAgentId(id));
+        break;
+      case "validator":
+      default:
+        break;
+    }
   };
 
   const nodes: FlowChartNode[] = data

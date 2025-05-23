@@ -9,7 +9,6 @@ import { useGetIncidentQuery } from "../../../redux/services/digma";
 import { setAgentId } from "../../../redux/slices/incidentsSlice";
 import { TwoVerticalLinesIcon } from "../../common/icons/16px/TwoVerticalLinesIcon";
 import { Direction } from "../../common/icons/types";
-import { NewButton } from "../../common/v3/NewButton";
 import { AgentFlowChart } from "./AgentFlowChart";
 import { AgentLiveStream } from "./AgentLiveStream";
 import * as s from "./styles";
@@ -30,7 +29,7 @@ export const IncidentDetails = () => {
     }
   );
 
-  const handleGoBackToSummaryButtonClick = () => {
+  const handleSummaryBreadcrumbClick = () => {
     dispatch(setAgentId(null));
   };
 
@@ -40,9 +39,9 @@ export const IncidentDetails = () => {
 
   return (
     <s.Container>
-      <Allotment defaultSizes={[30, 70]} vertical={true}>
+      <Allotment defaultSizes={[40, 60]} vertical={true}>
         <AgentFlowChart />
-        <s.StepSummaryContainer>
+        <s.BottomContainer>
           <s.Holder>
             <TwoVerticalLinesIcon
               color={theme.colors.v3.icon.disabled}
@@ -50,23 +49,25 @@ export const IncidentDetails = () => {
               direction={Direction.Left}
             />
           </s.Holder>
-          <s.StepSummaryContentContainer>
-            <s.StatusBar>{incidentData?.status}</s.StatusBar>
-            <s.StepSummaryTextContainer>
-              {agentId ? (
-                <>
-                  <NewButton
-                    label={"Go back to summary"}
-                    onClick={handleGoBackToSummaryButtonClick}
-                  />
-                  <AgentLiveStream />
-                </>
-              ) : (
-                incidentData?.summary
-              )}
-            </s.StepSummaryTextContainer>
-          </s.StepSummaryContentContainer>
-        </s.StepSummaryContainer>
+          <s.StatusBar>{incidentData?.status}</s.StatusBar>
+          <s.BottomContentContainer>
+            <s.SummaryContainer>
+              <s.Breadcrumbs>
+                <s.Breadcrumb onClick={handleSummaryBreadcrumbClick}>
+                  Summary
+                </s.Breadcrumb>
+                {agentId && (
+                  <>
+                    <s.BreadcrumbsDivider>/</s.BreadcrumbsDivider>
+                    <s.ActiveBreadcrumb>{agentId}</s.ActiveBreadcrumb>
+                  </>
+                )}
+              </s.Breadcrumbs>
+              {agentId ? <AgentLiveStream /> : incidentData?.summary}
+            </s.SummaryContainer>
+            <s.InfoContainer></s.InfoContainer>
+          </s.BottomContentContainer>
+        </s.BottomContainer>
       </Allotment>
     </s.Container>
   );
