@@ -38,10 +38,10 @@ export const AgentLiveStream = () => {
           {x.type === "tool" ? (
             <details key={i}>
               <summary>{x.name} (tool)</summary>
-              <pre>{getMessage(x.message)}</pre>
+              <s.Message>{getMessage(x.message)}</s.Message>
             </details>
           ) : (
-            <s.AgentMessage>{x.message}</s.AgentMessage>
+            <s.Message>{x.message}</s.Message>
           )}
         </Fragment>
       ))}

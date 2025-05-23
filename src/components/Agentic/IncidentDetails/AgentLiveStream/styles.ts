@@ -5,7 +5,7 @@ export const Container = styled.div`
   flex-direction: column;
 `;
 
-export const AgentMessage = styled.pre`
+export const Message = styled.pre`
   white-space: pre-wrap;
   word-break: break-word;
 `;
