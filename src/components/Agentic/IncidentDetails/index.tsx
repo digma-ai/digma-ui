@@ -1,16 +1,24 @@
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
+import { useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 import {
   useAgenticDispatch,
   useAgenticSelector
 } from "../../../containers/Agentic/hooks";
-import { useGetIncidentQuery } from "../../../redux/services/digma";
+import {
+  useGetIncidentAgentsQuery,
+  useGetIncidentQuery
+} from "../../../redux/services/digma";
 import { setAgentId } from "../../../redux/slices/incidentsSlice";
 import { TwoVerticalLinesIcon } from "../../common/icons/16px/TwoVerticalLinesIcon";
 import { Direction } from "../../common/icons/types";
+import { Tooltip } from "../../common/v3/Tooltip";
+import { AdditionalInfo } from "./AdditionalInfo";
 import { AgentFlowChart } from "./AgentFlowChart";
 import { AgentLiveStream } from "./AgentLiveStream";
+import { Chat } from "./Chat";
+import { IncidentMetaData } from "./IncidentMetaData";
 import * as s from "./styles";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
@@ -20,6 +28,15 @@ export const IncidentDetails = () => {
   const incidentId = useAgenticSelector((state) => state.incidents.incidentId);
   const agentId = useAgenticSelector((state) => state.incidents.agentId);
   const dispatch = useAgenticDispatch();
+  const [isChatMode, setIsChatMode] = useState(false);
+
+  const { data: agentsData } = useGetIncidentAgentsQuery(
+    { id: incidentId ?? "" },
+    {
+      pollingInterval: REFRESH_INTERVAL,
+      skip: !incidentId
+    }
+  );
 
   const { data: incidentData } = useGetIncidentQuery(
     { id: incidentId ?? "" },
@@ -33,12 +50,31 @@ export const IncidentDetails = () => {
     dispatch(setAgentId(null));
   };
 
+  const handleAgentBreadcrumbClick = () => {
+    setIsChatMode(false);
+  };
+
+  const handleChatButtonClick = () => {
+    setIsChatMode(true);
+  };
+
+  useEffect(() => {
+    setIsChatMode(false);
+  }, [agentId]);
+
   if (!incidentId) {
     return null;
   }
 
+  const incidentStatus = incidentData?.status;
+
+  const agentName = agentsData?.agents.find(
+    (agent) => agent.name === agentId
+  )?.display_name;
+
   return (
     <s.Container>
+      <IncidentMetaData />
       <Allotment defaultSizes={[40, 60]} vertical={true}>
         <AgentFlowChart />
         <s.BottomContainer>
@@ -49,23 +85,50 @@ export const IncidentDetails = () => {
               direction={Direction.Left}
             />
           </s.Holder>
-          <s.StatusBar>{incidentData?.status}</s.StatusBar>
+          <s.StatusBar>
+            <Tooltip title={incidentStatus}>
+              <s.StatusBarText>{incidentStatus}</s.StatusBarText>
+            </Tooltip>
+          </s.StatusBar>
           <s.BottomContentContainer>
             <s.SummaryContainer>
               <s.Breadcrumbs>
-                <s.Breadcrumb onClick={handleSummaryBreadcrumbClick}>
+                <s.BaseBreadcrumb onClick={handleSummaryBreadcrumbClick}>
                   Summary
-                </s.Breadcrumb>
+                </s.BaseBreadcrumb>
                 {agentId && (
                   <>
                     <s.BreadcrumbsDivider>/</s.BreadcrumbsDivider>
-                    <s.ActiveBreadcrumb>{agentId}</s.ActiveBreadcrumb>
+                    <s.Breadcrumb
+                      $isActive={!isChatMode}
+                      onClick={handleAgentBreadcrumbClick}
+                    >
+                      {agentName}
+                    </s.Breadcrumb>
+                    <s.Breadcrumb
+                      $isActive={isChatMode}
+                      onClick={handleChatButtonClick}
+                    >
+                      Chat
+                    </s.Breadcrumb>
                   </>
                 )}
               </s.Breadcrumbs>
-              {agentId ? <AgentLiveStream /> : incidentData?.summary}
+              {agentId ? (
+                isChatMode ? (
+                  <Chat />
+                ) : (
+                  <AgentLiveStream />
+                )
+              ) : (
+                <s.IncidentSummaryText>
+                  {incidentData?.summary}
+                </s.IncidentSummaryText>
+              )}
             </s.SummaryContainer>
-            <s.InfoContainer></s.InfoContainer>
+            <s.AdditionalInfoContainer>
+              <AdditionalInfo />
+            </s.AdditionalInfoContainer>
           </s.BottomContentContainer>
         </s.BottomContainer>
       </Allotment>

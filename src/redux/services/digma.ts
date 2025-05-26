@@ -567,7 +567,6 @@ export const digmaApi = createApi({
       GetIncidentAgentsPayload
     >({
       query: ({ id }) => ({
-        // TODO: change when endpoint is ready
         url: `Agentic/incidents/${window.encodeURIComponent(id)}/agents`
       })
     }),
@@ -578,7 +577,7 @@ export const digmaApi = createApi({
       query: ({ incidentId, agentId }) => ({
         url: `Agentic/incidents/${window.encodeURIComponent(
           incidentId
-        )}/agents/${window.encodeURIComponent(agentId)}/live_stream`
+        )}/agents/${window.encodeURIComponent(agentId)}/events`
       })
     })
   })

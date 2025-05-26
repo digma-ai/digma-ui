@@ -101,8 +101,9 @@ export const InsightCard = ({
       (isSpanInsight(insight) || isEndpointInsight(insight)) &&
       insight.spanInfo
     ) {
-      const spanInfo = insight.spanInfo;
-      const spanIdeLauncherLink = getIdeLauncherLinkForSpan(spanInfo);
+      const spanIdeLauncherLink = getIdeLauncherLinkForSpan(
+        insight.spanInfo.uid
+      );
 
       if (spanIdeLauncherLink) {
         openURLInDefaultBrowser(spanIdeLauncherLink);

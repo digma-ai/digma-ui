@@ -1,9 +1,10 @@
 import { Position, type Edge } from "@xyflow/react";
-import { useAgenticDispatch } from "../../../../containers/Agentic/hooks";
-import type {
-  Agent,
-  GetIncidentAgentsResponse
-} from "../../../../redux/services/types";
+import {
+  useAgenticDispatch,
+  useAgenticSelector
+} from "../../../../containers/Agentic/hooks";
+import { useGetIncidentAgentsQuery } from "../../../../redux/services/digma";
+import type { Agent } from "../../../../redux/services/types";
 import { setAgentId } from "../../../../redux/slices/incidentsSlice";
 import { FlowChart } from "../../common/FlowChart";
 import type {
@@ -13,134 +14,134 @@ import type {
 import { MCPServerBlock } from "./MCPServerBlock";
 import * as s from "./styles";
 
-const mockData: GetIncidentAgentsResponse = {
-  agents: [
-    {
-      name: "digma",
-      displayName: "Digma",
-      running: false,
-      status: "active",
-      mcpServers: []
-    },
-    {
-      name: "watchman",
-      displayName: "Watchman",
-      running: true,
-      status: "active",
-      mcpServers: [
-        {
-          name: "github",
-          displayName: "GitHub",
-          active: false
-        },
-        {
-          name: "postgres",
-          displayName: "Postgres",
-          active: false
-        },
-        {
-          name: "digma",
-          displayName: "Digma",
-          active: true
-        }
-      ]
-    },
-    {
-      name: "triager",
-      displayName: "Triage",
-      running: false,
-      status: "pending",
-      mcpServers: [
-        {
-          name: "github",
-          displayName: "GitHub",
-          active: false
-        },
-        {
-          name: "postgres",
-          displayName: "Postgres",
-          active: true
-        },
-        {
-          name: "digma",
-          displayName: "Digma",
-          active: true
-        }
-      ]
-    },
-    {
-      name: "infra_resolver",
-      displayName: "Infra Resolution",
-      running: false,
-      status: "pending",
-      mcpServers: [
-        {
-          name: "github",
-          displayName: "GitHub",
-          active: false
-        },
-        {
-          name: "kubernetes",
-          displayName: "Kubernetes",
-          active: true
-        },
-        {
-          name: "digma",
-          displayName: "Digma",
-          active: false
-        }
-      ]
-    },
-    {
-      name: "code_resolver",
-      displayName: "Code Resolution",
-      running: false,
-      status: "inactive",
-      mcpServers: [
-        {
-          name: "github",
-          displayName: "GitHub",
-          active: false
-        },
-        {
-          name: "kubernetes",
-          displayName: "Kubernetes",
-          active: false
-        },
-        {
-          name: "digma",
-          displayName: "Digma",
-          active: false
-        }
-      ]
-    },
-    {
-      name: "validator",
-      displayName: "Validator",
-      running: false,
-      status: "pending",
-      mcpServers: [
-        {
-          name: "github",
-          displayName: "GitHub",
-          active: true
-        },
-        {
-          name: "postgres",
-          displayName: "Postgres",
-          active: false
-        },
-        {
-          name: "digma",
-          displayName: "Digma",
-          active: false
-        }
-      ]
-    }
-  ]
-};
+// const mockData: GetIncidentAgentsResponse = {
+//   agents: [
+//     {
+//       name: "digma",
+//       display_name: "Digma",
+//       running: false,
+//       status: "active",
+//       mcp_servers: []
+//     },
+//     {
+//       name: "watchman",
+//       display_name: "Watchman",
+//       running: true,
+//       status: "active",
+//       mcp_servers: [
+//         {
+//           name: "github",
+//           displayName: "GitHub",
+//           active: false
+//         },
+//         {
+//           name: "postgres",
+//           displayName: "Postgres",
+//           active: false
+//         },
+//         {
+//           name: "digma",
+//           displayName: "Digma",
+//           active: true
+//         }
+//       ]
+//     },
+//     {
+//       name: "triager",
+//       display_name: "Triage",
+//       running: false,
+//       status: "pending",
+//       mcp_servers: [
+//         {
+//           name: "github",
+//           displayName: "GitHub",
+//           active: false
+//         },
+//         {
+//           name: "postgres",
+//           displayName: "Postgres",
+//           active: true
+//         },
+//         {
+//           name: "digma",
+//           displayName: "Digma",
+//           active: true
+//         }
+//       ]
+//     },
+//     {
+//       name: "infra_resolver",
+//       display_name: "Infra Resolution",
+//       running: false,
+//       status: "pending",
+//       mcp_servers: [
+//         {
+//           name: "github",
+//           displayName: "GitHub",
+//           active: false
+//         },
+//         {
+//           name: "kubernetes",
+//           displayName: "Kubernetes",
+//           active: true
+//         },
+//         {
+//           name: "digma",
+//           displayName: "Digma",
+//           active: false
+//         }
+//       ]
+//     },
+//     {
+//       name: "code_resolver",
+//       display_name: "Code Resolution",
+//       running: false,
+//       status: "inactive",
+//       mcp_servers: [
+//         {
+//           name: "github",
+//           displayName: "GitHub",
+//           active: false
+//         },
+//         {
+//           name: "kubernetes",
+//           displayName: "Kubernetes",
+//           active: false
+//         },
+//         {
+//           name: "digma",
+//           displayName: "Digma",
+//           active: false
+//         }
+//       ]
+//     },
+//     {
+//       name: "validator",
+//       display_name: "Validator",
+//       running: false,
+//       status: "pending",
+//       mcp_servers: [
+//         {
+//           name: "github",
+//           displayName: "GitHub",
+//           active: true
+//         },
+//         {
+//           name: "postgres",
+//           displayName: "Postgres",
+//           active: false
+//         },
+//         {
+//           name: "digma",
+//           displayName: "Digma",
+//           active: false
+//         }
+//       ]
+//     }
+//   ]
+// };
 
-// const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 const getFlowChartNodeData = (
   agent?: Agent,
@@ -148,15 +149,15 @@ const getFlowChartNodeData = (
 ): Partial<FlowChartNodeData> => {
   return agent
     ? {
-        label: agent.displayName,
+        label: agent.display_name,
         isActive: agent.running,
         isDisabled: agent.status === "inactive",
         sideContainer: {
-          isVisible: agent.mcpServers.length > 0,
+          isVisible: agent.mcp_servers.length > 0,
           position: sideContainerPosition,
           element: (
             <s.MCPServersSideContainer>
-              {agent.mcpServers.map((x) => (
+              {agent.mcp_servers.map((x) => (
                 <MCPServerBlock
                   key={x.name}
                   type={x.name}
@@ -171,15 +172,34 @@ const getFlowChartNodeData = (
 };
 
 export const AgentFlowChart = () => {
-  // const incidentId = useAgenticSelector((state) => state.incidents.incidentId);
+  const incidentId = useAgenticSelector((state) => state.incidents.incidentId);
   const dispatch = useAgenticDispatch();
 
-  // const { data } = useGetIncidentAgentsQuery(
-  //   { id: incidentId ?? "" },
-  //   { skip: !incidentId, pollingInterval: REFRESH_INTERVAL }
-  // );
+  const { data } = useGetIncidentAgentsQuery(
+    { id: incidentId ?? "" },
+    { skip: !incidentId, pollingInterval: REFRESH_INTERVAL }
+  );
 
-  const data = mockData; // TODO: remove this line and uncomment the above line
+  // const data = mockData; // TODO: remove this line and uncomment the above line
+  const agents: Agent[] | undefined = data
+    ? [
+        {
+          name: "digma",
+          display_name: "Digma",
+          running: false,
+          status: "active",
+          mcp_servers: []
+        },
+        ...data.agents,
+        {
+          name: "validator",
+          display_name: "Validator",
+          running: false,
+          status: "active",
+          mcp_servers: []
+        }
+      ]
+    : undefined;
 
   const handleNodeClick = (id: string) => {
     switch (id) {
@@ -204,9 +224,7 @@ export const AgentFlowChart = () => {
           id: "digma",
           position: { x: 0, y: -31 }, // TODO: find a way to center this
           data: {
-            ...getFlowChartNodeData(
-              data?.agents.find((a) => a.name === "digma")
-            ),
+            ...getFlowChartNodeData(agents?.find((a) => a.name === "digma")),
             orientation: "vertical",
             type: "input"
           }
@@ -215,18 +233,14 @@ export const AgentFlowChart = () => {
           id: "watchman",
           position: { x: 200, y: 0 },
           data: {
-            ...getFlowChartNodeData(
-              data?.agents.find((a) => a.name === "watchman")
-            )
+            ...getFlowChartNodeData(agents?.find((a) => a.name === "watchman"))
           }
         },
         {
           id: "triager",
           position: { x: 500, y: 0 },
           data: {
-            ...getFlowChartNodeData(
-              data?.agents.find((a) => a.name === "triager")
-            )
+            ...getFlowChartNodeData(agents?.find((a) => a.name === "triager"))
           }
         },
         {
@@ -234,7 +248,7 @@ export const AgentFlowChart = () => {
           position: { x: 800, y: -50 },
           data: {
             ...getFlowChartNodeData(
-              data?.agents.find((a) => a.name === "infra_resolver")
+              agents?.find((a) => a.name === "infra_resolver")
             )
           }
         },
@@ -243,7 +257,7 @@ export const AgentFlowChart = () => {
           position: { x: 800, y: 50 },
           data: {
             ...getFlowChartNodeData(
-              data?.agents.find((a) => a.name === "code_resolver"),
+              agents?.find((a) => a.name === "code_resolver"),
               Position.Bottom
             )
           }
@@ -253,7 +267,7 @@ export const AgentFlowChart = () => {
           position: { x: 1100, y: 0 },
           data: {
             ...getFlowChartNodeData(
-              data?.agents.find((a) => a.name === "validator")
+              agents?.find((a) => a.name === "validator")
             ),
             type: "output"
           }

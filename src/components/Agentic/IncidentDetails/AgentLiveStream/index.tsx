@@ -28,7 +28,11 @@ export const AgentLiveStream = () => {
   );
 
   if (isLoading) {
-    return <Spinner />;
+    return (
+      <s.LoadingContainer>
+        <Spinner size={30} />
+      </s.LoadingContainer>
+    );
   }
 
   return (

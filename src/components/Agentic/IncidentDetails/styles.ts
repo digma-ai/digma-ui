@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import { subheading2RegularTypography } from "../../common/App/typographies";
+import type { BreadcrumbProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
+  flex-direction: column;
   height: 100%;
 
   .sash {
@@ -49,6 +51,7 @@ export const BottomContentContainer = styled.div`
 
 export const Breadcrumbs = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   align-items: center;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
@@ -60,20 +63,25 @@ export const BreadcrumbsDivider = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.disabled};
 `;
 
-export const Breadcrumb = styled.span`
+export const BaseBreadcrumb = styled.span`
   cursor: pointer;
 `;
 
-export const ActiveBreadcrumb = styled(Breadcrumb)`
+export const Breadcrumb = styled(BaseBreadcrumb)<BreadcrumbProps>`
   border-radius: 12px;
-  background: ${({ theme }) => theme.colors.v3.surface.brandPrimary};
+  background: ${({ theme, $isActive }) =>
+    $isActive ? theme.colors.v3.surface.brandPrimary : "none"};
+  border: 1px solid
+    ${({ theme, $isActive }) =>
+      $isActive
+        ? theme.colors.v3.surface.brandPrimary
+        : "rgb(255 255 255 / 10%)"};
   color: ${({ theme }) => theme.colors.v3.text.primary};
   padding: 8px 12px;
+  transition: background 300ms;
 `;
 
 export const StatusBar = styled.div`
-  ${subheading2RegularTypography};
-  color: ${({ theme }) => theme.colors.v3.text.white};
   display: flex;
   padding: 10px 16px;
   justify-content: center;
@@ -84,6 +92,14 @@ export const StatusBar = styled.div`
   height: 24px;
   flex-shrink: 0;
   margin-bottom: 24px;
+`;
+
+export const StatusBarText = styled.span`
+  ${subheading2RegularTypography};
+  color: ${({ theme }) => theme.colors.v3.text.white};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const SummaryContainer = styled.div`
@@ -97,11 +113,17 @@ export const SummaryContainer = styled.div`
   width: 60%;
 `;
 
-export const InfoContainer = styled.div`
+export const IncidentSummaryText = styled.div`
+  flex-grow: 1;
+  overflow: auto;
+`;
+
+export const AdditionalInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
   width: 40%;
   border-radius: 16px;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
+  flex-shrink: 0;
 `;

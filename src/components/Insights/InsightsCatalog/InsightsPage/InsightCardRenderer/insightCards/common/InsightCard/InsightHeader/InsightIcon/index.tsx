@@ -5,7 +5,7 @@ import { InsightIconTooltip } from "./InsightIconTooltip";
 import * as s from "./styles";
 import type { InsightIconProps, ValueLabel } from "./types";
 
-const getTagType = (valueLabel: ValueLabel): TagType => {
+export const getTagType = (valueLabel: ValueLabel): TagType => {
   switch (valueLabel) {
     case "Low":
       return "lowSeverity";

@@ -1,0 +1,12 @@
+import styled from "styled-components";
+
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+`;
+
+export const ChatHistory = styled.div`
+  flex-grow: 1;
+`;
