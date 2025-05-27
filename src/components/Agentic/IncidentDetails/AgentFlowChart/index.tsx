@@ -145,12 +145,14 @@ const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 const getFlowChartNodeData = (
   agent?: Agent,
-  sideContainerPosition?: Position
+  sideContainerPosition?: Position,
+  selectedAgentId?: string | null
 ): Partial<FlowChartNodeData> => {
   return agent
     ? {
         label: agent.display_name,
-        isActive: agent.running,
+        isActive: agent.name === selectedAgentId,
+        isRunning: agent.running,
         isDisabled: agent.status === "inactive",
         sideContainer: {
           isVisible: agent.mcp_servers.length > 0,
@@ -173,6 +175,7 @@ const getFlowChartNodeData = (
 
 export const AgentFlowChart = () => {
   const incidentId = useAgenticSelector((state) => state.incidents.incidentId);
+  const agentId = useAgenticSelector((state) => state.incidents.agentId);
   const dispatch = useAgenticDispatch();
 
   const { data } = useGetIncidentAgentsQuery(
@@ -224,7 +227,11 @@ export const AgentFlowChart = () => {
           id: "digma",
           position: { x: 0, y: -31 }, // TODO: find a way to center this
           data: {
-            ...getFlowChartNodeData(agents?.find((a) => a.name === "digma")),
+            ...getFlowChartNodeData(
+              agents?.find((a) => a.name === "digma"),
+              Position.Top,
+              agentId
+            ),
             orientation: "vertical",
             type: "input"
           }
@@ -233,14 +240,22 @@ export const AgentFlowChart = () => {
           id: "watchman",
           position: { x: 200, y: 0 },
           data: {
-            ...getFlowChartNodeData(agents?.find((a) => a.name === "watchman"))
+            ...getFlowChartNodeData(
+              agents?.find((a) => a.name === "watchman"),
+              Position.Top,
+              agentId
+            )
           }
         },
         {
           id: "triager",
           position: { x: 500, y: 0 },
           data: {
-            ...getFlowChartNodeData(agents?.find((a) => a.name === "triager"))
+            ...getFlowChartNodeData(
+              agents?.find((a) => a.name === "triager"),
+              Position.Top,
+              agentId
+            )
           }
         },
         {
@@ -248,7 +263,9 @@ export const AgentFlowChart = () => {
           position: { x: 800, y: -50 },
           data: {
             ...getFlowChartNodeData(
-              agents?.find((a) => a.name === "infra_resolver")
+              agents?.find((a) => a.name === "infra_resolver"),
+              Position.Top,
+              agentId
             )
           }
         },
@@ -258,7 +275,8 @@ export const AgentFlowChart = () => {
           data: {
             ...getFlowChartNodeData(
               agents?.find((a) => a.name === "code_resolver"),
-              Position.Bottom
+              Position.Bottom,
+              agentId
             )
           }
         },
@@ -267,7 +285,9 @@ export const AgentFlowChart = () => {
           position: { x: 1100, y: 0 },
           data: {
             ...getFlowChartNodeData(
-              agents?.find((a) => a.name === "validator")
+              agents?.find((a) => a.name === "validator"),
+              Position.Top,
+              agentId
             ),
             type: "output"
           }

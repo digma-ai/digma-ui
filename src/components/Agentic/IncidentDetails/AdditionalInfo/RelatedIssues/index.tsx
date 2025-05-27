@@ -21,11 +21,7 @@ import type { ColumnMeta } from "../types";
 import * as s from "./styles";
 
 // const mockData: {
-//   issues: {
-//     type: InsightType;
-//     spanUid: string;
-//     criticality: number;
-//   }[];
+//   issues: IncidentIssue[];
 // } = {
 //   issues: [
 //     {
@@ -63,10 +59,8 @@ export const RelatedIssues = () => {
   );
 
   const issues = useMemo(
-    () =>
-      data?.relatedIssues.filter((x) => Boolean(getInsightTypeInfo(x.type))) ??
-      [],
-    [data?.relatedIssues]
+    () => data?.related_issues ?? [],
+    [data?.related_issues]
   );
 
   const columns = [
@@ -77,25 +71,29 @@ export const RelatedIssues = () => {
       },
       cell: (info) => {
         const issue = info.getValue();
-        const insightTypeInfo = getInsightTypeInfo(issue.type);
-
-        if (!insightTypeInfo) {
-          return null;
-        }
+        const insightTypeInfo = getInsightTypeInfo(issue.insight_type);
+        const label =
+          issue.type === "issue"
+            ? insightTypeInfo?.label
+            : issue.type === "error"
+            ? "Error"
+            : undefined;
 
         return (
           <s.IssueInfoContainer>
-            <InsightIcon
-              insightTypeInfo={insightTypeInfo}
-              criticality={issue.criticality}
-            />
-            <Tooltip title={insightTypeInfo.label}>
-              {issue.spanUid ? (
-                <s.Link href={getIdeLauncherLinkForSpan(issue.spanUid)}>
-                  {insightTypeInfo.label}
+            {insightTypeInfo && (
+              <InsightIcon
+                insightTypeInfo={insightTypeInfo}
+                criticality={issue.criticality}
+              />
+            )}
+            <Tooltip title={label}>
+              {issue.span_id ? (
+                <s.Link href={getIdeLauncherLinkForSpan(issue.span_id)}>
+                  {label}
                 </s.Link>
               ) : (
-                <s.IssueTypeTitle>{insightTypeInfo.label}</s.IssueTypeTitle>
+                <s.IssueTypeTitle>{label}</s.IssueTypeTitle>
               )}
             </Tooltip>
           </s.IssueInfoContainer>

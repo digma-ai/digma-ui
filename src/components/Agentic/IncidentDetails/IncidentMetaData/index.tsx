@@ -49,14 +49,14 @@ export const IncidentMetaData = () => {
     return null;
   }
 
-  const hiddenServices = data.affectedServices.slice(SERVICE_TAGS_TO_SHOW);
+  const hiddenServices = data.affected_services.slice(SERVICE_TAGS_TO_SHOW);
 
   return (
     <s.Container>
       <s.DateAttribute>
         <s.DateLabel>Incident start time:</s.DateLabel>
-        <Tooltip title={new Date(data.createdAt).toString()}>
-          <s.DateValue>{format(data.createdAt, DATE_FORMAT)}</s.DateValue>
+        <Tooltip title={new Date(data.created_at).toString()}>
+          <s.DateValue>{format(data.created_at, DATE_FORMAT)}</s.DateValue>
         </Tooltip>
       </s.DateAttribute>
       <s.DividerContainer>
@@ -64,20 +64,20 @@ export const IncidentMetaData = () => {
       </s.DividerContainer>
       <s.DateAttribute>
         <s.DateLabel>Incident close time:</s.DateLabel>
-        {data.closedAt && (
-          <Tooltip title={new Date(data.closedAt).toString()}>
-            <s.DateValue>{format(data.closedAt, DATE_FORMAT)}</s.DateValue>
+        {data.closed_at && (
+          <Tooltip title={new Date(data.closed_at).toString()}>
+            <s.DateValue>{format(data.closed_at, DATE_FORMAT)}</s.DateValue>
           </Tooltip>
         )}
       </s.DateAttribute>
-      {data.affectedServices.length > 0 && (
+      {data.affected_services.length > 0 && (
         <>
           <s.DividerContainer>
             <Divider color={"currentColor"} />
           </s.DividerContainer>
           <s.ServicesContainer>
             <span>Affected services:</span>
-            {data.affectedServices.slice(0, 2).map((x) => (
+            {data.affected_services.slice(0, 2).map((x) => (
               <Tooltip key={x} title={x}>
                 <s.ServiceTag>{x}</s.ServiceTag>
               </Tooltip>

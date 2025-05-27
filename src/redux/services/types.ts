@@ -1104,9 +1104,10 @@ export interface GetIncidentPayload {
 }
 
 export interface IncidentIssue {
-  issueId: string;
-  spanUid: string | null;
-  type: InsightType;
+  issue_id: string;
+  span_id: string | null;
+  type: "issue" | "error";
+  insight_type: InsightType;
   criticality: number;
 }
 
@@ -1115,11 +1116,11 @@ export interface GetIncidentResponse {
   name: string;
   status: string;
   summary: string;
-  activeStatus: IncidentActivityStatus;
-  relatedIssues: IncidentIssue[];
-  affectedServices: string[];
-  createdAt: string;
-  closedAt: string | null;
+  active_status: IncidentActivityStatus;
+  related_issues: IncidentIssue[];
+  affected_services: string[];
+  created_at: string;
+  closed_at: string | null;
 }
 
 export type AgentStatus = "pending" | "active" | "inactive";

@@ -18,6 +18,7 @@ export type FlowChartNodeData = {
   orientation?: Orientation;
   type?: "default" | "input" | "output";
   isActive?: boolean;
+  isRunning?: boolean;
   isDisabled?: boolean;
   sideContainer?: {
     element: ReactNode;
@@ -38,7 +39,7 @@ export const FlowChartNode = ({ data }: NodeProps<FlowChartNode>) => {
       {data.label && (
         <s.Label $orientation={data.orientation}>{data.label}</s.Label>
       )}
-      {data.isActive && <s.StyledPulsatingDot />}
+      {data.isRunning && <s.StyledPulsatingDot />}
       {data.type !== "input" && (
         <s.InputHandle type={"target"} position={Position.Left} id={"a"}>
           <ChevronIcon
