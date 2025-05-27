@@ -54,31 +54,33 @@ export const Breadcrumbs = styled.div`
   flex-wrap: wrap;
   gap: 8px;
   align-items: center;
-  color: ${({ theme }) => theme.colors.v3.text.tertiary};
   font-size: 20px;
   height: 40px;
+  flex-shrink: 0;
 `;
 
 export const BreadcrumbsDivider = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.disabled};
 `;
 
-export const BaseBreadcrumb = styled.span`
-  cursor: pointer;
+export const Breadcrumb = styled.span<BreadcrumbProps>`
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+  cursor: ${({ $isActive }) => ($isActive ? "default" : "pointer")};
+
+  &:hover {
+    color: ${({ theme, $isActive }) =>
+      $isActive ? theme.colors.v3.text.tertiary : theme.colors.v3.text.primary};
+    text-decoration: ${({ $isActive }) => ($isActive ? "none" : "underline")};
+  }
 `;
 
-export const Breadcrumb = styled(BaseBreadcrumb)<BreadcrumbProps>`
-  border-radius: 12px;
-  background: ${({ theme, $isActive }) =>
-    $isActive ? theme.colors.v3.surface.brandPrimary : "none"};
-  border: 1px solid
-    ${({ theme, $isActive }) =>
-      $isActive
-        ? theme.colors.v3.surface.brandPrimary
-        : "rgb(255 255 255 / 10%)"};
-  color: ${({ theme }) => theme.colors.v3.text.primary};
+export const AgentBreadcrumb = styled(Breadcrumb)<BreadcrumbProps>`
   padding: 8px 12px;
-  transition: background 300ms;
+  color: ${({ theme }) => theme.colors.v3.text.primary};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.v3.text.primary};
+  }
 `;
 
 export const StatusBar = styled.div`

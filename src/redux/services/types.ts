@@ -1103,13 +1103,23 @@ export interface GetIncidentPayload {
   id: string;
 }
 
-export interface IncidentIssue {
+export interface InsightIncidentIssue {
   issue_id: string;
   span_id: string | null;
-  type: "issue" | "error";
+  type: "issue";
   insight_type: InsightType;
   criticality: number;
 }
+
+export interface ErrorIncidentIssue {
+  issue_id: string;
+  span_id: string | null;
+  type: "error";
+  issue_type: string;
+  criticality: number;
+}
+
+export type IncidentIssue = InsightIncidentIssue | ErrorIncidentIssue;
 
 export interface GetIncidentResponse {
   id: string;

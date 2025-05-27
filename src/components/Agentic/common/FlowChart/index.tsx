@@ -2,12 +2,15 @@ import {
   ConnectionLineType,
   Position,
   ReactFlow,
+  ReactFlowProvider,
   StepEdge,
+  useReactFlow,
   type Edge,
   type NodeTypes
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { useMemo, type MouseEvent } from "react";
+import { useEffect, useMemo, type MouseEvent } from "react";
+import useDimensions from "react-cool-dimensions";
 import { useTheme } from "styled-components";
 import { getThemeKind } from "../../../common/App/styles";
 import { FlowChartNode } from "./FlowChartNode";
@@ -24,9 +27,11 @@ const nodeTypes: NodeTypes = {
   flowChart: FlowChartNode
 };
 
-export const FlowChart = ({ nodes, edges, onNodeClick }: FlowChartProps) => {
+const FlowChartInner = ({ nodes, edges, onNodeClick }: FlowChartProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
+  const { observe, width, height } = useDimensions();
+  const { fitView } = useReactFlow();
 
   const handleNodeClick = (e: MouseEvent, node: FlowChartNode) => {
     if (onNodeClick) {
@@ -52,8 +57,14 @@ export const FlowChart = ({ nodes, edges, onNodeClick }: FlowChartProps) => {
     [edges]
   );
 
+  useEffect(() => {
+    if (width && height) {
+      void fitView();
+    }
+  }, [width, height, fitView]);
+
   return (
-    <s.Container>
+    <s.Container ref={observe}>
       <ReactFlow
         nodes={extendedNodes}
         edges={extendedEdges}
@@ -63,6 +74,12 @@ export const FlowChart = ({ nodes, edges, onNodeClick }: FlowChartProps) => {
         colorMode={themeKind}
         connectionLineType={ConnectionLineType.Step}
         onNodeClick={handleNodeClick}
+        zoomOnScroll={false}
+        zoomOnPinch={false}
+        zoomOnDoubleClick={false}
+        panOnDrag={false}
+        panOnScroll={false}
+        nodesDraggable={false}
         nodesConnectable={false}
         defaultEdgeOptions={{
           animated: true
@@ -74,3 +91,9 @@ export const FlowChart = ({ nodes, edges, onNodeClick }: FlowChartProps) => {
     </s.Container>
   );
 };
+
+export const FlowChart = (props: FlowChartProps) => (
+  <ReactFlowProvider>
+    <FlowChartInner {...props} />
+  </ReactFlowProvider>
+);

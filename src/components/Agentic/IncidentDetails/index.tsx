@@ -54,9 +54,9 @@ export const IncidentDetails = () => {
     setIsChatMode(false);
   };
 
-  const handleChatButtonClick = () => {
-    setIsChatMode(true);
-  };
+  // const handleChatButtonClick = () => {
+  //   setIsChatMode(true);
+  // };
 
   useEffect(() => {
     setIsChatMode(false);
@@ -93,24 +93,21 @@ export const IncidentDetails = () => {
           <s.BottomContentContainer>
             <s.SummaryContainer>
               <s.Breadcrumbs>
-                <s.BaseBreadcrumb onClick={handleHomeBreadcrumbClick}>
+                <s.Breadcrumb
+                  $isActive={!agentId}
+                  onClick={handleHomeBreadcrumbClick}
+                >
                   Home
-                </s.BaseBreadcrumb>
+                </s.Breadcrumb>
                 {agentId && (
                   <>
                     <s.BreadcrumbsDivider>/</s.BreadcrumbsDivider>
-                    <s.Breadcrumb
+                    <s.AgentBreadcrumb
                       $isActive={!isChatMode}
                       onClick={handleAgentBreadcrumbClick}
                     >
                       {agentName}
-                    </s.Breadcrumb>
-                    <s.Breadcrumb
-                      $isActive={isChatMode}
-                      onClick={handleChatButtonClick}
-                    >
-                      Chat
-                    </s.Breadcrumb>
+                    </s.AgentBreadcrumb>
                   </>
                 )}
               </s.Breadcrumbs>

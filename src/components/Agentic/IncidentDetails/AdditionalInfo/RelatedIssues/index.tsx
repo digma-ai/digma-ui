@@ -19,6 +19,7 @@ import {
 import { getValueLabel } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/InsightHeader/InsightIcon/getValueLabel";
 import type { ColumnMeta } from "../types";
 import * as s from "./styles";
+import { isErrorIncidentIssue, isInsightIncidentIssue } from "./typeGuards";
 
 // const mockData: {
 //   issues: IncidentIssue[];
@@ -71,13 +72,15 @@ export const RelatedIssues = () => {
       },
       cell: (info) => {
         const issue = info.getValue();
-        const insightTypeInfo = getInsightTypeInfo(issue.insight_type);
-        const label =
-          issue.type === "issue"
-            ? insightTypeInfo?.label
-            : issue.type === "error"
-            ? "Error"
-            : undefined;
+        const insightTypeInfo = isInsightIncidentIssue(issue)
+          ? getInsightTypeInfo(issue.insight_type)
+          : undefined;
+
+        const label = isInsightIncidentIssue(issue)
+          ? insightTypeInfo?.label
+          : isErrorIncidentIssue(issue)
+          ? issue.issue_type
+          : undefined;
 
         return (
           <s.IssueInfoContainer>

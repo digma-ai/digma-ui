@@ -9,5 +9,10 @@ export const Container = styled.div`
 
     --xy-edge-stroke-default: ${({ theme }) =>
       theme.colors.v3.surface.brandPrimary};
+
+    /* stylelint-disable-next-line selector-class-pattern */
+    .react-flow__handle {
+      cursor: default;
+    }
   }
 `;
