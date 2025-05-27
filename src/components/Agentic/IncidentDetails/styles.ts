@@ -1,6 +1,12 @@
 import styled from "styled-components";
-import { subheading2RegularTypography } from "../../common/App/typographies";
-import type { BreadcrumbProps } from "./types";
+import {
+  subheading2RegularTypography,
+  subscriptRegularTypography
+} from "../../common/App/typographies";
+import { Toggle } from "../../common/v3/Toggle";
+import { OptionButton } from "../../common/v3/Toggle/styles";
+import type { ToggleProps } from "../../common/v3/Toggle/types";
+import type { BreadcrumbProps, SummaryViewMode } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -47,6 +53,35 @@ export const BottomContentContainer = styled.div`
   gap: 24px;
   height: 100%;
   overflow: auto;
+`;
+
+export const SummaryContainer = styled.div`
+  display: flex;
+  padding: 24px;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 24px;
+  border-radius: 16px;
+  background: ${({ theme }) => theme.colors.v3.surface.primary};
+  width: 60%;
+`;
+
+export const SummaryContainerToolbar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const StyledToggle = styled(Toggle)<ToggleProps<SummaryViewMode>>`
+  gap: 8px;
+
+  & > ${OptionButton} {
+    ${subscriptRegularTypography}
+    justify-content: center;
+    padding: 6px 0;
+    border-radius: 4px;
+    width: 87px;
+  }
 `;
 
 export const Breadcrumbs = styled.div`
@@ -102,17 +137,6 @@ export const StatusBarText = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-`;
-
-export const SummaryContainer = styled.div`
-  display: flex;
-  padding: 24px;
-  flex-direction: column;
-  flex-grow: 1;
-  gap: 24px;
-  border-radius: 16px;
-  background: ${({ theme }) => theme.colors.v3.surface.primary};
-  width: 60%;
 `;
 
 export const IncidentSummaryText = styled.div`

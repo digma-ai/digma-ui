@@ -1,12 +1,20 @@
 import styled from "styled-components";
 import type { MCPServerBlockElementProps } from "./types";
 
+const DEFAULT_MCP_SERVER_BLOCK_SIZE = 50; // in pixels
+
 export const MCPServerBlock = styled.div<MCPServerBlockElementProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  height: ${({ $zoomLevel }) =>
+    $zoomLevel
+      ? $zoomLevel * DEFAULT_MCP_SERVER_BLOCK_SIZE
+      : DEFAULT_MCP_SERVER_BLOCK_SIZE}px;
+  width: ${({ $zoomLevel }) =>
+    $zoomLevel
+      ? $zoomLevel * DEFAULT_MCP_SERVER_BLOCK_SIZE
+      : DEFAULT_MCP_SERVER_BLOCK_SIZE}px;
   border-radius: 9px;
   border: 1px solid rgb(255 255 255 / 10%);
   color: ${({ theme, $isActive }) =>

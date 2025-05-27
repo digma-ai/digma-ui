@@ -5,6 +5,7 @@ import {
   ReactFlowProvider,
   StepEdge,
   useReactFlow,
+  useViewport,
   type Edge,
   type NodeTypes
 } from "@xyflow/react";
@@ -27,11 +28,17 @@ const nodeTypes: NodeTypes = {
   flowChart: FlowChartNode
 };
 
-const FlowChartInner = ({ nodes, edges, onNodeClick }: FlowChartProps) => {
+const FlowChartInner = ({
+  nodes,
+  edges,
+  onNodeClick,
+  onZoomLevelChange
+}: FlowChartProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
   const { observe, width, height } = useDimensions();
   const { fitView } = useReactFlow();
+  const viewport = useViewport();
 
   const handleNodeClick = (e: MouseEvent, node: FlowChartNode) => {
     if (onNodeClick) {
@@ -63,6 +70,10 @@ const FlowChartInner = ({ nodes, edges, onNodeClick }: FlowChartProps) => {
     }
   }, [width, height, fitView]);
 
+  useEffect(() => {
+    onZoomLevelChange?.(viewport.zoom);
+  }, [viewport.zoom, onZoomLevelChange]);
+
   return (
     <s.Container ref={observe}>
       <ReactFlow
@@ -81,6 +92,7 @@ const FlowChartInner = ({ nodes, edges, onNodeClick }: FlowChartProps) => {
         panOnScroll={false}
         nodesDraggable={false}
         nodesConnectable={false}
+        maxZoom={1}
         defaultEdgeOptions={{
           animated: true
         }}

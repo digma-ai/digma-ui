@@ -4,7 +4,7 @@ import { subheading1RegularTypography } from "../../../../common/App/typographie
 import { PulsatingDot } from "../../PulsatingDot";
 import type { ContainerProps } from "./types";
 
-export const Container = styled.div<ContainerProps>`
+export const Node = styled.div<ContainerProps>`
   box-sizing: border-box;
   padding: 24px;
   display: flex;

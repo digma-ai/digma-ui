@@ -29,9 +29,9 @@ export type FlowChartNodeData = {
 
 export type FlowChartNode = Node<FlowChartNodeData, "flowChart">;
 
-export const FlowChartNode = ({ data }: NodeProps<FlowChartNode>) => {
-  return (
-    <s.Container
+export const FlowChartNode = ({ data }: NodeProps<FlowChartNode>) => (
+  <>
+    <s.Node
       $orientation={data.orientation}
       $isActive={data.isActive}
       $isDisabled={data.isDisabled}
@@ -52,12 +52,12 @@ export const FlowChartNode = ({ data }: NodeProps<FlowChartNode>) => {
       {data.type !== "output" && (
         <s.OutputHandle type={"source"} position={Position.Right} id={"b"} />
       )}
-      <NodeToolbar
-        isVisible={Boolean(data.sideContainer)}
-        position={data.sideContainer?.position}
-      >
-        {data.sideContainer?.element}
-      </NodeToolbar>
-    </s.Container>
-  );
-};
+    </s.Node>
+    <NodeToolbar
+      isVisible={Boolean(data.sideContainer)}
+      position={data.sideContainer?.position}
+    >
+      {data.sideContainer?.element}
+    </NodeToolbar>
+  </>
+);

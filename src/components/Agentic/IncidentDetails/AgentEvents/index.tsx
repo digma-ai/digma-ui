@@ -1,7 +1,7 @@
 import { Fragment } from "react/jsx-runtime";
 import { useAgenticSelector } from "../../../../containers/Agentic/hooks";
 import { useGetIncidentAgentEventsQuery } from "../../../../redux/services/digma";
-import { Spinner } from "../../../common/v3/Spinner";
+import { ThreeCirclesSpinner } from "../../../common/ThreeCirclesSpinner";
 import * as s from "./styles";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
@@ -28,11 +28,7 @@ export const AgentEvents = () => {
   );
 
   if (isLoading) {
-    return (
-      <s.LoadingContainer>
-        <Spinner size={30} />
-      </s.LoadingContainer>
-    );
+    return <ThreeCirclesSpinner />;
   }
 
   return (

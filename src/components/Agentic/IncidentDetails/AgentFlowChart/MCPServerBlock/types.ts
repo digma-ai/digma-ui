@@ -10,4 +10,5 @@ export interface MCPServerBlockProps {
 
 export interface MCPServerBlockElementProps {
   $isActive?: boolean;
+  $zoomLevel?: number;
 }

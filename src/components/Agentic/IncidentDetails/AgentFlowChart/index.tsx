@@ -1,4 +1,5 @@
 import { Position, type Edge } from "@xyflow/react";
+import { useState } from "react";
 import {
   useAgenticDispatch,
   useAgenticSelector
@@ -146,7 +147,8 @@ const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 const getFlowChartNodeData = (
   agent?: Agent,
   sideContainerPosition?: Position,
-  selectedAgentId?: string | null
+  selectedAgentId?: string | null,
+  zoomLevel?: number
 ): Partial<FlowChartNodeData> => {
   return agent
     ? {
@@ -158,7 +160,7 @@ const getFlowChartNodeData = (
           isVisible: agent.mcp_servers.length > 0,
           position: sideContainerPosition,
           element: (
-            <s.MCPServersSideContainer>
+            <s.MCPServersSideContainer $zoomLevel={zoomLevel}>
               {agent.mcp_servers.map((x) => (
                 <MCPServerBlock
                   key={x.name}
@@ -177,6 +179,7 @@ export const AgentFlowChart = () => {
   const incidentId = useAgenticSelector((state) => state.incidents.incidentId);
   const agentId = useAgenticSelector((state) => state.incidents.agentId);
   const dispatch = useAgenticDispatch();
+  const [zoomLevel, setZoomLevel] = useState(1);
 
   const { data } = useGetIncidentAgentsQuery(
     { id: incidentId ?? "" },
@@ -221,6 +224,10 @@ export const AgentFlowChart = () => {
     }
   };
 
+  const handleZoomLevelChange = (newZoomLevel: number) => {
+    setZoomLevel(newZoomLevel);
+  };
+
   const nodes: FlowChartNode[] = data
     ? [
         {
@@ -230,7 +237,8 @@ export const AgentFlowChart = () => {
             ...getFlowChartNodeData(
               agents?.find((a) => a.name === "digma"),
               Position.Top,
-              agentId
+              agentId,
+              zoomLevel
             ),
             orientation: "vertical",
             type: "input"
@@ -243,7 +251,8 @@ export const AgentFlowChart = () => {
             ...getFlowChartNodeData(
               agents?.find((a) => a.name === "watchman"),
               Position.Top,
-              agentId
+              agentId,
+              zoomLevel
             )
           }
         },
@@ -254,7 +263,8 @@ export const AgentFlowChart = () => {
             ...getFlowChartNodeData(
               agents?.find((a) => a.name === "triager"),
               Position.Top,
-              agentId
+              agentId,
+              zoomLevel
             )
           }
         },
@@ -265,7 +275,8 @@ export const AgentFlowChart = () => {
             ...getFlowChartNodeData(
               agents?.find((a) => a.name === "infra_resolver"),
               Position.Top,
-              agentId
+              agentId,
+              zoomLevel
             )
           }
         },
@@ -276,7 +287,8 @@ export const AgentFlowChart = () => {
             ...getFlowChartNodeData(
               agents?.find((a) => a.name === "code_resolver"),
               Position.Bottom,
-              agentId
+              agentId,
+              zoomLevel
             )
           }
         },
@@ -287,7 +299,8 @@ export const AgentFlowChart = () => {
             ...getFlowChartNodeData(
               agents?.find((a) => a.name === "validator"),
               Position.Top,
-              agentId
+              agentId,
+              zoomLevel
             ),
             type: "output"
           }
@@ -323,6 +336,11 @@ export const AgentFlowChart = () => {
     : [];
 
   return (
-    <FlowChart nodes={nodes} edges={edges} onNodeClick={handleNodeClick} />
+    <FlowChart
+      nodes={nodes}
+      edges={edges}
+      onNodeClick={handleNodeClick}
+      onZoomLevelChange={handleZoomLevelChange}
+    />
   );
 };

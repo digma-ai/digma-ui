@@ -1,6 +1,10 @@
 import styled from "styled-components";
+import type { MCPServersSideContainerProps } from "./types";
 
-export const MCPServersSideContainer = styled.div`
+const DEFAULT_GAP_SIZE = 13; // in pixels
+
+export const MCPServersSideContainer = styled.div<MCPServersSideContainerProps>`
   display: flex;
-  gap: 13px;
+  gap: ${({ $zoomLevel }) =>
+    $zoomLevel ? $zoomLevel * DEFAULT_GAP_SIZE : DEFAULT_GAP_SIZE}px;
 `;

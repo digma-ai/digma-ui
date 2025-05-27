@@ -13,6 +13,7 @@ export const IssueInfoContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  overflow: hidden;
 `;
 
 export const IssueTypeTitle = styled.span`
@@ -53,6 +54,9 @@ export const TableHeadRow = styled.div`
 export const TableHeaderCell = styled.div<TableCellContentProps>`
   box-sizing: border-box;
   text-align: ${({ $align }) => $align ?? "left"};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const TableBody = styled.div`
@@ -82,4 +86,7 @@ export const TableBodyCell = styled.div<TableCellContentProps>`
         return "flex-start";
     }
   }};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;

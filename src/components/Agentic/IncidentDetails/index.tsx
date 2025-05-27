@@ -13,6 +13,7 @@ import {
 import { setAgentId } from "../../../redux/slices/incidentsSlice";
 import { TwoVerticalLinesIcon } from "../../common/icons/16px/TwoVerticalLinesIcon";
 import { Direction } from "../../common/icons/types";
+import type { ToggleOption } from "../../common/v3/Toggle/types";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { AdditionalInfo } from "./AdditionalInfo";
 import { AgentEvents } from "./AgentEvents";
@@ -20,15 +21,28 @@ import { AgentFlowChart } from "./AgentFlowChart";
 import { Chat } from "./Chat";
 import { IncidentMetaData } from "./IncidentMetaData";
 import * as s from "./styles";
+import type { SummaryViewMode } from "./types";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+
+const viewModeOptions: ToggleOption<SummaryViewMode>[] = [
+  {
+    label: "Chat",
+    value: "chat"
+  },
+  {
+    label: "Summary",
+    value: "summary"
+  }
+];
 
 export const IncidentDetails = () => {
   const theme = useTheme();
   const incidentId = useAgenticSelector((state) => state.incidents.incidentId);
   const agentId = useAgenticSelector((state) => state.incidents.agentId);
   const dispatch = useAgenticDispatch();
-  const [isChatMode, setIsChatMode] = useState(false);
+  const [summaryViewMode, setSummaryViewMode] =
+    useState<SummaryViewMode>("summary");
 
   const { data: agentsData } = useGetIncidentAgentsQuery(
     { id: incidentId ?? "" },
@@ -51,15 +65,15 @@ export const IncidentDetails = () => {
   };
 
   const handleAgentBreadcrumbClick = () => {
-    setIsChatMode(false);
+    setSummaryViewMode("summary");
   };
 
-  // const handleChatButtonClick = () => {
-  //   setIsChatMode(true);
-  // };
+  const handleViewModeChange = (value: SummaryViewMode) => {
+    setSummaryViewMode(value);
+  };
 
   useEffect(() => {
-    setIsChatMode(false);
+    setSummaryViewMode("summary");
   }, [agentId]);
 
   if (!incidentId) {
@@ -92,27 +106,36 @@ export const IncidentDetails = () => {
           </s.StatusBar>
           <s.BottomContentContainer>
             <s.SummaryContainer>
-              <s.Breadcrumbs>
-                <s.Breadcrumb
-                  $isActive={!agentId}
-                  onClick={handleHomeBreadcrumbClick}
-                >
-                  Home
-                </s.Breadcrumb>
+              <s.SummaryContainerToolbar>
+                <s.Breadcrumbs>
+                  <s.Breadcrumb
+                    $isActive={!agentId}
+                    onClick={handleHomeBreadcrumbClick}
+                  >
+                    Home
+                  </s.Breadcrumb>
+                  {agentId && (
+                    <>
+                      <s.BreadcrumbsDivider>/</s.BreadcrumbsDivider>
+                      <s.AgentBreadcrumb
+                        $isActive={summaryViewMode === "chat"}
+                        onClick={handleAgentBreadcrumbClick}
+                      >
+                        {agentName}
+                      </s.AgentBreadcrumb>
+                    </>
+                  )}
+                </s.Breadcrumbs>
                 {agentId && (
-                  <>
-                    <s.BreadcrumbsDivider>/</s.BreadcrumbsDivider>
-                    <s.AgentBreadcrumb
-                      $isActive={!isChatMode}
-                      onClick={handleAgentBreadcrumbClick}
-                    >
-                      {agentName}
-                    </s.AgentBreadcrumb>
-                  </>
+                  <s.StyledToggle
+                    options={viewModeOptions}
+                    onValueChange={handleViewModeChange}
+                    value={summaryViewMode}
+                  />
                 )}
-              </s.Breadcrumbs>
+              </s.SummaryContainerToolbar>
               {agentId ? (
-                isChatMode ? (
+                summaryViewMode === "chat" ? (
                   <Chat />
                 ) : (
                   <AgentEvents />
