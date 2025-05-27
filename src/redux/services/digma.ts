@@ -36,8 +36,8 @@ import type {
   GetGlobalErrorsResponse,
   GetImpactHighlightsPayload,
   GetImpactHighlightsResponse,
-  GetIncidentAgentLiveStreamPayload,
-  GetIncidentAgentLiveStreamResponse,
+  GetIncidentAgentEventsPayload,
+  GetIncidentAgentEventsResponse,
   GetIncidentAgentsPayload,
   GetIncidentAgentsResponse,
   GetIncidentPayload,
@@ -570,9 +570,9 @@ export const digmaApi = createApi({
         url: `Agentic/incidents/${window.encodeURIComponent(id)}/agents`
       })
     }),
-    getIncidentAgentLiveStream: builder.query<
-      GetIncidentAgentLiveStreamResponse,
-      GetIncidentAgentLiveStreamPayload
+    getIncidentAgentEvents: builder.query<
+      GetIncidentAgentEventsResponse,
+      GetIncidentAgentEventsPayload
     >({
       query: ({ incidentId, agentId }) => ({
         url: `Agentic/incidents/${window.encodeURIComponent(
@@ -636,5 +636,5 @@ export const {
   useGetIncidentsQuery,
   useGetIncidentQuery,
   useGetIncidentAgentsQuery,
-  useGetIncidentAgentLiveStreamQuery
+  useGetIncidentAgentEventsQuery
 } = digmaApi;

@@ -1085,10 +1085,12 @@ export interface GetBlockedTracesResponse {
   total: number;
 }
 
+export type IncidentActivityStatus = "active" | "paused" | "closed";
+
 export interface IncidentResponseItem {
   id: string;
   name: string;
-  active_status: "active" | "paused" | "closed";
+  active_status: IncidentActivityStatus;
   created_at: string;
   closed_at: string | null;
 }
@@ -1101,9 +1103,23 @@ export interface GetIncidentPayload {
   id: string;
 }
 
+export interface IncidentIssue {
+  issueId: string;
+  spanUid: string | null;
+  type: InsightType;
+  criticality: number;
+}
+
 export interface GetIncidentResponse {
+  id: string;
+  name: string;
   status: string;
   summary: string;
+  activeStatus: IncidentActivityStatus;
+  relatedIssues: IncidentIssue[];
+  affectedServices: string[];
+  createdAt: string;
+  closedAt: string | null;
 }
 
 export type AgentStatus = "pending" | "active" | "inactive";
@@ -1128,14 +1144,26 @@ export interface GetIncidentAgentsResponse {
   agents: Agent[];
 }
 
-export interface GetIncidentAgentLiveStreamPayload {
+export interface GetIncidentAgentEventsPayload {
   incidentId: string;
   agentId: string;
 }
 
-export type GetIncidentAgentLiveStreamResponse = {
-  type: "token" | "tool";
+export interface IncidentAgentEventToken {
+  type: "token";
   agent_name: string;
   message: string;
-  name: null;
-}[];
+}
+
+export interface IncidentAgentEventTool {
+  type: "tool";
+  agent_name: string;
+  message: string;
+  mcp_name: string;
+  tool_name: string;
+}
+
+export type GetIncidentAgentEventsResponse = (
+  | IncidentAgentEventToken
+  | IncidentAgentEventTool
+)[];

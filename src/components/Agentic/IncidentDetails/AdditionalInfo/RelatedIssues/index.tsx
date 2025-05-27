@@ -4,7 +4,10 @@ import {
   getCoreRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { InsightType } from "../../../../../types";
+import { useMemo } from "react";
+import { useAgenticSelector } from "../../../../../containers/Agentic/hooks";
+import { useGetIncidentQuery } from "../../../../../redux/services/digma";
+import type { IncidentIssue } from "../../../../../redux/services/types";
 import { getIdeLauncherLinkForSpan } from "../../../../../utils/getIdeLauncherLinkForSpan";
 import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
 import { Tag } from "../../../../common/v3/Tag";
@@ -16,37 +19,56 @@ import {
 import { getValueLabel } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/InsightHeader/InsightIcon/getValueLabel";
 import type { ColumnMeta } from "../types";
 import * as s from "./styles";
-import type { IncidentRelatedIssue } from "./types";
 
-const mockData: {
-  issues: {
-    type: InsightType;
-    spanUid: string;
-    criticality: number;
-  }[];
-} = {
-  issues: [
-    {
-      type: InsightType.EndpointBottleneck,
-      spanUid: "span-456",
-      criticality: 1
-    },
-    {
-      type: InsightType.SlowEndpoint,
-      spanUid: "span-012",
-      criticality: 0.2
-    },
-    {
-      type: InsightType.EndpointChattyApiV2,
-      spanUid: "span-678",
-      criticality: 0.3
-    }
-  ]
-};
+// const mockData: {
+//   issues: {
+//     type: InsightType;
+//     spanUid: string;
+//     criticality: number;
+//   }[];
+// } = {
+//   issues: [
+//     {
+//       type: InsightType.EndpointBottleneck,
+//       spanUid: "span-456",
+//       criticality: 1
+//     },
+//     {
+//       type: InsightType.SlowEndpoint,
+//       spanUid: "span-012",
+//       criticality: 0.2
+//     },
+//     {
+//       type: InsightType.EndpointChattyApiV2,
+//       spanUid: "span-678",
+//       criticality: 0.3
+//     }
+//   ]
+// };
 
-const columnHelper = createColumnHelper<IncidentRelatedIssue>();
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+
+const columnHelper = createColumnHelper<IncidentIssue>();
 
 export const RelatedIssues = () => {
+  const incidentId = useAgenticSelector((state) => state.incidents.incidentId);
+  const { data } = useGetIncidentQuery(
+    {
+      id: incidentId ?? ""
+    },
+    {
+      skip: !incidentId,
+      pollingInterval: REFRESH_INTERVAL
+    }
+  );
+
+  const issues = useMemo(
+    () =>
+      data?.relatedIssues.filter((x) => Boolean(getInsightTypeInfo(x.type))) ??
+      [],
+    [data?.relatedIssues]
+  );
+
   const columns = [
     columnHelper.accessor((x) => x, {
       header: "Issue",
@@ -62,17 +84,21 @@ export const RelatedIssues = () => {
         }
 
         return (
-          <s.IssueRow>
+          <s.IssueInfoContainer>
             <InsightIcon
               insightTypeInfo={insightTypeInfo}
               criticality={issue.criticality}
             />
             <Tooltip title={insightTypeInfo.label}>
-              <s.Link href={getIdeLauncherLinkForSpan(issue.spanUid)}>
-                {insightTypeInfo.label}
-              </s.Link>
+              {issue.spanUid ? (
+                <s.Link href={getIdeLauncherLinkForSpan(issue.spanUid)}>
+                  {insightTypeInfo.label}
+                </s.Link>
+              ) : (
+                <s.IssueTypeTitle>{insightTypeInfo.label}</s.IssueTypeTitle>
+              )}
             </Tooltip>
-          </s.IssueRow>
+          </s.IssueInfoContainer>
         );
       }
     }),
@@ -95,7 +121,7 @@ export const RelatedIssues = () => {
   ];
 
   const table = useReactTable({
-    data: mockData.issues,
+    data: issues,
     columns,
     getCoreRowModel: getCoreRowModel()
   });

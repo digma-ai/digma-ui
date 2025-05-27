@@ -9,10 +9,19 @@ export const Container = styled.div`
   padding: 0 24px;
 `;
 
-export const IssueRow = styled.div`
+export const IssueInfoContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+`;
+
+export const IssueTypeTitle = styled.span`
+  font-size: 18px;
+  line-height: 18px;
+  color: ${({ theme }) => theme.colors.v3.text.primary};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const Link = styled(CommonLink)`

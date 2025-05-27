@@ -1,6 +1,6 @@
 import { Fragment } from "react/jsx-runtime";
 import { useAgenticSelector } from "../../../../containers/Agentic/hooks";
-import { useGetIncidentAgentLiveStreamQuery } from "../../../../redux/services/digma";
+import { useGetIncidentAgentEventsQuery } from "../../../../redux/services/digma";
 import { Spinner } from "../../../common/v3/Spinner";
 import * as s from "./styles";
 
@@ -15,11 +15,11 @@ const getMessage = (message: string) => {
   }
 };
 
-export const AgentLiveStream = () => {
+export const AgentEvents = () => {
   const incidentId = useAgenticSelector((state) => state.incidents.incidentId);
   const agentId = useAgenticSelector((state) => state.incidents.agentId);
 
-  const { data, isLoading } = useGetIncidentAgentLiveStreamQuery(
+  const { data, isLoading } = useGetIncidentAgentEventsQuery(
     { incidentId: incidentId ?? "", agentId: agentId ?? "" },
     {
       pollingInterval: REFRESH_INTERVAL,
@@ -41,7 +41,9 @@ export const AgentLiveStream = () => {
         <Fragment key={i}>
           {x.type === "tool" ? (
             <details key={i}>
-              <summary>{x.name} (tool)</summary>
+              <summary>
+                {x.mcp_name} {x.tool_name}
+              </summary>
               <s.Message>{getMessage(x.message)}</s.Message>
             </details>
           ) : (

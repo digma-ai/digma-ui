@@ -15,8 +15,8 @@ import { TwoVerticalLinesIcon } from "../../common/icons/16px/TwoVerticalLinesIc
 import { Direction } from "../../common/icons/types";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { AdditionalInfo } from "./AdditionalInfo";
+import { AgentEvents } from "./AgentEvents";
 import { AgentFlowChart } from "./AgentFlowChart";
-import { AgentLiveStream } from "./AgentLiveStream";
 import { Chat } from "./Chat";
 import { IncidentMetaData } from "./IncidentMetaData";
 import * as s from "./styles";
@@ -46,7 +46,7 @@ export const IncidentDetails = () => {
     }
   );
 
-  const handleSummaryBreadcrumbClick = () => {
+  const handleHomeBreadcrumbClick = () => {
     dispatch(setAgentId(null));
   };
 
@@ -93,8 +93,8 @@ export const IncidentDetails = () => {
           <s.BottomContentContainer>
             <s.SummaryContainer>
               <s.Breadcrumbs>
-                <s.BaseBreadcrumb onClick={handleSummaryBreadcrumbClick}>
-                  Summary
+                <s.BaseBreadcrumb onClick={handleHomeBreadcrumbClick}>
+                  Home
                 </s.BaseBreadcrumb>
                 {agentId && (
                   <>
@@ -118,7 +118,7 @@ export const IncidentDetails = () => {
                 isChatMode ? (
                   <Chat />
                 ) : (
-                  <AgentLiveStream />
+                  <AgentEvents />
                 )
               ) : (
                 <s.IncidentSummaryText>
