@@ -1107,7 +1107,7 @@ export interface InsightIncidentIssue {
   issue_id: string;
   span_id: string | null;
   type: "issue";
-  insight_type: InsightType;
+  issue_type: InsightType;
   criticality: number;
 }
 
