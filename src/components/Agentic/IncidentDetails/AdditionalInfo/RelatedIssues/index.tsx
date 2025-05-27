@@ -73,7 +73,7 @@ export const RelatedIssues = () => {
       cell: (info) => {
         const issue = info.getValue();
         const insightTypeInfo = isInsightIncidentIssue(issue)
-          ? getInsightTypeInfo(issue.insight_type)
+          ? getInsightTypeInfo(issue.issue_type)
           : undefined;
 
         const label = isInsightIncidentIssue(issue)
