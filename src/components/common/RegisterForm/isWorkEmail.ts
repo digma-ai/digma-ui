@@ -7,5 +7,5 @@ export const isWorkEmail = (email: string): boolean => {
   }
 
   const domain = email.slice(startIndex + 1);
-  return !(freeEmailDomains as string[]).includes(domain);
+  return !freeEmailDomains.includes(domain);
 };
