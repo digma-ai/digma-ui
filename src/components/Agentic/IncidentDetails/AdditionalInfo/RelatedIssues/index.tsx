@@ -7,10 +7,9 @@ import {
 import { useMemo } from "react";
 import { useAgenticSelector } from "../../../../../containers/Agentic/hooks";
 import { useGetIncidentQuery } from "../../../../../redux/services/digma";
-import type { IncidentIssue } from "../../../../../redux/services/types";
+import type { GenericIncidentIssue } from "../../../../../redux/services/types";
 import { getIdeLauncherLinkForSpan } from "../../../../../utils/getIdeLauncherLinkForSpan";
 import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
-import { Tag } from "../../../../common/v3/Tag";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import {
   getTagType,
@@ -45,7 +44,7 @@ import { isErrorIncidentIssue, isInsightIncidentIssue } from "./typeGuards";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
-const columnHelper = createColumnHelper<IncidentIssue>();
+const columnHelper = createColumnHelper<GenericIncidentIssue>();
 
 export const RelatedIssues = () => {
   const incidentId = useAgenticSelector((state) => state.incidents.incidentId);
@@ -91,8 +90,8 @@ export const RelatedIssues = () => {
               />
             )}
             <Tooltip title={label}>
-              {issue.span_id ? (
-                <s.Link href={getIdeLauncherLinkForSpan(issue.span_id)}>
+              {issue.span_uid ? (
+                <s.Link href={getIdeLauncherLinkForSpan(issue.span_uid)}>
                   {label}
                 </s.Link>
               ) : (
@@ -115,7 +114,11 @@ export const RelatedIssues = () => {
         const tagType = getTagType(tagLabel);
 
         return (
-          <Tag title={issue.criticality} type={tagType} content={tagLabel} />
+          <s.CriticalityTag
+            title={issue.criticality}
+            type={tagType}
+            content={<s.CriticalityLabel>{tagLabel}</s.CriticalityLabel>}
+          />
         );
       }
     })

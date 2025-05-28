@@ -20,6 +20,7 @@ export type FlowChartNodeData = {
   isActive?: boolean;
   isRunning?: boolean;
   isDisabled?: boolean;
+  isInteractive?: boolean;
   sideContainer?: {
     element: ReactNode;
     isVisible: boolean;
@@ -35,6 +36,7 @@ export const FlowChartNode = ({ data }: NodeProps<FlowChartNode>) => (
       $orientation={data.orientation}
       $isActive={data.isActive}
       $isDisabled={data.isDisabled}
+      $isInteractive={data.isInteractive}
     >
       {data.label && (
         <s.Label $orientation={data.orientation}>{data.label}</s.Label>

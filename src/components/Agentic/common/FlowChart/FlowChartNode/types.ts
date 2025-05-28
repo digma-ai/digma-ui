@@ -4,4 +4,5 @@ export interface ContainerProps {
   $orientation?: Orientation;
   $isActive?: boolean;
   $isDisabled?: boolean;
+  $isInteractive?: boolean;
 }

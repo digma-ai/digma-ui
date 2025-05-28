@@ -7,6 +7,7 @@ export const MCPServerBlock = styled.div<MCPServerBlockElementProps>`
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   height: ${({ $zoomLevel }) =>
     $zoomLevel
       ? $zoomLevel * DEFAULT_MCP_SERVER_BLOCK_SIZE

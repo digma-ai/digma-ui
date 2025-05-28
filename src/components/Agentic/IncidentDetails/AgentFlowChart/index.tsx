@@ -144,17 +144,25 @@ import * as s from "./styles";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
-const getFlowChartNodeData = (
-  agent?: Agent,
-  sideContainerPosition?: Position,
-  selectedAgentId?: string | null,
-  zoomLevel?: number
-): Partial<FlowChartNodeData> => {
+const getFlowChartNodeData = ({
+  agent,
+  sideContainerPosition,
+  zoomLevel,
+  isSelected,
+  isInteractive
+}: {
+  agent?: Agent;
+  sideContainerPosition?: Position;
+  isInteractive?: boolean;
+  isSelected?: boolean;
+  zoomLevel?: number;
+}): Partial<FlowChartNodeData> => {
   return agent
     ? {
         label: agent.display_name,
-        isActive: agent.name === selectedAgentId,
+        isActive: isSelected,
         isRunning: agent.running,
+        isInteractive,
         isDisabled: agent.status === "inactive",
         sideContainer: {
           isVisible: agent.mcp_servers.length > 0,
@@ -216,7 +224,13 @@ export const AgentFlowChart = () => {
       case "triager":
       case "infra_resolver":
       case "code_resolver":
-        dispatch(setAgentId(id));
+        {
+          if (agents?.find((a) => a.name === id)?.status === "inactive") {
+            break;
+          }
+
+          dispatch(setAgentId(id));
+        }
         break;
       case "validator":
       default:
@@ -234,12 +248,13 @@ export const AgentFlowChart = () => {
           id: "digma",
           position: { x: 0, y: -31 }, // TODO: find a way to center this
           data: {
-            ...getFlowChartNodeData(
-              agents?.find((a) => a.name === "digma"),
-              Position.Top,
-              agentId,
-              zoomLevel
-            ),
+            ...getFlowChartNodeData({
+              agent: agents?.find((a) => a.name === "digma"),
+              sideContainerPosition: Position.Top,
+              isSelected: !agentId,
+              zoomLevel,
+              isInteractive: true
+            }),
             orientation: "vertical",
             type: "input"
           }
@@ -248,60 +263,72 @@ export const AgentFlowChart = () => {
           id: "watchman",
           position: { x: 200, y: 0 },
           data: {
-            ...getFlowChartNodeData(
-              agents?.find((a) => a.name === "watchman"),
-              Position.Top,
-              agentId,
-              zoomLevel
-            )
+            ...getFlowChartNodeData({
+              agent: agents?.find((a) => a.name === "watchman"),
+              sideContainerPosition: Position.Top,
+              zoomLevel,
+              isSelected: "watchman" === agentId,
+              isInteractive:
+                agents?.find((a) => a.name === "watchman")?.status !==
+                "inactive"
+            })
           }
         },
         {
           id: "triager",
           position: { x: 500, y: 0 },
           data: {
-            ...getFlowChartNodeData(
-              agents?.find((a) => a.name === "triager"),
-              Position.Top,
-              agentId,
-              zoomLevel
-            )
+            ...getFlowChartNodeData({
+              agent: agents?.find((a) => a.name === "triager"),
+              sideContainerPosition: Position.Top,
+              zoomLevel,
+              isSelected: "triager" === agentId,
+              isInteractive:
+                agents?.find((a) => a.name === "triager")?.status !== "inactive"
+            })
           }
         },
         {
           id: "infra_resolver",
           position: { x: 800, y: -50 },
           data: {
-            ...getFlowChartNodeData(
-              agents?.find((a) => a.name === "infra_resolver"),
-              Position.Top,
-              agentId,
-              zoomLevel
-            )
+            ...getFlowChartNodeData({
+              agent: agents?.find((a) => a.name === "infra_resolver"),
+              sideContainerPosition: Position.Top,
+              zoomLevel,
+              isSelected: "infra_resolver" === agentId,
+              isInteractive:
+                agents?.find((a) => a.name === "infra_resolver")?.status !==
+                "inactive"
+            })
           }
         },
         {
           id: "code_resolver",
           position: { x: 800, y: 50 },
           data: {
-            ...getFlowChartNodeData(
-              agents?.find((a) => a.name === "code_resolver"),
-              Position.Bottom,
-              agentId,
-              zoomLevel
-            )
+            ...getFlowChartNodeData({
+              agent: agents?.find((a) => a.name === "code_resolver"),
+              sideContainerPosition: Position.Bottom,
+              zoomLevel,
+              isSelected: "code_resolver" === agentId,
+              isInteractive:
+                agents?.find((a) => a.name === "code_resolver")?.status !==
+                "inactive"
+            })
           }
         },
         {
           id: "validator",
           position: { x: 1100, y: 0 },
           data: {
-            ...getFlowChartNodeData(
-              agents?.find((a) => a.name === "validator"),
-              Position.Top,
-              agentId,
-              zoomLevel
-            ),
+            ...getFlowChartNodeData({
+              agent: agents?.find((a) => a.name === "validator"),
+              sideContainerPosition: Position.Top,
+              zoomLevel,
+              isSelected: false,
+              isInteractive: false
+            }),
             type: "output"
           }
         }

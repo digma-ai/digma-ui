@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link as CommonLink } from "../../../../common/v3/Link";
+import { Tag } from "../../../../common/v3/Tag";
 import type { TableCellContentProps } from "./types";
 
 export const Container = styled.div`
@@ -29,6 +30,16 @@ export const Link = styled(CommonLink)`
   font-size: 18px;
   line-height: 18px;
   text-decoration: underline;
+`;
+
+export const CriticalityTag = styled(Tag)`
+  width: 68px;
+  max-width: 68px;
+`;
+
+export const CriticalityLabel = styled.span`
+  font-size: 16px;
+  line-height: 18px;
 `;
 
 export const Table = styled.div`

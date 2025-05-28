@@ -1103,23 +1103,24 @@ export interface GetIncidentPayload {
   id: string;
 }
 
-export interface InsightIncidentIssue {
+export interface IncidentIssue {
   issue_id: string;
-  span_id: string | null;
-  type: "issue";
-  issue_type: InsightType;
-  criticality: number;
-}
-
-export interface ErrorIncidentIssue {
-  issue_id: string;
-  span_id: string | null;
-  type: "error";
+  span_uid: string | null;
+  type: string;
   issue_type: string;
   criticality: number;
 }
 
-export type IncidentIssue = InsightIncidentIssue | ErrorIncidentIssue;
+export interface InsightIncidentIssue extends IncidentIssue {
+  type: "issue";
+  issue_type: InsightType;
+}
+
+export interface ErrorIncidentIssue extends IncidentIssue {
+  type: "error";
+}
+
+export type GenericIncidentIssue = InsightIncidentIssue | ErrorIncidentIssue;
 
 export interface GetIncidentResponse {
   id: string;
@@ -1127,7 +1128,7 @@ export interface GetIncidentResponse {
   status: string;
   summary: string;
   active_status: IncidentActivityStatus;
-  related_issues: IncidentIssue[];
+  related_issues: GenericIncidentIssue[];
   affected_services: string[];
   created_at: string;
   closed_at: string | null;

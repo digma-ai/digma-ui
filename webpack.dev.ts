@@ -18,6 +18,8 @@ interface Session {
   userId: string;
 }
 
+const DEFAULT_PORT = 3000;
+
 dotenv.config();
 
 if (!process.env.USERNAME || !process.env.PASSWORD) {
@@ -110,7 +112,7 @@ const config: WebpackConfiguration = {
         }))
       ]
     },
-    port: 3000,
+    port: process.env.PORT ?? DEFAULT_PORT,
     proxy: [
       {
         context: ["/api"],
