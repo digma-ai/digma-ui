@@ -15,7 +15,6 @@ import { Accordion } from "./Accordion";
 import * as s from "./styles";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
-const AUTO_SCROLL_THRESHOLD = 10; // in pixels
 const TYPING_SPEED = 3; // in milliseconds per character
 
 const convertToMarkdown = (text: string) => {
@@ -91,7 +90,7 @@ export const AgentEvents = () => {
         return false;
       }
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
-      return scrollHeight - scrollTop <= clientHeight + AUTO_SCROLL_THRESHOLD;
+      return scrollHeight - scrollTop <= clientHeight + 1; // Allow a small buffer for precision issues
     };
 
     if (!containerRef.current) {

@@ -11,9 +11,11 @@ import type { GenericIncidentIssue } from "../../../../../redux/services/types";
 import { getIdeLauncherLinkForSpan } from "../../../../../utils/getIdeLauncherLinkForSpan";
 import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
 import { roundTo } from "../../../../../utils/roundTo";
+import type { TagType } from "../../../../common/v3/Tag/types";
 import { Tooltip } from "../../../../common/v3/Tooltip";
+import { getTagType as getErrorTagType } from "../../../../Errors/Score";
 import {
-  getTagType,
+  getTagType as getIssueTagType,
   InsightIcon
 } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/InsightHeader/InsightIcon";
 import { getValueLabel } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/InsightHeader/InsightIcon/getValueLabel";
@@ -42,6 +44,19 @@ import { isErrorIncidentIssue, isInsightIncidentIssue } from "./typeGuards";
 //     }
 //   ]
 // };
+
+const getErrorTagLabel = (tagType: TagType): string => {
+  switch (tagType) {
+    case "lowSeverity":
+      return "Low";
+    case "mediumSeverity":
+      return "Medium";
+    case "highSeverity":
+      return "High";
+    default:
+      return "";
+  }
+};
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
@@ -82,8 +97,8 @@ export const RelatedIssues = () => {
         const label = isInsightIncidentIssue(issue)
           ? insightTypeInfo?.label
           : isErrorIncidentIssue(issue)
-            ? issue.issue_type
-            : undefined;
+          ? issue.issue_type
+          : undefined;
 
         return (
           <s.IssueInfoContainer>
@@ -118,17 +133,35 @@ export const RelatedIssues = () => {
       },
       cell: (info) => {
         const issue = info.getValue();
-        const tagTitle = `${roundTo(issue.criticality * 100, 0)}%`;
-        const tagLabel = getValueLabel(issue.criticality);
-        const tagType = getTagType(tagLabel);
 
-        return (
-          <s.CriticalityTag
-            title={tagTitle}
-            type={tagType}
-            content={<s.CriticalityLabel>{tagLabel}</s.CriticalityLabel>}
-          />
-        );
+        switch (issue.type) {
+          case "issue": {
+            const tagLabel = getValueLabel(issue.criticality);
+
+            return (
+              <s.CriticalityTag
+                title={`${roundTo(issue.criticality * 100, 0)}%`}
+                type={getIssueTagType(tagLabel)}
+                content={<s.CriticalityLabel>{tagLabel}</s.CriticalityLabel>}
+              />
+            );
+          }
+          case "error": {
+            const tagType = getErrorTagType(issue.criticality);
+
+            return (
+              <s.CriticalityTag
+                title={issue.criticality}
+                type={tagType}
+                content={
+                  <s.CriticalityLabel>
+                    {getErrorTagLabel(tagType)}
+                  </s.CriticalityLabel>
+                }
+              />
+            );
+          }
+        }
       }
     })
   ];
