@@ -10,6 +10,7 @@ import { useGetIncidentQuery } from "../../../../../redux/services/digma";
 import type { GenericIncidentIssue } from "../../../../../redux/services/types";
 import { getIdeLauncherLinkForSpan } from "../../../../../utils/getIdeLauncherLinkForSpan";
 import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
+import { roundTo } from "../../../../../utils/roundTo";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import {
   getTagType,
@@ -59,7 +60,10 @@ export const RelatedIssues = () => {
   );
 
   const issues = useMemo(
-    () => data?.related_issues ?? [],
+    () =>
+      [...(data?.related_issues ?? [])].sort(
+        (a, b) => b.criticality - a.criticality
+      ),
     [data?.related_issues]
   );
 
@@ -78,8 +82,8 @@ export const RelatedIssues = () => {
         const label = isInsightIncidentIssue(issue)
           ? insightTypeInfo?.label
           : isErrorIncidentIssue(issue)
-          ? issue.issue_type
-          : undefined;
+            ? issue.issue_type
+            : undefined;
 
         return (
           <s.IssueInfoContainer>
@@ -91,7 +95,11 @@ export const RelatedIssues = () => {
             )}
             <Tooltip title={label}>
               {issue.span_uid ? (
-                <s.Link href={getIdeLauncherLinkForSpan(issue.span_uid)}>
+                <s.Link
+                  href={getIdeLauncherLinkForSpan(issue.span_uid)}
+                  target={"_blank"}
+                  rel={"noopener noreferrer"}
+                >
                   {label}
                 </s.Link>
               ) : (
@@ -110,12 +118,13 @@ export const RelatedIssues = () => {
       },
       cell: (info) => {
         const issue = info.getValue();
+        const tagTitle = `${roundTo(issue.criticality * 100, 0)}%`;
         const tagLabel = getValueLabel(issue.criticality);
         const tagType = getTagType(tagLabel);
 
         return (
           <s.CriticalityTag
-            title={issue.criticality}
+            title={tagTitle}
             type={tagType}
             content={<s.CriticalityLabel>{tagLabel}</s.CriticalityLabel>}
           />

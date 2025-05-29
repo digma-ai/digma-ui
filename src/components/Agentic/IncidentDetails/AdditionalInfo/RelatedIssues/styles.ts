@@ -35,6 +35,7 @@ export const Link = styled(CommonLink)`
 export const CriticalityTag = styled(Tag)`
   width: 68px;
   max-width: 68px;
+  height: 24px;
 `;
 
 export const CriticalityLabel = styled.span`

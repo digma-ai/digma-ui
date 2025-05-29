@@ -6,6 +6,7 @@ import {
 import { Toggle } from "../../common/v3/Toggle";
 import { OptionButton } from "../../common/v3/Toggle/styles";
 import type { ToggleProps } from "../../common/v3/Toggle/types";
+import { textStyles } from "./MarkdownRenderer/styles";
 import type { BreadcrumbProps, SummaryViewMode } from "./types";
 
 export const Container = styled.div`
@@ -70,6 +71,7 @@ export const SummaryContainerToolbar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 `;
 
 export const StyledToggle = styled(Toggle)<ToggleProps<SummaryViewMode>>`
@@ -140,6 +142,7 @@ export const StatusBarText = styled.span`
 `;
 
 export const IncidentSummaryText = styled.div`
+  ${textStyles}
   flex-grow: 1;
   overflow: auto;
 `;

@@ -1,27 +1,27 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-  gap: 8px;
-`;
-
-export const ToolContainer = styled.details`
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   border-radius: 8px;
+  flex-shrink: 0;
   overflow: hidden;
+`;
+
+export const Summary = styled.div`
+  background-color: ${({ theme }) => theme.colors.v3.surface.secondary};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+`;
+
+export const IconContainer = styled.div`
+  display: flex;
   flex-shrink: 0;
 `;
 
-export const ToolSummary = styled.summary`
-  background-color: ${({ theme }) => theme.colors.v3.surface.secondary};
-  padding: 12px 16px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.v3.text.primary};
-  cursor: pointer;
-`;
-
-export const ToolContent = styled.div`
-  padding: 16px;
+export const Content = styled.div`
+  padding: 8px;
 `;

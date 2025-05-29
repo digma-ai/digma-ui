@@ -16,7 +16,7 @@ export const ThreeCirclesSpinner = ({
       options={options}
       height={size}
       width={size}
-      style={{ margin: 0 }}
+      style={{ margin: 0, flexShrink: 0 }}
     />
   );
 };

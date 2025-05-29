@@ -86,6 +86,8 @@ export const IncidentDetails = () => {
     (agent) => agent.name === agentId
   )?.display_name;
 
+  const key = `${incidentId}-${agentId}`;
+
   return (
     <s.Container>
       <IncidentMetaData />
@@ -136,9 +138,9 @@ export const IncidentDetails = () => {
               </s.SummaryContainerToolbar>
               {agentId ? (
                 summaryViewMode === "chat" ? (
-                  <Chat />
+                  <Chat key={key} />
                 ) : (
-                  <AgentEvents />
+                  <AgentEvents key={key} />
                 )
               ) : (
                 <s.IncidentSummaryText>
