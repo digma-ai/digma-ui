@@ -6,32 +6,6 @@ import { Tooltip } from "../../../common/v3/Tooltip";
 import { Divider } from "./Divider";
 import * as s from "./styles";
 
-// TODO: move to Storybook
-// const mockData: GetIncidentResponse = {
-//   id: "incident-123",
-//   name: "Sample Incident",
-//   activeStatus: "active",
-//   status: "active",
-//   createdAt: "2023-10-01T12:00:00Z",
-//   closedAt: "2023-10-01T12:30:00Z",
-//   affectedServices: ["service-1", "service-2", "service-3", "service-4"],
-//   summary: "This is a summary of the incident.",
-//   relatedIssues: [
-//     {
-//       issueId: "issue-1",
-//       type: "issue",
-//       spanUid: null,
-//       criticality: 0.2
-//     },
-//     {
-//       issueId: "issue-2",
-//       type: "issue",
-//       spanUid: null,
-//       criticality: 1
-//     }
-//   ]
-// };
-
 const DATE_FORMAT = "dd MMM, yyyy";
 const SERVICE_TAGS_TO_SHOW = 2;
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
