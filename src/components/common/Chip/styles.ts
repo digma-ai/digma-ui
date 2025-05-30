@@ -24,7 +24,7 @@ export const Container = styled.button`
   padding: 4px 8px;
   overflow: hidden;
   cursor: ${({ disabled }) => (disabled ? "auto" : "pointer")};
-  transition: all 0.5s;
+  transition: all 500ms;
 
   &:disabled {
     color: ${({ theme }) => theme.colors.v3.text.disabled};

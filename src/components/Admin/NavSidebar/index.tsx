@@ -1,7 +1,6 @@
 import { usePostHog } from "posthog-js/react";
 import { useEffect } from "react";
 import { useTheme } from "styled-components";
-import { useAdminDispatch } from "../../../containers/Admin/hooks";
 import { useLogoutMutation } from "../../../redux/services/auth";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getThemeKind } from "../../common/App/styles";
@@ -15,7 +14,6 @@ export const NavSidebar = () => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
   const [logout, result] = useLogoutMutation();
-  const dispatch = useAdminDispatch();
   const posthog = usePostHog();
 
   const handleLogoLinkClick = () => {
@@ -44,7 +42,7 @@ export const NavSidebar = () => {
         window.clearTimeout(timeoutId);
       }
     };
-  }, [posthog, result.isSuccess, dispatch]);
+  }, [posthog, result.isSuccess]);
 
   return (
     <s.Sidebar>

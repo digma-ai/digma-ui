@@ -1084,3 +1084,130 @@ export interface GetBlockedTracesResponse {
   pageSize: number;
   total: number;
 }
+
+export type IncidentActivityStatus = "active" | "paused" | "closed";
+
+export interface IncidentResponseItem {
+  id: string;
+  name: string;
+  active_status: IncidentActivityStatus;
+  created_at: string;
+  closed_at: string | null;
+}
+
+export interface GetIncidentsResponse {
+  items: IncidentResponseItem[];
+}
+
+export interface GetIncidentPayload {
+  id: string;
+}
+
+export interface IncidentIssue {
+  issue_id: string;
+  span_uid: string | null;
+  type: string;
+  issue_type: string;
+  criticality: number;
+}
+
+export interface InsightIncidentIssue extends IncidentIssue {
+  type: "issue";
+  issue_type: InsightType;
+}
+
+export interface ErrorIncidentIssue extends IncidentIssue {
+  type: "error";
+}
+
+export type GenericIncidentIssue = InsightIncidentIssue | ErrorIncidentIssue;
+
+export type ArtifactType = "pr" | "issue";
+
+export interface IncidentArtifact {
+  id: number;
+  url: string;
+  type: ArtifactType;
+  display_name: string;
+}
+
+export interface GetIncidentResponse {
+  id: string;
+  name: string;
+  status: string;
+  summary: string;
+  active_status: IncidentActivityStatus;
+  related_issues: GenericIncidentIssue[];
+  related_artifacts: IncidentArtifact[];
+  affected_services: string[];
+  created_at: string;
+  closed_at: string | null;
+}
+
+export type AgentStatus = "pending" | "active" | "inactive";
+
+export interface Agent {
+  name: string;
+  display_name: string;
+  description: string;
+  running: boolean;
+  status: AgentStatus;
+  mcp_servers: {
+    name: string;
+    display_name: string;
+    active: boolean;
+  }[];
+}
+
+export interface GetIncidentAgentsPayload {
+  id: string;
+}
+
+export interface GetIncidentAgentsResponse {
+  agents: Agent[];
+}
+
+export interface GetIncidentAgentEventsPayload {
+  incidentId: string;
+  agentId: string;
+}
+
+export interface IncidentAgentEventToken {
+  type: "token";
+  agent_name: string;
+  message: string;
+}
+
+export interface IncidentAgentEventTool {
+  type: "tool";
+  agent_name: string;
+  message: string;
+  mcp_name: string;
+  tool_name: string;
+}
+
+export type GetIncidentAgentEventsResponse = (
+  | IncidentAgentEventToken
+  | IncidentAgentEventTool
+)[];
+
+export interface GetIncidentAgentChatEventsPayload {
+  incidentId: string;
+  agentId: string;
+}
+
+export interface IncidentAgentChatEvent {
+  type: "ai" | "human" | "tool";
+  message: string;
+  agent_name: string;
+  tool_name: string | null;
+  mcp_name: string | null;
+}
+
+export type GetIncidentAgentChatEventsResponse = IncidentAgentChatEvent[];
+
+export interface sendMessageToIncidentAgentChatPayload {
+  incidentId: string;
+  agentId: string;
+  data: { text: string };
+}

@@ -7,6 +7,7 @@ import type { MenuListProps } from "./types";
 
 const UNGROUPED_GROUP_LABEL = "__ungrouped";
 
+// TODO: move to common
 export const MenuList = ({
   showGroupNames = true,
   items,

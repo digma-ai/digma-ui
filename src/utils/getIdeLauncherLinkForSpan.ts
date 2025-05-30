@@ -1,9 +1,7 @@
-import type { SpanInfo } from "../redux/services/types";
-
 export const getIdeLauncherLinkForSpan = (
-  spanInfo: SpanInfo
+  spanUid?: string
 ): string | undefined => {
-  if (!spanInfo.uid) {
+  if (!spanUid) {
     return;
   }
 
@@ -11,7 +9,7 @@ export const getIdeLauncherLinkForSpan = (
   const url = new URL(baseURL);
 
   url.searchParams.append("plugin.action", "GoToSpan");
-  url.searchParams.append("plugin.spanUid", spanInfo.uid);
+  url.searchParams.append("plugin.spanUid", spanUid);
   url.searchParams.append("plugin.targetTab", "issues");
 
   return url.toString();

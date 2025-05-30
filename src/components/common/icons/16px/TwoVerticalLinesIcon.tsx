@@ -1,9 +1,22 @@
 import React from "react";
 import { useIconProps } from "../hooks";
-import type { IconProps } from "../types";
+import { Direction, type RotatableIconProps } from "../types";
 
-const TwoVerticalLinesIconComponent = (props: IconProps) => {
+const directionRotateMap: Record<Direction, string> = {
+  [Direction.Down]: "0",
+  [Direction.Left]: "90",
+  [Direction.Up]: "0",
+  [Direction.Right]: "90"
+};
+
+const TwoVerticalLinesIconComponent = (props: RotatableIconProps) => {
   const { size, color } = useIconProps(props);
+
+  const transform = {
+    transform: `rotate(${
+      directionRotateMap[props.direction ?? Direction.Down]
+    })`
+  };
 
   return (
     <svg
@@ -12,6 +25,7 @@ const TwoVerticalLinesIconComponent = (props: IconProps) => {
       height={size}
       fill="none"
       viewBox="0 0 16 16"
+      {...transform}
     >
       <path
         stroke={color}

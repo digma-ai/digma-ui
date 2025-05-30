@@ -48,6 +48,7 @@ To set environment variables use .env file
 
 | Name              | Type   | Default | Description                                               |
 | ----------------- | ------ | ------- | --------------------------------------------------------- |
+| PORT              | number | 3000    | Port (for dev server)                                     |
 | UI_BASE_URL       | string | -       | Base URL to proxy requests to ingress (for dev server)    |
 | JAEGER_API_PATH   | string | -       | URL path to proxy requests to Jaeger UI (for dev server ) |
 | API_BASE_URL      | string | -       | Base URL to proxy Digma API requests (for dev server)     |

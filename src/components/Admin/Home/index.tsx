@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router";
 import {
   useAdminDispatch,
   useAdminSelector
 } from "../../../containers/Admin/hooks";
 import { useMount } from "../../../hooks/useMount";
+import { useStableSearchParams } from "../../../hooks/useStableSearchParams";
 import { InsightsSortingCriterion } from "../../../redux/services/types";
 import {
   setSelectedEnvironmentId,
@@ -26,7 +26,7 @@ export const Home = () => {
   );
   const dispatch = useAdminDispatch();
   const [issuesQuery, setIssuesQuery] = useState<string>();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useStableSearchParams();
   const environmentParam = searchParams.get("environment");
   const issuesParam = searchParams.get("issues");
   const servicesParam = useMemo(
