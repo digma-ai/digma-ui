@@ -1,6 +1,8 @@
 import type { RouteObject } from "react-router";
-import { createBrowserRouter, useRouteError } from "react-router";
+import { createBrowserRouter, Navigate, useRouteError } from "react-router";
 import { Agentic } from "../../components/Agentic";
+import { IncidentDetails } from "../../components/Agentic/IncidentDetails";
+import { Incidents } from "../../components/Agentic/Incidents";
 
 export const routes: RouteObject[] = [
   {
@@ -8,7 +10,27 @@ export const routes: RouteObject[] = [
     element: <Agentic />,
     ErrorBoundary: () => {
       throw useRouteError();
-    }
+    },
+    children: [
+      {
+        index: true,
+        element: <Navigate replace={true} to={"incidents"} />
+      },
+      {
+        path: "incidents",
+        element: <Incidents />,
+        children: [
+          {
+            path: ":id",
+            element: <IncidentDetails />
+          }
+        ]
+      },
+      {
+        path: "*",
+        element: <Navigate to={"/"} replace={true} />
+      }
+    ]
   }
 ];
 

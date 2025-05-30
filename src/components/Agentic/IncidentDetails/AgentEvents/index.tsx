@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useParams } from "react-router";
 import { Fragment } from "react/jsx-runtime";
-import { useAgenticSelector } from "../../../../containers/Agentic/hooks";
+import { useStableSearchParams } from "../../../../hooks/useStableSearchParams";
 import {
   useGetIncidentAgentEventsQuery,
   useGetIncidentAgentsQuery
@@ -10,39 +11,20 @@ import { isBoolean } from "../../../../typeGuards/isBoolean";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { ThreeCirclesSpinner } from "../../../common/ThreeCirclesSpinner";
+import { Spinner } from "../../../common/v3/Spinner";
 import { TypingMarkdown } from "../TypingMarkdown";
+import { convertToMarkdown } from "../utils/convertToMarkdown";
 import { Accordion } from "./Accordion";
 import * as s from "./styles";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 const TYPING_SPEED = 3; // in milliseconds per character
 
-const convertToMarkdown = (text: string) => {
-  try {
-    // First try to parse as JSON
-    const parsedJSON = JSON.parse(text) as unknown;
-    const formattedJSON = JSON.stringify(parsedJSON, null, 2);
-    return `\`\`\`json\n${formattedJSON}\n\`\`\``;
-  } catch {
-    // If JSON parsing fails, check if it looks like structured data
-    const trimmed = text.trim();
-
-    // Check for Python list/object representation patterns
-    if (
-      (trimmed.startsWith("[") && trimmed.endsWith("]")) ||
-      (trimmed.startsWith("(") && trimmed.endsWith(")")) ||
-      (trimmed.includes("(") && trimmed.includes("=")) // Constructor-like syntax
-    ) {
-      return `\`\`\`python\n${text}\n\`\`\``;
-    }
-
-    return text;
-  }
-};
-
 export const AgentEvents = () => {
-  const incidentId = useAgenticSelector((state) => state.incidents.incidentId);
-  const agentId = useAgenticSelector((state) => state.incidents.agentId);
+  const params = useParams();
+  const incidentId = params.id;
+  const [searchParams] = useStableSearchParams();
+  const agentId = searchParams.get("agent");
   const [initialAgentRunning, setInitialAgentRunning] = useState<boolean>();
   const [eventsVisibleCount, setEventsVisibleCount] = useState<number>();
   const [data, setData] = useState<GetIncidentAgentEventsResponse>();
@@ -58,7 +40,7 @@ export const AgentEvents = () => {
     }
   );
 
-  const { data: agentEventsData } = useGetIncidentAgentEventsQuery(
+  const { data: agentEventsData, isLoading } = useGetIncidentAgentEventsQuery(
     { incidentId: incidentId ?? "", agentId: agentId ?? "" },
     {
       pollingInterval: REFRESH_INTERVAL,
@@ -170,14 +152,22 @@ export const AgentEvents = () => {
   }, [initialAgentRunning, eventsVisibleCount, data]);
 
   const visibleEvents = useMemo(
-    () => data?.slice(0, eventsVisibleCount) ?? [],
+    () =>
+      data && isNumber(eventsVisibleCount)
+        ? data.slice(0, eventsVisibleCount)
+        : [],
     [data, eventsVisibleCount]
   );
 
   return (
     <s.Container ref={containerRef} onScroll={handleContainerScroll}>
+      {!data && isLoading && (
+        <s.LoadingContainer>
+          <Spinner size={32} />
+        </s.LoadingContainer>
+      )}
       {visibleEvents.map((x, i) => (
-        <Fragment key={x.type + i}>
+        <Fragment key={i}>
           {x.type === "tool" ? (
             <Accordion
               summary={`${x.tool_name} (${[x.mcp_name, "MCP tool"]

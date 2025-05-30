@@ -1,10 +1,12 @@
 import { format } from "date-fns";
-import { useAgenticSelector } from "../../../../containers/Agentic/hooks";
+import { useMemo } from "react";
+import { useParams } from "react-router";
 import { useGetIncidentQuery } from "../../../../redux/services/digma";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { Divider } from "./Divider";
 import * as s from "./styles";
 
+// TODO: move to Storybook
 // const mockData: GetIncidentResponse = {
 //   id: "incident-123",
 //   name: "Sample Incident",
@@ -35,7 +37,8 @@ const SERVICE_TAGS_TO_SHOW = 2;
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 export const IncidentMetaData = () => {
-  const incidentId = useAgenticSelector((state) => state.incidents.incidentId);
+  const params = useParams();
+  const incidentId = params.id;
 
   const { data } = useGetIncidentQuery(
     { id: incidentId ?? "" },
@@ -45,11 +48,19 @@ export const IncidentMetaData = () => {
     }
   );
 
+  const hiddenServices = useMemo(
+    () => data?.affected_services.slice(SERVICE_TAGS_TO_SHOW) ?? [],
+    [data]
+  );
+
+  const serviceTagsToShow = useMemo(
+    () => data?.affected_services.slice(0, SERVICE_TAGS_TO_SHOW) ?? [],
+    [data]
+  );
+
   if (!data) {
     return null;
   }
-
-  const hiddenServices = data.affected_services.slice(SERVICE_TAGS_TO_SHOW);
 
   return (
     <s.Container>
@@ -77,7 +88,7 @@ export const IncidentMetaData = () => {
           </s.DividerContainer>
           <s.ServicesContainer>
             <span>Affected services:</span>
-            {data.affected_services.slice(0, 2).map((x) => (
+            {serviceTagsToShow.map((x) => (
               <Tooltip key={x} title={x}>
                 <s.ServiceTag>{x}</s.ServiceTag>
               </Tooltip>

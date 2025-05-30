@@ -1,12 +1,9 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
+import { useNavigate, useParams } from "react-router";
 import { useTheme } from "styled-components";
-import {
-  useAgenticDispatch,
-  useAgenticSelector
-} from "../../../containers/Agentic/hooks";
+import { useAgenticSelector } from "../../../containers/Agentic/hooks";
 import { useGetIncidentsQuery } from "../../../redux/services/digma";
 import type { IncidentResponseItem } from "../../../redux/services/types";
-import { clear, setIncidentId } from "../../../redux/slices/incidentsSlice";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getThemeKind } from "../../common/App/styles";
 import { Tooltip } from "../../common/v3/Tooltip";
@@ -22,8 +19,9 @@ const isIncidentActive = (incident: IncidentResponseItem): boolean => {
 export const Sidebar = () => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
-  const { incidentId } = useAgenticSelector((state) => state.incidents);
-  const dispatch = useAgenticDispatch();
+  const params = useParams();
+  const incidentId = params.id;
+  const navigate = useNavigate();
 
   const { data } = useGetIncidentsQuery(undefined, {
     pollingInterval: REFRESH_INTERVAL
@@ -34,8 +32,7 @@ export const Sidebar = () => {
   };
 
   const handleIncidentListItemClick = (id: string) => () => {
-    dispatch(clear());
-    dispatch(setIncidentId(id));
+    void navigate(`/incidents/${id}`);
   };
 
   const handleTemplateButtonClick = () => {
@@ -50,14 +47,6 @@ export const Sidebar = () => {
       ),
     [data]
   );
-
-  useEffect(() => {
-    if (sortedIncidents.length > 0) {
-      dispatch(setIncidentId(sortedIncidents[0].id));
-    } else {
-      dispatch(clear());
-    }
-  }, [sortedIncidents, dispatch]);
 
   const user = useAgenticSelector((state) => state.auth.user);
   const userInitial = (user?.email[0] ?? "").toLocaleUpperCase();

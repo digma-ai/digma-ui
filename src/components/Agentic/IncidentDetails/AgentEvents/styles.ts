@@ -4,7 +4,15 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   overflow: auto;
+  flex-grow: 1;
   gap: 8px;
+`;
+
+export const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
 `;
 
 export const ToolContainer = styled.details`

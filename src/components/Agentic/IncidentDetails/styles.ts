@@ -7,7 +7,7 @@ import { Toggle } from "../../common/v3/Toggle";
 import { OptionButton } from "../../common/v3/Toggle/styles";
 import type { ToggleProps } from "../../common/v3/Toggle/types";
 import { textStyles } from "./MarkdownRenderer/styles";
-import type { BreadcrumbProps, SummaryViewMode } from "./types";
+import type { AgentViewMode, BreadcrumbProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -74,7 +74,7 @@ export const SummaryContainerToolbar = styled.div`
   flex-wrap: wrap;
 `;
 
-export const StyledToggle = styled(Toggle)<ToggleProps<SummaryViewMode>>`
+export const StyledToggle = styled(Toggle)<ToggleProps<AgentViewMode>>`
   gap: 8px;
 
   & > ${OptionButton} {

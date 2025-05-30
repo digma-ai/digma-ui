@@ -1,12 +1,9 @@
 import { Position, type Edge } from "@xyflow/react";
 import { useState } from "react";
-import {
-  useAgenticDispatch,
-  useAgenticSelector
-} from "../../../../containers/Agentic/hooks";
+import { useParams } from "react-router";
+import { useStableSearchParams } from "../../../../hooks/useStableSearchParams";
 import { useGetIncidentAgentsQuery } from "../../../../redux/services/digma";
 import type { Agent } from "../../../../redux/services/types";
-import { setAgentId } from "../../../../redux/slices/incidentsSlice";
 import { FlowChart } from "../../common/FlowChart";
 import type {
   FlowChartNode,
@@ -14,133 +11,6 @@ import type {
 } from "../../common/FlowChart/FlowChartNode";
 import { MCPServerBlock } from "./MCPServerBlock";
 import * as s from "./styles";
-
-// const mockData: GetIncidentAgentsResponse = {
-//   agents: [
-//     {
-//       name: "digma",
-//       display_name: "Digma",
-//       running: false,
-//       status: "active",
-//       mcp_servers: []
-//     },
-//     {
-//       name: "watchman",
-//       display_name: "Watchman",
-//       running: true,
-//       status: "active",
-//       mcp_servers: [
-//         {
-//           name: "github",
-//           displayName: "GitHub",
-//           active: false
-//         },
-//         {
-//           name: "postgres",
-//           displayName: "Postgres",
-//           active: false
-//         },
-//         {
-//           name: "digma",
-//           displayName: "Digma",
-//           active: true
-//         }
-//       ]
-//     },
-//     {
-//       name: "triager",
-//       display_name: "Triage",
-//       running: false,
-//       status: "pending",
-//       mcp_servers: [
-//         {
-//           name: "github",
-//           displayName: "GitHub",
-//           active: false
-//         },
-//         {
-//           name: "postgres",
-//           displayName: "Postgres",
-//           active: true
-//         },
-//         {
-//           name: "digma",
-//           displayName: "Digma",
-//           active: true
-//         }
-//       ]
-//     },
-//     {
-//       name: "infra_resolver",
-//       display_name: "Infra Resolution",
-//       running: false,
-//       status: "pending",
-//       mcp_servers: [
-//         {
-//           name: "github",
-//           displayName: "GitHub",
-//           active: false
-//         },
-//         {
-//           name: "kubernetes",
-//           displayName: "Kubernetes",
-//           active: true
-//         },
-//         {
-//           name: "digma",
-//           displayName: "Digma",
-//           active: false
-//         }
-//       ]
-//     },
-//     {
-//       name: "code_resolver",
-//       display_name: "Code Resolution",
-//       running: false,
-//       status: "inactive",
-//       mcp_servers: [
-//         {
-//           name: "github",
-//           displayName: "GitHub",
-//           active: false
-//         },
-//         {
-//           name: "kubernetes",
-//           displayName: "Kubernetes",
-//           active: false
-//         },
-//         {
-//           name: "digma",
-//           displayName: "Digma",
-//           active: false
-//         }
-//       ]
-//     },
-//     {
-//       name: "validator",
-//       display_name: "Validator",
-//       running: false,
-//       status: "pending",
-//       mcp_servers: [
-//         {
-//           name: "github",
-//           displayName: "GitHub",
-//           active: true
-//         },
-//         {
-//           name: "postgres",
-//           displayName: "Postgres",
-//           active: false
-//         },
-//         {
-//           name: "digma",
-//           displayName: "Digma",
-//           active: false
-//         }
-//       ]
-//     }
-//   ]
-// };
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
@@ -184,17 +54,17 @@ const getFlowChartNodeData = ({
 };
 
 export const AgentFlowChart = () => {
-  const incidentId = useAgenticSelector((state) => state.incidents.incidentId);
-  const agentId = useAgenticSelector((state) => state.incidents.agentId);
-  const dispatch = useAgenticDispatch();
   const [zoomLevel, setZoomLevel] = useState(1);
+  const params = useParams();
+  const incidentId = params.id;
+  const [searchParams, setSearchParams] = useStableSearchParams();
+  const agentId = searchParams.get("agent");
 
   const { data } = useGetIncidentAgentsQuery(
     { id: incidentId ?? "" },
     { skip: !incidentId, pollingInterval: REFRESH_INTERVAL }
   );
 
-  // const data = mockData; // TODO: remove this line and uncomment the above line
   const agents: Agent[] | undefined = data
     ? [
         {
@@ -218,7 +88,10 @@ export const AgentFlowChart = () => {
   const handleNodeClick = (id: string) => {
     switch (id) {
       case "digma":
-        dispatch(setAgentId(null));
+        setSearchParams((params) => {
+          params.delete("agent");
+          return params;
+        });
         break;
       case "watchman":
       case "triager":
@@ -229,7 +102,10 @@ export const AgentFlowChart = () => {
             break;
           }
 
-          dispatch(setAgentId(id));
+          setSearchParams((params) => {
+            params.set("agent", id);
+            return params;
+          });
         }
         break;
       case "validator":
@@ -362,12 +238,12 @@ export const AgentFlowChart = () => {
       ]
     : [];
 
-  return (
+  return data ? (
     <FlowChart
       nodes={nodes}
       edges={edges}
       onNodeClick={handleNodeClick}
       onZoomLevelChange={handleZoomLevelChange}
     />
-  );
+  ) : null;
 };

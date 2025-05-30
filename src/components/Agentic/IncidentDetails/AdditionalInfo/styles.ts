@@ -26,7 +26,7 @@ export const Tab = styled.div<TabProps>`
   justify-content: center;
   color: ${({ theme, $isActive }) =>
     $isActive ? theme.colors.v3.text.primary : theme.colors.v3.text.secondary};
-  cursor: ${({ $isDisabled }) => ($isDisabled ? "not-allowed" : "pointer")};
+  cursor: pointer;
   padding: 7px 4px;
   border-bottom: 1px solid
     ${({ $isActive, theme }) =>

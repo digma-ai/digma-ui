@@ -36,6 +36,8 @@ import type {
   GetGlobalErrorsResponse,
   GetImpactHighlightsPayload,
   GetImpactHighlightsResponse,
+  GetIncidentAgentChatEventsPayload,
+  GetIncidentAgentChatEventsResponse,
   GetIncidentAgentEventsPayload,
   GetIncidentAgentEventsResponse,
   GetIncidentAgentsPayload,
@@ -84,6 +86,7 @@ import type {
   PinErrorPayload,
   RecheckInsightPayload,
   ResendConfirmationEmailPayload,
+  sendMessageToIncidentAgentChatPayload,
   SetEndpointsIssuesPayload,
   SetMetricsReportDataPayload,
   SetServiceEndpointsPayload,
@@ -100,7 +103,8 @@ export const digmaApi = createApi({
     "Environment",
     "Error",
     "Insight",
-    "RecentActivity"
+    "RecentActivity",
+    "IncidentAgentChatEvent"
   ],
   reducerPath: "digmaApi",
   baseQuery: fetchBaseQuery({
@@ -579,6 +583,30 @@ export const digmaApi = createApi({
           incidentId
         )}/agents/${window.encodeURIComponent(agentId)}/events`
       })
+    }),
+    getIncidentAgentChatEvents: builder.query<
+      GetIncidentAgentChatEventsResponse,
+      GetIncidentAgentChatEventsPayload
+    >({
+      query: ({ incidentId, agentId }) => ({
+        url: `Agentic/incidents/${window.encodeURIComponent(
+          incidentId
+        )}/agents/${window.encodeURIComponent(agentId)}/chat_events`
+      }),
+      providesTags: ["IncidentAgentChatEvent"]
+    }),
+    sendMessageToIncidentAgentChat: builder.mutation<
+      void, // text/event-stream
+      sendMessageToIncidentAgentChatPayload
+    >({
+      query: ({ incidentId, agentId, data }) => ({
+        url: `Agentic/incidents/${window.encodeURIComponent(
+          incidentId
+        )}/agents/${window.encodeURIComponent(agentId)}/chat_message`,
+        method: "POST",
+        body: data
+      }),
+      invalidatesTags: ["IncidentAgentChatEvent"]
     })
   })
 });
@@ -636,5 +664,7 @@ export const {
   useGetIncidentsQuery,
   useGetIncidentQuery,
   useGetIncidentAgentsQuery,
-  useGetIncidentAgentEventsQuery
+  useGetIncidentAgentEventsQuery,
+  useGetIncidentAgentChatEventsQuery,
+  useSendMessageToIncidentAgentChatMutation
 } = digmaApi;

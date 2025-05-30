@@ -17,7 +17,7 @@ export const MCPServerIcon = ({ type, isActive }: MCPServerIconProps) => {
       return <GitHubLogoIcon size={size} color={"currentColor"} />;
     case "postgres":
       return <PostgresLogoIcon size={size} color={"currentColor"} />;
-    case "kubernetes":
+    case "k8s":
       return <KubernetesLogoIcon size={size} color={"currentColor"} />;
     case "digma":
       return (

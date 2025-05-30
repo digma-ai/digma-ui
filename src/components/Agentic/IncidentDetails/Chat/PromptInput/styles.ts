@@ -1,22 +1,34 @@
 import styled from "styled-components";
+import type { FormProps, TextAreaProps } from "./types";
 
-export const Form = styled.form`
+export const FORM_TOP_BOTTOM_PADDING = 16; // in pixels
+export const TEXT_AREA_MIN_HEIGHT = 32; // in pixels
+export const TEXT_AREA_FONT_SIZE = 20; // in pixels
+export const TEXT_AREA_LINE_HEIGHT = 1.2; // line height multiplier
+
+export const Form = styled.form<FormProps>`
   display: flex;
-  padding: 16px 24px;
+  padding: ${FORM_TOP_BOTTOM_PADDING}px 64px ${FORM_TOP_BOTTOM_PADDING}px 24px;
   gap: 24px;
   border-radius: 16px;
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.tertiary};
   overflow: hidden;
+  position: relative;
+  height: ${({ $height }) => $height}px;
+  box-sizing: border-box;
 `;
 
-export const Input = styled.input`
+export const TextArea = styled.textarea<TextAreaProps>`
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
-  font-size: 20px;
+  font-size: ${TEXT_AREA_FONT_SIZE}px;
+  line-height: ${TEXT_AREA_LINE_HEIGHT};
   background: none;
   border: none;
   outline: none;
-  flex-grow: 1;
-  min-width: 0;
+  resize: none;
+  width: 100%;
+  padding: 0;
+  height: ${({ $height }) => $height}px;
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.v3.text.tertiary};
@@ -24,6 +36,9 @@ export const Input = styled.input`
 `;
 
 export const SubmitButton = styled.button`
+  position: absolute;
+  top: 16px;
+  right: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,4 +51,9 @@ export const SubmitButton = styled.button`
   border: none;
   cursor: pointer;
   flex-shrink: 0;
+
+  &:disabled {
+    cursor: not-allowed;
+    color: ${({ theme }) => theme.colors.v3.icon.disabled};
+  }
 `;

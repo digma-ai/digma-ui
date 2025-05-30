@@ -1122,6 +1122,15 @@ export interface ErrorIncidentIssue extends IncidentIssue {
 
 export type GenericIncidentIssue = InsightIncidentIssue | ErrorIncidentIssue;
 
+export type ArtifactType = "pr" | "issue";
+
+export interface IncidentArtifact {
+  id: number;
+  url: string;
+  type: ArtifactType;
+  display_name: string;
+}
+
 export interface GetIncidentResponse {
   id: string;
   name: string;
@@ -1129,6 +1138,7 @@ export interface GetIncidentResponse {
   summary: string;
   active_status: IncidentActivityStatus;
   related_issues: GenericIncidentIssue[];
+  related_artifacts: IncidentArtifact[];
   affected_services: string[];
   created_at: string;
   closed_at: string | null;
@@ -1179,3 +1189,24 @@ export type GetIncidentAgentEventsResponse = (
   | IncidentAgentEventToken
   | IncidentAgentEventTool
 )[];
+
+export interface GetIncidentAgentChatEventsPayload {
+  incidentId: string;
+  agentId: string;
+}
+
+export interface IncidentAgentChatEvent {
+  type: "ai" | "human" | "tool";
+  message: string;
+  agent_name: string;
+  tool_name: string | null;
+  mcp_name: string | null;
+}
+
+export type GetIncidentAgentChatEventsResponse = IncidentAgentChatEvent[];
+
+export interface sendMessageToIncidentAgentChatPayload {
+  incidentId: string;
+  agentId: string;
+  data: { text: string };
+}

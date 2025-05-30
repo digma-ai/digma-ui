@@ -2,4 +2,4 @@ export interface BreadcrumbProps {
   $isActive?: boolean;
 }
 
-export type SummaryViewMode = "summary" | "chat";
+export type AgentViewMode = "summary" | "chat";

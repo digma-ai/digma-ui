@@ -1,11 +1,6 @@
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  useReactTable
-} from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { useMemo } from "react";
-import { useAgenticSelector } from "../../../../../containers/Agentic/hooks";
+import { useParams } from "react-router";
 import { useGetIncidentQuery } from "../../../../../redux/services/digma";
 import type { GenericIncidentIssue } from "../../../../../redux/services/types";
 import { getIdeLauncherLinkForSpan } from "../../../../../utils/getIdeLauncherLinkForSpan";
@@ -19,31 +14,9 @@ import {
   InsightIcon
 } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/InsightHeader/InsightIcon";
 import { getValueLabel } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/InsightHeader/InsightIcon/getValueLabel";
-import type { ColumnMeta } from "../types";
+import { Table } from "../Table";
 import * as s from "./styles";
 import { isErrorIncidentIssue, isInsightIncidentIssue } from "./typeGuards";
-
-// const mockData: {
-//   issues: IncidentIssue[];
-// } = {
-//   issues: [
-//     {
-//       type: InsightType.EndpointBottleneck,
-//       spanUid: "span-456",
-//       criticality: 1
-//     },
-//     {
-//       type: InsightType.SlowEndpoint,
-//       spanUid: "span-012",
-//       criticality: 0.2
-//     },
-//     {
-//       type: InsightType.EndpointChattyApiV2,
-//       spanUid: "span-678",
-//       criticality: 0.3
-//     }
-//   ]
-// };
 
 const getErrorTagLabel = (tagType: TagType): string => {
   switch (tagType) {
@@ -63,7 +36,9 @@ const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 const columnHelper = createColumnHelper<GenericIncidentIssue>();
 
 export const RelatedIssues = () => {
-  const incidentId = useAgenticSelector((state) => state.incidents.incidentId);
+  const params = useParams();
+  const incidentId = params.id;
+
   const { data } = useGetIncidentQuery(
     {
       id: incidentId ?? ""
@@ -166,63 +141,9 @@ export const RelatedIssues = () => {
     })
   ];
 
-  const table = useReactTable({
-    data: issues,
-    columns,
-    getCoreRowModel: getCoreRowModel()
-  });
-
   return (
     <s.Container>
-      <s.Table>
-        <s.TableHead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <s.TableHeadRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                const meta = header.column.columnDef.meta as ColumnMeta;
-
-                return (
-                  <s.TableHeaderCell
-                    key={header.id}
-                    style={{
-                      width: meta.width
-                    }}
-                    $align={meta.textAlign}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </s.TableHeaderCell>
-                );
-              })}
-            </s.TableHeadRow>
-          ))}
-        </s.TableHead>
-        <s.TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <s.TableBodyRow key={row.id}>
-              {row.getVisibleCells().map((cell) => {
-                const meta = cell.column.columnDef.meta as ColumnMeta;
-
-                return (
-                  <s.TableBodyCell
-                    key={cell.id}
-                    $align={meta.textAlign}
-                    style={{
-                      width: meta.width
-                    }}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </s.TableBodyCell>
-                );
-              })}
-            </s.TableBodyRow>
-          ))}
-        </s.TableBody>
-      </s.Table>
+      <Table data={issues} columns={columns} />
     </s.Container>
   );
 };

@@ -1,25 +1,21 @@
 import { useState, type ReactNode } from "react";
+import { Artifacts } from "./Artifacts";
 import { RelatedIssues } from "./RelatedIssues";
 import * as s from "./styles";
 import type { TabId } from "./types";
 
-const tabs: { id: TabId; name: string; isDisabled?: boolean }[] = [
-  { id: "relatedIssues", name: "Related issues" },
-  { id: "artifacts", name: "Artifacts", isDisabled: true }
+const tabs: { id: TabId; name: string; content: ReactNode }[] = [
+  { id: "relatedIssues", name: "Related issues", content: <RelatedIssues /> },
+  { id: "artifacts", name: "Artifacts", content: <Artifacts /> }
 ];
 
 export const AdditionalInfo = () => {
   const [selectedTabId, setSelectedTabId] = useState<TabId>("relatedIssues");
 
-  const tabContent: Record<TabId, ReactNode> = {
-    relatedIssues: <RelatedIssues />,
-    artifacts: null
-  };
-
   const handleTabChange = (tabId: TabId) => () => {
     const newTab = tabs.find((tab) => tab.id === tabId);
 
-    if (!newTab?.isDisabled) {
+    if (newTab) {
       setSelectedTabId(tabId);
     }
   };
@@ -32,13 +28,12 @@ export const AdditionalInfo = () => {
             key={tab.id}
             $isActive={selectedTabId === tab.id}
             onClick={handleTabChange(tab.id)}
-            $isDisabled={tab.isDisabled}
           >
             <s.TabTitle>{tab.name}</s.TabTitle>
           </s.Tab>
         ))}
       </s.TabsContainer>
-      {tabContent[selectedTabId]}
+      {tabs.find((tab) => tab.id === selectedTabId)?.content}
     </s.Container>
   );
 };

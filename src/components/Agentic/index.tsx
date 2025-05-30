@@ -1,6 +1,7 @@
 import { usePostHog } from "posthog-js/react";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet";
+import { Outlet } from "react-router";
 import {
   useAgenticDispatch,
   useAgenticSelector
@@ -15,7 +16,6 @@ import { setIsInitialized } from "../../redux/slices/appSlice";
 import { setUser } from "../../redux/slices/authSlice";
 import { FeatureFlag } from "../../types";
 import { Spinner } from "../common/v3/Spinner";
-import { IncidentDetails } from "./IncidentDetails";
 import { Sidebar } from "./Sidebar";
 import * as s from "./styles";
 
@@ -64,9 +64,7 @@ export const Agentic = () => {
       {isInitialized ? (
         <>
           <Sidebar />
-          <s.ContentContainer>
-            <IncidentDetails />
-          </s.ContentContainer>
+          <Outlet />
         </>
       ) : (
         <s.LoadingContainer>

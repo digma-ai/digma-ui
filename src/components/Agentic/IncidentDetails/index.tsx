@@ -1,16 +1,13 @@
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { useTheme } from "styled-components";
-import {
-  useAgenticDispatch,
-  useAgenticSelector
-} from "../../../containers/Agentic/hooks";
+import { useStableSearchParams } from "../../../hooks/useStableSearchParams";
 import {
   useGetIncidentAgentsQuery,
   useGetIncidentQuery
 } from "../../../redux/services/digma";
-import { setAgentId } from "../../../redux/slices/incidentsSlice";
 import { TwoVerticalLinesIcon } from "../../common/icons/16px/TwoVerticalLinesIcon";
 import { Direction } from "../../common/icons/types";
 import type { ToggleOption } from "../../common/v3/Toggle/types";
@@ -21,11 +18,11 @@ import { AgentFlowChart } from "./AgentFlowChart";
 import { Chat } from "./Chat";
 import { IncidentMetaData } from "./IncidentMetaData";
 import * as s from "./styles";
-import type { SummaryViewMode } from "./types";
+import type { AgentViewMode } from "./types";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
-const viewModeOptions: ToggleOption<SummaryViewMode>[] = [
+const viewModeOptions: ToggleOption<AgentViewMode>[] = [
   {
     label: "Chat",
     value: "chat"
@@ -38,11 +35,11 @@ const viewModeOptions: ToggleOption<SummaryViewMode>[] = [
 
 export const IncidentDetails = () => {
   const theme = useTheme();
-  const incidentId = useAgenticSelector((state) => state.incidents.incidentId);
-  const agentId = useAgenticSelector((state) => state.incidents.agentId);
-  const dispatch = useAgenticDispatch();
-  const [summaryViewMode, setSummaryViewMode] =
-    useState<SummaryViewMode>("summary");
+  const params = useParams();
+  const incidentId = params.id;
+  const [searchParams, setSearchParams] = useStableSearchParams();
+  const agentId = searchParams.get("agent");
+  const [agentViewMode, setAgentViewMode] = useState<AgentViewMode>("summary");
 
   const { data: agentsData } = useGetIncidentAgentsQuery(
     { id: incidentId ?? "" },
@@ -61,19 +58,22 @@ export const IncidentDetails = () => {
   );
 
   const handleHomeBreadcrumbClick = () => {
-    dispatch(setAgentId(null));
+    setSearchParams((params) => {
+      params.delete("agent");
+      return params;
+    });
   };
 
   const handleAgentBreadcrumbClick = () => {
-    setSummaryViewMode("summary");
+    setAgentViewMode("summary");
   };
 
-  const handleViewModeChange = (value: SummaryViewMode) => {
-    setSummaryViewMode(value);
+  const handleAgentViewModeChange = (value: AgentViewMode) => {
+    setAgentViewMode(value);
   };
 
   useEffect(() => {
-    setSummaryViewMode("summary");
+    setAgentViewMode("summary");
   }, [agentId]);
 
   if (!incidentId) {
@@ -86,10 +86,14 @@ export const IncidentDetails = () => {
     (agent) => agent.name === agentId
   )?.display_name;
 
+  const isAgentChatEnabled = agentsData?.agents.find(
+    (agent) => agent.name === `${agentId}_chat`
+  );
+
   const key = `${incidentId}-${agentId}`;
 
   return (
-    <s.Container>
+    <s.Container key={incidentId}>
       <IncidentMetaData />
       <Allotment defaultSizes={[40, 60]} vertical={true}>
         <AgentFlowChart />
@@ -120,7 +124,7 @@ export const IncidentDetails = () => {
                     <>
                       <s.BreadcrumbsDivider>/</s.BreadcrumbsDivider>
                       <s.AgentBreadcrumb
-                        $isActive={summaryViewMode === "chat"}
+                        $isActive={agentViewMode === "chat"}
                         onClick={handleAgentBreadcrumbClick}
                       >
                         {agentName}
@@ -128,16 +132,16 @@ export const IncidentDetails = () => {
                     </>
                   )}
                 </s.Breadcrumbs>
-                {agentId && (
+                {agentId && isAgentChatEnabled && (
                   <s.StyledToggle
                     options={viewModeOptions}
-                    onValueChange={handleViewModeChange}
-                    value={summaryViewMode}
+                    onValueChange={handleAgentViewModeChange}
+                    value={agentViewMode}
                   />
                 )}
               </s.SummaryContainerToolbar>
               {agentId ? (
-                summaryViewMode === "chat" ? (
+                agentViewMode === "chat" ? (
                   <Chat key={key} />
                 ) : (
                   <AgentEvents key={key} />
