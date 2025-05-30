@@ -22,7 +22,6 @@ export const Form = styled.form<FormProps>`
 export const TextArea = styled.textarea<TextAreaProps>`
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
   font-size: ${TEXT_AREA_FONT_SIZE}px;
-  line-height: ${TEXT_AREA_LINE_HEIGHT};
   background: none;
   border: none;
   outline: none;

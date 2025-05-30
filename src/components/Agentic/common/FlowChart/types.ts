@@ -8,4 +8,5 @@ export interface FlowChartProps {
   nodeTypes?: Record<string, ComponentType<NodeProps>>;
   onNodeClick?: (nodeId: string) => void;
   onZoomLevelChange?: (zoomLevel: number) => void;
+  className?: string;
 }

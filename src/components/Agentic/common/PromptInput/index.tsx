@@ -5,8 +5,8 @@ import {
   type FormEvent,
   type KeyboardEvent
 } from "react";
-import { RoundedTriangleIcon } from "../../../../common/icons/12px/RoundedTriangleIcon";
-import { Direction } from "../../../../common/icons/types";
+import { RoundedTriangleIcon } from "../../../common/icons/12px/RoundedTriangleIcon";
+import { Direction } from "../../../common/icons/types";
 import * as s from "./styles";
 import type { PromptInputProps } from "./types";
 
@@ -14,7 +14,10 @@ export const PromptInput = ({
   value,
   onChange,
   onSubmit,
-  isSubmitting
+  isSubmitting,
+  className,
+  placeholder,
+  isDisabled
 }: PromptInputProps) => {
   const isSubmittingDisabled = isSubmitting ?? value.trim() === "";
   const formRef = useRef<HTMLFormElement>(null);
@@ -78,14 +81,20 @@ export const PromptInput = ({
   const formHeight = textAreaHeight + s.FORM_TOP_BOTTOM_PADDING * 2;
 
   return (
-    <s.Form ref={formRef} onSubmit={handleSubmit} $height={formHeight}>
+    <s.Form
+      ref={formRef}
+      onSubmit={handleSubmit}
+      $height={formHeight}
+      className={className}
+    >
       <s.TextArea
         $height={textAreaHeight}
         ref={textAreaRef}
         value={value}
         onChange={handleChange}
-        placeholder={"Write your prompt"}
+        placeholder={placeholder}
         onKeyDown={handleKeyDown}
+        disabled={isDisabled ?? isSubmittingDisabled}
       />
       <s.SubmitButton type={"submit"} disabled={isSubmittingDisabled}>
         <RoundedTriangleIcon

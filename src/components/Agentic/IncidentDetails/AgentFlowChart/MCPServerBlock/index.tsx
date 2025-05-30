@@ -1,5 +1,6 @@
 import { useViewport } from "@xyflow/react";
 import { DigmaLogoThemeableIcon } from "../../../../common/icons/24px/DigmaLogoThemeableIcon";
+import { MCPLogoIcon } from "../../../../common/icons/24px/MCPLogoIcon";
 import { KubernetesLogoIcon } from "../../../../common/icons/25px/KubernetesLogoIcon";
 import { PostgresLogoIcon } from "../../../../common/icons/25px/PostgresLogoIcon";
 import { GitHubLogoIcon } from "../../../../common/icons/28px/GitHubLogoIcon";
@@ -27,6 +28,8 @@ export const MCPServerIcon = ({ type, isActive }: MCPServerIconProps) => {
           themeKind={isActive ? "light" : "dark"}
         />
       );
+    case "mcp":
+      return <MCPLogoIcon size={size} color={"currentColor"} />;
     default:
       return null;
   }

@@ -47,6 +47,7 @@ export const Sidebar = () => {
 
   const handleTemplateButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.TEMPLATE_BUTTON_CLICKED);
+    void navigate("/incidents/template");
   };
 
   const handleLogoutMenuItemClick = () => {
@@ -120,7 +121,6 @@ export const Sidebar = () => {
         buttonType={"secondary"}
         label={"Template"}
         onClick={handleTemplateButtonClick}
-        isDisabled={true}
       />
       <NewPopover
         content={

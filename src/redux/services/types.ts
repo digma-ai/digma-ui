@@ -1149,11 +1149,12 @@ export type AgentStatus = "pending" | "active" | "inactive";
 export interface Agent {
   name: string;
   display_name: string;
+  description: string;
   running: boolean;
   status: AgentStatus;
   mcp_servers: {
     name: string;
-    displayName: string;
+    display_name: string;
     active: boolean;
   }[];
 }

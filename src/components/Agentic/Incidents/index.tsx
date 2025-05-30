@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useParams } from "react-router";
+import { Navigate, useParams } from "react-router";
 import { useGetIncidentsQuery } from "../../../redux/services/digma";
 import { Spinner } from "../../common/v3/Spinner";
 import * as s from "./styles";
@@ -23,10 +23,4 @@ export const Incidents = () => {
   if (data?.items[0] && !incidentId) {
     return <Navigate replace={true} to={data.items[0].id} />;
   }
-
-  return (
-    <s.Container>
-      <Outlet />
-    </s.Container>
-  );
 };

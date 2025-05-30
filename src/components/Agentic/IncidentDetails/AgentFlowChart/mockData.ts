@@ -4,6 +4,7 @@ export const mockedAgents: Agent[] = [
   {
     name: "digma",
     display_name: "Digma",
+    description: "Digma",
     running: false,
     status: "active",
     mcp_servers: []
@@ -11,22 +12,23 @@ export const mockedAgents: Agent[] = [
   {
     name: "watchman",
     display_name: "Watchman",
+    description: "Watchman",
     running: true,
     status: "active",
     mcp_servers: [
       {
         name: "github",
-        displayName: "GitHub",
+        display_name: "GitHub",
         active: false
       },
       {
         name: "postgres",
-        displayName: "Postgres",
+        display_name: "Postgres",
         active: false
       },
       {
         name: "digma",
-        displayName: "Digma",
+        display_name: "Digma",
         active: true
       }
     ]
@@ -34,22 +36,23 @@ export const mockedAgents: Agent[] = [
   {
     name: "triager",
     display_name: "Triage",
+    description: "Triage",
     running: false,
     status: "pending",
     mcp_servers: [
       {
         name: "github",
-        displayName: "GitHub",
+        display_name: "GitHub",
         active: false
       },
       {
         name: "postgres",
-        displayName: "Postgres",
+        display_name: "Postgres",
         active: true
       },
       {
         name: "digma",
-        displayName: "Digma",
+        display_name: "Digma",
         active: true
       }
     ]
@@ -57,22 +60,23 @@ export const mockedAgents: Agent[] = [
   {
     name: "infra_resolver",
     display_name: "Infra Resolution",
+    description: "Infra Resolution",
     running: false,
     status: "pending",
     mcp_servers: [
       {
         name: "github",
-        displayName: "GitHub",
+        display_name: "GitHub",
         active: false
       },
       {
         name: "k8s",
-        displayName: "k8s",
+        display_name: "k8s",
         active: true
       },
       {
         name: "digma",
-        displayName: "Digma",
+        display_name: "Digma",
         active: false
       }
     ]
@@ -80,22 +84,23 @@ export const mockedAgents: Agent[] = [
   {
     name: "code_resolver",
     display_name: "Code Resolution",
+    description: "Code Resolution",
     running: false,
     status: "inactive",
     mcp_servers: [
       {
         name: "github",
-        displayName: "GitHub",
+        display_name: "GitHub",
         active: false
       },
       {
         name: "k8s",
-        displayName: "k8s",
+        display_name: "k8s",
         active: false
       },
       {
         name: "digma",
-        displayName: "Digma",
+        display_name: "Digma",
         active: false
       }
     ]
@@ -103,22 +108,23 @@ export const mockedAgents: Agent[] = [
   {
     name: "validator",
     display_name: "Validator",
+    description: "Validator",
     running: false,
     status: "pending",
     mcp_servers: [
       {
         name: "github",
-        displayName: "GitHub",
+        display_name: "GitHub",
         active: true
       },
       {
         name: "postgres",
-        displayName: "Postgres",
+        display_name: "Postgres",
         active: false
       },
       {
         name: "digma",
-        displayName: "Digma",
+        display_name: "Digma",
         active: false
       }
     ]

@@ -3,6 +3,9 @@ export interface PromptInputProps {
   onChange: (value: string) => void;
   onSubmit: () => void;
   isSubmitting?: boolean;
+  className?: string;
+  placeholder?: string;
+  isDisabled?: boolean;
 }
 
 export interface FormProps {

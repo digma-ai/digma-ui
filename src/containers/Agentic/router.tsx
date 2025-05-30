@@ -3,6 +3,8 @@ import { createBrowserRouter, Navigate, useRouteError } from "react-router";
 import { Agentic } from "../../components/Agentic";
 import { IncidentDetails } from "../../components/Agentic/IncidentDetails";
 import { Incidents } from "../../components/Agentic/Incidents";
+import { IncidentsContainer } from "../../components/Agentic/IncidentsContainer";
+import { IncidentTemplate } from "../../components/Agentic/IncidentTemplate";
 
 export const routes: RouteObject[] = [
   {
@@ -18,8 +20,13 @@ export const routes: RouteObject[] = [
       },
       {
         path: "incidents",
-        element: <Incidents />,
+        element: <IncidentsContainer />,
         children: [
+          {
+            index: true,
+            element: <Incidents />
+          },
+          { path: "template", element: <IncidentTemplate /> },
           {
             path: ":id",
             element: <IncidentDetails />

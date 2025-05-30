@@ -10,6 +10,7 @@ import {
 } from "../../../redux/services/digma";
 import { TwoVerticalLinesIcon } from "../../common/icons/16px/TwoVerticalLinesIcon";
 import { Direction } from "../../common/icons/types";
+import { Spinner } from "../../common/v3/Spinner";
 import type { ToggleOption } from "../../common/v3/Toggle/types";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { AdditionalInfo } from "./AdditionalInfo";
@@ -90,11 +91,32 @@ export const IncidentDetails = () => {
     (agent) => agent.name === `${agentId}_chat`
   );
 
+  const handleAgentSelect = (id: string | null) => {
+    setSearchParams((params) => {
+      if (id) {
+        params.set("agent", id);
+      } else {
+        params.delete("agent");
+      }
+      return params;
+    });
+  };
+
   return (
     <s.Container key={incidentId}>
       <IncidentMetaData />
       <Allotment defaultSizes={[40, 60]} vertical={true}>
-        <AgentFlowChart />
+        {agentsData ? (
+          <AgentFlowChart
+            agents={agentsData.agents}
+            onAgentSelect={handleAgentSelect}
+            selectedAgentId={agentId}
+          />
+        ) : (
+          <s.LoadingContainer>
+            <Spinner size={32} />
+          </s.LoadingContainer>
+        )}
         <s.BottomContainer>
           <s.Holder>
             <TwoVerticalLinesIcon

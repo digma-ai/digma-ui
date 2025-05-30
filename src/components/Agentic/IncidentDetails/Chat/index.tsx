@@ -7,14 +7,13 @@ import {
 } from "../../../../redux/services/digma";
 import type { IncidentAgentChatEvent } from "../../../../redux/services/types";
 import { isNumber } from "../../../../typeGuards/isNumber";
-import { isString } from "../../../../typeGuards/isString";
 import { ThreeCirclesSpinner } from "../../../common/ThreeCirclesSpinner";
 import { Spinner } from "../../../common/v3/Spinner";
+import { PromptInput } from "../../common/PromptInput";
 import { Accordion } from "../AgentEvents/Accordion";
 import { TypingMarkdown } from "../TypingMarkdown";
 import { useAutoScroll } from "../useAutoScroll";
 import { convertToMarkdown } from "../utils/convertToMarkdown";
-import { PromptInput } from "./PromptInput";
 import * as s from "./styles";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
@@ -26,11 +25,13 @@ export const Chat = () => {
   const incidentId = params.id;
   const [searchParams] = useStableSearchParams();
   const agentId = searchParams.get("agent");
-  const [lastSentMessage, setLastSentMessage] = useState<string>();
   const { elementRef, handleElementScroll, scrollToBottom } =
     useAutoScroll<HTMLDivElement>();
   const [initialEventsCount, setInitialEventsCount] = useState<number>();
   const [eventsVisibleCount, setEventsVisibleCount] = useState<number>();
+
+  const [sendMessage, { isLoading: isMessageSending }] =
+    useSendMessageToIncidentAgentChatMutation();
 
   const { data, isLoading } = useGetIncidentAgentChatEventsQuery(
     {
@@ -38,25 +39,19 @@ export const Chat = () => {
       agentId: agentId ?? ""
     },
     {
-      skip: !incidentId || !agentId! || isString(lastSentMessage),
-      pollingInterval: REFRESH_INTERVAL
+      skip: !incidentId || !agentId!,
+      pollingInterval: isMessageSending ? 3 : REFRESH_INTERVAL
     }
   );
 
-  const [sendMessage, { isLoading: isMessageSending }] =
-    useSendMessageToIncidentAgentChatMutation();
-
   const handleInputSubmit = () => {
     setInputValue("");
-    setLastSentMessage(inputValue);
     scrollToBottom();
 
     void sendMessage({
       incidentId: incidentId ?? "",
       agentId: agentId ?? "",
       data: { text: inputValue }
-    }).finally(() => {
-      setLastSentMessage(undefined);
     });
   };
 
@@ -138,7 +133,6 @@ export const Chat = () => {
         {visibleEvents?.map((x, i) => (
           <Fragment key={i}>{renderChatEvent(x, i)}</Fragment>
         ))}
-        {lastSentMessage && <s.HumanMessage>{lastSentMessage}</s.HumanMessage>}
         {isMessageSending && <ThreeCirclesSpinner />}
       </s.ChatHistory>
       <PromptInput
@@ -146,6 +140,7 @@ export const Chat = () => {
         onChange={setInputValue}
         onSubmit={handleInputSubmit}
         isSubmitting={isMessageSending}
+        placeholder={"Write your prompt here"}
       />
     </s.Container>
   );

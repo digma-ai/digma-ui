@@ -1,9 +1,7 @@
 import { Position, type Edge } from "@xyflow/react";
 import { useState } from "react";
-import { useParams } from "react-router";
-import { useStableSearchParams } from "../../../../hooks/useStableSearchParams";
-import { useGetIncidentAgentsQuery } from "../../../../redux/services/digma";
-import type { Agent } from "../../../../redux/services/types";
+import { groupBy } from "../../../../utils/groupBy";
+import { PlusIcon } from "../../../common/icons/16px/PlusIcon";
 import { FlowChart } from "../../common/FlowChart";
 import type {
   FlowChartNode,
@@ -11,22 +9,36 @@ import type {
 } from "../../common/FlowChart/FlowChartNode";
 import { MCPServerBlock } from "./MCPServerBlock";
 import * as s from "./styles";
-
-const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+import type { AgentFlowChartProps, ExtendedAgent } from "./types";
 
 const getFlowChartNodeData = ({
   agent,
-  sideContainerPosition,
   zoomLevel,
   isSelected,
-  isInteractive
+  isInteractive,
+  isEditMode,
+  onAddMCPServer
 }: {
-  agent?: Agent;
-  sideContainerPosition?: Position;
+  agent?: ExtendedAgent;
   isInteractive?: boolean;
   isSelected?: boolean;
   zoomLevel?: number;
+  isEditMode?: boolean;
+  onAddMCPServer?: (agentName: string, position: Position) => void;
 }): Partial<FlowChartNodeData> => {
+  const handleAddMCPServerButtonClick = (position: Position) => () => {
+    if (!agent) {
+      return;
+    }
+
+    onAddMCPServer?.(agent.name, position);
+  };
+
+  const serverGroups = groupBy(
+    agent?.mcp_servers ?? [],
+    (server) => server.position ?? Position.Top
+  );
+
   return agent
     ? {
         label: agent.display_name,
@@ -34,78 +46,95 @@ const getFlowChartNodeData = ({
         isRunning: agent.running,
         isInteractive,
         isDisabled: agent.status === "inactive",
-        sideContainer: {
-          isVisible: agent.mcp_servers.length > 0,
-          position: sideContainerPosition,
+        sideContainers: Object.values(Position).map((position) => ({
+          isVisible: Boolean(
+            serverGroups[position]?.length > 0 ||
+              (isEditMode && [Position.Top, Position.Bottom].includes(position))
+          ),
+          position,
           element: (
             <s.MCPServersSideContainer $zoomLevel={zoomLevel}>
-              {agent.mcp_servers.map((x) => (
+              {serverGroups[position]?.map((x) => (
                 <MCPServerBlock
                   key={x.name}
                   type={x.name}
                   isActive={x.active}
                 />
               ))}
+              {isEditMode &&
+                !serverGroups[position] &&
+                [Position.Top, Position.Bottom].includes(position) && (
+                  <s.PlusButton
+                    buttonType={"secondaryBorderless"}
+                    icon={PlusIcon}
+                    onClick={handleAddMCPServerButtonClick(position)}
+                  />
+                )}
             </s.MCPServersSideContainer>
           )
-        }
+        })),
+        isKebabMenuVisible: isEditMode
       }
     : {};
 };
 
-export const AgentFlowChart = () => {
+export const AgentFlowChart = ({
+  agents,
+  onAgentSelect,
+  selectedAgentId,
+  className,
+  isEditMode,
+  onAddMCPServer
+}: AgentFlowChartProps) => {
   const [zoomLevel, setZoomLevel] = useState(1);
-  const params = useParams();
-  const incidentId = params.id;
-  const [searchParams, setSearchParams] = useStableSearchParams();
-  const agentId = searchParams.get("agent");
 
-  const { data } = useGetIncidentAgentsQuery(
-    { id: incidentId ?? "" },
-    { skip: !incidentId, pollingInterval: REFRESH_INTERVAL }
-  );
-
-  const agents: Agent[] | undefined = data
-    ? [
-        {
-          name: "digma",
-          display_name: "Digma",
-          running: false,
-          status: "active",
-          mcp_servers: []
-        },
-        ...data.agents,
-        {
-          name: "validator",
-          display_name: "Validator",
-          running: false,
-          status: "active",
-          mcp_servers: []
-        }
-      ]
-    : undefined;
+  const extendedAgents: ExtendedAgent[] = [
+    {
+      name: "digma",
+      display_name: "Digma",
+      description: "Digma",
+      running: false,
+      status: "active",
+      mcp_servers: []
+    },
+    ...agents.map((agent) => ({
+      ...agent,
+      mcp_servers: agent.mcp_servers.map((server) => ({
+        ...server,
+        position:
+          agent.name === "code_resolver" ? Position.Bottom : server.position
+      }))
+    })),
+    {
+      name: "validator",
+      display_name: "Validator",
+      description: "Validator",
+      running: false,
+      status: "active",
+      mcp_servers: []
+    }
+  ];
 
   const handleNodeClick = (id: string) => {
     switch (id) {
-      case "digma":
-        setSearchParams((params) => {
-          params.delete("agent");
-          return params;
-        });
+      case "digma": {
+        if (!isEditMode) {
+          onAgentSelect(null);
+        }
         break;
+      }
       case "watchman":
       case "triager":
       case "infra_resolver":
       case "code_resolver":
         {
-          if (agents?.find((a) => a.name === id)?.status === "inactive") {
+          if (
+            extendedAgents?.find((a) => a.name === id)?.status === "inactive"
+          ) {
             break;
           }
 
-          setSearchParams((params) => {
-            params.set("agent", id);
-            return params;
-          });
+          onAgentSelect(id);
         }
         break;
       case "validator":
@@ -118,132 +147,135 @@ export const AgentFlowChart = () => {
     setZoomLevel(newZoomLevel);
   };
 
-  const nodes: FlowChartNode[] = data
-    ? [
-        {
-          id: "digma",
-          position: { x: 0, y: -31 }, // TODO: find a way to center this
-          data: {
-            ...getFlowChartNodeData({
-              agent: agents?.find((a) => a.name === "digma"),
-              sideContainerPosition: Position.Top,
-              isSelected: !agentId,
-              zoomLevel,
-              isInteractive: true
-            }),
-            orientation: "vertical",
-            type: "input"
-          }
-        },
-        {
-          id: "watchman",
-          position: { x: 200, y: 0 },
-          data: {
-            ...getFlowChartNodeData({
-              agent: agents?.find((a) => a.name === "watchman"),
-              sideContainerPosition: Position.Top,
-              zoomLevel,
-              isSelected: "watchman" === agentId,
-              isInteractive:
-                agents?.find((a) => a.name === "watchman")?.status !==
-                "inactive"
-            })
-          }
-        },
-        {
-          id: "triager",
-          position: { x: 500, y: 0 },
-          data: {
-            ...getFlowChartNodeData({
-              agent: agents?.find((a) => a.name === "triager"),
-              sideContainerPosition: Position.Top,
-              zoomLevel,
-              isSelected: "triager" === agentId,
-              isInteractive:
-                agents?.find((a) => a.name === "triager")?.status !== "inactive"
-            })
-          }
-        },
-        {
-          id: "infra_resolver",
-          position: { x: 800, y: -50 },
-          data: {
-            ...getFlowChartNodeData({
-              agent: agents?.find((a) => a.name === "infra_resolver"),
-              sideContainerPosition: Position.Top,
-              zoomLevel,
-              isSelected: "infra_resolver" === agentId,
-              isInteractive:
-                agents?.find((a) => a.name === "infra_resolver")?.status !==
-                "inactive"
-            })
-          }
-        },
-        {
-          id: "code_resolver",
-          position: { x: 800, y: 50 },
-          data: {
-            ...getFlowChartNodeData({
-              agent: agents?.find((a) => a.name === "code_resolver"),
-              sideContainerPosition: Position.Bottom,
-              zoomLevel,
-              isSelected: "code_resolver" === agentId,
-              isInteractive:
-                agents?.find((a) => a.name === "code_resolver")?.status !==
-                "inactive"
-            })
-          }
-        },
-        {
-          id: "validator",
-          position: { x: 1100, y: 0 },
-          data: {
-            ...getFlowChartNodeData({
-              agent: agents?.find((a) => a.name === "validator"),
-              sideContainerPosition: Position.Top,
-              zoomLevel,
-              isSelected: false,
-              isInteractive: false
-            }),
-            type: "output"
-          }
-        }
-      ]
-    : [];
+  const nodes: FlowChartNode[] = [
+    {
+      id: "digma",
+      position: { x: 0, y: -31 }, // TODO: find a way to center this
+      data: {
+        ...getFlowChartNodeData({
+          agent: extendedAgents?.find((a) => a.name === "digma"),
+          isSelected: !selectedAgentId,
+          zoomLevel,
+          isInteractive: !isEditMode
+        }),
+        orientation: "vertical",
+        type: "input"
+      }
+    },
+    {
+      id: "watchman",
+      position: { x: 200, y: 0 },
+      data: {
+        ...getFlowChartNodeData({
+          agent: extendedAgents?.find((a) => a.name === "watchman"),
+          zoomLevel,
+          isSelected: "watchman" === selectedAgentId,
+          isInteractive:
+            extendedAgents?.find((a) => a.name === "watchman")?.status !==
+            "inactive",
+          isEditMode,
+          onAddMCPServer
+        })
+      }
+    },
+    {
+      id: "triager",
+      position: { x: 500, y: 0 },
+      data: {
+        ...getFlowChartNodeData({
+          agent: extendedAgents?.find((a) => a.name === "triager"),
+          zoomLevel,
+          isSelected: "triager" === selectedAgentId,
+          isInteractive:
+            extendedAgents?.find((a) => a.name === "triager")?.status !==
+            "inactive",
+          isEditMode,
+          onAddMCPServer
+        })
+      }
+    },
+    {
+      id: "infra_resolver",
+      position: { x: 800, y: isEditMode ? -100 : -50 },
+      data: {
+        ...getFlowChartNodeData({
+          agent: extendedAgents?.find((a) => a.name === "infra_resolver"),
+          zoomLevel,
+          isSelected: "infra_resolver" === selectedAgentId,
+          isInteractive:
+            extendedAgents?.find((a) => a.name === "infra_resolver")?.status !==
+            "inactive",
+          isEditMode,
+          onAddMCPServer
+        })
+      }
+    },
+    {
+      id: "code_resolver",
+      position: { x: 800, y: isEditMode ? 100 : 50 },
+      data: {
+        ...getFlowChartNodeData({
+          agent: extendedAgents?.find((a) => a.name === "code_resolver"),
+          zoomLevel,
+          isSelected: "code_resolver" === selectedAgentId,
+          isInteractive:
+            extendedAgents?.find((a) => a.name === "code_resolver")?.status !==
+            "inactive",
+          isEditMode,
+          onAddMCPServer
+        })
+      }
+    },
+    {
+      id: "validator",
+      position: { x: 1100, y: 0 },
+      data: {
+        ...getFlowChartNodeData({
+          agent: extendedAgents?.find((a) => a.name === "validator"),
+          zoomLevel,
+          isSelected: false,
+          isInteractive: false
+        }),
+        type: "output"
+      }
+    }
+  ];
 
-  const edges: Edge[] = data
-    ? [
-        { id: "digma-watchman", source: "digma", target: "watchman" },
-        { id: "watchman-triager", source: "watchman", target: "triager" },
-        {
-          id: "triager-infra_resolver",
-          source: "triager",
-          target: "infra_resolver"
-        },
-        {
-          id: "triager-code_resolver",
-          source: "triager",
-          target: "code_resolver"
-        },
-        {
-          id: "infra_resolver-validator",
-          source: "infra_resolver",
-          target: "validator"
-        },
-        {
-          id: "code_resolver-validator",
-          source: "code_resolver",
-          target: "validator"
-        }
-      ]
-    : [];
+  const edges: Edge[] = [
+    { id: "digma-watchman", source: "digma", target: "watchman" },
+    { id: "watchman-triager", source: "watchman", target: "triager" },
+    {
+      id: "triager-infra_resolver",
+      source: "triager",
+      target: "infra_resolver"
+    },
+    {
+      id: "triager-code_resolver",
+      source: "triager",
+      target: "code_resolver"
+    },
+    {
+      id: "infra_resolver-validator",
+      source: "infra_resolver",
+      target: "validator"
+    },
+    {
+      id: "code_resolver-validator",
+      source: "code_resolver",
+      target: "validator"
+    }
+  ].map((edge) => ({
+    ...edge,
+    animated: !isEditMode
+  }));
 
-  return data ? (
+  return (
     <FlowChart
       nodes={nodes}
       edges={edges}
       onNodeClick={handleNodeClick}
       onZoomLevelChange={handleZoomLevelChange}
+      className={className}
     />
-  ) : null;
+  );
 };

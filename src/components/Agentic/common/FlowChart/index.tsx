@@ -32,7 +32,8 @@ const FlowChartInner = ({
   nodes,
   edges,
   onNodeClick,
-  onZoomLevelChange
+  onZoomLevelChange,
+  className
 }: FlowChartProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
@@ -75,7 +76,7 @@ const FlowChartInner = ({
   }, [viewport.zoom, onZoomLevelChange]);
 
   return (
-    <s.Container ref={observe}>
+    <s.Container ref={observe} className={className}>
       <ReactFlow
         nodes={extendedNodes}
         edges={extendedEdges}

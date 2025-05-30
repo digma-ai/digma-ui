@@ -33,6 +33,7 @@ export const Node = styled.div<ContainerProps>`
       : css`
           cursor: default;
         `};
+  position: relative;
 `;
 
 export const Label = styled.span<ContainerProps>`
@@ -70,5 +71,21 @@ export const OutputHandle = styled(Handle)`
   height: 6px;
   border: none;
   border-radius: 0%;
+  background: #3e404a;
+`;
+
+export const KebabMenuButton = styled.button`
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+  border-radius: 50%;
   background: #3e404a;
 `;
