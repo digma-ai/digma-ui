@@ -105,7 +105,7 @@ export const TemplateButton = styled(NewButton)`
   justify-content: center;
 `;
 
-export const UserInfo = styled.div`
+export const UserInfo = styled.button`
   ${subscriptRegularTypography};
   display: flex;
   align-items: center;
@@ -116,9 +116,12 @@ export const UserInfo = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  background: none;
+  border: none;
+  cursor: pointer;
 `;
 
-export const Avatar = styled.div`
+export const Avatar = styled.span`
   width: 28px;
   height: 28px;
   border-radius: 6px;

@@ -1,12 +1,18 @@
-import { useMemo } from "react";
+import { usePostHog } from "posthog-js/react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useTheme } from "styled-components";
 import { useAgenticSelector } from "../../../containers/Agentic/hooks";
+import { useLogoutMutation } from "../../../redux/services/auth";
 import { useGetIncidentsQuery } from "../../../redux/services/digma";
 import type { IncidentResponseItem } from "../../../redux/services/types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getThemeKind } from "../../common/App/styles";
+import { LogoutIcon } from "../../common/icons/16px/LogoutIcon";
+import { NewPopover } from "../../common/NewPopover";
 import { Tooltip } from "../../common/v3/Tooltip";
+import { MenuList } from "../../Navigation/common/MenuList";
+import { Popup } from "../../Navigation/common/Popup";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 
@@ -22,10 +28,14 @@ export const Sidebar = () => {
   const params = useParams();
   const incidentId = params.id;
   const navigate = useNavigate();
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const posthog = usePostHog();
 
   const { data } = useGetIncidentsQuery(undefined, {
     pollingInterval: REFRESH_INTERVAL
   });
+
+  const [logout, result] = useLogoutMutation();
 
   const handleLogoLinkClick = () => {
     sendUserActionTrackingEvent(trackingEvents.LOGO_LINK_CLICKED);
@@ -38,6 +48,34 @@ export const Sidebar = () => {
   const handleTemplateButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.TEMPLATE_BUTTON_CLICKED);
   };
+
+  const handleLogoutMenuItemClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.LOGOUT_MENU_ITEM_CLICKED);
+    void logout();
+  };
+
+  const handleUserMenuOpenChange = (isOpen: boolean) => {
+    setIsUserMenuOpen(isOpen);
+  };
+
+  useEffect(() => {
+    let timeoutId: number | null = null;
+
+    if (result.isSuccess) {
+      if (posthog.__loaded) {
+        posthog.reset();
+      }
+      timeoutId = window.setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    }
+
+    return () => {
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
+    };
+  }, [posthog, result.isSuccess]);
 
   const sortedIncidents = useMemo(
     () =>
@@ -84,10 +122,30 @@ export const Sidebar = () => {
         onClick={handleTemplateButtonClick}
         isDisabled={true}
       />
-      <s.UserInfo>
-        <s.Avatar>{userInitial}</s.Avatar>
-        {user?.email ?? ""}
-      </s.UserInfo>
+      <NewPopover
+        content={
+          <Popup>
+            <MenuList
+              items={[
+                {
+                  id: "logout",
+                  icon: <LogoutIcon size={16} color={"currentColor"} />,
+                  label: "Log out",
+                  onClick: handleLogoutMenuItemClick
+                }
+              ]}
+            />
+          </Popup>
+        }
+        onOpenChange={handleUserMenuOpenChange}
+        isOpen={isUserMenuOpen}
+        placement={"bottom-start"}
+      >
+        <s.UserInfo>
+          <s.Avatar>{userInitial}</s.Avatar>
+          {user?.email ?? ""}
+        </s.UserInfo>
+      </NewPopover>
     </s.Container>
   );
 };
