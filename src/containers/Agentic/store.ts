@@ -20,7 +20,7 @@ const persistPrefix = `${PERSIST_PREFIX}${APP_ID}-`;
 const reducer = rememberReducer({
   app: appSlice.reducer,
   auth: authSlice.reducer,
-  incidents: incidentsSlice.reducer,
+  incidents: incidentsSlice.reducer, // not in use
   persist: persistSlice.reducer,
   [authApi.reducerPath]: authApi.reducer,
   [digmaApi.reducerPath]: digmaApi.reducer

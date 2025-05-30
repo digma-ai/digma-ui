@@ -6,7 +6,7 @@ import { Tooltip } from "../../../common/v3/Tooltip";
 import { Divider } from "./Divider";
 import * as s from "./styles";
 
-const DATE_FORMAT = "dd MMM, yyyy";
+const DATE_FORMAT = "dd MMM, yyyy HH:mm";
 const SERVICE_TAGS_TO_SHOW = 2;
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 

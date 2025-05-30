@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { useParams } from "react-router";
 import { useGetIncidentQuery } from "../../../../../redux/services/digma";
 import type { GenericIncidentIssue } from "../../../../../redux/services/types";
+import { getIdeLauncherLinkForError } from "../../../../../utils/getIdeLauncherLinkForError";
 import { getIdeLauncherLinkForSpan } from "../../../../../utils/getIdeLauncherLinkForSpan";
 import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
 import { roundTo } from "../../../../../utils/roundTo";
@@ -16,7 +17,6 @@ import {
 import { getValueLabel } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/InsightHeader/InsightIcon/getValueLabel";
 import { Table } from "../Table";
 import * as s from "./styles";
-import { isErrorIncidentIssue, isInsightIncidentIssue } from "./typeGuards";
 
 const getErrorTagLabel = (tagType: TagType): string => {
   switch (tagType) {
@@ -65,39 +65,54 @@ export const RelatedIssues = () => {
       },
       cell: (info) => {
         const issue = info.getValue();
-        const insightTypeInfo = isInsightIncidentIssue(issue)
-          ? getInsightTypeInfo(issue.issue_type)
-          : undefined;
 
-        const label = isInsightIncidentIssue(issue)
-          ? insightTypeInfo?.label
-          : isErrorIncidentIssue(issue)
-          ? issue.issue_type
-          : undefined;
+        switch (issue.type) {
+          case "issue": {
+            const insightTypeInfo = getInsightTypeInfo(issue.issue_type);
+            const label = insightTypeInfo?.label;
 
-        return (
-          <s.IssueInfoContainer>
-            {insightTypeInfo && (
-              <InsightIcon
-                insightTypeInfo={insightTypeInfo}
-                criticality={issue.criticality}
-              />
-            )}
-            <Tooltip title={label}>
-              {issue.span_uid ? (
-                <s.Link
-                  href={getIdeLauncherLinkForSpan(issue.span_uid)}
-                  target={"_blank"}
-                  rel={"noopener noreferrer"}
-                >
-                  {label}
-                </s.Link>
-              ) : (
-                <s.IssueTypeTitle>{label}</s.IssueTypeTitle>
-              )}
-            </Tooltip>
-          </s.IssueInfoContainer>
-        );
+            return (
+              <s.IssueInfoContainer>
+                {insightTypeInfo && (
+                  <InsightIcon
+                    insightTypeInfo={insightTypeInfo}
+                    criticality={issue.criticality}
+                  />
+                )}
+                <Tooltip title={label}>
+                  {issue.span_uid ? (
+                    <s.Link
+                      href={getIdeLauncherLinkForSpan(issue.span_uid)}
+                      target={"_blank"}
+                      rel={"noopener noreferrer"}
+                    >
+                      {label}
+                    </s.Link>
+                  ) : (
+                    <s.IssueTypeTitle>{label}</s.IssueTypeTitle>
+                  )}
+                </Tooltip>
+              </s.IssueInfoContainer>
+            );
+          }
+          case "error": {
+            const label = issue.issue_type;
+
+            return (
+              <s.IssueInfoContainer>
+                <Tooltip title={label}>
+                  <s.Link
+                    href={getIdeLauncherLinkForError(issue.issue_id)}
+                    target={"_blank"}
+                    rel={"noopener noreferrer"}
+                  >
+                    {label}
+                  </s.Link>
+                </Tooltip>
+              </s.IssueInfoContainer>
+            );
+          }
+        }
       }
     }),
     columnHelper.accessor((x) => x, {
