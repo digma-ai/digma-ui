@@ -16,6 +16,7 @@ export const Form = styled.form<FormProps>`
   position: relative;
   height: ${({ $height }) => $height}px;
   box-sizing: border-box;
+  flex-shrink: 0;
 `;
 
 export const TextArea = styled.textarea<TextAreaProps>`

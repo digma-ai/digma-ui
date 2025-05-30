@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import { useStableSearchParams } from "../../../../hooks/useStableSearchParams";
 import {
@@ -6,13 +6,19 @@ import {
   useSendMessageToIncidentAgentChatMutation
 } from "../../../../redux/services/digma";
 import type { IncidentAgentChatEvent } from "../../../../redux/services/types";
+import { isNumber } from "../../../../typeGuards/isNumber";
+import { isString } from "../../../../typeGuards/isString";
 import { ThreeCirclesSpinner } from "../../../common/ThreeCirclesSpinner";
 import { Spinner } from "../../../common/v3/Spinner";
 import { Accordion } from "../AgentEvents/Accordion";
 import { TypingMarkdown } from "../TypingMarkdown";
+import { useAutoScroll } from "../useAutoScroll";
 import { convertToMarkdown } from "../utils/convertToMarkdown";
 import { PromptInput } from "./PromptInput";
 import * as s from "./styles";
+
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+const TYPING_SPEED = 3; // in milliseconds per character
 
 export const Chat = () => {
   const [inputValue, setInputValue] = useState("");
@@ -20,7 +26,11 @@ export const Chat = () => {
   const incidentId = params.id;
   const [searchParams] = useStableSearchParams();
   const agentId = searchParams.get("agent");
-  const [sendMessageToBeSent, setSendMessageToBeSent] = useState<string>();
+  const [lastSentMessage, setLastSentMessage] = useState<string>();
+  const { elementRef, handleElementScroll, scrollToBottom } =
+    useAutoScroll<HTMLDivElement>();
+  const [initialEventsCount, setInitialEventsCount] = useState<number>();
+  const [eventsVisibleCount, setEventsVisibleCount] = useState<number>();
 
   const { data, isLoading } = useGetIncidentAgentChatEventsQuery(
     {
@@ -28,7 +38,8 @@ export const Chat = () => {
       agentId: agentId ?? ""
     },
     {
-      skip: !incidentId || !agentId
+      skip: !incidentId || !agentId! || isString(lastSentMessage),
+      pollingInterval: REFRESH_INTERVAL
     }
   );
 
@@ -37,51 +48,97 @@ export const Chat = () => {
 
   const handleInputSubmit = () => {
     setInputValue("");
-    setSendMessageToBeSent(inputValue);
+    setLastSentMessage(inputValue);
+    scrollToBottom();
+
     void sendMessage({
       incidentId: incidentId ?? "",
       agentId: agentId ?? "",
       data: { text: inputValue }
     }).finally(() => {
-      setSendMessageToBeSent(undefined);
+      setLastSentMessage(undefined);
     });
   };
 
-  useEffect(() => {
-    setInputValue("");
-  }, [agentId]);
+  const handleMarkdownTypingComplete = (i: number) => () => {
+    const events = data ?? [];
+    const aiEventsIndexes = events.reduce((acc, event, index) => {
+      if (event.type === "ai") {
+        acc.push(index);
+      }
+      return acc;
+    }, [] as number[]);
 
-  const renderChatEvent = (event: IncidentAgentChatEvent) => {
+    const nextAiEventIndex = aiEventsIndexes.find((el) => el > i);
+
+    if (isNumber(nextAiEventIndex) && nextAiEventIndex >= 0) {
+      setEventsVisibleCount(nextAiEventIndex + 1);
+    } else {
+      setEventsVisibleCount(events.length);
+    }
+  };
+
+  useEffect(() => {
+    if (data) {
+      setInitialEventsCount((prev) => (!isNumber(prev) ? data.length : prev));
+      setEventsVisibleCount(data.length);
+    }
+  }, [data]);
+
+  const visibleEvents = useMemo(
+    () =>
+      data && isNumber(eventsVisibleCount)
+        ? data.slice(0, eventsVisibleCount)
+        : [],
+    [data, eventsVisibleCount]
+  );
+
+  const shouldShowTypingForEvent = (index: number) =>
+    Boolean(initialEventsCount && index >= initialEventsCount);
+
+  const renderChatEvent = (event: IncidentAgentChatEvent, i: number) => {
     switch (event.type) {
+      case "ai":
+        return (
+          <TypingMarkdown
+            text={event.message}
+            onComplete={
+              shouldShowTypingForEvent(i)
+                ? handleMarkdownTypingComplete(i)
+                : undefined
+            }
+            speed={shouldShowTypingForEvent(i) ? TYPING_SPEED : undefined}
+          />
+        );
       case "tool":
         return (
           <Accordion
-            summary={"MCP tool"}
+            summary={`${event.tool_name} (${[event.mcp_name, "MCP tool"]
+              .filter(Boolean)
+              .join(" ")})`}
             content={<TypingMarkdown text={convertToMarkdown(event.message)} />}
           />
         );
       case "human":
         return <s.HumanMessage>{event.message}</s.HumanMessage>;
-      case "ai":
+
       default:
-        return <TypingMarkdown text={event.message} />;
+        return null;
     }
   };
 
   return (
     <s.Container>
-      <s.ChatHistory>
+      <s.ChatHistory ref={elementRef} onScroll={handleElementScroll}>
         {!data && isLoading && (
           <s.LoadingContainer>
             <Spinner size={32} />
           </s.LoadingContainer>
         )}
-        {data?.map((x, i) => (
-          <Fragment key={i}>{renderChatEvent(x)}</Fragment>
+        {visibleEvents?.map((x, i) => (
+          <Fragment key={i}>{renderChatEvent(x, i)}</Fragment>
         ))}
-        {sendMessageToBeSent && (
-          <s.HumanMessage>{sendMessageToBeSent}</s.HumanMessage>
-        )}
+        {lastSentMessage && <s.HumanMessage>{lastSentMessage}</s.HumanMessage>}
         {isMessageSending && <ThreeCirclesSpinner />}
       </s.ChatHistory>
       <PromptInput

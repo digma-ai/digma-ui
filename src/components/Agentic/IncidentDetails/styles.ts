@@ -114,9 +114,11 @@ export const Breadcrumb = styled.span<BreadcrumbProps>`
 export const AgentBreadcrumb = styled(Breadcrumb)<BreadcrumbProps>`
   padding: 8px 12px;
   color: ${({ theme }) => theme.colors.v3.text.primary};
+  cursor: default;
 
   &:hover {
     color: ${({ theme }) => theme.colors.v3.text.primary};
+    text-decoration: none;
   }
 `;
 

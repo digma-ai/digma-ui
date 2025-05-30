@@ -90,8 +90,6 @@ export const IncidentDetails = () => {
     (agent) => agent.name === `${agentId}_chat`
   );
 
-  const key = `${incidentId}-${agentId}`;
-
   return (
     <s.Container key={incidentId}>
       <IncidentMetaData />
@@ -123,10 +121,7 @@ export const IncidentDetails = () => {
                   {agentId && (
                     <>
                       <s.BreadcrumbsDivider>/</s.BreadcrumbsDivider>
-                      <s.AgentBreadcrumb
-                        $isActive={agentViewMode === "chat"}
-                        onClick={handleAgentBreadcrumbClick}
-                      >
+                      <s.AgentBreadcrumb onClick={handleAgentBreadcrumbClick}>
                         {agentName}
                       </s.AgentBreadcrumb>
                     </>
@@ -142,9 +137,9 @@ export const IncidentDetails = () => {
               </s.SummaryContainerToolbar>
               {agentId ? (
                 agentViewMode === "chat" ? (
-                  <Chat key={key} />
+                  <Chat key={agentId} />
                 ) : (
-                  <AgentEvents key={key} />
+                  <AgentEvents key={agentId} />
                 )
               ) : (
                 <s.IncidentSummaryText>
