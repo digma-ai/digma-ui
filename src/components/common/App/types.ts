@@ -97,6 +97,7 @@ export interface ScopeWithCustomProtocolLinkContext
     event: ScopeChangeEvent;
     payload: {
       targetTab?: string;
+      targetTabPath?: string;
     };
   };
 }
