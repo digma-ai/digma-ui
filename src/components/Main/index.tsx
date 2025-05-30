@@ -11,6 +11,7 @@ import { PLUGIN_EVENTS } from "../../pluginEvents";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { useStore } from "../../store/useStore";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
+import { isString } from "../../typeGuards/isString";
 import { isUndefined } from "../../typeGuards/isUndefined";
 import type { SendPluginEventPayload } from "../../types";
 import { ScopeChangeEvent } from "../../types";
@@ -69,10 +70,13 @@ const getUrlToNavigateFromRestApiCall = (scope: Scope): string | undefined => {
   }
 
   if (!Object.values(TAB_IDS).includes(scope.context.payload.targetTab)) {
-    return `/${scope.context.payload.targetTab}`;
+    return;
   }
 
-  return `/${scope.context.payload.targetTab}`;
+  const tab = scope.context.payload.targetTab;
+  const path = scope.context.payload.targetTabPath;
+
+  return `/${[tab, path].filter(isString).join("/")}`;
 };
 
 export const Main = () => {
