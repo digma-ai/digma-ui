@@ -8,11 +8,13 @@ import {
   useGetIncidentAgentsQuery,
   useGetIncidentQuery
 } from "../../../redux/services/digma";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { TwoVerticalLinesIcon } from "../../common/icons/16px/TwoVerticalLinesIcon";
 import { Direction } from "../../common/icons/types";
 import { Spinner } from "../../common/v3/Spinner";
 import type { ToggleOption } from "../../common/v3/Toggle/types";
 import { Tooltip } from "../../common/v3/Tooltip";
+import { trackingEvents } from "../tracking";
 import { AdditionalInfo } from "./AdditionalInfo";
 import { AgentEvents } from "./AgentEvents";
 import { AgentFlowChart } from "./AgentFlowChart";
@@ -59,17 +61,21 @@ export const IncidentDetails = () => {
   );
 
   const handleHomeBreadcrumbClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.INCIDENT_HOME_BREADCRUMB_CLICKED,
+      { agentName: agentId ?? "" }
+    );
     setSearchParams((params) => {
       params.delete("agent");
       return params;
     });
   };
 
-  const handleAgentBreadcrumbClick = () => {
-    setAgentViewMode("summary");
-  };
-
   const handleAgentViewModeChange = (value: AgentViewMode) => {
+    sendUserActionTrackingEvent(
+      trackingEvents.INCIDENT_AGENT_VIEW_MODE_TOGGLE_CHANGED,
+      { agentName: agentId ?? "", mode: value }
+    );
     setAgentViewMode(value);
   };
 
@@ -143,9 +149,7 @@ export const IncidentDetails = () => {
                   {agentId && (
                     <>
                       <s.BreadcrumbsDivider>/</s.BreadcrumbsDivider>
-                      <s.AgentBreadcrumb onClick={handleAgentBreadcrumbClick}>
-                        {agentName}
-                      </s.AgentBreadcrumb>
+                      <s.AgentBreadcrumb>{agentName}</s.AgentBreadcrumb>
                     </>
                   )}
                 </s.Breadcrumbs>

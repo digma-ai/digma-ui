@@ -1,5 +1,6 @@
 import { Position, type Edge } from "@xyflow/react";
 import { useState } from "react";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { groupBy } from "../../../../utils/groupBy";
 import { PlusIcon } from "../../../common/icons/16px/PlusIcon";
 import { FlowChart } from "../../common/FlowChart";
@@ -7,6 +8,7 @@ import type {
   FlowChartNode,
   FlowChartNodeData
 } from "../../common/FlowChart/FlowChartNode";
+import { trackingEvents } from "../../tracking";
 import { MCPServerBlock } from "./MCPServerBlock";
 import * as s from "./styles";
 import type { AgentFlowChartProps, ExtendedAgent } from "./types";
@@ -27,6 +29,14 @@ const getFlowChartNodeData = ({
   onAddMCPServer?: (agentName: string, position: Position) => void;
 }): Partial<FlowChartNodeData> => {
   const handleAddMCPServerButtonClick = (position: Position) => () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.AGENT_FLOW_CHART_NODE_ADD_MCP_SERVER_BUTTON_CLICKED,
+      {
+        agentName: agent?.name,
+        position
+      }
+    );
+
     if (!agent) {
       return;
     }

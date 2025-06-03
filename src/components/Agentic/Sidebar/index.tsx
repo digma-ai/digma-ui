@@ -38,24 +38,32 @@ export const Sidebar = () => {
   const [logout, result] = useLogoutMutation();
 
   const handleLogoLinkClick = () => {
-    sendUserActionTrackingEvent(trackingEvents.LOGO_LINK_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.SIDEBAR_LOGO_LINK_CLICKED);
   };
 
   const handleIncidentListItemClick = (id: string) => () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.SIDEBAR_INCIDENTS_LIST_ITEM_CLICKED
+    );
     void navigate(`/incidents/${id}`);
   };
 
   const handleTemplateButtonClick = () => {
-    sendUserActionTrackingEvent(trackingEvents.TEMPLATE_BUTTON_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.SIDEBAR_TEMPLATE_BUTTON_CLICKED);
     void navigate("/incidents/template");
   };
 
   const handleLogoutMenuItemClick = () => {
-    sendUserActionTrackingEvent(trackingEvents.LOGOUT_MENU_ITEM_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.SIDEBAR_USER_MENU_ITEM_CLICKED, {
+      item: "logout"
+    });
     void logout();
   };
 
   const handleUserMenuOpenChange = (isOpen: boolean) => {
+    sendUserActionTrackingEvent(trackingEvents.SIDEBAR_USER_MENU_OPEN_CHANGED, {
+      isOpen
+    });
     setIsUserMenuOpen(isOpen);
   };
 

@@ -1,13 +1,17 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { useParams } from "react-router";
+import { useStableSearchParams } from "../../../../../hooks/useStableSearchParams";
 import { useGetIncidentQuery } from "../../../../../redux/services/digma";
 import type {
   ArtifactType,
   IncidentArtifact
 } from "../../../../../redux/services/types";
-import { PullRequestIcon } from "../../../../common/icons/24px/PullRequestIcon";
+import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
+import { GitHubIssueIcon } from "../../../../common/icons/24px/GitHubIssueIcon";
+import { GitHubPullRequestIcon } from "../../../../common/icons/24px/GitHubPullRequestIcon";
 import { Tooltip } from "../../../../common/v3/Tooltip";
+import { trackingEvents } from "../../../tracking";
 import { Table } from "../Table";
 import * as s from "./styles";
 
@@ -18,7 +22,9 @@ const columnHelper = createColumnHelper<IncidentArtifact>();
 const getArtifactIcon = (type: ArtifactType) => {
   switch (type) {
     case "pr":
-      return <PullRequestIcon color={"currentColor"} size={24} />;
+      return <GitHubPullRequestIcon color={"currentColor"} size={24} />;
+    case "issue":
+      return <GitHubIssueIcon color={"currentColor"} size={24} />;
     default:
       return null;
   }
@@ -27,6 +33,8 @@ const getArtifactIcon = (type: ArtifactType) => {
 export const Artifacts = () => {
   const params = useParams();
   const incidentId = params.id;
+  const [searchParams] = useStableSearchParams();
+  const agentId = searchParams.get("agent");
 
   const { data } = useGetIncidentQuery(
     {
@@ -52,6 +60,15 @@ export const Artifacts = () => {
       cell: (info) => {
         const artifact = info.getValue();
 
+        const handleArtifactLinkClick = () => {
+          sendUserActionTrackingEvent(
+            trackingEvents.INCIDENT_ARTIFACTS_TABLE_ITEM_LINK_CLICKED,
+            {
+              agentId: agentId ?? ""
+            }
+          );
+        };
+
         return (
           <s.ArtifactInfoContainer>
             <s.ArtifactIconContainer>
@@ -59,6 +76,7 @@ export const Artifacts = () => {
             </s.ArtifactIconContainer>
             <Tooltip title={artifact.display_name}>
               <s.Link
+                onClick={handleArtifactLinkClick}
                 href={artifact.url}
                 target={"_blank"}
                 rel={"noopener noreferrer"}

@@ -5,6 +5,7 @@ import {
   type NodeProps
 } from "@xyflow/react";
 import { useState, type ReactNode } from "react";
+import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { ChevronIcon } from "../../../../common/icons/16px/ChevronIcon";
 import { CopyIcon } from "../../../../common/icons/16px/CopyIcon";
 import { RefreshIcon } from "../../../../common/icons/16px/RefreshIcon";
@@ -16,6 +17,7 @@ import { NewPopover } from "../../../../common/NewPopover";
 import { MenuList } from "../../../../Navigation/common/MenuList";
 import type { MenuItem } from "../../../../Navigation/common/MenuList/types";
 import { Popup } from "../../../../Navigation/common/Popup";
+import { trackingEvents } from "../../../tracking";
 import * as s from "./styles";
 
 export type Orientation = "horizontal" | "vertical";
@@ -40,14 +42,33 @@ export type FlowChartNodeData = {
 
 export type FlowChartNode = Node<FlowChartNodeData, "flowChart">;
 
-export const FlowChartNode = ({ data }: NodeProps<FlowChartNode>) => {
+export const FlowChartNode = ({ id, data }: NodeProps<FlowChartNode>) => {
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
 
+  const handleNodeClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.FLOW_CHART_NODE_CLICKED, {
+      id
+    });
+  };
+
   const handleKebabMenuOpenChange = (isOpen: boolean) => {
+    sendUserActionTrackingEvent(
+      trackingEvents.FLOW_CHART_NODE_KEBAB_MENU_CLICKED,
+      {
+        id,
+        isOpen
+      }
+    );
     setIsKebabMenuOpen(isOpen);
   };
 
-  const handleKebabMenuItemClick = () => {
+  const handleKebabMenuItemClick = (id: string) => {
+    sendUserActionTrackingEvent(
+      trackingEvents.FLOW_CHART_NODE_KEBAB_MENU_ITEM_CLICKED,
+      {
+        id
+      }
+    );
     setIsKebabMenuOpen(false);
   };
 
@@ -56,25 +77,25 @@ export const FlowChartNode = ({ data }: NodeProps<FlowChartNode>) => {
       id: "edit",
       icon: <WrenchIcon size={16} color={"currentColor"} />,
       label: "Edit",
-      onClick: handleKebabMenuItemClick
+      onClick: () => handleKebabMenuItemClick("edit")
     },
     {
       id: "replace",
       icon: <RefreshIcon size={16} color={"currentColor"} />,
       label: "Replace",
-      onClick: handleKebabMenuItemClick
+      onClick: () => handleKebabMenuItemClick("replace")
     },
     {
       id: "copy",
       label: "Copy",
       icon: <CopyIcon size={16} color={"currentColor"} />,
-      onClick: handleKebabMenuItemClick
+      onClick: () => handleKebabMenuItemClick("copy")
     },
     {
       id: "delete",
       label: "Delete",
       icon: <TrashBinIcon size={16} color={"currentColor"} />,
-      onClick: handleKebabMenuItemClick
+      onClick: () => handleKebabMenuItemClick("delete")
     }
   ];
 
@@ -85,6 +106,7 @@ export const FlowChartNode = ({ data }: NodeProps<FlowChartNode>) => {
         $isActive={data.isActive}
         $isDisabled={data.isDisabled}
         $isInteractive={data.isInteractive}
+        onClick={handleNodeClick}
       >
         {data.label && (
           <s.Label $orientation={data.orientation}>{data.label}</s.Label>

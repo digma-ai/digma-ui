@@ -7,9 +7,11 @@ import {
 } from "../../../../redux/services/digma";
 import type { IncidentAgentChatEvent } from "../../../../redux/services/types";
 import { isNumber } from "../../../../typeGuards/isNumber";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { ThreeCirclesSpinner } from "../../../common/ThreeCirclesSpinner";
 import { Spinner } from "../../../common/v3/Spinner";
 import { PromptInput } from "../../common/PromptInput";
+import { trackingEvents } from "../../tracking";
 import { Accordion } from "../AgentEvents/Accordion";
 import { TypingMarkdown } from "../TypingMarkdown";
 import { useAutoScroll } from "../useAutoScroll";
@@ -45,6 +47,12 @@ export const Chat = () => {
   );
 
   const handleInputSubmit = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.INCIDENT_AGENT_MESSAGE_SUBMITTED,
+      {
+        agentName: agentId ?? ""
+      }
+    );
     setInputValue("");
     scrollToBottom();
 

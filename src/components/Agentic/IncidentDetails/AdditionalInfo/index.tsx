@@ -1,4 +1,7 @@
 import { useState, type ReactNode } from "react";
+import { useStableSearchParams } from "../../../../hooks/useStableSearchParams";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import { trackingEvents } from "../../tracking";
 import { Artifacts } from "./Artifacts";
 import { RelatedIssues } from "./RelatedIssues";
 import * as s from "./styles";
@@ -11,8 +14,17 @@ const tabs: { id: TabId; name: string; content: ReactNode }[] = [
 
 export const AdditionalInfo = () => {
   const [selectedTabId, setSelectedTabId] = useState<TabId>("relatedIssues");
+  const [searchParams] = useStableSearchParams();
+  const agentId = searchParams.get("agent");
 
   const handleTabChange = (tabId: TabId) => () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.INCIDENT_RELATED_ASSETS_TAB_CLICKED,
+      {
+        agentId: agentId ?? "",
+        tabId
+      }
+    );
     const newTab = tabs.find((tab) => tab.id === tabId);
 
     if (newTab) {

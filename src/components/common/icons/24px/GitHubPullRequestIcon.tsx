@@ -2,7 +2,7 @@ import React from "react";
 import { useIconProps } from "../hooks";
 import type { IconProps } from "../types";
 
-const PullRequestIconComponent = (props: IconProps) => {
+const GitHubPullRequestIconComponent = (props: IconProps) => {
   const { size, color } = useIconProps(props);
 
   return (
@@ -23,4 +23,4 @@ const PullRequestIconComponent = (props: IconProps) => {
   );
 };
 
-export const PullRequestIcon = React.memo(PullRequestIconComponent);
+export const GitHubPullRequestIcon = React.memo(GitHubPullRequestIconComponent);

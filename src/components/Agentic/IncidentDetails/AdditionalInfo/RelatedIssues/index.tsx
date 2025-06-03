@@ -1,8 +1,10 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { useParams } from "react-router";
+import { useStableSearchParams } from "../../../../../hooks/useStableSearchParams";
 import { useGetIncidentQuery } from "../../../../../redux/services/digma";
 import type { GenericIncidentIssue } from "../../../../../redux/services/types";
+import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getIdeLauncherLinkForError } from "../../../../../utils/getIdeLauncherLinkForError";
 import { getIdeLauncherLinkForSpan } from "../../../../../utils/getIdeLauncherLinkForSpan";
 import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
@@ -15,6 +17,7 @@ import {
   InsightIcon
 } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/InsightHeader/InsightIcon";
 import { getValueLabel } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/InsightHeader/InsightIcon/getValueLabel";
+import { trackingEvents } from "../../../tracking";
 import { Table } from "../Table";
 import * as s from "./styles";
 
@@ -38,6 +41,8 @@ const columnHelper = createColumnHelper<GenericIncidentIssue>();
 export const RelatedIssues = () => {
   const params = useParams();
   const incidentId = params.id;
+  const [searchParams] = useStableSearchParams();
+  const agentId = searchParams.get("agent");
 
   const { data } = useGetIncidentQuery(
     {
@@ -66,6 +71,15 @@ export const RelatedIssues = () => {
       cell: (info) => {
         const issue = info.getValue();
 
+        const handleIssueLinkClick = () => {
+          sendUserActionTrackingEvent(
+            trackingEvents.INCIDENT_RELATED_ISSUES_TABLE_ITEM_LINK_CLICKED,
+            {
+              agentId: agentId ?? ""
+            }
+          );
+        };
+
         switch (issue.type) {
           case "issue": {
             const insightTypeInfo = getInsightTypeInfo(issue.issue_type);
@@ -82,6 +96,7 @@ export const RelatedIssues = () => {
                 <Tooltip title={label}>
                   {issue.span_uid ? (
                     <s.Link
+                      onClick={handleIssueLinkClick}
                       href={getIdeLauncherLinkForSpan(issue.span_uid)}
                       target={"_blank"}
                       rel={"noopener noreferrer"}
@@ -102,6 +117,7 @@ export const RelatedIssues = () => {
               <s.IssueInfoContainer>
                 <Tooltip title={label}>
                   <s.Link
+                    onClick={handleIssueLinkClick}
                     href={getIdeLauncherLinkForError(issue.issue_id)}
                     target={"_blank"}
                     rel={"noopener noreferrer"}
