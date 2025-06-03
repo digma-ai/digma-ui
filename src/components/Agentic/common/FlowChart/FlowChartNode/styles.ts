@@ -58,6 +58,7 @@ export const StyledPulsatingDot = styled(PulsatingDot)`
 export const InputHandle = styled(Handle)`
   height: 24px;
   width: 24px;
+  ${/* TODO: change to color from the theme */ ""}
   background: #3e404a;
   border: none;
   display: flex;
@@ -71,6 +72,7 @@ export const OutputHandle = styled(Handle)`
   height: 6px;
   border: none;
   border-radius: 0%;
+  ${/* TODO: change to color from the theme */ ""}
   background: #3e404a;
 `;
 
@@ -87,5 +89,6 @@ export const KebabMenuButton = styled.button`
   cursor: pointer;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
   border-radius: 50%;
+  ${/* TODO: change to color from the theme */ ""}
   background: #3e404a;
 `;

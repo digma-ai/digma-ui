@@ -17,6 +17,7 @@ export const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   color: ${(props) => props.theme.colors.v3.text.primary};
+  ${/* TODO: change to typography from the theme*/ ""}
   font-size: 14px;
   font-weight: 600;
   width: 100%;
@@ -40,9 +41,12 @@ export const TextArea = styled.textarea`
   flex-direction: column;
   gap: 10px;
   border-radius: 8px;
+  ${/* TODO: change to color from the theme */ ""}
   background: #000;
   overflow: auto;
+  ${/* TODO: change to color from the theme */ ""}
   color: #fff;
+  ${/* TODO: change to typography from the theme */ ""}
   font-size: 14px;
   font-weight: 500;
   resize: none;

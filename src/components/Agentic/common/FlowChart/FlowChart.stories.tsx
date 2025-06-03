@@ -21,7 +21,7 @@ export const Default: Story = {
     nodes: [
       {
         id: "1",
-        position: { x: 0, y: -31 }, // TODO: find a way to center this
+        position: { x: 0, y: -31 },
         data: {
           label: "Digma",
           orientation: "vertical",

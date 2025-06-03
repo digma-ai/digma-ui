@@ -23,7 +23,7 @@ export const Header = styled.header`
 
 export const StyledAgentFlowChart = styled(AgentFlowChart)`
   .react-flow {
-    --xy-edge-stroke-default: #3e404a;
+    --xy-edge-stroke-default: #3e404a; /* TODO: change to color from the theme */
 
     /* stylelint-disable-next-line selector-class-pattern */
     .react-flow__edge path {
@@ -46,6 +46,7 @@ export const StyledIncidentPromptInput = styled(PromptInput)`
 
 export const StyledAgentPromptInput = styled(PromptInput)`
   height: 96px;
+  ${/* TODO: change to color from the theme */ ""}
   border: 1px solid #6063f6;
 
   & > textarea {
