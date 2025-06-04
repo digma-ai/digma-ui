@@ -7,6 +7,10 @@ export const appData: AppData = {
     entry: path.resolve(__dirname, "./src/containers/Admin/index.tsx"),
     platforms: ["web"]
   },
+  agentic: {
+    entry: path.resolve(__dirname, "./src/containers/Agentic/index.tsx"),
+    platforms: ["web"]
+  },
   dashboard: {
     entry: path.resolve(__dirname, "./src/containers/Dashboard/index.tsx"),
     environmentVariables: ["dashboardEnvironment"],

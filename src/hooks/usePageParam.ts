@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router";
+import { useStableSearchParams } from "./useStableSearchParams";
 
 export const PAGE_SIZE = 10;
 
@@ -12,7 +12,7 @@ export const usePageParam = <T>({
   total: number;
   pageSize?: number;
 }): { page: number; pageSize?: number; setPage: (page: number) => void } => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useStableSearchParams();
   const pageParam = searchParams.get("page");
   const [page, setPage] = useState(() => {
     if (pageParam) {

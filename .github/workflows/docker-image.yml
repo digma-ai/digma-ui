@@ -31,14 +31,14 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_DIGMAAI_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_DIGMAAI_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Docker meta
         id: metadata
         uses: docker/metadata-action@v5
         with:
-          images: digmaai/digma-ui
+          images: digmatic/digma-ui
           tags: |
             type=ref,event=branch
             type=ref,event=pr

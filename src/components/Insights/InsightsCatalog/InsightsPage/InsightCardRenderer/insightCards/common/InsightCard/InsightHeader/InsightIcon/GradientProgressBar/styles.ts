@@ -31,7 +31,7 @@ export const Circle = styled.div<{ value: number }>`
   top: 0;
   bottom: 0;
   margin: auto;
-  left: ${({ value }) => value - CIRCLE_RADIUS / 2}px;
+  left: calc(${({ value }) => value}% - ${CIRCLE_RADIUS}px);
 `;
 
 export const Legend = styled.div`

@@ -36,6 +36,15 @@ import type {
   GetGlobalErrorsResponse,
   GetImpactHighlightsPayload,
   GetImpactHighlightsResponse,
+  GetIncidentAgentChatEventsPayload,
+  GetIncidentAgentChatEventsResponse,
+  GetIncidentAgentEventsPayload,
+  GetIncidentAgentEventsResponse,
+  GetIncidentAgentsPayload,
+  GetIncidentAgentsResponse,
+  GetIncidentPayload,
+  GetIncidentResponse,
+  GetIncidentsResponse,
   GetInsightsResponse,
   GetInsightsStatsPayload,
   GetInsightsStatsResponse,
@@ -77,6 +86,7 @@ import type {
   PinErrorPayload,
   RecheckInsightPayload,
   ResendConfirmationEmailPayload,
+  sendMessageToIncidentAgentChatPayload,
   SetEndpointsIssuesPayload,
   SetMetricsReportDataPayload,
   SetServiceEndpointsPayload,
@@ -93,7 +103,8 @@ export const digmaApi = createApi({
     "Environment",
     "Error",
     "Insight",
-    "RecentActivity"
+    "RecentActivity",
+    "IncidentAgentChatEvent"
   ],
   reducerPath: "digmaApi",
   baseQuery: fetchBaseQuery({
@@ -544,6 +555,58 @@ export const digmaApi = createApi({
         url: "AI/issue",
         params: data
       })
+    }),
+    getIncidents: builder.query<GetIncidentsResponse, void>({
+      query: () => ({
+        url: "Agentic/incidents"
+      })
+    }),
+    getIncident: builder.query<GetIncidentResponse, GetIncidentPayload>({
+      query: ({ id }) => ({
+        url: `Agentic/incidents/${window.encodeURIComponent(id)}`
+      })
+    }),
+    getIncidentAgents: builder.query<
+      GetIncidentAgentsResponse,
+      GetIncidentAgentsPayload
+    >({
+      query: ({ id }) => ({
+        url: `Agentic/incidents/${window.encodeURIComponent(id)}/agents`
+      })
+    }),
+    getIncidentAgentEvents: builder.query<
+      GetIncidentAgentEventsResponse,
+      GetIncidentAgentEventsPayload
+    >({
+      query: ({ incidentId, agentId }) => ({
+        url: `Agentic/incidents/${window.encodeURIComponent(
+          incidentId
+        )}/agents/${window.encodeURIComponent(agentId)}/events`
+      })
+    }),
+    getIncidentAgentChatEvents: builder.query<
+      GetIncidentAgentChatEventsResponse,
+      GetIncidentAgentChatEventsPayload
+    >({
+      query: ({ incidentId, agentId }) => ({
+        url: `Agentic/incidents/${window.encodeURIComponent(
+          incidentId
+        )}/agents/${window.encodeURIComponent(agentId)}/chat_events`
+      }),
+      providesTags: ["IncidentAgentChatEvent"]
+    }),
+    sendMessageToIncidentAgentChat: builder.mutation<
+      void, // text/event-stream
+      sendMessageToIncidentAgentChatPayload
+    >({
+      query: ({ incidentId, agentId, data }) => ({
+        url: `Agentic/incidents/${window.encodeURIComponent(
+          incidentId
+        )}/agents/${window.encodeURIComponent(agentId)}/chat_message`,
+        method: "POST",
+        body: data
+      }),
+      invalidatesTags: ["IncidentAgentChatEvent"]
     })
   })
 });
@@ -597,5 +660,11 @@ export const {
   useGetSpanByIdQuery,
   useGetSpanInfoQuery,
   useGetSpanEnvironmentsQuery,
-  useGetIssueRecommendationsQuery
+  useGetIssueRecommendationsQuery,
+  useGetIncidentsQuery,
+  useGetIncidentQuery,
+  useGetIncidentAgentsQuery,
+  useGetIncidentAgentEventsQuery,
+  useGetIncidentAgentChatEventsQuery,
+  useSendMessageToIncidentAgentChatMutation
 } = digmaApi;

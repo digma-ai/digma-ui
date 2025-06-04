@@ -1,6 +1,6 @@
 {
   "name": "digma-ui",
-  "version": "14.2.5",
+  "version": "14.3.0-alpha.17",
   "description": "Digma UI",
   "scripts": {
     "lint:eslint": "eslint --cache .",
@@ -77,6 +77,7 @@
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@types/react-helmet": "^6.1.7",
+    "@types/react-lottie": "^1.2.10",
     "@types/react-syntax-highlighter": "^15.5.7",
     "@types/react-transition-group": "^4.4.5",
     "@types/semver": "^7.5.6",
@@ -126,6 +127,7 @@
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.5.0",
     "@tanstack/react-table": "^8.7.8",
+    "@xyflow/react": "^12.6.4",
     "allotment": "^1.19.0",
     "axios": "^1.8.4",
     "copy-to-clipboard": "^3.3.3",
@@ -138,6 +140,8 @@
     "react-error-boundary": "^5.0.0",
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.48.2",
+    "react-lottie": "^1.2.10",
+    "react-markdown": "^10.1.0",
     "react-product-fruits": "^2.2.61",
     "react-redux": "^9.2.0",
     "react-router": "^7.5.2",
