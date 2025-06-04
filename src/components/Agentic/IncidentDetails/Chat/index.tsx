@@ -19,6 +19,7 @@ import { convertToMarkdown } from "../utils/convertToMarkdown";
 import * as s from "./styles";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+const REFRESH_INTERVAL_DURING_STREAMING = 3 * 1000; // in milliseconds
 const TYPING_SPEED = 3; // in milliseconds per character
 
 export const Chat = () => {
@@ -42,7 +43,9 @@ export const Chat = () => {
     },
     {
       skip: !incidentId || !agentId!,
-      pollingInterval: isMessageSending ? 3 : REFRESH_INTERVAL
+      pollingInterval: isMessageSending
+        ? REFRESH_INTERVAL_DURING_STREAMING
+        : REFRESH_INTERVAL
     }
   );
 
