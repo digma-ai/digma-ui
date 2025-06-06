@@ -21,7 +21,7 @@ import type { Environment } from "../../../redux/services/types";
 import {
   setEnvironmentToDelete,
   setIsSidebarOpen
-} from "../../../redux/slices/environmentsSlice";
+} from "../../../redux/slices/environmentsManagerSlice";
 import { FeatureFlag } from "../../../types";
 import { sortEnvironments } from "../../common/IssuesReport/utils";
 import { Pagination } from "../../common/v3/Pagination";
@@ -38,7 +38,7 @@ export const Environments = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { data: about } = useGetAboutQuery();
   const isCreateEnvironmentSidebarOpen = useAdminSelector(
-    (state) => state.environmentsSlice.isSidebarOpen
+    (state) => state.environmentsManager.isSidebarOpen
   );
 
   const dispatch = useAdminDispatch();
@@ -48,7 +48,7 @@ export const Environments = () => {
   );
   const [deleteEnvironment] = useDeleteEnvironmentMutation();
   const environmentToDelete = useAdminSelector(
-    (state) => state.environmentsSlice.environmentToDelete
+    (state) => state.environmentsManager.environmentToDelete
   );
   const { data: environments } = useGetEnvironmentsQuery();
 

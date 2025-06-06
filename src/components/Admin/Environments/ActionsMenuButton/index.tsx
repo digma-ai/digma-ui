@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAdminDispatch } from "../../../../containers/Admin/hooks";
-import { setEnvironmentToDelete } from "../../../../redux/slices/environmentsSlice";
+import { setEnvironmentToDelete } from "../../../../redux/slices/environmentsManagerSlice";
 import { TrashBinIcon } from "../../../common/icons/16px/TrashBinIcon";
 import { ThreeDotsVerticalIcon } from "../../../common/icons/ThreeDotsVerticalIcon";
 import { NewPopover } from "../../../common/NewPopover";

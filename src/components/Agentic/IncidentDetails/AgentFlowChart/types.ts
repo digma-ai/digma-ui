@@ -1,5 +1,5 @@
 import type { Position } from "@xyflow/react";
-import type { Agent } from "../../../../redux/services/types";
+import type { Agent, AgentMCPServer } from "../../../../redux/services/types";
 
 export interface AgentFlowChartProps {
   agents: ExtendedAgent[];
@@ -8,17 +8,13 @@ export interface AgentFlowChartProps {
   className?: string;
   isEditMode?: boolean;
   onAddMCPServer?: (agentId: string, position: Position) => void;
+  onEditMCPServers?: (agentId: string) => void;
 }
 
-export interface MCPServersSideContainerProps {
-  $zoomLevel?: number;
+export interface ExtendedAgentMCPServer extends AgentMCPServer {
+  position?: Position;
 }
 
 export interface ExtendedAgent extends Agent {
-  mcp_servers: {
-    name: string;
-    display_name: string;
-    active: boolean;
-    position?: Position;
-  }[];
+  mcp_servers: ExtendedAgentMCPServer[];
 }

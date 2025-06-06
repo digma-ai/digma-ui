@@ -1,9 +1,16 @@
 import styled from "styled-components";
-import type { MCPServerBlockElementProps } from "./types";
+import type { ContainerProps, MCPServerBlockProps } from "./types";
 
+const DEFAULT_GAP_SIZE = 13; // in pixels
 const DEFAULT_MCP_SERVER_BLOCK_SIZE = 50; // in pixels
 
-export const MCPServerBlock = styled.div<MCPServerBlockElementProps>`
+export const Container = styled.div<ContainerProps>`
+  display: flex;
+  gap: ${({ $zoomLevel }) =>
+    $zoomLevel ? $zoomLevel * DEFAULT_GAP_SIZE : DEFAULT_GAP_SIZE}px;
+`;
+
+export const MCPServerBlock = styled.div<MCPServerBlockProps>`
   display: flex;
   align-items: center;
   justify-content: center;

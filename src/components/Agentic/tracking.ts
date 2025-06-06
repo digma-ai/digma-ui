@@ -13,14 +13,32 @@ export const trackingEvents = addPrefix(
     FLOW_CHART_NODE_KEBAB_MENU_CLICKED: "flow chart node kebab menu clicked",
     FLOW_CHART_NODE_KEBAB_MENU_ITEM_CLICKED:
       "flow chart node kebab menu item clicked",
+    FLOW_CHART_NODE_MCP_TOOLBAR_MENU_CLICKED:
+      "flow chart node mcp toolbar menu clicked",
+    FLOW_CHART_NODE_MCP_TOOLBAR_MENU_ITEM_CLICKED:
+      "flow chart node mcp toolbar menu item clicked",
     AGENT_FLOW_CHART_NODE_ADD_MCP_SERVER_BUTTON_CLICKED:
       "flow chart node add mcp server button clicked",
-    INCIDENT_TEMPLATE_ADD_MCP_DIALOG_SAVE_BUTTON_CLICKED:
-      "incident template add mcp dialog save button clicked",
+    INCIDENT_TEMPLATE_ADD_MCP_DIALOG_CONNECT_BUTTON_CLICKED:
+      "incident template add mcp dialog connect button clicked",
     INCIDENT_TEMPLATE_ADD_MCP_DIALOG_CANCEL_BUTTON_CLICKED:
       "incident template add mcp dialog cancel button clicked",
     INCIDENT_TEMPLATE_ADD_MCP_DIALOG_CLOSE_BUTTON_CLICKED:
       "incident template add mcp dialog close button clicked",
+    INCIDENT_TEMPLATE_EDIT_MCP_DIALOG_OPENED:
+      "incident template edit mcp dialog opened",
+    INCIDENT_TEMPLATE_EDIT_MCP_DIALOG_SAVE_BUTTON_CLICKED:
+      "incident template edit mcp dialog save button clicked",
+    INCIDENT_TEMPLATE_EDIT_MCP_DIALOG_CANCEL_BUTTON_CLICKED:
+      "incident template edit mcp dialog cancel button clicked",
+    INCIDENT_TEMPLATE_EDIT_MCP_DIALOG_CLOSE_BUTTON_CLICKED:
+      "incident template edit mcp dialog close button clicked",
+    INCIDENT_TEMPLATE_EDIT_MCP_DIALOG_SELECT_ALL_TOGGLE_CHANGED:
+      "incident template edit mcp dialog select all toggle changed",
+    INCIDENT_TEMPLATE_EDIT_MCP_DIALOG_TOOL_TAG_CLICKED:
+      "incident template edit mcp dialog tool tag clicked",
+    INCIDENT_TEMPLATE_EDIT_MCP_DIALOG_TOOL_TAG_DELETE_BUTTON_CLICKED:
+      "incident template edit mcp dialog tool tag delete button clicked",
     INCIDENT_HOME_BREADCRUMB_CLICKED: "incident home breadcrumb clicked",
     INCIDENT_AGENT_VIEW_MODE_TOGGLE_CHANGED:
       "incident agent view mode toggle changed",

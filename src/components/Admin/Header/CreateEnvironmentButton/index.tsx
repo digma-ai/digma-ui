@@ -1,5 +1,5 @@
 import { useAdminDispatch } from "../../../../containers/Admin/hooks";
-import { setIsSidebarOpen } from "../../../../redux/slices/environmentsSlice";
+import { setIsSidebarOpen } from "../../../../redux/slices/environmentsManagerSlice";
 import { PlusIcon } from "../../../common/icons/16px/PlusIcon";
 import { NewIconButton } from "../../../common/v3/NewIconButton";
 import { Tooltip } from "../../../common/v3/Tooltip";

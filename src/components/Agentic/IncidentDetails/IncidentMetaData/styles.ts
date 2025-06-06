@@ -6,6 +6,7 @@ export const Container = styled.div`
   align-items: center;
   padding-top: 24px;
   height: 51px;
+  flex-shrink: 0;
 `;
 
 export const DividerContainer = styled.div`

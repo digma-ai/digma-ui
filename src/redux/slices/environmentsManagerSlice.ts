@@ -15,8 +15,8 @@ const initialState: EnvironmentsState = {
   environmentToDelete: null
 };
 
-export const environmentsSlice = createSlice({
-  name: "environments",
+export const environmentsManagerSlice = createSlice({
+  name: "environmentsManager",
   initialState,
   reducers: {
     setIsSidebarOpen: (state, action: PayloadAction<boolean>) => {
@@ -33,6 +33,6 @@ export const environmentsSlice = createSlice({
 });
 
 export const { setIsSidebarOpen, setEnvironmentToDelete, clear } =
-  environmentsSlice.actions;
+  environmentsManagerSlice.actions;
 
-export default environmentsSlice.reducer;
+export default environmentsManagerSlice.reducer;

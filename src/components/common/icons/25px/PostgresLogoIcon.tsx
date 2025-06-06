@@ -2,7 +2,7 @@ import React from "react";
 import { useIconProps } from "../hooks";
 import type { IconProps } from "../types";
 
-export const PostgresLogoIconComponent = (props: IconProps) => {
+const PostgresLogoIconComponent = (props: IconProps) => {
   const { size, color } = useIconProps(props);
 
   return (

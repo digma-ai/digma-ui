@@ -1146,17 +1146,19 @@ export interface GetIncidentResponse {
 
 export type AgentStatus = "pending" | "active" | "inactive";
 
+export interface AgentMCPServer {
+  name: string;
+  display_name: string;
+  active: boolean;
+}
+
 export interface Agent {
   name: string;
   display_name: string;
   description: string;
   running: boolean;
   status: AgentStatus;
-  mcp_servers: {
-    name: string;
-    display_name: string;
-    active: boolean;
-  }[];
+  mcp_servers: AgentMCPServer[];
 }
 
 export interface GetIncidentAgentsPayload {

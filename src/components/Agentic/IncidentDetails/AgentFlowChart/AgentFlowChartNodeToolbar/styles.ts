@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { NewButton } from "../../../common/v3/NewButton";
+import { NewButton } from "../../../../common/v3/NewButton";
 
 export const PlusButton = styled(NewButton)`
   padding: 5px;

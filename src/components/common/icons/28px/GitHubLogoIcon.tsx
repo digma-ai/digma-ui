@@ -2,7 +2,7 @@ import React from "react";
 import { useIconProps } from "../hooks";
 import type { IconProps } from "../types";
 
-export const GitHubLogoIconComponent = (props: IconProps) => {
+const GitHubLogoIconComponent = (props: IconProps) => {
   const { size, color } = useIconProps(props);
 
   return (
