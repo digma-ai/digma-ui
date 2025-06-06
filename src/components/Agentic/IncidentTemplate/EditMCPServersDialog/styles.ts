@@ -12,14 +12,14 @@ export const Container = styled.div`
   padding: 12px;
   gap: 16px;
   border-radius: 4px;
-  background: ${(props) => props.theme.colors.v3.surface.primary};
+  background: ${({ theme }) => theme.colors.v3.surface.primary};
 `;
 
 export const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: ${(props) => props.theme.colors.v3.text.primary};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
   ${/* TODO: change to typography from the theme*/ ""}
   font-size: 14px;
   font-weight: 600;
@@ -32,15 +32,15 @@ export const ToolsEditor = styled.div`
   flex-direction: column;
   gap: 16px;
   border-radius: 8px;
-  border: 1px solid ${(props) => props.theme.colors.v3.stroke.dark};
-  background: ${(props) => props.theme.colors.v3.surface.secondary};
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
+  background: ${({ theme }) => theme.colors.v3.surface.secondary};
 `;
 
 export const ToolsEditorToolbar = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
-  color: ${(props) => props.theme.colors.v3.text.primary};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
   font-size: 14px;
   font-weight: 600;
 `;
@@ -54,7 +54,7 @@ export const SearchInputContainer = styled.div`
 
 export const SearchInput = styled.input`
   ${subscriptRegularTypography}
-  color: ${(props) => props.theme.colors.v3.text.primary};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
   height: 100%;
   width: 100%;
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
@@ -78,7 +78,7 @@ export const SearchInputIconContainer = styled.div`
 
 export const SelectAllToggleSwitch = styled(ToggleSwitch)`
   ${subscriptRegularTypography}
-  color: ${(props) => props.theme.colors.v3.text.tertiary};
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;
 
 export const ToolsList = styled.div`
@@ -124,7 +124,7 @@ export const CloseButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${(props) => props.theme.colors.v3.text.secondary};
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
   background: none;
   border: none;
   cursor: pointer;
@@ -148,7 +148,7 @@ export const TextArea = styled.textarea`
   resize: none;
 
   &::placeholder {
-    color: ${(props) => props.theme.colors.v3.text.secondary};
+    color: ${({ theme }) => theme.colors.v3.text.secondary};
   }
 `;
 

@@ -1,16 +1,13 @@
 import { Position, type Edge } from "@xyflow/react";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { groupBy } from "../../../../utils/groupBy";
-import { PlusIcon } from "../../../common/icons/16px/PlusIcon";
 import { FlowChart } from "../../common/FlowChart";
 import type {
   FlowChartNode,
   FlowChartNodeData
 } from "../../common/FlowChart/FlowChartNode";
 import { trackingEvents } from "../../tracking";
-import { MCPServersSideContainer } from "./MCPServersSideContainer";
-import { MCPServersToolbar } from "./MCPServersToolbar";
-import * as s from "./styles";
+import { AgentFlowChartNodeToolbar } from "./AgentFlowChartNodeToolbar";
 import type { AgentFlowChartProps, ExtendedAgent } from "./types";
 
 const getFlowChartNodeData = ({
@@ -70,45 +67,17 @@ const getFlowChartNodeData = ({
               (isEditMode && [Position.Top, Position.Bottom].includes(position))
           ),
           position,
-          element: () => {
-            const servers = serverGroups[position] ?? [];
-            const toolbarItems = [
-              ...(servers.length > 0
-                ? [
-                    <MCPServersToolbar
-                      key={"mcp-servers-toolbar"}
-                      servers={servers}
-                      onAddMCPServer={handleAddMCPServer(position)}
-                      onEditMCPServers={handleEditMCPServers(position)}
-                    />
-                  ]
-                : []),
-              <s.PlusButton
-                key={"add-mcp-server-button"}
-                buttonType={"secondaryBorderless"}
-                icon={PlusIcon}
-                onClick={handleAddMCPServer(position)}
-              />
-            ];
-            const sortedToolbarItems =
-              position === Position.Top ? toolbarItems.reverse() : toolbarItems;
-
-            return (
-              <>
-                {isEditMode ? (
-                  [Position.Top, Position.Bottom].includes(position) && (
-                    <s.NodeToolbarContainer>
-                      {sortedToolbarItems}
-                    </s.NodeToolbarContainer>
-                  )
-                ) : (
-                  <MCPServersSideContainer servers={servers} />
-                )}
-              </>
-            );
-          }
-        })),
-        isKebabMenuVisible: isEditMode
+          element: (
+            <AgentFlowChartNodeToolbar
+              isEditMode={isEditMode}
+              position={position}
+              servers={serverGroups[position] ?? []}
+              onAddMCPServer={handleAddMCPServer(position)}
+              onEditMCPServers={handleEditMCPServers(position)}
+            />
+          ),
+          isKebabMenuVisible: isEditMode
+        }))
       }
     : {};
 };

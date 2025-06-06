@@ -4,7 +4,7 @@ import {
   type Node,
   type NodeProps
 } from "@xyflow/react";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { ChevronIcon } from "../../../../common/icons/16px/ChevronIcon";
 import { CopyIcon } from "../../../../common/icons/16px/CopyIcon";
@@ -33,7 +33,7 @@ export type FlowChartNodeData = {
   isDisabled?: boolean;
   isInteractive?: boolean;
   sideContainers?: {
-    element: () => JSX.Element;
+    element: ReactNode;
     isVisible: boolean;
     position?: Position;
   }[];
@@ -143,7 +143,7 @@ export const FlowChartNode = ({ id, data }: NodeProps<FlowChartNode>) => {
       </s.Node>
       {data.sideContainers?.map((x, i) => (
         <NodeToolbar key={i} isVisible={x.isVisible} position={x.position}>
-          <x.element />
+          {x.element}
         </NodeToolbar>
       ))}
     </>

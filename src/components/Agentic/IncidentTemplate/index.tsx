@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Overlay } from "../../common/Overlay";
 import type { ExtendedAgent } from "../IncidentDetails/AgentFlowChart/types";
 import { AddMCPServerDialog } from "./AddMCPServerDialog";
-import { EditMCPServersDialog } from "./EditMPServersDialog";
+import { EditMCPServersDialog } from "./EditMCPServersDialog";
 import * as s from "./styles";
 
 const initialAgents: ExtendedAgent[] = [
