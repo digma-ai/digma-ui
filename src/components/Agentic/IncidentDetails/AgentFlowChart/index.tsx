@@ -74,6 +74,14 @@ const getFlowChartNodeData = ({
               servers={serverGroups[position] ?? []}
               onAddMCPServer={handleAddMCPServer(position)}
               onEditMCPServers={handleEditMCPServers(position)}
+              showPlusButton={
+                isEditMode &&
+                (["watchman", "triager"].includes(agent.name) ||
+                  (agent.name === "code_resolver" &&
+                    position === Position.Bottom) ||
+                  (agent.name === "infra_resolver" &&
+                    position === Position.Top))
+              }
             />
           ),
           isKebabMenuVisible: isEditMode
@@ -105,7 +113,9 @@ export const AgentFlowChart = ({
       mcp_servers: agent.mcp_servers.map((server) => ({
         ...server,
         position:
-          agent.name === "code_resolver" ? Position.Bottom : server.position
+          agent.name === "code_resolver" && !isEditMode
+            ? Position.Bottom
+            : server.position
       }))
     })),
     {
@@ -194,7 +204,7 @@ export const AgentFlowChart = ({
     },
     {
       id: "infra_resolver",
-      position: { x: 800, y: isEditMode ? -100 : -50 },
+      position: { x: 800, y: -50 },
       data: {
         ...getFlowChartNodeData({
           agent: extendedAgents?.find((a) => a.name === "infra_resolver"),
@@ -210,7 +220,7 @@ export const AgentFlowChart = ({
     },
     {
       id: "code_resolver",
-      position: { x: 800, y: isEditMode ? 100 : 50 },
+      position: { x: 800, y: 50 },
       data: {
         ...getFlowChartNodeData({
           agent: extendedAgents?.find((a) => a.name === "code_resolver"),
