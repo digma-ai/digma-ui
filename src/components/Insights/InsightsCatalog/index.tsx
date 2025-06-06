@@ -93,7 +93,9 @@ const isShowUnreadOnly = (filters: InsightFilterType[]) =>
 
 export const InsightsCatalog = ({
   onJiraTicketCreate,
-  onRefresh
+  onRefresh,
+  onScopeChange,
+  onGoToTab
 }: InsightsCatalogProps) => {
   const {
     setInsightsViewMode: setMode,
@@ -307,7 +309,10 @@ export const InsightsCatalog = ({
       <s.Toolbar>
         <s.ToolbarRow>
           {isAtSpan && (
-            <EnvironmentSelector environments={selectorEnvironments} />
+            <EnvironmentSelector
+              environments={selectorEnvironments}
+              onScopeChange={onScopeChange}
+            />
           )}
           {!isAtSpan && renderFilterPanel()}
           <s.ToolbarButtonsContainer>
@@ -399,6 +404,8 @@ export const InsightsCatalog = ({
         onJiraTicketCreate={onJiraTicketCreate}
         onRefresh={onRefresh}
         isMarkAsReadButtonEnabled={isShowUnreadOnly(filters)}
+        onScopeChange={onScopeChange}
+        onGoToTab={onGoToTab}
       />
       <s.Footer>
         {totalCount > 0 && (

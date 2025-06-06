@@ -37,6 +37,12 @@ const props: InsightsPageProps = {
   onRefresh: () => {
     return undefined;
   },
+  onScopeChange: () => {
+    return undefined;
+  },
+  onGoToTab: () => {
+    return undefined;
+  },
   isMarkAsReadButtonEnabled: false
 };
 

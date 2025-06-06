@@ -4,5 +4,5 @@ import type { ChangeScopePayload } from "../../../../../../utils/actions/changeS
 export interface AnalyticsProps {
   query?: GetIssuesPayload;
   onScopeChange: (payload: ChangeScopePayload) => void;
-  onGoToAssets: () => void;
+  onGoToTab: (tabId: string) => void;
 }

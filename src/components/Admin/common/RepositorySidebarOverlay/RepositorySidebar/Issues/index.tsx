@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
-import { useTheme } from "styled-components";
 import {
   useAdminDispatch,
   useAdminSelector
 } from "../../../../../../containers/Admin/hooks";
 import {
   useGetAboutQuery,
+  useGetEnvironmentsQuery,
   useGetIssuesQuery
 } from "../../../../../../redux/services/digma";
 import {
@@ -18,21 +18,10 @@ import {
   setIssuesInsightIdToOpenSuggestion,
   setIssuesInsightInfoToOpenTicket
 } from "../../../../../../redux/slices/repositorySlice";
-import { isUndefined } from "../../../../../../typeGuards/isUndefined";
-import type { ChangeScopePayload } from "../../../../../../utils/actions/changeScope";
-import { sendUserActionTrackingEvent } from "../../../../../../utils/actions/sendUserActionTrackingEvent";
-import { EyeIcon } from "../../../../../common/icons/16px/EyeIcon";
-import { Pagination } from "../../../../../common/Pagination";
-import { NewButton } from "../../../../../common/v3/NewButton";
-import { EmptyState } from "../../../../../Insights/EmptyState";
-import { getInsightToShowJiraHint } from "../../../../../Insights/InsightsCatalog/InsightsPage";
-import { EmptyState as InsightsPageEmptyState } from "../../../../../Insights/InsightsCatalog/InsightsPage/EmptyState";
-import { InsightCardRenderer } from "../../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer";
-import { actions } from "../../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/hooks/useDismissal";
+import { useInsightsSelector } from "../../../../../../store/insights/useInsightsSelector";
 import { ViewMode } from "../../../../../Insights/InsightsCatalog/types";
-import { InsightTicketRenderer } from "../../../../../Insights/InsightTicketRenderer";
+import { InsightsContent } from "../../../../../Insights/InsightsContent";
 import { type GenericCodeObjectInsight } from "../../../../../Insights/types";
-import { trackingEvents } from "../../../../tracking";
 import { SuggestionBar } from "../SuggestionBar";
 import * as s from "./styles";
 import type { IssuesProps } from "./types";
@@ -42,25 +31,28 @@ const PAGE_SIZE = 10;
 export const Issues = ({
   isTransitioning,
   query,
-  onScopeChange
+  onScopeChange,
+  onGoToTab
 }: IssuesProps) => {
-  const [page, setPage] = useState(0);
-  const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.All);
+  const { page, viewMode } = useInsightsSelector();
+  const { data: environments } = useGetEnvironmentsQuery();
+  // const [page, setPage] = useState(0);
+  // const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.All);
   const [isDrawerTransitioning, setIsDrawerTransitioning] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
   const dispatch = useAdminDispatch();
-  const insightInfoToOpenTicket = useAdminSelector(
-    (state) => state.repositorySlice.issues.insightInfoToOpenTicket
-  );
+  // const insightInfoToOpenTicket = useAdminSelector(
+  //   (state) => state.repository.issues.insightInfoToOpenTicket
+  // );
   const insightIdToOpenSuggestion = useAdminSelector(
-    (state) => state.repositorySlice.issues.insightIdToOpenSuggestion
+    (state) => state.repository.issues.insightIdToOpenSuggestion
   );
-  const isInsightJiraTicketHintShown = useAdminSelector(
-    (state) => state.persist.isInsightJiraTicketHintShown
-  );
+  // const isInsightJiraTicketHintShown = useAdminSelector(
+  //   (state) => state.persist.isInsightJiraTicketHintShown
+  // );
   const isDrawerOpen = Boolean(insightIdToOpenSuggestion);
-  const issuesListRef = useRef<HTMLDivElement>(null);
-  const theme = useTheme();
+  // const issuesListRef = useRef<HTMLDivElement>(null);
+  // const theme = useTheme();
 
   const { data: about } = useGetAboutQuery();
 
@@ -74,36 +66,40 @@ export const Issues = ({
     pageSize
   });
 
-  const refresh = () => {
+  const handleRefresh = () => {
     void refetch();
   };
 
-  const handleDismissalChange = (action: string, insightId: string) => {
-    if (
-      action === actions.UNDISMISS &&
-      data?.insights.length === 1 &&
-      data.insights[0].id === insightId
-    ) {
-      setViewMode(ViewMode.All);
-    }
-    refresh();
-  };
+  // const refresh = () => {
+  //   void refetch();
+  // };
 
-  const handleChangePage = (page: number) => {
-    sendUserActionTrackingEvent(trackingEvents.ISSUES_PAGE_CHANGED);
-    setPage(page);
-  };
+  // const handleDismissalChange = (action: string, insightId: string) => {
+  //   if (
+  //     action === actions.UNDISMISS &&
+  //     data?.insights.length === 1 &&
+  //     data.insights[0].id === insightId
+  //   ) {
+  //     setViewMode(ViewMode.All);
+  //   }
+  //   refresh();
+  // };
 
-  const handleDismissalViewModeButtonClick = () => {
-    sendUserActionTrackingEvent(
-      viewMode === ViewMode.All
-        ? trackingEvents.ISSUES_SHOW_ALL_BUTTON_CLICKED
-        : trackingEvents.ISSUES_SHOW_ONLY_DISMISSED_BUTTON_CLICKED
-    );
-    const newMode =
-      viewMode === ViewMode.All ? ViewMode.OnlyDismissed : ViewMode.All;
-    setViewMode(newMode);
-  };
+  // const handleChangePage = (page: number) => {
+  //   sendUserActionTrackingEvent(trackingEvents.ISSUES_PAGE_CHANGED);
+  //   setPage(page);
+  // };
+
+  // const handleDismissalViewModeButtonClick = () => {
+  //   sendUserActionTrackingEvent(
+  //     viewMode === ViewMode.All
+  //       ? trackingEvents.ISSUES_SHOW_ALL_BUTTON_CLICKED
+  //       : trackingEvents.ISSUES_SHOW_ONLY_DISMISSED_BUTTON_CLICKED
+  //   );
+  //   const newMode =
+  //     viewMode === ViewMode.All ? ViewMode.OnlyDismissed : ViewMode.All;
+  //   setViewMode(newMode);
+  // };
 
   const handleJiraTicketPopupOpen = (
     insight: GenericCodeObjectInsight,
@@ -133,32 +129,32 @@ export const Issues = ({
     setIsDrawerTransitioning(false);
   };
 
-  const handleScopeChange = (payload: ChangeScopePayload) => {
-    onScopeChange(payload);
-  };
+  // const handleScopeChange = (payload: ChangeScopePayload) => {
+  //   onScopeChange(payload);
+  // };
 
-  const dismissedCount = data?.dismissedCount;
-  const totalCount = data?.totalCount ?? 0;
-  const pageStartItemNumber = page * pageSize + 1;
-  const pageEndItemNumber = Math.min(
-    pageStartItemNumber + pageSize - 1,
-    totalCount
-  );
-  const isDismissalViewModeButtonVisible =
-    data && (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
-  const isAtHome = !query?.scopedSpanCodeObjectId;
+  // const dismissedCount = data?.dismissedCount;
+  // const totalCount = data?.totalCount ?? 0;
+  // const pageStartItemNumber = page * pageSize + 1;
+  // const pageEndItemNumber = Math.min(
+  //   pageStartItemNumber + pageSize - 1,
+  //   totalCount
+  // );
+  // const isDismissalViewModeButtonVisible =
+  //   data && (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
+  // const isAtHome = !query?.scopedSpanCodeObjectId;
 
-  useEffect(() => {
-    setPage(0);
-  }, [viewMode, query]);
+  // useEffect(() => {
+  //   setPage(0);
+  // }, [viewMode, query]);
 
-  useEffect(() => {
-    issuesListRef.current?.scrollTo(0, 0);
-  }, [page, viewMode, query]);
+  // useEffect(() => {
+  //   issuesListRef.current?.scrollTo(0, 0);
+  // }, [page, viewMode, query]);
 
   return (
     <s.Container>
-      <s.ContentContainer>
+      {/* <s.ContentContainer>
         {isFetching ? (
           <EmptyState preset={"loading"} />
         ) : data ? (
@@ -242,7 +238,17 @@ export const Issues = ({
             />
           </s.PopupContainer>
         </s.Overlay>
-      )}
+      )} */}
+      <InsightsContent
+        insightViewType={"Issues"}
+        onScopeChange={onScopeChange}
+        onGoToTab={onGoToTab}
+        backendInfo={about ?? null}
+        environments={environments}
+        isLoading={isFetching}
+        data={data ?? null}
+        onRefresh={handleRefresh}
+      />
       <CSSTransition
         in={isDrawerOpen}
         timeout={s.TRANSITION_DURATION}

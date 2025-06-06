@@ -3,11 +3,12 @@ import { useCallback, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { usePrevious } from "../../hooks/usePrevious";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
-import { type InsightsData } from "../../store/insights/insightsSlice";
 import { useInsightsSelector } from "../../store/insights/useInsightsSelector";
 import { useStore } from "../../store/useStore";
+import { changeScope } from "../../utils/actions/changeScope";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import type { RegistrationFormValues } from "../common/RegistrationDialog/types";
+import { useHistory } from "../Main/useHistory";
 import { EmptyState } from "./EmptyState";
 import { useInsightsData } from "./hooks/useInsightsData";
 import { InsightsCatalog } from "./InsightsCatalog";
@@ -33,6 +34,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     isRegistrationEnabled && !userRegistrationEmail;
   const { setInsightViewType, resetInsights: reset } = useStore.getState();
   const { insightViewType: storedInsightViewType } = useInsightsSelector();
+  const { goTo } = useHistory();
 
   useEffect(() => {
     return () => {
@@ -90,12 +92,14 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     }
   };
 
-  const renderContent = (
-    data: InsightsData | null,
-    isLoading: boolean
-  ): JSX.Element => {
+  const renderContent = (): JSX.Element => {
     const isInitialLoading =
       (!data && isLoading) || !backendInfo || !storedInsightViewType;
+
+    const handleGoToTab = (tabId: string) => {
+      goTo(`/${tabId}`);
+    };
+
     if (isInitialLoading) {
       return <EmptyState preset={"loading"} />;
     }
@@ -121,6 +125,8 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
       <InsightsCatalog
         onJiraTicketCreate={handleJiraTicketPopupOpen}
         onRefresh={refresh}
+        onGoToTab={handleGoToTab}
+        onScopeChange={changeScope}
       />
     );
     // }
@@ -128,7 +134,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
 
   return (
     <s.Container>
-      {renderContent(data, isLoading)}
+      {renderContent()}
       {infoToOpenJiraTicket && (
         <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
           <s.PopupContainer>

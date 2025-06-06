@@ -9,9 +9,7 @@ import { trackingEvents as globalEvents } from "../../../../trackingEvents";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { InsightType } from "../../../../types";
-import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { useHistory } from "../../../Main/useHistory";
 import { TAB_IDS } from "../../../Navigation/Tabs/types";
 import type { Scope } from "../../../common/App/types";
 import { NewButton } from "../../../common/v3/NewButton";
@@ -59,7 +57,7 @@ const renderEmptyState = (
   search: string,
   scope: Scope | null,
   insightsViewType: InsightViewType | null,
-  goTo: (location: string) => void,
+  onGoToTab: (tabId: string) => void,
   onFiltersClear: (spanCodeObjectId?: string) => void,
   hasIssues?: boolean
 ) => {
@@ -74,7 +72,7 @@ const renderEmptyState = (
   };
 
   const handleAnalyticsTabLinkClick = () => {
-    goTo(`/${TAB_IDS.ANALYTICS}`);
+    onGoToTab(TAB_IDS.ANALYTICS);
   };
 
   const handleSeeAllAssetsClick = () => {
@@ -82,7 +80,7 @@ const renderEmptyState = (
       source: "Analytics tab"
     });
 
-    goTo(`/${TAB_IDS.ASSETS}`);
+    onGoToTab(TAB_IDS.ASSETS);
   };
 
   const handleClearFiltersButtonClick = () => {
@@ -181,7 +179,9 @@ export const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
 export const InsightsPage = ({
   onJiraTicketCreate,
   onRefresh,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  onScopeChange,
+  onGoToTab
 }: InsightsPageProps) => {
   const { scope, environment, backendInfo } = useConfigSelector();
   const {
@@ -217,7 +217,6 @@ export const InsightsPage = ({
       "application"
     );
   const listRef = useRef<HTMLDivElement>(null);
-  const { goTo } = useHistory();
   const insights = useMemo(() => data?.insights ?? [], [data?.insights]);
 
   const insightIndexWithJiraHint = getInsightToShowJiraHint(insights);
@@ -282,7 +281,7 @@ export const InsightsPage = ({
               onDismissalChange={handleDismissalChange}
               tooltipBoundaryRef={listRef}
               backendInfo={backendInfo}
-              onScopeChange={changeScope}
+              onScopeChange={onScopeChange}
             />
           ))
         : renderEmptyState(
@@ -291,7 +290,7 @@ export const InsightsPage = ({
             search,
             scope,
             insightViewType,
-            goTo,
+            onGoToTab,
             clearInsightsFilters,
             data?.hasIssuesIgnoringFilters
           )}

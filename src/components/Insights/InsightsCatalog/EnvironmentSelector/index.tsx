@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import type { Environment } from "../../../../redux/services/types";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
-import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { NewPopover } from "../../../common/NewPopover";
 import { NewButton } from "../../../common/v3/NewButton";
@@ -57,7 +56,8 @@ const sortEnvironmentsByCriticalIssues = (
 };
 
 export const EnvironmentSelector = ({
-  environments
+  environments,
+  onScopeChange
 }: EnvironmentSelectorProps) => {
   const { scope, environment } = useConfigSelector();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -77,7 +77,7 @@ export const EnvironmentSelector = ({
   const changeEnvironment = (environmentId: string) => {
     sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
 
-    changeScope({
+    onScopeChange({
       span: scope?.span
         ? {
             spanCodeObjectId: scope.span.spanCodeObjectId
