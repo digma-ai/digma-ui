@@ -8,7 +8,7 @@ import type { AddMCPServerDialogProps } from "./types";
 
 export const AddMCPServerDialog = ({
   onClose,
-  onSave
+  onConnect
 }: AddMCPServerDialogProps) => {
   const [textAreaValue, setTextAreaValue] = useState("");
 
@@ -16,18 +16,11 @@ export const AddMCPServerDialog = ({
     setTextAreaValue(e.target.value);
   };
 
-  const handleSaveButtonClick = () => {
+  const handleConnectButtonClick = () => {
     sendUserActionTrackingEvent(
-      trackingEvents.INCIDENT_TEMPLATE_ADD_MCP_DIALOG_SAVE_BUTTON_CLICKED
+      trackingEvents.INCIDENT_TEMPLATE_ADD_MCP_DIALOG_CONNECT_BUTTON_CLICKED
     );
-    onSave(textAreaValue);
-    onClose();
-  };
-
-  const handleCancelButtonClick = () => {
-    sendUserActionTrackingEvent(
-      trackingEvents.INCIDENT_TEMPLATE_ADD_MCP_DIALOG_CANCEL_BUTTON_CLICKED
-    );
+    onConnect(textAreaValue);
     onClose();
   };
 
@@ -42,7 +35,7 @@ export const AddMCPServerDialog = ({
     <s.Container>
       <s.Header>
         <s.Header>
-          Edit JSON
+          Wizard
           <s.CloseButton onClick={handleCloseButtonClick}>
             <CrossIcon color={"currentColor"} />
           </s.CloseButton>
@@ -50,12 +43,7 @@ export const AddMCPServerDialog = ({
       </s.Header>
       <s.TextArea value={textAreaValue} onChange={handleTextAreaChange} />
       <s.Footer>
-        <NewButton
-          buttonType={"secondary"}
-          label={"Cancel"}
-          onClick={handleCancelButtonClick}
-        />
-        <NewButton label={"Save"} onClick={handleSaveButtonClick} />
+        <NewButton label={"Connect"} onClick={handleConnectButtonClick} />
       </s.Footer>
     </s.Container>
   );

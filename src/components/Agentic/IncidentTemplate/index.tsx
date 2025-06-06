@@ -1,8 +1,9 @@
-import type { Position } from "@xyflow/react";
+import { Position } from "@xyflow/react";
 import { useState } from "react";
 import { Overlay } from "../../common/Overlay";
 import type { ExtendedAgent } from "../IncidentDetails/AgentFlowChart/types";
 import { AddMCPServerDialog } from "./AddMCPServerDialog";
+import { EditMCPServersDialog } from "./EditMPServersDialog";
 import * as s from "./styles";
 
 const initialAgents: ExtendedAgent[] = [
@@ -20,7 +21,26 @@ const initialAgents: ExtendedAgent[] = [
     description: "Watchman",
     running: false,
     status: "active",
-    mcp_servers: []
+    mcp_servers: [
+      {
+        name: "postgres",
+        display_name: "Postgres",
+        active: true,
+        position: Position.Bottom
+      },
+      {
+        name: "digma",
+        display_name: "Digma",
+        active: true,
+        position: Position.Bottom
+      },
+      {
+        name: "github",
+        display_name: "GitHub",
+        active: true,
+        position: Position.Bottom
+      }
+    ]
   },
   {
     name: "triager",
@@ -28,7 +48,26 @@ const initialAgents: ExtendedAgent[] = [
     description: "Triager",
     running: false,
     status: "active",
-    mcp_servers: []
+    mcp_servers: [
+      {
+        name: "postgres",
+        display_name: "Postgres",
+        active: true,
+        position: Position.Bottom
+      },
+      {
+        name: "digma",
+        display_name: "Digma",
+        active: true,
+        position: Position.Bottom
+      },
+      {
+        name: "github",
+        display_name: "GitHub",
+        active: true,
+        position: Position.Bottom
+      }
+    ]
   },
 
   {
@@ -37,7 +76,26 @@ const initialAgents: ExtendedAgent[] = [
     description: "Code Resolver",
     running: false,
     status: "active",
-    mcp_servers: []
+    mcp_servers: [
+      {
+        name: "postgres",
+        display_name: "Postgres",
+        active: true,
+        position: Position.Bottom
+      },
+      {
+        name: "digma",
+        display_name: "Digma",
+        active: true,
+        position: Position.Bottom
+      },
+      {
+        name: "github",
+        display_name: "GitHub",
+        active: true,
+        position: Position.Bottom
+      }
+    ]
   },
   {
     name: "infra_resolver",
@@ -45,7 +103,26 @@ const initialAgents: ExtendedAgent[] = [
     description: "Infrastructure Resolver",
     running: false,
     status: "active",
-    mcp_servers: []
+    mcp_servers: [
+      {
+        name: "postgres",
+        display_name: "Postgres",
+        active: true,
+        position: Position.Top
+      },
+      {
+        name: "digma",
+        display_name: "Digma",
+        active: true,
+        position: Position.Top
+      },
+      {
+        name: "github",
+        display_name: "GitHub",
+        active: true,
+        position: Position.Top
+      }
+    ]
   },
   {
     name: "validator",
@@ -62,6 +139,8 @@ export const IncidentTemplate = () => {
   const [agents, setAgents] = useState<ExtendedAgent[]>(initialAgents);
   const [agentToUpdate, setAgentToUpdate] = useState<ExtendedAgent>();
   const [isAddMCPServerDialogOpen, setIsAddMCPServerDialogOpen] =
+    useState(false);
+  const [isEditMCPServersDialogOpen, setIsEditMCPServersDialogOpen] =
     useState(false);
 
   const handleInputChange = () => {
@@ -95,7 +174,11 @@ export const IncidentTemplate = () => {
     setIsAddMCPServerDialogOpen(true);
   };
 
-  const handleSaveMCPServerSettings = () => {
+  const handleEditMCPServers = () => {
+    setIsEditMCPServersDialogOpen(true);
+  };
+
+  const handleAddMCPServerDialogConnect = () => {
     if (!agentToUpdate) {
       return;
     }
@@ -114,8 +197,16 @@ export const IncidentTemplate = () => {
     setIsAddMCPServerDialogOpen(false);
   };
 
-  const handleCloseAddMCPServerDialog = () => {
+  const handleAddMCPServerDialogClose = () => {
     setIsAddMCPServerDialogOpen(false);
+  };
+
+  const handleSaveEditMCPServersDialogSave = () => {
+    setIsEditMCPServersDialogOpen(false);
+  };
+
+  const handleEditMCPServersDialogClose = () => {
+    setIsEditMCPServersDialogOpen(false);
   };
 
   return (
@@ -136,6 +227,7 @@ export const IncidentTemplate = () => {
         selectedAgentId={agentId}
         isEditMode={true}
         onAddMCPServer={handleAddMCPServer}
+        onEditMCPServers={handleEditMCPServers}
       />
       <s.StyledAgentPromptInput
         onChange={handleInputChange}
@@ -147,8 +239,16 @@ export const IncidentTemplate = () => {
       {isAddMCPServerDialogOpen && (
         <Overlay>
           <AddMCPServerDialog
-            onSave={handleSaveMCPServerSettings}
-            onClose={handleCloseAddMCPServerDialog}
+            onConnect={handleAddMCPServerDialogConnect}
+            onClose={handleAddMCPServerDialogClose}
+          />
+        </Overlay>
+      )}
+      {isEditMCPServersDialogOpen && (
+        <Overlay>
+          <EditMCPServersDialog
+            onSave={handleSaveEditMCPServersDialogSave}
+            onClose={handleEditMCPServersDialogClose}
           />
         </Overlay>
       )}

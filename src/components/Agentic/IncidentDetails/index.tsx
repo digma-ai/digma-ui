@@ -52,7 +52,11 @@ export const IncidentDetails = () => {
     }
   );
 
-  const { data: incidentData } = useGetIncidentQuery(
+  const {
+    data: incidentData,
+    isLoading,
+    error
+  } = useGetIncidentQuery(
     { id: incidentId ?? "" },
     {
       pollingInterval: REFRESH_INTERVAL,
@@ -107,6 +111,24 @@ export const IncidentDetails = () => {
       return params;
     });
   };
+
+  if (!incidentData && isLoading) {
+    return (
+      <s.Container>
+        <s.LoadingContainer>
+          <Spinner size={32} />
+        </s.LoadingContainer>
+      </s.Container>
+    );
+  }
+
+  if (!incidentData && error) {
+    return (
+      <s.Container>
+        <s.LoadingContainer>Failed to get incident details</s.LoadingContainer>
+      </s.Container>
+    );
+  }
 
   return (
     <s.Container key={incidentId}>

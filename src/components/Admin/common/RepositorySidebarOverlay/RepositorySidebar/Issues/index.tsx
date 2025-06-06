@@ -50,10 +50,10 @@ export const Issues = ({
   const drawerRef = useRef<HTMLDivElement>(null);
   const dispatch = useAdminDispatch();
   const insightInfoToOpenTicket = useAdminSelector(
-    (state) => state.repositorySlice.issues.insightInfoToOpenTicket
+    (state) => state.repository.issues.insightInfoToOpenTicket
   );
   const insightIdToOpenSuggestion = useAdminSelector(
-    (state) => state.repositorySlice.issues.insightIdToOpenSuggestion
+    (state) => state.repository.issues.insightIdToOpenSuggestion
   );
   const isInsightJiraTicketHintShown = useAdminSelector(
     (state) => state.persist.isInsightJiraTicketHintShown

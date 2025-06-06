@@ -33,7 +33,7 @@ export const IncidentMetaData = () => {
   );
 
   if (!data) {
-    return null;
+    return <s.Container />;
   }
 
   return (
@@ -44,17 +44,19 @@ export const IncidentMetaData = () => {
           <s.DateValue>{format(data.created_at, DATE_FORMAT)}</s.DateValue>
         </Tooltip>
       </s.DateAttribute>
-      <s.DividerContainer>
-        <Divider color={"currentColor"} />
-      </s.DividerContainer>
-      <s.DateAttribute>
-        <s.DateLabel>Incident close time:</s.DateLabel>
-        {data.closed_at && (
-          <Tooltip title={new Date(data.closed_at).toString()}>
-            <s.DateValue>{format(data.closed_at, DATE_FORMAT)}</s.DateValue>
-          </Tooltip>
-        )}
-      </s.DateAttribute>
+      {data.closed_at && (
+        <>
+          <s.DividerContainer>
+            <Divider color={"currentColor"} />
+          </s.DividerContainer>
+          <s.DateAttribute>
+            <s.DateLabel>Incident close time:</s.DateLabel>
+            <Tooltip title={new Date(data.closed_at).toString()}>
+              <s.DateValue>{format(data.closed_at, DATE_FORMAT)}</s.DateValue>
+            </Tooltip>
+          </s.DateAttribute>
+        </>
+      )}
       {data.affected_services.length > 0 && (
         <>
           <s.DividerContainer>

@@ -1,5 +1,4 @@
 import { Position, type Edge } from "@xyflow/react";
-import { useState } from "react";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { groupBy } from "../../../../utils/groupBy";
 import { PlusIcon } from "../../../common/icons/16px/PlusIcon";
@@ -9,26 +8,27 @@ import type {
   FlowChartNodeData
 } from "../../common/FlowChart/FlowChartNode";
 import { trackingEvents } from "../../tracking";
-import { MCPServerBlock } from "./MCPServerBlock";
+import { MCPServersSideContainer } from "./MCPServersSideContainer";
+import { MCPServersToolbar } from "./MCPServersToolbar";
 import * as s from "./styles";
 import type { AgentFlowChartProps, ExtendedAgent } from "./types";
 
 const getFlowChartNodeData = ({
   agent,
-  zoomLevel,
   isSelected,
   isInteractive,
   isEditMode,
-  onAddMCPServer
+  onAddMCPServer,
+  onEditMCPServers
 }: {
   agent?: ExtendedAgent;
   isInteractive?: boolean;
   isSelected?: boolean;
-  zoomLevel?: number;
   isEditMode?: boolean;
   onAddMCPServer?: (agentName: string, position: Position) => void;
+  onEditMCPServers?: (agentName: string, position: Position) => void;
 }): Partial<FlowChartNodeData> => {
-  const handleAddMCPServerButtonClick = (position: Position) => () => {
+  const handleAddMCPServer = (position: Position) => () => {
     sendUserActionTrackingEvent(
       trackingEvents.AGENT_FLOW_CHART_NODE_ADD_MCP_SERVER_BUTTON_CLICKED,
       {
@@ -42,6 +42,14 @@ const getFlowChartNodeData = ({
     }
 
     onAddMCPServer?.(agent.name, position);
+  };
+
+  const handleEditMCPServers = (position: Position) => () => {
+    if (!agent) {
+      return;
+    }
+
+    onEditMCPServers?.(agent.name, position);
   };
 
   const serverGroups = groupBy(
@@ -62,26 +70,43 @@ const getFlowChartNodeData = ({
               (isEditMode && [Position.Top, Position.Bottom].includes(position))
           ),
           position,
-          element: (
-            <s.MCPServersSideContainer $zoomLevel={zoomLevel}>
-              {serverGroups[position]?.map((x) => (
-                <MCPServerBlock
-                  key={x.name}
-                  type={x.name}
-                  isActive={x.active}
-                />
-              ))}
-              {isEditMode &&
-                !serverGroups[position] &&
-                [Position.Top, Position.Bottom].includes(position) && (
-                  <s.PlusButton
-                    buttonType={"secondaryBorderless"}
-                    icon={PlusIcon}
-                    onClick={handleAddMCPServerButtonClick(position)}
-                  />
+          element: () => {
+            const servers = serverGroups[position] ?? [];
+            const toolbarItems = [
+              ...(servers.length > 0
+                ? [
+                    <MCPServersToolbar
+                      key={"mcp-servers-toolbar"}
+                      servers={servers}
+                      onAddMCPServer={handleAddMCPServer(position)}
+                      onEditMCPServers={handleEditMCPServers(position)}
+                    />
+                  ]
+                : []),
+              <s.PlusButton
+                key={"add-mcp-server-button"}
+                buttonType={"secondaryBorderless"}
+                icon={PlusIcon}
+                onClick={handleAddMCPServer(position)}
+              />
+            ];
+            const sortedToolbarItems =
+              position === Position.Top ? toolbarItems.reverse() : toolbarItems;
+
+            return (
+              <>
+                {isEditMode ? (
+                  [Position.Top, Position.Bottom].includes(position) && (
+                    <s.NodeToolbarContainer>
+                      {sortedToolbarItems}
+                    </s.NodeToolbarContainer>
+                  )
+                ) : (
+                  <MCPServersSideContainer servers={servers} />
                 )}
-            </s.MCPServersSideContainer>
-          )
+              </>
+            );
+          }
         })),
         isKebabMenuVisible: isEditMode
       }
@@ -94,10 +119,9 @@ export const AgentFlowChart = ({
   selectedAgentId,
   className,
   isEditMode,
-  onAddMCPServer
+  onAddMCPServer,
+  onEditMCPServers
 }: AgentFlowChartProps) => {
-  const [zoomLevel, setZoomLevel] = useState(1);
-
   const extendedAgents: ExtendedAgent[] = [
     {
       name: "digma",
@@ -153,10 +177,6 @@ export const AgentFlowChart = ({
     }
   };
 
-  const handleZoomLevelChange = (newZoomLevel: number) => {
-    setZoomLevel(newZoomLevel);
-  };
-
   const nodes: FlowChartNode[] = [
     {
       id: "digma",
@@ -165,7 +185,6 @@ export const AgentFlowChart = ({
         ...getFlowChartNodeData({
           agent: extendedAgents?.find((a) => a.name === "digma"),
           isSelected: !selectedAgentId,
-          zoomLevel,
           isInteractive: !isEditMode
         }),
         orientation: "vertical",
@@ -178,13 +197,13 @@ export const AgentFlowChart = ({
       data: {
         ...getFlowChartNodeData({
           agent: extendedAgents?.find((a) => a.name === "watchman"),
-          zoomLevel,
           isSelected: "watchman" === selectedAgentId,
           isInteractive:
             extendedAgents?.find((a) => a.name === "watchman")?.status !==
             "inactive",
           isEditMode,
-          onAddMCPServer
+          onAddMCPServer,
+          onEditMCPServers
         })
       }
     },
@@ -194,13 +213,13 @@ export const AgentFlowChart = ({
       data: {
         ...getFlowChartNodeData({
           agent: extendedAgents?.find((a) => a.name === "triager"),
-          zoomLevel,
           isSelected: "triager" === selectedAgentId,
           isInteractive:
             extendedAgents?.find((a) => a.name === "triager")?.status !==
             "inactive",
           isEditMode,
-          onAddMCPServer
+          onAddMCPServer,
+          onEditMCPServers
         })
       }
     },
@@ -210,13 +229,13 @@ export const AgentFlowChart = ({
       data: {
         ...getFlowChartNodeData({
           agent: extendedAgents?.find((a) => a.name === "infra_resolver"),
-          zoomLevel,
           isSelected: "infra_resolver" === selectedAgentId,
           isInteractive:
             extendedAgents?.find((a) => a.name === "infra_resolver")?.status !==
             "inactive",
           isEditMode,
-          onAddMCPServer
+          onAddMCPServer,
+          onEditMCPServers
         })
       }
     },
@@ -226,13 +245,13 @@ export const AgentFlowChart = ({
       data: {
         ...getFlowChartNodeData({
           agent: extendedAgents?.find((a) => a.name === "code_resolver"),
-          zoomLevel,
           isSelected: "code_resolver" === selectedAgentId,
           isInteractive:
             extendedAgents?.find((a) => a.name === "code_resolver")?.status !==
             "inactive",
           isEditMode,
-          onAddMCPServer
+          onAddMCPServer,
+          onEditMCPServers
         })
       }
     },
@@ -242,7 +261,6 @@ export const AgentFlowChart = ({
       data: {
         ...getFlowChartNodeData({
           agent: extendedAgents?.find((a) => a.name === "validator"),
-          zoomLevel,
           isSelected: false,
           isInteractive: false
         }),
@@ -284,7 +302,6 @@ export const AgentFlowChart = ({
       nodes={nodes}
       edges={edges}
       onNodeClick={handleNodeClick}
-      onZoomLevelChange={handleZoomLevelChange}
       className={className}
     />
   );

@@ -87,8 +87,14 @@ export const KebabMenuButton = styled.button`
   width: 24px;
   height: 24px;
   cursor: pointer;
+  padding: 0;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
   border-radius: 50%;
   ${/* TODO: change to color from the theme */ ""}
   background: #3e404a;
+
+  &:hover,
+  &:active {
+    color: currentcolor;
+  }
 `;
