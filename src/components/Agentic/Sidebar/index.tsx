@@ -1,6 +1,6 @@
 import { usePostHog } from "posthog-js/react";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { useTheme } from "styled-components";
 import { useAgenticSelector } from "../../../containers/Agentic/hooks";
 import { useLogoutMutation } from "../../../redux/services/auth";
@@ -30,6 +30,7 @@ export const Sidebar = () => {
   const navigate = useNavigate();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const posthog = usePostHog();
+  const location = useLocation();
 
   const { data } = useGetIncidentsQuery(undefined, {
     pollingInterval: REFRESH_INTERVAL
@@ -97,6 +98,8 @@ export const Sidebar = () => {
 
   const user = useAgenticSelector((state) => state.auth.user);
   const userInitial = (user?.email[0] ?? "").toLocaleUpperCase();
+  const isTemplateButtonHighlighted =
+    location.pathname === "/incidents/template";
 
   return (
     <s.Container>
@@ -126,7 +129,7 @@ export const Sidebar = () => {
         </s.IncidentsList>
       </s.IncidentsListContainer>
       <s.TemplateButton
-        buttonType={"secondary"}
+        buttonType={isTemplateButtonHighlighted ? "primary" : "secondary"}
         label={"Template"}
         onClick={handleTemplateButtonClick}
       />

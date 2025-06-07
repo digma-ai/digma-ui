@@ -1,4 +1,4 @@
-import type { Position } from "@xyflow/react";
+import { Position } from "@xyflow/react";
 import { useState } from "react";
 import { Overlay } from "../../common/Overlay";
 import type { ExtendedAgent } from "../IncidentDetails/AgentFlowChart/types";
@@ -20,7 +20,26 @@ const initialAgents: ExtendedAgent[] = [
     description: "Watchman",
     running: false,
     status: "active",
-    mcp_servers: []
+    mcp_servers: [
+      {
+        name: "postgres",
+        display_name: "Postgres",
+        active: true,
+        position: Position.Bottom
+      },
+      {
+        name: "digma",
+        display_name: "Digma",
+        active: true,
+        position: Position.Bottom
+      },
+      {
+        name: "github",
+        display_name: "GitHub",
+        active: true,
+        position: Position.Bottom
+      }
+    ]
   },
   {
     name: "triager",
@@ -28,7 +47,26 @@ const initialAgents: ExtendedAgent[] = [
     description: "Triager",
     running: false,
     status: "active",
-    mcp_servers: []
+    mcp_servers: [
+      {
+        name: "postgres",
+        display_name: "Postgres",
+        active: true,
+        position: Position.Bottom
+      },
+      {
+        name: "digma",
+        display_name: "Digma",
+        active: true,
+        position: Position.Bottom
+      },
+      {
+        name: "github",
+        display_name: "GitHub",
+        active: true,
+        position: Position.Bottom
+      }
+    ]
   },
 
   {
@@ -37,7 +75,26 @@ const initialAgents: ExtendedAgent[] = [
     description: "Code Resolver",
     running: false,
     status: "active",
-    mcp_servers: []
+    mcp_servers: [
+      {
+        name: "postgres",
+        display_name: "Postgres",
+        active: true,
+        position: Position.Bottom
+      },
+      {
+        name: "digma",
+        display_name: "Digma",
+        active: true,
+        position: Position.Bottom
+      },
+      {
+        name: "github",
+        display_name: "GitHub",
+        active: true,
+        position: Position.Bottom
+      }
+    ]
   },
   {
     name: "infra_resolver",
@@ -45,7 +102,26 @@ const initialAgents: ExtendedAgent[] = [
     description: "Infrastructure Resolver",
     running: false,
     status: "active",
-    mcp_servers: []
+    mcp_servers: [
+      {
+        name: "postgres",
+        display_name: "Postgres",
+        active: true,
+        position: Position.Top
+      },
+      {
+        name: "digma",
+        display_name: "Digma",
+        active: true,
+        position: Position.Top
+      },
+      {
+        name: "github",
+        display_name: "GitHub",
+        active: true,
+        position: Position.Top
+      }
+    ]
   },
   {
     name: "validator",
@@ -95,7 +171,11 @@ export const IncidentTemplate = () => {
     setIsAddMCPServerDialogOpen(true);
   };
 
-  const handleSaveMCPServerSettings = () => {
+  const handleEditMCPServers = () => {
+    setIsAddMCPServerDialogOpen(true);
+  };
+
+  const handleAddMCPServerDialogComplete = () => {
     if (!agentToUpdate) {
       return;
     }
@@ -114,7 +194,7 @@ export const IncidentTemplate = () => {
     setIsAddMCPServerDialogOpen(false);
   };
 
-  const handleCloseAddMCPServerDialog = () => {
+  const handleAddMCPServerDialogClose = () => {
     setIsAddMCPServerDialogOpen(false);
   };
 
@@ -136,6 +216,7 @@ export const IncidentTemplate = () => {
         selectedAgentId={agentId}
         isEditMode={true}
         onAddMCPServer={handleAddMCPServer}
+        onEditMCPServers={handleEditMCPServers}
       />
       <s.StyledAgentPromptInput
         onChange={handleInputChange}
@@ -147,8 +228,8 @@ export const IncidentTemplate = () => {
       {isAddMCPServerDialogOpen && (
         <Overlay>
           <AddMCPServerDialog
-            onSave={handleSaveMCPServerSettings}
-            onClose={handleCloseAddMCPServerDialog}
+            onComplete={handleAddMCPServerDialogComplete}
+            onClose={handleAddMCPServerDialogClose}
           />
         </Overlay>
       )}

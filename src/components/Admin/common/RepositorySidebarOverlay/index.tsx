@@ -64,10 +64,10 @@ export const RepositorySidebarOverlay = ({
     sidebarQuery?.query?.scopedSpanCodeObjectId
   );
   const insightInfoToOpenTicket = useAdminSelector(
-    (state) => state.repositorySlice.issues.insightInfoToOpenTicket
+    (state) => state.repository.issues.insightInfoToOpenTicket
   );
   const insightIdToOpenSuggestion = useAdminSelector(
-    (state) => state.repositorySlice.issues.insightIdToOpenSuggestion
+    (state) => state.repository.issues.insightIdToOpenSuggestion
   );
   const { resetInsights, resetAssets, resetGlobalErrors } = useStore.getState();
   const dispatch = useAdminDispatch();

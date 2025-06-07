@@ -18,7 +18,7 @@ export const Header = styled.header`
   align-items: flex-start;
   gap: var(--spacing-guides-715-rem-24-px, 24px);
   align-self: stretch;
-  color: ${(props) => props.theme.colors.v3.text.primary};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
 export const StyledAgentFlowChart = styled(AgentFlowChart)`
@@ -39,7 +39,7 @@ export const StyledIncidentPromptInput = styled(PromptInput)`
     height: 100%;
 
     &::placeholder {
-      color: ${(props) => props.theme.colors.v3.text.primary};
+      color: ${({ theme }) => theme.colors.v3.text.primary};
     }
   }
 `;
@@ -53,7 +53,7 @@ export const StyledAgentPromptInput = styled(PromptInput)`
     height: 100%;
 
     &::placeholder {
-      color: ${(props) => props.theme.colors.v3.text.primary};
+      color: ${({ theme }) => theme.colors.v3.text.primary};
     }
   }
 `;

@@ -1,6 +1,7 @@
 import { useTheme, type DefaultTheme } from "styled-components";
 import { actions as globalActions } from "../../../actions";
 import { SLACK_WORKSPACE_URL } from "../../../constants";
+import { platform } from "../../../platform";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -52,11 +53,12 @@ const getPresetContent = (preset: EmptyStatePreset, theme: DefaultTheme) => {
       title: "No data yet",
       message:
         "Trigger actions that call this application to learn more about its runtime behavior",
-      customContent: (
-        <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
-          Not seeing your application data?
-        </s.TroubleshootingLink>
-      )
+      customContent:
+        platform === "JetBrains" ? (
+          <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
+            Not seeing your application data?
+          </s.TroubleshootingLink>
+        ) : null
     },
     loading: {
       icon: <s.Spinner size={32} />,

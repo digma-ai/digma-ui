@@ -165,9 +165,11 @@ const renderEmptyState = (
     <EmptyState
       preset={"noDataYet"}
       customContent={
-        <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
-          Not seeing your application data?
-        </s.TroubleshootingLink>
+        platform === "JetBrains" ? (
+          <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
+            Not seeing your application data?
+          </s.TroubleshootingLink>
+        ) : null
       }
     />
   );
