@@ -1,4 +1,4 @@
 export interface AddMCPServerDialogProps {
   onClose: () => void;
-  onConnect: (text: string) => void;
+  onComplete: (text: string, tools: string[], instructions: string) => void;
 }
