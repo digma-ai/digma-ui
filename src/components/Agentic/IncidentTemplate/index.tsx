@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Overlay } from "../../common/Overlay";
 import type { ExtendedAgent } from "../IncidentDetails/AgentFlowChart/types";
 import { AddMCPServerDialog } from "./AddMCPServerDialog";
-import { EditMCPServersDialog } from "./EditMCPServersDialog";
 import * as s from "./styles";
 
 const initialAgents: ExtendedAgent[] = [
@@ -140,8 +139,6 @@ export const IncidentTemplate = () => {
   const [agentToUpdate, setAgentToUpdate] = useState<ExtendedAgent>();
   const [isAddMCPServerDialogOpen, setIsAddMCPServerDialogOpen] =
     useState(false);
-  const [isEditMCPServersDialogOpen, setIsEditMCPServersDialogOpen] =
-    useState(false);
 
   const handleInputChange = () => {
     return undefined;
@@ -175,10 +172,10 @@ export const IncidentTemplate = () => {
   };
 
   const handleEditMCPServers = () => {
-    setIsEditMCPServersDialogOpen(true);
+    setIsAddMCPServerDialogOpen(true);
   };
 
-  const handleAddMCPServerDialogConnect = () => {
+  const handleAddMCPServerDialogComplete = () => {
     if (!agentToUpdate) {
       return;
     }
@@ -199,14 +196,6 @@ export const IncidentTemplate = () => {
 
   const handleAddMCPServerDialogClose = () => {
     setIsAddMCPServerDialogOpen(false);
-  };
-
-  const handleSaveEditMCPServersDialogSave = () => {
-    setIsEditMCPServersDialogOpen(false);
-  };
-
-  const handleEditMCPServersDialogClose = () => {
-    setIsEditMCPServersDialogOpen(false);
   };
 
   return (
@@ -239,16 +228,8 @@ export const IncidentTemplate = () => {
       {isAddMCPServerDialogOpen && (
         <Overlay>
           <AddMCPServerDialog
-            onConnect={handleAddMCPServerDialogConnect}
+            onComplete={handleAddMCPServerDialogComplete}
             onClose={handleAddMCPServerDialogClose}
-          />
-        </Overlay>
-      )}
-      {isEditMCPServersDialogOpen && (
-        <Overlay>
-          <EditMCPServersDialog
-            onSave={handleSaveEditMCPServersDialogSave}
-            onClose={handleEditMCPServersDialogClose}
           />
         </Overlay>
       )}

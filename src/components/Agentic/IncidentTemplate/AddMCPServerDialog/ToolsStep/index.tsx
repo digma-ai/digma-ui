@@ -1,11 +1,11 @@
 import { useState, type ChangeEvent, type MouseEvent } from "react";
-import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { CrossIcon } from "../../../common/icons/12px/CrossIcon";
-import { MagnifierIcon } from "../../../common/icons/MagnifierIcon";
-import { NewButton } from "../../../common/v3/NewButton";
-import { trackingEvents } from "../../tracking";
+import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
+import { CrossIcon } from "../../../../common/icons/12px/CrossIcon";
+import { MagnifierIcon } from "../../../../common/icons/MagnifierIcon";
+import { NewButton } from "../../../../common/v3/NewButton";
+import { trackingEvents } from "../../../tracking";
 import * as s from "./styles";
-import type { EditMCPServersDialogProps } from "./types";
+import type { ToolsStepProps } from "./types";
 
 const initialTools = [
   "create_issue",
@@ -21,10 +21,7 @@ const initialTools = [
   "fork_repository"
 ];
 
-export const EditMCPServersDialog = ({
-  onClose,
-  onSave
-}: EditMCPServersDialogProps) => {
+export const ToolsStep = ({ onCancel, onSave }: ToolsStepProps) => {
   const [textAreaValue, setTextAreaValue] = useState("");
   const [tools, setTools] = useState(initialTools);
   const [selectedTools, setSelectedTools] = useState<string[]>([]);
@@ -38,22 +35,14 @@ export const EditMCPServersDialog = ({
     sendUserActionTrackingEvent(
       trackingEvents.INCIDENT_TEMPLATE_EDIT_MCP_DIALOG_SAVE_BUTTON_CLICKED
     );
-    onSave(textAreaValue);
-    onClose();
+    onSave(selectedTools, textAreaValue);
   };
 
   const handleCancelButtonClick = () => {
     sendUserActionTrackingEvent(
       trackingEvents.INCIDENT_TEMPLATE_EDIT_MCP_DIALOG_CANCEL_BUTTON_CLICKED
     );
-    onClose();
-  };
-
-  const handleCloseButtonClick = () => {
-    sendUserActionTrackingEvent(
-      trackingEvents.INCIDENT_TEMPLATE_EDIT_MCP_DIALOG_CLOSE_BUTTON_CLICKED
-    );
-    onClose();
+    onCancel();
   };
 
   const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -93,16 +82,10 @@ export const EditMCPServersDialog = ({
   );
   const areAllSelected = tools.every((x) => selectedTools.includes(x));
 
+  const isSaveButtonEnabled = selectedTools.length > 0;
+
   return (
     <s.Container>
-      <s.Header>
-        <s.Header>
-          Wizard
-          <s.CloseButton onClick={handleCloseButtonClick}>
-            <CrossIcon color={"currentColor"} />
-          </s.CloseButton>
-        </s.Header>
-      </s.Header>
       <s.ToolsEditor>
         <s.ToolsEditorToolbar>
           Tools
@@ -156,7 +139,11 @@ export const EditMCPServersDialog = ({
           label={"Cancel"}
           onClick={handleCancelButtonClick}
         />
-        <NewButton label={"Save"} onClick={handleSaveButtonClick} />
+        <NewButton
+          label={"Save"}
+          onClick={handleSaveButtonClick}
+          isDisabled={!isSaveButtonEnabled}
+        />
       </s.Footer>
     </s.Container>
   );

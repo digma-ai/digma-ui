@@ -1,6 +1,6 @@
-export interface EditMCPServersDialogProps {
-  onClose: () => void;
-  onSave: (text: string) => void;
+export interface ToolsStepProps {
+  onCancel: () => void;
+  onSave: (tools: string[], instructions: string) => void;
 }
 
 export interface ToolTagProps {
