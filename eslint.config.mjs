@@ -37,17 +37,9 @@ export default tseslint.config(
     files: ["**/*.tsx"],
     ...reactPlugin.configs.flat["jsx-runtime"]
   },
-  // TODO: fix types by updating "eslint-plugin-react-hooks" once the following issue is resolved
-  // https://github.com/facebook/react/issues/28313
-  // https://github.com/facebook/react/pull/30774
   {
     files: ["**/*.{ts,tsx}"],
-    plugins: {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      "react-hooks": reactHooksPlugin
-    },
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    rules: reactHooksPlugin.configs.recommended.rules
+    ...reactHooksPlugin.configs["recommended-latest"]
   },
   storybookPlugin.configs["flat/recommended"],
   eslintConfigPrettier,
