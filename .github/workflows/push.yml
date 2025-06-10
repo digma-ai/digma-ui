@@ -8,6 +8,7 @@ on:
     # the paths-ignore in both push and pull_request events.
     # More info: https://github.com/actions/runner/issues/1182
     paths-ignore:
+      - ".github/prompts/**"
       - ".husky/**"
       - ".vscode/**"
       - "website/**"
@@ -19,6 +20,7 @@ on:
     branches:
       - "main"
     paths-ignore:
+      - ".github/prompts/**"
       - ".husky/**"
       - ".vscode/**"
       - "website/**"
