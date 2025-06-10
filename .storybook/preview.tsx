@@ -1,7 +1,5 @@
-import type { Preview, StoryFn } from "@storybook/react";
-// TODO: remove React import due to new JSX transform
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React, { useEffect, useState } from "react";
+import type { Preview, StoryFn } from "@storybook/react-webpack5";
+import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { withRouter } from "storybook-addon-remix-react-router";
 import {

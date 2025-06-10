@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { EndpointChattyApiV2HighlightCard } from ".";
 import { mockedEndpointChattyApiV2HighlightData } from "./mockData";
 

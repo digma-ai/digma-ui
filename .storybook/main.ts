@@ -4,10 +4,9 @@ const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.tsx"],
   addons: [
     "@storybook/addon-webpack5-compiler-babel",
-    "@storybook/addon-essentials",
-    "@storybook/addon-interactions",
     "@storybook/addon-a11y",
     "@storybook/addon-designs",
+    "@storybook/addon-docs",
     "storybook-addon-remix-react-router"
   ],
   framework: {

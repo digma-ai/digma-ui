@@ -2,7 +2,7 @@
 // spanCodeObjectId:
 //   "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds",
 
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { Notifications } from ".";
 import { InsightType } from "../../types";
 import { InsightScope } from "../Insights/types";

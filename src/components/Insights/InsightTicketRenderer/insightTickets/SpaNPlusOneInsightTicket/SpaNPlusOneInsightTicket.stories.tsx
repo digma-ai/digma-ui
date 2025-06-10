@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { SpaNPlusOneInsightTicket } from ".";
 import { mockedSpaNPlusOneInsight } from "../../../InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/SpaNPlusOneInsightCard/mockData";
 

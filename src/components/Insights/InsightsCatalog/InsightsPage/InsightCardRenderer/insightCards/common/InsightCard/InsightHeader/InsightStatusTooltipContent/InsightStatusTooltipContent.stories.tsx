@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { InsightStatusTooltipContent } from ".";
 import { InsightStatus } from "../../../../../../../../types";
 import { mockedEndpointSpanNPlusOneInsight } from "../../../../EndpointSpanNPlusOneInsightInsightCard/mockData";

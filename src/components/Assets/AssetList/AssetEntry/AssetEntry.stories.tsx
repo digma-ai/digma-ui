@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { AssetEntry } from ".";
 import { AssetType } from "../../../../redux/services/types";
 import { InsightType } from "../../../../types";

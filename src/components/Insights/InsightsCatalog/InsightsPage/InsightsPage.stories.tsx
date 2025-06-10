@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { InsightsPage } from ".";
 import { ConfigContext, initialState } from "../../../common/App/ConfigContext";
 import type { Scope } from "../../../common/App/types";
