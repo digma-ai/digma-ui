@@ -37,7 +37,6 @@ import { SpanScalingByRootCauseInsightTicket } from "./insightTickets/SpanScalin
 import { SpanScalingInsightTicket } from "./insightTickets/SpanScalingInsightTicket";
 import type { InsightTicketRendererProps } from "./types";
 
-// TODO: move to common
 export const InsightTicketRenderer = ({
   data,
   onClose,

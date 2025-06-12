@@ -5,8 +5,6 @@ import type { GenericCodeObjectInsight } from "../types";
 export interface InsightsContentProps {
   onScopeChange: (payload: ChangeScopePayload) => void;
   onGoToTab: (tabId: string) => void;
-  isRegistrationInProgress?: boolean;
-  isRegistrationEnabled?: boolean;
   isLoading: boolean;
   data: InsightsData | null;
   onRefresh: () => void;

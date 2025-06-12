@@ -1,5 +1,6 @@
-import { useState, type KeyboardEvent } from "react";
+import { useEffect, useState, type KeyboardEvent } from "react";
 import { actions as globalActions } from "../../../actions";
+import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import type { InsightsData } from "../../../store/insights/insightsSlice";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
@@ -18,7 +19,6 @@ export const InsightsContent = ({
   data,
   isLoading,
   onRefresh,
-  isRegistrationEnabled,
   className,
   onOpenSuggestion,
   isJiraTicketHintEnabled,
@@ -26,11 +26,15 @@ export const InsightsContent = ({
   onJiraTicketPopupClose,
   infoToOpenJiraTicket
 }: InsightsContentProps) => {
-  const { backendInfo, environments } = useConfigSelector();
-  const { insightViewType } = useInsightsSelector();
-
+  const { backendInfo, userRegistrationEmail, environments } =
+    useConfigSelector();
+  const previousUserRegistrationEmail = usePrevious(userRegistrationEmail);
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
+  const isRegistrationEnabled = false;
+  const isRegistrationRequired =
+    isRegistrationEnabled && !userRegistrationEmail;
+  const { insightViewType } = useInsightsSelector();
 
   const handleJiraTicketPopupClose = () => {
     onJiraTicketPopupClose?.();
@@ -57,6 +61,19 @@ export const InsightsContent = ({
       onJiraTicketPopupClose?.();
     }
   };
+
+  useEffect(() => {
+    if (
+      previousUserRegistrationEmail !== userRegistrationEmail &&
+      isRegistrationInProgress
+    ) {
+      setIsRegistrationInProgress(false);
+    }
+  }, [
+    userRegistrationEmail,
+    isRegistrationInProgress,
+    previousUserRegistrationEmail
+  ]);
 
   const renderContent = (
     data: InsightsData | null,
@@ -112,7 +129,7 @@ export const InsightsContent = ({
       {infoToOpenJiraTicket && (
         <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
           <s.PopupContainer>
-            {isRegistrationEnabled ? (
+            {isRegistrationRequired ? (
               <RegistrationDialog
                 onSubmit={handleRegistrationSubmit}
                 onClose={handleRegistrationDialogClose}
