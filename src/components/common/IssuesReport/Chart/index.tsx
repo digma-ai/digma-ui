@@ -1,8 +1,8 @@
 import type { UIEvent } from "react";
 import { useEffect, useState } from "react";
 import useDimensions from "react-cool-dimensions";
-import useScrollbarSize from "react-scrollbar-size";
 import type { Input } from "squarify";
+import { useScrollbarDimensions } from "../../../../hooks/useScrollbarDimensions";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { TreeMap } from "../../TreeMap";
 import type { TileData } from "../../TreeMap/types";
@@ -23,7 +23,7 @@ export const Chart = ({
   const { width, height, entry, observe } = useDimensions();
   const [isLeftOverlayVisible, setIsLeftOverlayVisible] = useState(false);
   const [isRightOverlayVisible, setIsRightOverlayVisible] = useState(false);
-  const scrollbar = useScrollbarSize();
+  const scrollbar = useScrollbarDimensions();
 
   useEffect(() => {
     if (entry) {
@@ -105,12 +105,12 @@ export const Chart = ({
       <s.Overlay
         $visible={isLeftOverlayVisible}
         $placement={"left"}
-        style={{ bottom: scrollbar.width }}
+        style={{ bottom: scrollbar.height }}
       />
       <s.Overlay
         $visible={isRightOverlayVisible}
         $placement={"right"}
-        style={{ bottom: scrollbar.width }}
+        style={{ bottom: scrollbar.height }}
       />
     </s.Container>
   );

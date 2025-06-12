@@ -61,7 +61,6 @@ import { SpanScalingInsightCard } from "./insightCards/SpanScalingInsightCard";
 import { SpanUsagesInsightCard } from "./insightCards/SpanUsagesInsightCard";
 import type { InsightCardRendererProps } from "./types";
 
-// TODO: move to common
 export const InsightCardRenderer = ({
   insight,
   onJiraTicketCreate,

@@ -1,4 +1,5 @@
 import type { InsightType } from "../../../../types";
+import type { ChangeScopePayload } from "../../../../utils/actions/changeScope";
 import type { GenericCodeObjectInsight } from "../../types";
 export interface InsightsPageProps {
   onJiraTicketCreate: (
@@ -7,10 +8,10 @@ export interface InsightsPageProps {
   ) => void;
   onRefresh: () => void;
   isMarkAsReadButtonEnabled: boolean;
-}
-
-export interface isInsightJiraTicketHintShownPayload {
-  value: boolean;
+  onScopeChange: (payload: ChangeScopePayload) => void;
+  onGoToTab: (tabId: string) => void;
+  onOpenSuggestion?: (insightId: string) => void;
+  isJiraTicketHintEnabled: boolean;
 }
 
 export interface MarkInsightTypesAsViewedPayload {

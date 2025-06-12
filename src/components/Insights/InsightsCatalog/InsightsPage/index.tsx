@@ -1,17 +1,13 @@
 import { useEffect, useMemo, useRef } from "react";
 import { actions as globalActions } from "../../../../actions";
-import { usePersistence } from "../../../../hooks/usePersistence";
 import { platform } from "../../../../platform";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../../store/useStore";
 import { trackingEvents as globalEvents } from "../../../../trackingEvents";
 import { isNumber } from "../../../../typeGuards/isNumber";
-import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { InsightType } from "../../../../types";
-import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { useHistory } from "../../../Main/useHistory";
 import { TAB_IDS } from "../../../Navigation/Tabs/types";
 import type { Scope } from "../../../common/App/types";
 import { NewButton } from "../../../common/v3/NewButton";
@@ -29,8 +25,7 @@ import { actions } from "./InsightCardRenderer/insightCards/common/InsightCard/h
 import * as s from "./styles";
 import type {
   InsightsPageProps,
-  MarkInsightTypesAsViewedPayload,
-  isInsightJiraTicketHintShownPayload
+  MarkInsightTypesAsViewedPayload
 } from "./types";
 
 export const getInsightToShowJiraHint = (
@@ -59,7 +54,7 @@ const renderEmptyState = (
   search: string,
   scope: Scope | null,
   insightsViewType: InsightViewType | null,
-  goTo: (location: string) => void,
+  onGoToTab: (tabId: string) => void,
   onFiltersClear: (spanCodeObjectId?: string) => void,
   hasIssues?: boolean
 ) => {
@@ -74,7 +69,7 @@ const renderEmptyState = (
   };
 
   const handleAnalyticsTabLinkClick = () => {
-    goTo(`/${TAB_IDS.ANALYTICS}`);
+    onGoToTab(TAB_IDS.ANALYTICS);
   };
 
   const handleSeeAllAssetsClick = () => {
@@ -82,7 +77,7 @@ const renderEmptyState = (
       source: "Analytics tab"
     });
 
-    goTo(`/${TAB_IDS.ASSETS}`);
+    onGoToTab(TAB_IDS.ASSETS);
   };
 
   const handleClearFiltersButtonClick = () => {
@@ -177,13 +172,14 @@ const renderEmptyState = (
   );
 };
 
-export const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
-  "isInsightJiraTicketHintShown";
-
 export const InsightsPage = ({
   onJiraTicketCreate,
   onRefresh,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  onScopeChange,
+  onGoToTab,
+  onOpenSuggestion,
+  isJiraTicketHintEnabled
 }: InsightsPageProps) => {
   const { scope, environment, backendInfo } = useConfigSelector();
   const {
@@ -213,13 +209,8 @@ export const InsightsPage = ({
         filteredInsightTypes.length > 0 ||
         filteredCriticalityLevels.length > 0
       : 0) || search.length > 0;
-  const [isInsightJiraTicketHintShown, setIsInsightJiraTicketHintShown] =
-    usePersistence<isInsightJiraTicketHintShownPayload>(
-      IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY,
-      "application"
-    );
+
   const listRef = useRef<HTMLDivElement>(null);
-  const { goTo } = useHistory();
   const insights = useMemo(() => data?.insights ?? [], [data?.insights]);
 
   const insightIndexWithJiraHint = getInsightToShowJiraHint(insights);
@@ -246,12 +237,11 @@ export const InsightsPage = ({
     event?: string
   ) => {
     onJiraTicketCreate(insight, spanCodeObjectId);
-    if (!isInsightJiraTicketHintShown?.value) {
+    if (!isJiraTicketHintEnabled) {
       sendUserActionTrackingEvent(trackingEvents.JIRA_TICKET_HINT_CLOSED, {
         event
       });
     }
-    setIsInsightJiraTicketHintShown({ value: true });
   };
 
   const handleDismissalChange = (action: string, insightId: string) => {
@@ -274,9 +264,8 @@ export const InsightsPage = ({
               insight={insight}
               onJiraTicketCreate={handleShowJiraTicket}
               isJiraHintEnabled={
+                isJiraTicketHintEnabled &&
                 platform !== "Visual Studio" &&
-                !isUndefined(isInsightJiraTicketHintShown) &&
-                !isInsightJiraTicketHintShown?.value &&
                 j === insightIndexWithJiraHint
               }
               isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
@@ -284,7 +273,8 @@ export const InsightsPage = ({
               onDismissalChange={handleDismissalChange}
               tooltipBoundaryRef={listRef}
               backendInfo={backendInfo}
-              onScopeChange={changeScope}
+              onScopeChange={onScopeChange}
+              onOpenSuggestion={onOpenSuggestion}
             />
           ))
         : renderEmptyState(
@@ -293,7 +283,7 @@ export const InsightsPage = ({
             search,
             scope,
             insightViewType,
-            goTo,
+            onGoToTab,
             clearInsightsFilters,
             data?.hasIssuesIgnoringFilters
           )}

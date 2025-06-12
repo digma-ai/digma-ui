@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { platform } from "../../../platform";
 import {
   type AssetType,
   type GetAssetsCategoriesResponse
@@ -46,7 +47,6 @@ export const AssetsContent = ({
   onAssetTypeSelect,
   onRefresh,
   selectedAssetTypeId,
-  areFiltersEnabled,
   backendInfo,
   spanRole,
   className
@@ -68,6 +68,7 @@ export const AssetsContent = ({
   );
   const previousSpanCodeObjectId = usePrevious(spanCodeObjectId);
   const isBackendUpgradeMessageVisible = false;
+  const areFiltersRehydrated = platform === "Web" ? true : filters;
 
   useEffect(() => {
     if (previousSpanCodeObjectId !== spanCodeObjectId) {
@@ -116,7 +117,7 @@ export const AssetsContent = ({
       return <EmptyState preset={"noDataYet"} />;
     }
 
-    if (areFiltersEnabled && !filters && showAssetsHeaderToolBox) {
+    if (!areFiltersRehydrated && showAssetsHeaderToolBox) {
       return <EmptyState preset={"loading"} />;
     }
 
@@ -170,16 +171,14 @@ export const AssetsContent = ({
                 onChange={handleSearchInputChange}
                 value={searchInputValue}
               />
-              {areFiltersEnabled && (
-                <AssetsFilter
-                  popupBoundaryRef={containerRef}
-                  spanCodeObjectId={spanCodeObjectId}
-                  environmentId={environmentId}
-                  backendInfo={backendInfo}
-                  selectedServices={services}
-                  width={width}
-                />
-              )}
+              <AssetsFilter
+                popupBoundaryRef={containerRef}
+                spanCodeObjectId={spanCodeObjectId}
+                environmentId={environmentId}
+                backendInfo={backendInfo}
+                selectedServices={services}
+                width={width}
+              />
               <Tooltip title={"Refresh"}>
                 <NewIconButton
                   buttonType={"secondary"}

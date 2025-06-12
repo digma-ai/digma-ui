@@ -8,6 +8,15 @@ import {
 } from "../../common/App/typographies";
 import { Link } from "../../common/v3/Link";
 
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 8px 0;
+  gap: 8px;
+  box-sizing: border-box;
+`;
+
 export const Footer = styled.div`
   display: flex;
   align-items: center;

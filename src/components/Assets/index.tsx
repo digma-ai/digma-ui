@@ -48,6 +48,7 @@ export const Assets = () => {
   const isInitialized = Boolean(filters);
   const dispatch = useMainDispatch();
 
+  // Rehydrate filters from persistence
   useEffect(() => {
     if (
       isUndefined(previousPersistedFilters) &&
@@ -110,7 +111,6 @@ export const Assets = () => {
       onRefresh={handleRefresh}
       onAssetTypeSelect={handleAssetTypeSelect}
       selectedAssetTypeId={selectedAssetTypeId}
-      areFiltersEnabled={true}
     />
   );
 };

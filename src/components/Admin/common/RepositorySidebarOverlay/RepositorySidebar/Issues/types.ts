@@ -5,6 +5,7 @@ export interface IssuesProps {
   isTransitioning: boolean;
   query?: GetIssuesPayload;
   onScopeChange: (payload: ChangeScopePayload) => void;
+  onGoToTab: (tabId: string) => void;
 }
 
 export interface DrawerContainerProps {

@@ -1,11 +1,11 @@
 import { useCallback, useRef } from "react";
 import useDimensions from "react-cool-dimensions";
-import useScrollbarSize from "react-scrollbar-size";
+import { useScrollbarDimensions } from "../../../../hooks/useScrollbarDimensions";
 import * as s from "./styles";
 import type { ButtonPosition, FieldProps } from "./types";
 
 export const Field = ({ multiline, children, button }: FieldProps) => {
-  const scrollbar = useScrollbarSize();
+  const scrollbar = useScrollbarDimensions();
   const contentRef = useRef<HTMLDivElement | null>(null);
   const { observe } = useDimensions();
 

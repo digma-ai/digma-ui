@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { SpanPerformanceAnomalyInsightTicket } from ".";
 import { mockedSpanPerformanceAnomalyInsight } from "../../../InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/SpanPerformanceAnomalyInsightCard/mockData";
 

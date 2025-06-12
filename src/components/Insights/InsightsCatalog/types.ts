@@ -1,3 +1,4 @@
+import type { ChangeScopePayload } from "../../../utils/actions/changeScope";
 import type { GenericCodeObjectInsight } from "../types";
 
 export interface InsightsCatalogProps {
@@ -5,7 +6,11 @@ export interface InsightsCatalogProps {
     insight: GenericCodeObjectInsight,
     spanCodeObjectId?: string
   ) => void;
+  onScopeChange: (payload: ChangeScopePayload) => void;
   onRefresh: () => void;
+  onGoToTab: (tabId: string) => void;
+  onOpenSuggestion?: (insightId: string) => void;
+  isJiraTicketHintEnabled: boolean;
 }
 
 export interface FilterButtonContainerProps {

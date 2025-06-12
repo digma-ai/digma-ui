@@ -326,6 +326,10 @@ export const RepositorySidebarOverlay = ({
       updateHistory({ tabLocation: { id: TAB_IDS.ASSETS, path: assetTypeId } });
     };
 
+    const handleGoToTab = (tabId: string) => {
+      updateHistory({ tabLocation: { id: tabId } });
+    };
+
     const handleGoToAssets = () => {
       handleSelectedAssetTypeIdChange(undefined);
     };
@@ -358,7 +362,7 @@ export const RepositorySidebarOverlay = ({
           <Analytics
             onScopeChange={handleScopeChange}
             query={currentQuery}
-            onGoToAssets={handleGoToAssets}
+            onGoToTab={handleGoToTab}
           />
         );
       case TAB_IDS.ERRORS:
@@ -378,6 +382,7 @@ export const RepositorySidebarOverlay = ({
             isTransitioning={isSidebarTransitioning}
             onScopeChange={handleScopeChange}
             query={currentQuery}
+            onGoToTab={handleGoToTab}
           />
         );
     }

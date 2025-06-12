@@ -2,8 +2,6 @@ import { format } from "date-fns";
 import type { MouseEvent, UIEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useDimensions from "react-cool-dimensions";
-import useScrollbarSize from "react-scrollbar-size";
-
 import {
   Area,
   CartesianGrid,
@@ -18,6 +16,7 @@ import {
 import type { DefaultTheme } from "styled-components";
 import { useTheme } from "styled-components";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { useScrollbarDimensions } from "../../../hooks/useScrollbarDimensions";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { convertToDurationUnit } from "../../../utils/convertToDurationUnit";
@@ -160,7 +159,7 @@ export const LiveView = ({ data, onClose }: LiveViewProps) => {
   const [areaTooltip, setAreaTooltip] = useState<Coordinates>();
   const [dotToolTip, setDotTooltip] = useState<DotTooltipProps>();
   const [scrollPercentagePosition, setScrollPercentagePosition] = useState(1);
-  const scrollbar = useScrollbarSize();
+  const scrollbar = useScrollbarDimensions();
   const [areErrorsVisible, setAreErrorsVisible] = useState(true);
 
   useEffect(() => {
@@ -357,7 +356,7 @@ export const LiveView = ({ data, onClose }: LiveViewProps) => {
     chartContainerRef.current &&
     chartContainerRef.current.scrollWidth >
       chartContainerRef.current.clientWidth
-      ? scrollbar.width
+      ? scrollbar.height
       : 0;
 
   const changedPercentile = useMemo(() => {

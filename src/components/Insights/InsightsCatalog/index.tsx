@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import useDimensions from "react-cool-dimensions";
 import { useTheme } from "styled-components";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { platform } from "../../../platform";
@@ -93,8 +94,14 @@ const isShowUnreadOnly = (filters: InsightFilterType[]) =>
 
 export const InsightsCatalog = ({
   onJiraTicketCreate,
-  onRefresh
+  onRefresh,
+  onScopeChange,
+  onGoToTab,
+  onOpenSuggestion,
+  isJiraTicketHintEnabled
 }: InsightsCatalogProps) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const { observe, width } = useDimensions();
   const {
     setInsightsViewMode: setMode,
     setInsightsPage: setPage,
@@ -302,12 +309,20 @@ export const InsightsCatalog = ({
     );
   };
 
+  const getContainerRef = (el: HTMLDivElement | null) => {
+    containerRef.current = el;
+    observe(el);
+  };
+
   return (
-    <>
+    <s.Container ref={getContainerRef}>
       <s.Toolbar>
         <s.ToolbarRow>
           {isAtSpan && (
-            <EnvironmentSelector environments={selectorEnvironments} />
+            <EnvironmentSelector
+              environments={selectorEnvironments}
+              onScopeChange={onScopeChange}
+            />
           )}
           {!isAtSpan && renderFilterPanel()}
           <s.ToolbarButtonsContainer>
@@ -328,7 +343,9 @@ export const InsightsCatalog = ({
         {isFiltersToolbarVisible && (
           <>
             <s.ToolbarRow>
-              {isIssuesView && isIssuesFilterVisible && <IssuesFilter />}
+              {isIssuesView && isIssuesFilterVisible && (
+                <IssuesFilter popupBoundaryRef={containerRef} width={width} />
+              )}
               <SearchInput
                 disabled={isAtSpan}
                 onChange={handleSearchInputChange}
@@ -399,6 +416,10 @@ export const InsightsCatalog = ({
         onJiraTicketCreate={onJiraTicketCreate}
         onRefresh={onRefresh}
         isMarkAsReadButtonEnabled={isShowUnreadOnly(filters)}
+        onScopeChange={onScopeChange}
+        onGoToTab={onGoToTab}
+        onOpenSuggestion={onOpenSuggestion}
+        isJiraTicketHintEnabled={isJiraTicketHintEnabled}
       />
       <s.Footer>
         {totalCount > 0 && (
@@ -437,6 +458,6 @@ export const InsightsCatalog = ({
           />
         )}
       </s.Footer>
-    </>
+    </s.Container>
   );
 };

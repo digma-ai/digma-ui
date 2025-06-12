@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { useState } from "react";
+import { fn } from "storybook/test";
 import { Pagination } from ".";
 import type { PaginationProps } from "./types";
 

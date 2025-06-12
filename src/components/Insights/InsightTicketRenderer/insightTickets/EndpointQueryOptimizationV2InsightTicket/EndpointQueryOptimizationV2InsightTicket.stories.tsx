@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-webpack5";
 import { EndpointQueryOptimizationV2InsightTicket } from ".";
 import { mockedEndpointQueryOptimizationV2Insight } from "../../../InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/EndpointQueryOptimizationV2InsightCard/mockData";
 

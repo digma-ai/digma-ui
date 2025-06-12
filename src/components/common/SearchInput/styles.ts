@@ -21,7 +21,7 @@ export const SearchInputIconContainer = styled.div`
 export const SearchInput = styled.input`
   width: 100%;
   font-size: 14px;
-  padding: 4px 4px 4px 20px;
+  padding: 4px 20px;
   border-radius: 4px;
   outline: none;
   border: 1px solid ${({ theme }) => theme.colors.stroke.primary};
@@ -83,7 +83,7 @@ export const SearchInput = styled.input`
   }
 `;
 
-export const DeleteTagButton = styled.button`
+export const DeleteButton = styled.button`
   padding: 0;
   cursor: pointer;
   background: none;

@@ -70,7 +70,6 @@ export const Assets = ({
       onRefresh={handleRefresh}
       onAssetTypeSelect={handleAssetTypeSelect}
       selectedAssetTypeId={selectedAssetTypeId}
-      areFiltersEnabled={false}
     />
   );
 };
