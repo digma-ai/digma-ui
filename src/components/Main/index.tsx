@@ -83,12 +83,7 @@ export const Main = () => {
   const location = useLocation();
   const { environments, environment, userInfo, backendInfo, selectedServices } =
     useConfigSelector();
-  const {
-    setSelectedServices,
-    setInsightsFilteredCriticalityLevels:
-      setInsightsFilteredCriticalityLevelsInSpanScope,
-    setInsightsFilteredCriticalityLevelsInGlobalScope
-  } = useStore.getState();
+  const { setSelectedServices } = useStore.getState();
   const previousEnvironment = usePrevious(environment);
   const userId = userInfo?.id;
   const previousUserId = usePrevious(userId);
@@ -305,16 +300,7 @@ export const Main = () => {
     return () => {
       dispatcher.removeActionListener(globalActions.SET_SCOPE, handleSetScope);
     };
-  }, [
-    goTo,
-    location,
-    environments,
-    environment,
-    updateBrowserLocation,
-    setSelectedServices,
-    setInsightsFilteredCriticalityLevelsInSpanScope,
-    setInsightsFilteredCriticalityLevelsInGlobalScope
-  ]);
+  }, [goTo, location, environment, updateBrowserLocation]);
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({
