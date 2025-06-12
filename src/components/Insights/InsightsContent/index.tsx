@@ -1,35 +1,39 @@
 import { useState, type KeyboardEvent } from "react";
 import { actions as globalActions } from "../../../actions";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import type { InsightsData } from "../../../store/insights/insightsSlice";
+import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
 import { RegistrationDialog } from "../../common/RegistrationDialog";
 import type { RegistrationFormValues } from "../../common/RegistrationDialog/types";
 import { EmptyState } from "../EmptyState";
 import { InsightsCatalog } from "../InsightsCatalog";
 import { InsightTicketRenderer } from "../InsightTicketRenderer";
-import type { GenericCodeObjectInsight, InsightTicketInfo } from "../types";
+import type { GenericCodeObjectInsight } from "../types";
 import * as s from "./styles";
 import type { InsightsContentProps } from "./types";
 
 export const InsightsContent = ({
-  insightViewType,
   onScopeChange,
   onGoToTab,
-  isTransitioning,
-  backendInfo,
-  environments,
   data,
   isLoading,
   onRefresh,
   isRegistrationEnabled,
-  className
+  className,
+  onOpenSuggestion,
+  isJiraTicketHintEnabled,
+  onJiraTicketPopupOpen,
+  onJiraTicketPopupClose,
+  infoToOpenJiraTicket
 }: InsightsContentProps) => {
-  const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
-    useState<InsightTicketInfo<GenericCodeObjectInsight>>();
+  const { backendInfo, environments } = useConfigSelector();
+  const { insightViewType } = useInsightsSelector();
+
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
 
   const handleJiraTicketPopupClose = () => {
-    setInfoToOpenJiraTicket(undefined);
+    onJiraTicketPopupClose?.();
   };
 
   const handleRegistrationSubmit = (formData: RegistrationFormValues) => {
@@ -45,12 +49,12 @@ export const InsightsContent = ({
   };
 
   const handleRegistrationDialogClose = () => {
-    setInfoToOpenJiraTicket(undefined);
+    onJiraTicketPopupClose?.();
   };
 
   const handleOverlayKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Escape") {
-      setInfoToOpenJiraTicket(undefined);
+      onJiraTicketPopupClose?.();
     }
   };
 
@@ -62,7 +66,7 @@ export const InsightsContent = ({
       insight: GenericCodeObjectInsight,
       spanCodeObjectId?: string
     ) => {
-      setInfoToOpenJiraTicket({ insight, spanCodeObjectId });
+      onJiraTicketPopupOpen?.(insight, spanCodeObjectId);
     };
 
     const isInitialLoading =
@@ -95,6 +99,8 @@ export const InsightsContent = ({
         onRefresh={onRefresh}
         onScopeChange={onScopeChange}
         onGoToTab={onGoToTab}
+        onOpenSuggestion={onOpenSuggestion}
+        isJiraTicketHintEnabled={Boolean(isJiraTicketHintEnabled)}
       />
     );
     // }

@@ -10,10 +10,8 @@ export interface InsightsPageProps {
   isMarkAsReadButtonEnabled: boolean;
   onScopeChange: (payload: ChangeScopePayload) => void;
   onGoToTab: (tabId: string) => void;
-}
-
-export interface isInsightJiraTicketHintShownPayload {
-  value: boolean;
+  onOpenSuggestion?: (insightId: string) => void;
+  isJiraTicketHintEnabled: boolean;
 }
 
 export interface MarkInsightTypesAsViewedPayload {

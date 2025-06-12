@@ -364,14 +364,6 @@ export const RepositorySidebarOverlay = ({
             query={currentQuery}
             onGoToTab={handleGoToTab}
           />
-
-          // <Insights
-          //   key={"analytics"}
-          //   insightViewType={"Analytics"}
-          //   query={currentQuery}
-          //   onScopeChange={handleScopeChange}
-          //   onGoToAssets={handleGoToAssets}
-          // />
         );
       case TAB_IDS.ERRORS:
         return (
@@ -392,14 +384,6 @@ export const RepositorySidebarOverlay = ({
             query={currentQuery}
             onGoToTab={handleGoToTab}
           />
-
-          // <Insights
-          //   key={"issues"}
-          //   insightViewType={"Issues"}
-          //   query={currentQuery}
-          //   onScopeChange={handleScopeChange}
-          //   isTransitioning={isSidebarTransitioning}
-          // />
         );
     }
   };

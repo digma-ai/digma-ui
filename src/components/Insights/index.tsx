@@ -1,10 +1,12 @@
 import type { KeyboardEvent } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
+import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../store/insights/useInsightsSelector";
 import { useStore } from "../../store/useStore";
+import { isUndefined } from "../../typeGuards/isUndefined";
 import { changeScope } from "../../utils/actions/changeScope";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import type { RegistrationFormValues } from "../common/RegistrationDialog/types";
@@ -17,8 +19,12 @@ import * as s from "./styles";
 import type {
   GenericCodeObjectInsight,
   InsightTicketInfo,
-  InsightsProps
+  InsightsProps,
+  isInsightJiraTicketHintShownPayload
 } from "./types";
+
+export const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
+  "isInsightJiraTicketHintShown";
 
 export const Insights = ({ insightViewType }: InsightsProps) => {
   const { data, isLoading, refresh } = useInsightsData();
@@ -35,6 +41,15 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   const { setInsightViewType, resetInsights: reset } = useStore.getState();
   const { insightViewType: storedInsightViewType } = useInsightsSelector();
   const { goTo } = useHistory();
+  const [isInsightJiraTicketHintShown, setIsInsightJiraTicketHintShown] =
+    usePersistence<isInsightJiraTicketHintShownPayload>(
+      IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY,
+      "application"
+    );
+
+  const isJiraTicketHintEnabled =
+    !isUndefined(isInsightJiraTicketHintShown) &&
+    !isInsightJiraTicketHintShown?.value;
 
   useEffect(() => {
     return () => {
@@ -62,8 +77,9 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   const handleJiraTicketPopupOpen = useCallback(
     (insight: GenericCodeObjectInsight, spanCodeObjectId?: string) => {
       setInfoToOpenJiraTicket({ insight, spanCodeObjectId });
+      setIsInsightJiraTicketHintShown({ value: true });
     },
-    []
+    [setIsInsightJiraTicketHintShown]
   );
 
   const handleJiraTicketPopupClose = () => {
@@ -127,6 +143,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
         onRefresh={refresh}
         onGoToTab={handleGoToTab}
         onScopeChange={changeScope}
+        isJiraTicketHintEnabled={isJiraTicketHintEnabled}
       />
     );
     // }

@@ -1,13 +1,11 @@
 import { useEffect, useMemo, useRef } from "react";
 import { actions as globalActions } from "../../../../actions";
-import { usePersistence } from "../../../../hooks/usePersistence";
 import { platform } from "../../../../platform";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../../store/useStore";
 import { trackingEvents as globalEvents } from "../../../../trackingEvents";
 import { isNumber } from "../../../../typeGuards/isNumber";
-import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { InsightType } from "../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { TAB_IDS } from "../../../Navigation/Tabs/types";
@@ -27,8 +25,7 @@ import { actions } from "./InsightCardRenderer/insightCards/common/InsightCard/h
 import * as s from "./styles";
 import type {
   InsightsPageProps,
-  MarkInsightTypesAsViewedPayload,
-  isInsightJiraTicketHintShownPayload
+  MarkInsightTypesAsViewedPayload
 } from "./types";
 
 export const getInsightToShowJiraHint = (
@@ -175,15 +172,14 @@ const renderEmptyState = (
   );
 };
 
-export const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
-  "isInsightJiraTicketHintShown";
-
 export const InsightsPage = ({
   onJiraTicketCreate,
   onRefresh,
   isMarkAsReadButtonEnabled,
   onScopeChange,
-  onGoToTab
+  onGoToTab,
+  onOpenSuggestion,
+  isJiraTicketHintEnabled
 }: InsightsPageProps) => {
   const { scope, environment, backendInfo } = useConfigSelector();
   const {
@@ -213,11 +209,7 @@ export const InsightsPage = ({
         filteredInsightTypes.length > 0 ||
         filteredCriticalityLevels.length > 0
       : 0) || search.length > 0;
-  const [isInsightJiraTicketHintShown, setIsInsightJiraTicketHintShown] =
-    usePersistence<isInsightJiraTicketHintShownPayload>(
-      IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY,
-      "application"
-    );
+
   const listRef = useRef<HTMLDivElement>(null);
   const insights = useMemo(() => data?.insights ?? [], [data?.insights]);
 
@@ -245,12 +237,11 @@ export const InsightsPage = ({
     event?: string
   ) => {
     onJiraTicketCreate(insight, spanCodeObjectId);
-    if (!isInsightJiraTicketHintShown?.value) {
+    if (!isJiraTicketHintEnabled) {
       sendUserActionTrackingEvent(trackingEvents.JIRA_TICKET_HINT_CLOSED, {
         event
       });
     }
-    setIsInsightJiraTicketHintShown({ value: true });
   };
 
   const handleDismissalChange = (action: string, insightId: string) => {
@@ -273,9 +264,8 @@ export const InsightsPage = ({
               insight={insight}
               onJiraTicketCreate={handleShowJiraTicket}
               isJiraHintEnabled={
+                isJiraTicketHintEnabled &&
                 platform !== "Visual Studio" &&
-                !isUndefined(isInsightJiraTicketHintShown) &&
-                !isInsightJiraTicketHintShown?.value &&
                 j === insightIndexWithJiraHint
               }
               isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
@@ -284,6 +274,7 @@ export const InsightsPage = ({
               tooltipBoundaryRef={listRef}
               backendInfo={backendInfo}
               onScopeChange={onScopeChange}
+              onOpenSuggestion={onOpenSuggestion}
             />
           ))
         : renderEmptyState(

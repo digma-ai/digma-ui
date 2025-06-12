@@ -43,6 +43,7 @@ const props: InsightsPageProps = {
   onGoToTab: () => {
     return undefined;
   },
+  isJiraTicketHintEnabled: false,
   isMarkAsReadButtonEnabled: false
 };
 

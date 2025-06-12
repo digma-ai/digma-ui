@@ -14,6 +14,7 @@ import { persistSlice } from "../../redux/slices/persistSlice";
 import { repositorySlice } from "../../redux/slices/repositorySlice";
 import { scopeSlice } from "../../redux/slices/scopeSlice";
 import { getRememberEnhancer } from "../../redux/utils/getRememberEnhancer";
+import { configSyncMiddleware } from "./configSyncMiddleware";
 import { APP_ID } from "./constants";
 
 const rememberedKeys =
@@ -49,7 +50,8 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       digmaApi.middleware,
       authApi.middleware,
-      posthogMiddleware
+      posthogMiddleware,
+      configSyncMiddleware
     )
 });
 

@@ -28,9 +28,9 @@ export const SearchInput = ({
         onChange={handleSearchInputChange}
         value={value ?? ""}
       />
-      <s.DeleteTagButton disabled={disabled} onClick={handleDeleteButtonClick}>
+      <s.DeleteButton disabled={disabled} onClick={handleDeleteButtonClick}>
         <CrossIcon color={"currentColor"} size={14} />
-      </s.DeleteTagButton>
+      </s.DeleteButton>
     </s.SearchInputContainer>
   );
 };

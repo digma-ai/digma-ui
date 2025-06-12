@@ -21,7 +21,6 @@ export interface AssetsContentProps {
   isImpactHidden: boolean;
   onRefresh: () => void;
   selectedAssetTypeId?: string;
-  areFiltersEnabled: boolean;
   className?: string;
   backendInfo?: BackendInfo | GetAboutResponse | null;
   spanRole?: ScopeSpanRole;

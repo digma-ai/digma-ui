@@ -18,8 +18,12 @@ import { useIssuesFilters } from "../../../hooks/useIssuesFilters";
 import { type InsightFilterType } from "../../types";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
+import type { IssuesFilterProps } from "./types";
 
-export const IssuesFilter = () => {
+export const IssuesFilter = ({
+  popupBoundaryRef,
+  width
+}: IssuesFilterProps) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const {
     filteredInsightTypes: filteredInsightTypesInSpanScope,
@@ -461,6 +465,7 @@ export const IssuesFilter = () => {
 
   return (
     <s.StyledFilterPopup
+      boundaryRef={popupBoundaryRef}
       isOpen={isPopupOpen}
       onApply={handleApplyFiltersButtonClick}
       onClearAll={handleClearFiltersButtonClick}
@@ -470,6 +475,7 @@ export const IssuesFilter = () => {
       appliedFiltersCount={appliedFiltersCount}
       filters={filterComponents}
       onFiltersButtonClick={handleFiltersButtonClick}
+      width={width}
     />
   );
 };

@@ -19,6 +19,10 @@ export enum InsightsStatus {
   Loading = "Loading"
 }
 
+export interface isInsightJiraTicketHintShownPayload {
+  value: boolean;
+}
+
 export type GenericCodeObjectInsight =
   | GenericFunctionInsight
   | GenericEndpointInsight

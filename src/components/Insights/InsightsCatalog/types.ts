@@ -9,6 +9,8 @@ export interface InsightsCatalogProps {
   onScopeChange: (payload: ChangeScopePayload) => void;
   onRefresh: () => void;
   onGoToTab: (tabId: string) => void;
+  onOpenSuggestion?: (insightId: string) => void;
+  isJiraTicketHintEnabled: boolean;
 }
 
 export interface FilterButtonContainerProps {

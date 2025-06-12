@@ -1,5 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
+import type { Scope } from "../../components/common/App/types";
 import type {
   GenericCodeObjectInsight,
   InsightTicketInfo
@@ -15,6 +16,7 @@ export interface IssuesRepositoryState {
 
 export interface RepositoryState extends BaseState {
   issues: IssuesRepositoryState;
+  scope: Scope | null;
 }
 
 const initialState: RepositoryState = {
@@ -22,7 +24,8 @@ const initialState: RepositoryState = {
   issues: {
     insightInfoToOpenTicket: null,
     insightIdToOpenSuggestion: null
-  }
+  },
+  scope: null
 };
 
 export const repositorySlice = createSlice({
@@ -41,6 +44,9 @@ export const repositorySlice = createSlice({
     ) => {
       state.issues.insightIdToOpenSuggestion = action.payload;
     },
+    setScope: (state, action: PayloadAction<Scope>) => {
+      state.scope = action.payload;
+    },
     clear: () => initialState
   },
   extraReducers: (builder) => {
@@ -51,6 +57,7 @@ export const repositorySlice = createSlice({
 export const {
   setIssuesInsightInfoToOpenTicket,
   setIssuesInsightIdToOpenSuggestion,
+  setScope,
   clear
 } = repositorySlice.actions;
 
