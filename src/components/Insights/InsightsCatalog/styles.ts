@@ -15,6 +15,7 @@ export const Container = styled.div`
   padding: 8px 0;
   gap: 8px;
   box-sizing: border-box;
+  overflow: auto;
 `;
 
 export const Footer = styled.div`
