@@ -105,7 +105,8 @@ export const digmaApi = createApi({
     "Error",
     "Insight",
     "RecentActivity",
-    "IncidentAgentChatEvent"
+    "IncidentAgentChatEvent",
+    "IncidentEntryAgentChatEvent"
   ],
   reducerPath: "digmaApi",
   baseQuery: fetchBaseQuery({
@@ -579,7 +580,8 @@ export const digmaApi = createApi({
         url: `Agentic/incidents/${window.encodeURIComponent(
           incidentId
         )}/agents/${window.encodeURIComponent(agentId)}/events`
-      })
+      }),
+      providesTags: ["IncidentAgentChatEvent", "IncidentEntryAgentChatEvent"]
     }),
     getIncidentAgentChatEvents: builder.query<
       GetIncidentAgentChatEventsResponse,
@@ -614,7 +616,7 @@ export const digmaApi = createApi({
         method: "POST",
         body: data
       }),
-      invalidatesTags: ["IncidentAgentChatEvent"]
+      invalidatesTags: ["IncidentEntryAgentChatEvent"]
     })
   })
 });

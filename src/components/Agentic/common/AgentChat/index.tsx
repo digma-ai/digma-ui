@@ -1,7 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
-import { useGetIncidentAgentChatEventsQuery } from "../../../../redux/services/digma";
-import type { IncidentAgentChatEvent } from "../../../../redux/services/types";
+import type { IncidentAgentEvent } from "../../../../redux/services/types";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { Chat } from "../../common/Chat";
@@ -12,8 +11,6 @@ import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
 import type { AgentChatProps } from "./types";
 
-const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
-const REFRESH_INTERVAL_DURING_STREAMING = 3 * 1000; // in milliseconds
 const TYPING_SPEED = 3; // in milliseconds per character
 
 export const AgentChat = ({
@@ -21,23 +18,12 @@ export const AgentChat = ({
   agentId,
   onMessageSend,
   isMessageSending,
-  className
+  className,
+  data,
+  isDataLoading
 }: AgentChatProps) => {
   const [initialEventsCount, setInitialEventsCount] = useState<number>();
   const [eventsVisibleCount, setEventsVisibleCount] = useState<number>();
-
-  const { data, isLoading } = useGetIncidentAgentChatEventsQuery(
-    {
-      incidentId: incidentId ?? "",
-      agentId: agentId ?? ""
-    },
-    {
-      skip: !incidentId || !agentId,
-      pollingInterval: isMessageSending
-        ? REFRESH_INTERVAL_DURING_STREAMING
-        : REFRESH_INTERVAL
-    }
-  );
 
   const handleMessageSend = (text: string) => {
     sendUserActionTrackingEvent(
@@ -86,9 +72,10 @@ export const AgentChat = ({
   const shouldShowTypingForEvent = (index: number) =>
     Boolean(initialEventsCount && index >= initialEventsCount);
 
-  const renderChatEvent = (event: IncidentAgentChatEvent, i: number) => {
+  const renderChatEvent = (event: IncidentAgentEvent, i: number) => {
     switch (event.type) {
       case "ai":
+      case "token":
         return (
           <TypingMarkdown
             text={event.message}
@@ -129,7 +116,7 @@ export const AgentChat = ({
 
   return (
     <Chat
-      isInitialLoading={!data && isLoading}
+      isInitialLoading={!data && isDataLoading}
       isMessageSending={isMessageSending}
       onMessageSend={handleMessageSend}
       className={className}

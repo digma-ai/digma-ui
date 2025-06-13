@@ -1,9 +1,13 @@
 import { useParams } from "react-router";
 import { useStableSearchParams } from "../../../../hooks/useStableSearchParams";
-import { useSendMessageToIncidentAgentChatMutation } from "../../../../redux/services/digma";
-import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import {
+  useGetIncidentAgentChatEventsQuery,
+  useSendMessageToIncidentAgentChatMutation
+} from "../../../../redux/services/digma";
 import { AgentChat } from "../../common/AgentChat";
-import { trackingEvents } from "../../tracking";
+
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+const REFRESH_INTERVAL_DURING_STREAMING = 3 * 1000; // in milliseconds
 
 export const IncidentAgentChat = () => {
   const params = useParams();
@@ -15,13 +19,6 @@ export const IncidentAgentChat = () => {
     useSendMessageToIncidentAgentChatMutation();
 
   const handleMessageSend = (text: string) => {
-    sendUserActionTrackingEvent(
-      trackingEvents.INCIDENT_AGENT_MESSAGE_SUBMITTED,
-      {
-        agentName: agentId ?? ""
-      }
-    );
-
     void sendMessage({
       incidentId: incidentId ?? "",
       agentId: agentId ?? "",
@@ -29,8 +26,23 @@ export const IncidentAgentChat = () => {
     });
   };
 
+  const { data, isLoading } = useGetIncidentAgentChatEventsQuery(
+    {
+      incidentId: incidentId ?? "",
+      agentId: agentId ?? ""
+    },
+    {
+      skip: !incidentId || !agentId,
+      pollingInterval: isMessageSending
+        ? REFRESH_INTERVAL_DURING_STREAMING
+        : REFRESH_INTERVAL
+    }
+  );
+
   return (
     <AgentChat
+      data={data}
+      isDataLoading={isLoading}
       incidentId={incidentId}
       agentId={agentId ?? ""}
       onMessageSend={handleMessageSend}
