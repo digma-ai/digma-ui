@@ -46,9 +46,11 @@ export const CreateIncidentChatOverlay = () => {
         }Agentic/incident-entry`,
         {
           method: "POST",
+          credentials: "same-origin",
           headers: {
             "Content-Type": "application/json"
           },
+          signal: abortControllerRef.current.signal,
           body: JSON.stringify({
             text
           }),
