@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { subheading1RegularTypography } from "../../../common/App/typographies";
+import { Link } from "../../../common/Link";
 
 export const HumanMessage = styled.div`
   background: ${({ theme }) => theme.colors.v3.surface.highlight};
@@ -11,4 +12,8 @@ export const HumanMessage = styled.div`
 export const AgentMessage = styled.div`
   ${subheading1RegularTypography}
   color: ${({ theme }) => theme.colors.v3.text.secondary};
+`;
+
+export const StyledLink = styled(Link)`
+  font-size: inherit;
 `;

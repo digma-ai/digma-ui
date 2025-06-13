@@ -12,6 +12,7 @@ export const trackingEvents = addPrefix(
     SIDEBAR_TEMPLATE_BUTTON_CLICKED: "sidebar template button clicked",
     INCIDENT_CREATION_CHAT_DIALOG_CLOSED:
       "incident creation chat dialog closed",
+    VIEW_NEW_INCIDENT_LINK_CLICKED: "view incident link clicked",
     FLOW_CHART_NODE_CLICKED: "flow chart node clicked",
     FLOW_CHART_NODE_KEBAB_MENU_CLICKED: "flow chart node kebab menu clicked",
     FLOW_CHART_NODE_KEBAB_MENU_ITEM_CLICKED:

@@ -144,6 +144,11 @@ export const CreateIncidentChatOverlay = () => {
     }
   };
 
+  const handleIncidentNavigate = (id: string) => {
+    dispatch(setIsCreateIncidentChatOpen(false));
+    setIncidentId(id);
+  };
+
   const handleCreateIncidentChatDialogClose = () => {
     setIsCloseConfirmationDialogVisible(true);
   };
@@ -183,6 +188,7 @@ export const CreateIncidentChatOverlay = () => {
             onMessageSend={handleCreateIncidentChatMessageSend}
             isMessageSending={isMessageSending}
             promptFontSize={PROMPT_FONT_SIZE}
+            onNavigateToIncident={handleIncidentNavigate}
           />
         </Dialog>
       </s.StyledOverlay>

@@ -9,4 +9,5 @@ export interface AgentChatProps {
   promptFontSize?: number;
   data?: IncidentAgentEvent[];
   isDataLoading: boolean;
+  onNavigateToIncident?: (incidentId: string) => void;
 }

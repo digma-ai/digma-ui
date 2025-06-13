@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
-import { Link } from "react-router";
 import type { IncidentAgentEvent } from "../../../../redux/services/types";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
@@ -20,7 +19,8 @@ export const AgentChat = ({
   isMessageSending,
   className,
   data,
-  isDataLoading
+  isDataLoading,
+  onNavigateToIncident
 }: AgentChatProps) => {
   const [initialEventsCount, setInitialEventsCount] = useState<number>();
   const [eventsVisibleCount, setEventsVisibleCount] = useState<number>();
@@ -34,6 +34,14 @@ export const AgentChat = ({
     );
 
     onMessageSend(text);
+  };
+
+  const handleViewIncidentLinkClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.VIEW_NEW_INCIDENT_LINK_CLICKED);
+
+    if (incidentId) {
+      onNavigateToIncident?.(incidentId);
+    }
   };
 
   const handleMarkdownTypingComplete = (i: number) => () => {
@@ -103,7 +111,9 @@ export const AgentChat = ({
           return (
             <s.AgentMessage>
               New incident has been created.{" "}
-              <Link to={`/incidents/${incidentId}`}>View</Link>
+              <s.StyledLink onClick={handleViewIncidentLinkClick}>
+                View
+              </s.StyledLink>
             </s.AgentMessage>
           );
         }
