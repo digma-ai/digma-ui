@@ -17,7 +17,8 @@ export const PromptInput = ({
   isSubmitting,
   className,
   placeholder,
-  isDisabled
+  isDisabled,
+  fontSize = s.TEXT_AREA_DEFAULT_FONT_SIZE
 }: PromptInputProps) => {
   const isSubmittingDisabled = isSubmitting ?? value.trim() === "";
   const formRef = useRef<HTMLFormElement>(null);
@@ -68,7 +69,7 @@ export const PromptInput = ({
     if (textArea) {
       const MAX_LINES = 3;
       const linesCount = value.split("\n").length;
-      const lineHeight = s.TEXT_AREA_FONT_SIZE * s.TEXT_AREA_LINE_HEIGHT;
+      const lineHeight = fontSize * s.TEXT_AREA_LINE_HEIGHT;
       const newLinesHeight = Math.min(
         lineHeight * linesCount,
         lineHeight * MAX_LINES
@@ -76,7 +77,7 @@ export const PromptInput = ({
 
       setTextAreaHeight(Math.max(newLinesHeight, s.TEXT_AREA_MIN_HEIGHT));
     }
-  }, [value]);
+  }, [value, fontSize]);
 
   const formHeight = textAreaHeight + s.FORM_TOP_BOTTOM_PADDING * 2;
 
@@ -89,6 +90,7 @@ export const PromptInput = ({
     >
       <s.TextArea
         $height={textAreaHeight}
+        $fontSize={fontSize}
         ref={textAreaRef}
         value={value}
         onChange={handleChange}

@@ -18,13 +18,6 @@ export const ChatHistory = styled.div`
   padding: 8px;
 `;
 
-export const HumanMessage = styled.div`
-  background: ${({ theme }) => theme.colors.v3.surface.highlight};
-  padding: 8px;
-  border-radius: 8px;
-  align-self: flex-end;
-`;
-
 export const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;

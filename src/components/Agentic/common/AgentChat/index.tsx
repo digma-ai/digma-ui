@@ -1,40 +1,30 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router";
-import { useStableSearchParams } from "../../../../hooks/useStableSearchParams";
-import {
-  useGetIncidentAgentChatEventsQuery,
-  useSendMessageToIncidentAgentChatMutation
-} from "../../../../redux/services/digma";
+import { Link } from "react-router";
+import { useGetIncidentAgentChatEventsQuery } from "../../../../redux/services/digma";
 import type { IncidentAgentChatEvent } from "../../../../redux/services/types";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { ThreeCirclesSpinner } from "../../../common/ThreeCirclesSpinner";
-import { Spinner } from "../../../common/v3/Spinner";
-import { PromptInput } from "../../common/PromptInput";
+import { Chat } from "../../common/Chat";
+import { Accordion } from "../../IncidentDetails/AgentEvents/Accordion";
+import { TypingMarkdown } from "../../IncidentDetails/TypingMarkdown";
+import { convertToMarkdown } from "../../IncidentDetails/utils/convertToMarkdown";
 import { trackingEvents } from "../../tracking";
-import { Accordion } from "../AgentEvents/Accordion";
-import { TypingMarkdown } from "../TypingMarkdown";
-import { useAutoScroll } from "../useAutoScroll";
-import { convertToMarkdown } from "../utils/convertToMarkdown";
 import * as s from "./styles";
+import type { AgentChatProps } from "./types";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 const REFRESH_INTERVAL_DURING_STREAMING = 3 * 1000; // in milliseconds
 const TYPING_SPEED = 3; // in milliseconds per character
 
-export const Chat = () => {
-  const [inputValue, setInputValue] = useState("");
-  const params = useParams();
-  const incidentId = params.id;
-  const [searchParams] = useStableSearchParams();
-  const agentId = searchParams.get("agent");
-  const { elementRef, handleElementScroll, scrollToBottom } =
-    useAutoScroll<HTMLDivElement>();
+export const AgentChat = ({
+  incidentId,
+  agentId,
+  onMessageSend,
+  isMessageSending,
+  className
+}: AgentChatProps) => {
   const [initialEventsCount, setInitialEventsCount] = useState<number>();
   const [eventsVisibleCount, setEventsVisibleCount] = useState<number>();
-
-  const [sendMessage, { isLoading: isMessageSending }] =
-    useSendMessageToIncidentAgentChatMutation();
 
   const { data, isLoading } = useGetIncidentAgentChatEventsQuery(
     {
@@ -42,28 +32,22 @@ export const Chat = () => {
       agentId: agentId ?? ""
     },
     {
-      skip: !incidentId || !agentId!,
+      skip: !incidentId || !agentId,
       pollingInterval: isMessageSending
         ? REFRESH_INTERVAL_DURING_STREAMING
         : REFRESH_INTERVAL
     }
   );
 
-  const handleInputSubmit = () => {
+  const handleMessageSend = (text: string) => {
     sendUserActionTrackingEvent(
       trackingEvents.INCIDENT_AGENT_MESSAGE_SUBMITTED,
       {
         agentName: agentId ?? ""
       }
     );
-    setInputValue("");
-    scrollToBottom();
 
-    void sendMessage({
-      incidentId: incidentId ?? "",
-      agentId: agentId ?? "",
-      data: { text: inputValue }
-    });
+    onMessageSend(text);
   };
 
   const handleMarkdownTypingComplete = (i: number) => () => {
@@ -127,32 +111,36 @@ export const Chat = () => {
         );
       case "human":
         return <s.HumanMessage>{event.message}</s.HumanMessage>;
-
+      case "agent_end": {
+        if (event.agent_name === "incident_entry") {
+          return (
+            <s.AgentMessage>
+              New incident has been created.{" "}
+              <Link to={`/incidents/${incidentId}`}>View</Link>
+            </s.AgentMessage>
+          );
+        }
+        break;
+      }
       default:
         return null;
     }
   };
 
   return (
-    <s.Container>
-      <s.ChatHistory ref={elementRef} onScroll={handleElementScroll}>
-        {!data && isLoading && (
-          <s.LoadingContainer>
-            <Spinner size={32} />
-          </s.LoadingContainer>
-        )}
-        {visibleEvents?.map((x, i) => (
-          <Fragment key={i}>{renderChatEvent(x, i)}</Fragment>
-        ))}
-        {isMessageSending && <ThreeCirclesSpinner />}
-      </s.ChatHistory>
-      <PromptInput
-        value={inputValue}
-        onChange={setInputValue}
-        onSubmit={handleInputSubmit}
-        isSubmitting={isMessageSending}
-        placeholder={"Write your prompt here"}
-      />
-    </s.Container>
+    <Chat
+      isInitialLoading={!data && isLoading}
+      isMessageSending={isMessageSending}
+      onMessageSend={handleMessageSend}
+      className={className}
+      promptFontSize={14}
+      chatContent={
+        <>
+          {visibleEvents?.map((x, i) => (
+            <Fragment key={i}>{renderChatEvent(x, i)}</Fragment>
+          ))}
+        </>
+      }
+    />
   );
 };

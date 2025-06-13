@@ -6,6 +6,7 @@ export interface PromptInputProps {
   className?: string;
   placeholder?: string;
   isDisabled?: boolean;
+  fontSize?: number; // in pixels
 }
 
 export interface FormProps {
@@ -14,4 +15,5 @@ export interface FormProps {
 
 export interface TextAreaProps {
   $height?: number;
+  $fontSize?: number;
 }

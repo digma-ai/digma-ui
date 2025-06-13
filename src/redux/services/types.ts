@@ -1174,13 +1174,13 @@ export interface GetIncidentAgentEventsPayload {
   agentId: string;
 }
 
-export interface IncidentAgentEventToken {
+export interface IncidentAgentTokenEvent {
   type: "token";
   agent_name: string;
   message: string;
 }
 
-export interface IncidentAgentEventTool {
+export interface IncidentAgentToolEvent {
   type: "tool";
   agent_name: string;
   message: string;
@@ -1189,8 +1189,8 @@ export interface IncidentAgentEventTool {
 }
 
 export type GetIncidentAgentEventsResponse = (
-  | IncidentAgentEventToken
-  | IncidentAgentEventTool
+  | IncidentAgentTokenEvent
+  | IncidentAgentToolEvent
 )[];
 
 export interface GetIncidentAgentChatEventsPayload {
@@ -1199,7 +1199,7 @@ export interface GetIncidentAgentChatEventsPayload {
 }
 
 export interface IncidentAgentChatEvent {
-  type: "ai" | "human" | "tool";
+  type: "ai" | "human" | "tool" | "error" | "agent_end" | "input_user_required";
   message: string;
   agent_name: string;
   tool_name: string | null;
@@ -1208,8 +1208,13 @@ export interface IncidentAgentChatEvent {
 
 export type GetIncidentAgentChatEventsResponse = IncidentAgentChatEvent[];
 
-export interface sendMessageToIncidentAgentChatPayload {
+export interface SendMessageToIncidentAgentChatPayload {
   incidentId: string;
   agentId: string;
+  data: { text: string };
+}
+
+export interface SendMessageToIncidentCreationChatPayload {
+  incidentId: string;
   data: { text: string };
 }

@@ -86,7 +86,8 @@ import type {
   PinErrorPayload,
   RecheckInsightPayload,
   ResendConfirmationEmailPayload,
-  sendMessageToIncidentAgentChatPayload,
+  SendMessageToIncidentAgentChatPayload,
+  SendMessageToIncidentCreationChatPayload,
   SetEndpointsIssuesPayload,
   SetMetricsReportDataPayload,
   SetServiceEndpointsPayload,
@@ -380,7 +381,7 @@ export const digmaApi = createApi({
         url: "Insights/get_insights_view",
         params: data
       }),
-      transformResponse: (response: GetInsightsResponse, meta, arg) => ({
+      transformResponse: (response: GetInsightsResponse, _, arg) => ({
         data: response,
         extra: arg.extra
       }),
@@ -394,7 +395,7 @@ export const digmaApi = createApi({
         url: "Insights/statistics",
         params: data
       }),
-      transformResponse: (response: GetInsightsStatsResponse, meta, arg) => ({
+      transformResponse: (response: GetInsightsStatsResponse, _, arg) => ({
         data: response,
         extra: {
           spanCodeObjectId: arg.scopedSpanCodeObjectId
@@ -536,11 +537,7 @@ export const digmaApi = createApi({
         url: "Spans/environments",
         params: data
       }),
-      transformResponse: (
-        response: GetSpanEnvironmentsResponse,
-        meta,
-        arg
-      ) => ({
+      transformResponse: (response: GetSpanEnvironmentsResponse, _, arg) => ({
         data: response,
         extra: {
           spanCodeObjectId: arg.spanCodeObjectId
@@ -596,13 +593,24 @@ export const digmaApi = createApi({
       providesTags: ["IncidentAgentChatEvent"]
     }),
     sendMessageToIncidentAgentChat: builder.mutation<
-      void, // text/event-stream
-      sendMessageToIncidentAgentChatPayload
+      unknown, // text/event-stream
+      SendMessageToIncidentAgentChatPayload
     >({
       query: ({ incidentId, agentId, data }) => ({
         url: `Agentic/incidents/${window.encodeURIComponent(
           incidentId
         )}/agents/${window.encodeURIComponent(agentId)}/chat_message`,
+        method: "POST",
+        body: data
+      }),
+      invalidatesTags: ["IncidentAgentChatEvent"]
+    }),
+    sendMessageToIncidentCreationChat: builder.mutation<
+      unknown, // text/event-stream
+      SendMessageToIncidentCreationChatPayload
+    >({
+      query: ({ incidentId, data }) => ({
+        url: `Agentic/incident-entry/${window.encodeURIComponent(incidentId)}`,
         method: "POST",
         body: data
       }),
@@ -666,5 +674,6 @@ export const {
   useGetIncidentAgentsQuery,
   useGetIncidentAgentEventsQuery,
   useGetIncidentAgentChatEventsQuery,
-  useSendMessageToIncidentAgentChatMutation
+  useSendMessageToIncidentAgentChatMutation,
+  useSendMessageToIncidentCreationChatMutation
 } = digmaApi;
