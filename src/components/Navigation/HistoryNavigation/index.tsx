@@ -1,7 +1,4 @@
 import { useEffect } from "react";
-import type { Location } from "react-router";
-import { useLocation, useNavigate } from "react-router";
-import { history } from "../../../containers/Main/history";
 import type { HistoryEntry } from "../../../history/History";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isBoolean } from "../../../typeGuards/isBoolean";
@@ -12,7 +9,7 @@ import { ScopeChangeEvent } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { HistoryNavigationPanel } from "../../common/HistoryNavigationPanel";
-import type { HistoryState, ReactRouterLocationState } from "../../Main/types";
+import type { HistoryState } from "../../Main/types";
 import { useBrowserLocationUpdater } from "../../Main/updateBrowserLocationUpdater";
 import { useHistory } from "../../Main/useHistory";
 import { trackingEvents } from "../tracking";
@@ -35,31 +32,9 @@ const isHistoryEntryWithHistoryState = (
   (isHistoryState(obj.state) || isUndefined(obj.state));
 
 export const HistoryNavigation = () => {
-  const { goBack, goForward, goTo, canGoBack, canGoForward } = useHistory();
-  const navigate = useNavigate();
+  const { goBack, goForward, canGoBack, canGoForward } = useHistory();
   const { environments, environment, scope } = useConfigSelector();
-  const location = useLocation() as Location<ReactRouterLocationState | null>;
   const updateBrowserLocation = useBrowserLocationUpdater();
-
-  useEffect(() => {
-    // Initialize history with the current state
-    if (!location.state?.navigatedWithCustomHistory) {
-      goTo(
-        {
-          pathname: location.pathname,
-          search: location.search
-        },
-        {
-          replace: history.historyStack.length > 0,
-          state: {
-            environmentId: environment?.id,
-            spanCodeObjectId: scope?.span?.spanCodeObjectId,
-            spanDisplayName: scope?.span?.displayName
-          }
-        }
-      );
-    }
-  }, [location, goTo, environment?.id, scope?.span]);
 
   useEffect(() => {
     const handleHistoryChange = (e: Event) => {
@@ -131,7 +106,7 @@ export const HistoryNavigation = () => {
     return () => {
       window.removeEventListener("history:navigate", handleHistoryNavigate);
     };
-  }, [navigate]);
+  }, []);
 
   const handleBackButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.BACK_BUTTON_CLICKED);

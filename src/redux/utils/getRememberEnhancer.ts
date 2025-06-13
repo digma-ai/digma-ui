@@ -1,4 +1,5 @@
 import { rememberEnhancer } from "redux-remember";
+import { isObject } from "../../typeGuards/isObject";
 
 interface RememberEnhancerProps {
   rememberedKeys: string[];
@@ -6,18 +7,19 @@ interface RememberEnhancerProps {
   version: number;
 }
 
-const rehydrateState = <T extends Record<string, unknown>>(
-  rehydratedState: Record<string, unknown>,
-  version: number
-) => {
+const rehydrateState = (rehydratedState: unknown, version: number) => {
+  if (!isObject(rehydratedState)) {
+    return undefined;
+  }
+
   if (rehydratedState.version !== version) {
     return undefined;
   }
 
-  return rehydratedState as T;
+  return rehydratedState;
 };
 
-export const getRememberEnhancer = <T extends Record<string, unknown>>({
+export const getRememberEnhancer = ({
   rememberedKeys,
   prefix,
   version
@@ -26,12 +28,8 @@ export const getRememberEnhancer = <T extends Record<string, unknown>>({
     prefix,
     unserialize: (stateString: string) => {
       try {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const rehydratedState = JSON.parse(stateString);
-        return rehydrateState<T>(
-          rehydratedState as Record<string, unknown>,
-          version
-        );
+        const rehydratedState = JSON.parse(stateString) as unknown;
+        return rehydrateState(rehydratedState, version);
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error("Failed to parse persisted state:", error);
