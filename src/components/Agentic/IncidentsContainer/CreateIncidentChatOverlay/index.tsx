@@ -1,5 +1,6 @@
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 import { useAgenticDispatch } from "../../../../containers/Agentic/hooks";
 import {
   useGetIncidentAgentEventsQuery,
@@ -29,6 +30,7 @@ export const CreateIncidentChatOverlay = () => {
   const abortControllerRef = useRef<AbortController | null>(null);
   const [accumulatedData, setAccumulatedData] =
     useState<IncidentAgentEvent[]>();
+  const navigate = useNavigate();
 
   const dispatch = useAgenticDispatch();
 
@@ -146,7 +148,7 @@ export const CreateIncidentChatOverlay = () => {
 
   const handleIncidentNavigate = (id: string) => {
     dispatch(setIsCreateIncidentChatOpen(false));
-    setIncidentId(id);
+    void navigate(`/incidents/${id}`);
   };
 
   const handleCreateIncidentChatDialogClose = () => {
