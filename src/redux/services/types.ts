@@ -1174,42 +1174,37 @@ export interface GetIncidentAgentEventsPayload {
   agentId: string;
 }
 
-export interface IncidentAgentEventToken {
-  type: "token";
-  agent_name: string;
+export interface IncidentAgentEvent {
+  type:
+    | "token"
+    | "ai"
+    | "human"
+    | "tool"
+    | "error"
+    | "agent_end"
+    | "input_user_required";
   message: string;
+  agent_name: string;
+  tool_name?: string | null;
+  mcp_name?: string | null;
 }
 
-export interface IncidentAgentEventTool {
-  type: "tool";
-  agent_name: string;
-  message: string;
-  mcp_name: string;
-  tool_name: string;
-}
-
-export type GetIncidentAgentEventsResponse = (
-  | IncidentAgentEventToken
-  | IncidentAgentEventTool
-)[];
+export type GetIncidentAgentEventsResponse = IncidentAgentEvent[];
 
 export interface GetIncidentAgentChatEventsPayload {
   incidentId: string;
   agentId: string;
 }
 
-export interface IncidentAgentChatEvent {
-  type: "ai" | "human" | "tool";
-  message: string;
-  agent_name: string;
-  tool_name: string | null;
-  mcp_name: string | null;
-}
+export type GetIncidentAgentChatEventsResponse = IncidentAgentEvent[];
 
-export type GetIncidentAgentChatEventsResponse = IncidentAgentChatEvent[];
-
-export interface sendMessageToIncidentAgentChatPayload {
+export interface SendMessageToIncidentAgentChatPayload {
   incidentId: string;
   agentId: string;
+  data: { text: string };
+}
+
+export interface SendMessageToIncidentCreationChatPayload {
+  incidentId: string;
   data: { text: string };
 }

@@ -56,6 +56,12 @@ export const IncidentsListContainer = styled.div`
   flex-grow: 1;
 `;
 
+export const IncidentsListHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 export const IncidentsListTitle = styled.div`
   ${subheading2RegularTypography};
   color: ${({ theme }) => theme.colors.v3.text.primary};

@@ -3,7 +3,7 @@ import type { FormProps, TextAreaProps } from "./types";
 
 export const FORM_TOP_BOTTOM_PADDING = 16; // in pixels
 export const TEXT_AREA_MIN_HEIGHT = 32; // in pixels
-export const TEXT_AREA_FONT_SIZE = 20; // in pixels
+export const TEXT_AREA_DEFAULT_FONT_SIZE = 20; // in pixels
 export const TEXT_AREA_LINE_HEIGHT = 1.2; // line height multiplier
 
 export const Form = styled.form<FormProps>`
@@ -21,7 +21,7 @@ export const Form = styled.form<FormProps>`
 
 export const TextArea = styled.textarea<TextAreaProps>`
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
-  font-size: ${TEXT_AREA_FONT_SIZE}px;
+  font-size: ${({ $fontSize }) => $fontSize}px;
   background: none;
   border: none;
   outline: none;

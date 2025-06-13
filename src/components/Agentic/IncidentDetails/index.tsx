@@ -18,7 +18,7 @@ import { trackingEvents } from "../tracking";
 import { AdditionalInfo } from "./AdditionalInfo";
 import { AgentEvents } from "./AgentEvents";
 import { AgentFlowChart } from "./AgentFlowChart";
-import { Chat } from "./Chat";
+import { IncidentAgentChat } from "./IncidentAgentChat";
 import { IncidentMetaData } from "./IncidentMetaData";
 import * as s from "./styles";
 import type { AgentViewMode } from "./types";
@@ -185,7 +185,7 @@ export const IncidentDetails = () => {
               </s.SummaryContainerToolbar>
               {agentId ? (
                 agentViewMode === "chat" ? (
-                  <Chat key={agentId} />
+                  <IncidentAgentChat key={agentId} />
                 ) : (
                   <AgentEvents key={agentId} />
                 )

@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { CrossIcon } from "../../../common/icons/12px/CrossIcon";
+import { Dialog } from "../../common/Dialog";
 import { trackingEvents } from "../../tracking";
 import { ServerStep } from "./ServerStep";
-import * as s from "./styles";
 import { ToolsStep } from "./ToolsStep";
 import type { AddMCPServerDialogProps } from "./types";
 
@@ -45,24 +44,16 @@ export const AddMCPServerDialog = ({
     />
   ];
 
-  const handleCloseButtonClick = () => {
+  const handleDialogClose = () => {
     sendUserActionTrackingEvent(
-      trackingEvents.INCIDENT_TEMPLATE_ADD_MCP_DIALOG_CLOSE_BUTTON_CLICKED
+      trackingEvents.INCIDENT_TEMPLATE_ADD_MCP_DIALOG_CLOSED
     );
     onClose();
   };
 
   return (
-    <s.Container>
-      <s.Header>
-        <s.Header>
-          Wizard
-          <s.CloseButton onClick={handleCloseButtonClick}>
-            <CrossIcon color={"currentColor"} />
-          </s.CloseButton>
-        </s.Header>
-      </s.Header>
+    <Dialog title={"Wizard"} onClose={handleDialogClose}>
       {steps[currentStep]}
-    </s.Container>
+    </Dialog>
   );
 };

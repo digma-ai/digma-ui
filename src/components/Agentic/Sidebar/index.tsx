@@ -2,14 +2,19 @@ import { usePostHog } from "posthog-js/react";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useTheme } from "styled-components";
-import { useAgenticSelector } from "../../../containers/Agentic/hooks";
+import {
+  useAgenticDispatch,
+  useAgenticSelector
+} from "../../../containers/Agentic/hooks";
 import { useLogoutMutation } from "../../../redux/services/auth";
 import { useGetIncidentsQuery } from "../../../redux/services/digma";
 import type { IncidentResponseItem } from "../../../redux/services/types";
+import { setIsCreateIncidentChatOpen } from "../../../redux/slices/incidentsSlice";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getThemeKind } from "../../common/App/styles";
 import { LogoutIcon } from "../../common/icons/16px/LogoutIcon";
 import { NewPopover } from "../../common/NewPopover";
+import { NewButton } from "../../common/v3/NewButton";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { MenuList } from "../../Navigation/common/MenuList";
 import { Popup } from "../../Navigation/common/Popup";
@@ -31,6 +36,7 @@ export const Sidebar = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const posthog = usePostHog();
   const location = useLocation();
+  const dispatch = useAgenticDispatch();
 
   const { data } = useGetIncidentsQuery(undefined, {
     pollingInterval: REFRESH_INTERVAL
@@ -47,6 +53,11 @@ export const Sidebar = () => {
       trackingEvents.SIDEBAR_INCIDENTS_LIST_ITEM_CLICKED
     );
     void navigate(`/incidents/${id}`);
+  };
+
+  const handleCreateButtonClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.SIDEBAR_CREATE_BUTTON_CLICKED);
+    dispatch(setIsCreateIncidentChatOpen(true));
   };
 
   const handleTemplateButtonClick = () => {
@@ -111,7 +122,10 @@ export const Sidebar = () => {
         />
       </s.LogoLink>
       <s.IncidentsListContainer>
-        <s.IncidentsListTitle>Incidents</s.IncidentsListTitle>
+        <s.IncidentsListHeader>
+          <s.IncidentsListTitle>Incidents</s.IncidentsListTitle>
+          <NewButton label={"Create"} onClick={handleCreateButtonClick} />
+        </s.IncidentsListHeader>
         <s.IncidentsList>
           {sortedIncidents.map((incident) => (
             <s.IncidentItem
