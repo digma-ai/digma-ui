@@ -18,6 +18,12 @@ export const Container = styled.div<ContainerProps>`
     );
 `;
 
+export const MCPServerIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const KebabMenuButton = styled.button`
   border: none;
   display: flex;

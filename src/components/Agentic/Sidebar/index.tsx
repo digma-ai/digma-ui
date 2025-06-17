@@ -60,6 +60,13 @@ export const Sidebar = () => {
     dispatch(setIsCreateIncidentChatOpen(true));
   };
 
+  const handleDirectivesButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.SIDEBAR_DIRECTIVES_BUTTON_CLICKED
+    );
+    void navigate("/incidents/directives");
+  };
+
   const handleTemplateButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.SIDEBAR_TEMPLATE_BUTTON_CLICKED);
     void navigate("/incidents/template");
@@ -111,6 +118,8 @@ export const Sidebar = () => {
   const userInitial = (user?.email[0] ?? "").toLocaleUpperCase();
   const isTemplateButtonHighlighted =
     location.pathname === "/incidents/template";
+  const isDirectivesButtonHighlighted =
+    location.pathname === "/incidents/directives";
 
   return (
     <s.Container>
@@ -142,7 +151,12 @@ export const Sidebar = () => {
           ))}
         </s.IncidentsList>
       </s.IncidentsListContainer>
-      <s.TemplateButton
+      <s.LinkButton
+        buttonType={isDirectivesButtonHighlighted ? "primary" : "secondary"}
+        label={"Directives"}
+        onClick={handleDirectivesButtonClick}
+      />
+      <s.LinkButton
         buttonType={isTemplateButtonHighlighted ? "primary" : "secondary"}
         label={"Template"}
         onClick={handleTemplateButtonClick}

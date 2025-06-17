@@ -15,9 +15,7 @@ export const Header = styled.header`
 
   display: flex;
   padding: 32px 24px 24px;
-  align-items: flex-start;
-  gap: var(--spacing-guides-715-rem-24-px, 24px);
-  align-self: stretch;
+  gap: 24px;
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 

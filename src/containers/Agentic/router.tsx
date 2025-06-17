@@ -2,6 +2,7 @@ import type { RouteObject } from "react-router";
 import { createBrowserRouter, Navigate, useRouteError } from "react-router";
 import { Agentic } from "../../components/Agentic";
 import { IncidentDetails } from "../../components/Agentic/IncidentDetails";
+import { IncidentDirectives } from "../../components/Agentic/IncidentDirectives";
 import { Incidents } from "../../components/Agentic/Incidents";
 import { IncidentsContainer } from "../../components/Agentic/IncidentsContainer";
 import { IncidentTemplate } from "../../components/Agentic/IncidentTemplate";
@@ -26,6 +27,7 @@ export const routes: RouteObject[] = [
             index: true,
             element: <Incidents />
           },
+          { path: "directives", element: <IncidentDirectives /> },
           { path: "template", element: <IncidentTemplate /> },
           {
             path: ":id",

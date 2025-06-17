@@ -171,7 +171,7 @@ export const IncidentTemplate = () => {
     setIsAddMCPServerDialogOpen(true);
   };
 
-  const handleEditMCPServers = () => {
+  const handleEditMCPServer = () => {
     setIsAddMCPServerDialogOpen(true);
   };
 
@@ -216,7 +216,7 @@ export const IncidentTemplate = () => {
         selectedAgentId={agentId}
         isEditMode={true}
         onAddMCPServer={handleAddMCPServer}
-        onEditMCPServers={handleEditMCPServers}
+        onEditMCPServer={handleEditMCPServer}
       />
       <s.StyledAgentPromptInput
         onChange={handleInputChange}

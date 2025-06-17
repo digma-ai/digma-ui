@@ -8,7 +8,11 @@ export interface AgentFlowChartProps {
   className?: string;
   isEditMode?: boolean;
   onAddMCPServer?: (agentId: string, position: Position) => void;
-  onEditMCPServers?: (agentId: string) => void;
+  onEditMCPServer?: (
+    agentId: string,
+    server: string,
+    position: Position
+  ) => void;
 }
 
 export interface ExtendedAgentMCPServer extends AgentMCPServer {

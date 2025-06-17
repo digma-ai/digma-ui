@@ -1,8 +1,8 @@
 import { useState, type ChangeEvent, type MouseEvent } from "react";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { CrossIcon } from "../../../../common/icons/12px/CrossIcon";
-import { MagnifierIcon } from "../../../../common/icons/MagnifierIcon";
 import { NewButton } from "../../../../common/v3/NewButton";
+import { SearchInput } from "../../../common/SearchInput";
 import { trackingEvents } from "../../../tracking";
 import * as s from "./styles";
 import type { ToolsStepProps } from "./types";
@@ -45,8 +45,8 @@ export const ToolsStep = ({ onCancel, onSave }: ToolsStepProps) => {
     onCancel();
   };
 
-  const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchInputValue(e.target.value);
+  const handleSearchInputChange = (value: string) => {
+    setSearchInputValue(value);
   };
 
   const handleSelectAllToggleChange = (value: boolean) => {
@@ -89,16 +89,10 @@ export const ToolsStep = ({ onCancel, onSave }: ToolsStepProps) => {
       <s.ToolsEditor>
         <s.ToolsEditorToolbar>
           Tools
-          <s.SearchInputContainer>
-            <s.SearchInput
-              placeholder={"Search"}
-              value={searchInputValue}
-              onChange={handleSearchInputChange}
-            />
-            <s.SearchInputIconContainer>
-              <MagnifierIcon color={"currentColor"} />
-            </s.SearchInputIconContainer>
-          </s.SearchInputContainer>
+          <SearchInput
+            value={searchInputValue}
+            onChange={handleSearchInputChange}
+          />
           <s.SelectAllToggleSwitch
             label={"Select all"}
             labelPosition={"end"}

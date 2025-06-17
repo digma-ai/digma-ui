@@ -9,6 +9,7 @@ export const trackingEvents = addPrefix(
     SIDEBAR_USER_MENU_ITEM_CLICKED: "sidebar user menu item clicked",
     SIDEBAR_INCIDENTS_LIST_ITEM_CLICKED: "sidebar incidents list item clicked",
     SIDEBAR_CREATE_BUTTON_CLICKED: "sidebar create button clicked",
+    SIDEBAR_DIRECTIVES_BUTTON_CLICKED: "sidebar directives button clicked",
     SIDEBAR_TEMPLATE_BUTTON_CLICKED: "sidebar template button clicked",
     INCIDENT_CREATION_CHAT_DIALOG_CLOSED:
       "incident creation chat dialog closed",
@@ -17,10 +18,10 @@ export const trackingEvents = addPrefix(
     FLOW_CHART_NODE_KEBAB_MENU_CLICKED: "flow chart node kebab menu clicked",
     FLOW_CHART_NODE_KEBAB_MENU_ITEM_CLICKED:
       "flow chart node kebab menu item clicked",
-    FLOW_CHART_NODE_MCP_TOOLBAR_MENU_CLICKED:
-      "flow chart node mcp toolbar menu clicked",
-    FLOW_CHART_NODE_MCP_TOOLBAR_MENU_ITEM_CLICKED:
-      "flow chart node mcp toolbar menu item clicked",
+    FLOW_CHART_NODE_MCP_TOOLBAR_SERVER_ICON_CLICKED:
+      "flow chart node mcp toolbar server icon clicked",
+    FLOW_CHART_NODE_MCP_TOOLBAR_SERVER_ICON_MENU_ITEM_CLICKED:
+      "flow chart node mcp toolbar server icon menu item clicked",
     AGENT_FLOW_CHART_NODE_ADD_MCP_SERVER_BUTTON_CLICKED:
       "flow chart node add mcp server button clicked",
     INCIDENT_TEMPLATE_ADD_MCP_DIALOG_CONNECT_BUTTON_CLICKED:

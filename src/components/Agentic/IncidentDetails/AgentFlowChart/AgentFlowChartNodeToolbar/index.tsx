@@ -10,15 +10,15 @@ export const AgentFlowChartNodeToolbar = ({
   position,
   isEditMode,
   onAddMCPServer,
-  onEditMCPServers,
+  onEditMCPServer,
   showPlusButton
 }: AgentFlowChartNodeToolbarProps) => {
   const handleAddMCPServer = () => {
     onAddMCPServer(position);
   };
 
-  const handleEditMCPServers = () => {
-    onEditMCPServers(position);
+  const handleEditMCPServer = (server: string) => {
+    onEditMCPServer(server, position);
   };
 
   const toolbarItems = [
@@ -27,8 +27,7 @@ export const AgentFlowChartNodeToolbar = ({
           <MCPServersToolbar
             key={"mcp-servers-toolbar"}
             servers={servers}
-            onAddMCPServer={handleAddMCPServer}
-            onEditMCPServers={handleEditMCPServers}
+            onEditMCPServer={handleEditMCPServer}
           />
         ]
       : []),

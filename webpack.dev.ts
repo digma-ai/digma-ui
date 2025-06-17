@@ -147,17 +147,19 @@ const config: WebpackConfiguration = {
       webApps.forEach((app) =>
         devServer.app?.get(`/${app}/env.js`, (req, res) => {
           const envVariables = {
-            // Put app environment variables here
-            isJaegerEnabled: true,
-            // jaegerURL: "",
-            jaegerApiPath: process.env.JAEGER_API_PATH,
             platform: "Web",
-            areInsightSuggestionsEnabled: true,
-            // googleClientId: "",
-            // postHogApiKey: "",
-            // postHogHost: "",
-            isSandboxModeEnabled: false
-            // productFruitsWorkspaceCode: ""
+            isJaegerEnabled: process.env.IS_JAEGER_ENABLED === "true",
+            jaegerURL: process.env.JAEGER_URL,
+            jaegerApiPath: process.env.JAEGER_API_PATH,
+            isSandboxModeEnabled:
+              process.env.IS_SANDBOX_MODE_ENABLED === "true",
+            areInsightSuggestionsEnabled:
+              process.env.ARE_INSIGHT_SUGGESTIONS_ENABLED === "true",
+            googleClientId: process.env.GOOGLE_CLIENT_ID,
+            postHogApiKey: process.env.POSTHOG_API_KEY,
+            postHogHost: process.env.POSTHOG_URL,
+            productFruitsWorkspaceCode:
+              process.env.PRODUCT_FRUITS_WORKSPACE_CODE
           };
 
           let envFileContent = "";

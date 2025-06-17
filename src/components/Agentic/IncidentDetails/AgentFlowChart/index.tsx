@@ -16,14 +16,18 @@ const getFlowChartNodeData = ({
   isInteractive,
   isEditMode,
   onAddMCPServer,
-  onEditMCPServers
+  onEditMCPServer
 }: {
   agent?: ExtendedAgent;
   isInteractive?: boolean;
   isSelected?: boolean;
   isEditMode?: boolean;
   onAddMCPServer?: (agentName: string, position: Position) => void;
-  onEditMCPServers?: (agentName: string, position: Position) => void;
+  onEditMCPServer?: (
+    agentName: string,
+    server: string,
+    position: Position
+  ) => void;
 }): Partial<FlowChartNodeData> => {
   const handleAddMCPServer = (position: Position) => () => {
     sendUserActionTrackingEvent(
@@ -41,12 +45,12 @@ const getFlowChartNodeData = ({
     onAddMCPServer?.(agent.name, position);
   };
 
-  const handleEditMCPServers = (position: Position) => () => {
+  const handleEditMCPServer = (position: Position) => (server: string) => {
     if (!agent) {
       return;
     }
 
-    onEditMCPServers?.(agent.name, position);
+    onEditMCPServer?.(agent.name, server, position);
   };
 
   const serverGroups = groupBy(
@@ -73,7 +77,7 @@ const getFlowChartNodeData = ({
               position={position}
               servers={serverGroups[position] ?? []}
               onAddMCPServer={handleAddMCPServer(position)}
-              onEditMCPServers={handleEditMCPServers(position)}
+              onEditMCPServer={handleEditMCPServer(position)}
               showPlusButton={
                 isEditMode &&
                 (["watchman", "triager"].includes(agent.name) ||
@@ -97,7 +101,7 @@ export const AgentFlowChart = ({
   className,
   isEditMode,
   onAddMCPServer,
-  onEditMCPServers
+  onEditMCPServer
 }: AgentFlowChartProps) => {
   const extendedAgents: ExtendedAgent[] = [
     {
@@ -182,7 +186,7 @@ export const AgentFlowChart = ({
             "inactive",
           isEditMode,
           onAddMCPServer,
-          onEditMCPServers
+          onEditMCPServer
         })
       }
     },
@@ -198,7 +202,7 @@ export const AgentFlowChart = ({
             "inactive",
           isEditMode,
           onAddMCPServer,
-          onEditMCPServers
+          onEditMCPServer
         })
       }
     },
@@ -214,7 +218,7 @@ export const AgentFlowChart = ({
             "inactive",
           isEditMode,
           onAddMCPServer,
-          onEditMCPServers
+          onEditMCPServer
         })
       }
     },
@@ -230,7 +234,7 @@ export const AgentFlowChart = ({
             "inactive",
           isEditMode,
           onAddMCPServer,
-          onEditMCPServers
+          onEditMCPServer
         })
       }
     },
