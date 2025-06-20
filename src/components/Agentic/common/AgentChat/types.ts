@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { IncidentAgentEvent } from "../../../../redux/services/types";
 
 export interface AgentChatProps {
@@ -10,4 +11,5 @@ export interface AgentChatProps {
   data?: IncidentAgentEvent[];
   isDataLoading: boolean;
   onNavigateToIncident?: (incidentId: string) => void;
+  attachmentsComponent?: ReactNode;
 }

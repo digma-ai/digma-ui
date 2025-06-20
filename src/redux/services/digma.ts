@@ -5,6 +5,7 @@ import type {
   CreateEnvironmentResponse,
   DeleteEnvironmentPayload,
   DeleteEnvironmentResponse,
+  DeleteIncidentAgentDirective,
   DismissErrorPayload,
   DismissUndismissInsightPayload,
   ExtendedGetInsightsPayload,
@@ -20,6 +21,8 @@ import type {
   GetAssetsResponse,
   GetBlockedTracesPayload,
   GetBlockedTracesResponse,
+  GetDirectivesPayload,
+  GetDirectivesResponse,
   GetEndpointsIssuesPayload,
   GetEnvironmentServicesPayload,
   GetEnvironmentServicesResponse,
@@ -106,7 +109,8 @@ export const digmaApi = createApi({
     "Insight",
     "RecentActivity",
     "IncidentAgentChatEvent",
-    "IncidentEntryAgentChatEvent"
+    "IncidentEntryAgentChatEvent",
+    "IncidentAgentDirective"
   ],
   reducerPath: "digmaApi",
   baseQuery: fetchBaseQuery({
@@ -617,6 +621,26 @@ export const digmaApi = createApi({
         body: data
       }),
       invalidatesTags: ["IncidentEntryAgentChatEvent"]
+    }),
+    getIncidentAgentDirectives: builder.query<
+      GetDirectivesResponse,
+      GetDirectivesPayload
+    >({
+      query: (data) => ({
+        url: "Agentic/directives",
+        params: data
+      }),
+      providesTags: ["IncidentAgentDirective"]
+    }),
+    deleteIncidentAgentDirective: builder.mutation<
+      void,
+      DeleteIncidentAgentDirective
+    >({
+      query: ({ id }) => ({
+        url: `Agentic/directives/${window.encodeURIComponent(id)}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ["IncidentAgentDirective"]
     })
   })
 });
@@ -677,5 +701,7 @@ export const {
   useGetIncidentAgentEventsQuery,
   useGetIncidentAgentChatEventsQuery,
   useSendMessageToIncidentAgentChatMutation,
-  useSendMessageToIncidentCreationChatMutation
+  useSendMessageToIncidentCreationChatMutation,
+  useGetIncidentAgentDirectivesQuery,
+  useDeleteIncidentAgentDirectiveMutation
 } = digmaApi;

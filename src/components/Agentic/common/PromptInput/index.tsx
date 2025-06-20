@@ -18,7 +18,8 @@ export const PromptInput = ({
   className,
   placeholder,
   isDisabled,
-  fontSize = s.TEXT_AREA_DEFAULT_FONT_SIZE
+  fontSize = s.TEXT_AREA_DEFAULT_FONT_SIZE,
+  attachmentsComponent
 }: PromptInputProps) => {
   const isSubmittingDisabled = isSubmitting ?? value.trim() === "";
   const formRef = useRef<HTMLFormElement>(null);
@@ -88,16 +89,19 @@ export const PromptInput = ({
       $height={formHeight}
       className={className}
     >
-      <s.TextArea
-        $height={textAreaHeight}
-        $fontSize={fontSize}
-        ref={textAreaRef}
-        value={value}
-        onChange={handleChange}
-        placeholder={placeholder}
-        onKeyDown={handleKeyDown}
-        disabled={isDisabled ?? isSubmittingDisabled}
-      />
+      <s.TextAreaContainer>
+        {attachmentsComponent}
+        <s.TextArea
+          $height={textAreaHeight}
+          $fontSize={fontSize}
+          ref={textAreaRef}
+          value={value}
+          onChange={handleChange}
+          placeholder={placeholder}
+          onKeyDown={handleKeyDown}
+          disabled={isDisabled ?? isSubmittingDisabled}
+        />
+      </s.TextAreaContainer>
       <s.SubmitButton type={"submit"} disabled={isSubmittingDisabled}>
         <RoundedTriangleIcon
           color={"currentColor"}

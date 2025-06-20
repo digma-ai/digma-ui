@@ -1,5 +1,8 @@
 import styled from "styled-components";
-import { subheading1RegularTypography } from "../../../common/App/typographies";
+import {
+  subheading1RegularTypography,
+  subscriptRegularTypography
+} from "../../../common/App/typographies";
 import { Link } from "../../../common/Link";
 
 export const HumanMessage = styled.div`
@@ -16,4 +19,12 @@ export const AgentMessage = styled.div`
 
 export const StyledLink = styled(Link)`
   font-size: inherit;
+`;
+
+export const MemoryUpdateMessage = styled.div`
+  ${subscriptRegularTypography}
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `;

@@ -1182,7 +1182,8 @@ export interface IncidentAgentEvent {
     | "tool"
     | "error"
     | "agent_end"
-    | "input_user_required";
+    | "input_user_required"
+    | "memory_update";
   message: string;
   agent_name: string;
   tool_name?: string | null;
@@ -1207,4 +1208,23 @@ export interface SendMessageToIncidentAgentChatPayload {
 export interface SendMessageToIncidentCreationChatPayload {
   incidentId: string;
   data: { text: string };
+}
+
+export interface GetDirectivesPayload {
+  search_term?: string;
+}
+
+export interface Directive {
+  id: string;
+  directive: string;
+  condition: string;
+  agents: string[];
+}
+
+export interface GetDirectivesResponse {
+  directives: Directive[];
+}
+
+export interface DeleteIncidentAgentDirective {
+  id: string;
 }

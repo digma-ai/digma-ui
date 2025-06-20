@@ -1,9 +1,4 @@
-export interface Directive {
-  id: string;
-  condition: string;
-  directive: string;
-  agents: string[];
-}
+import type { Directive } from "../../../redux/services/types";
 
 export interface ExtendedDirective extends Directive {
   number: number;

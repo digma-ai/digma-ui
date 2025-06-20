@@ -6,6 +6,14 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
+import {
+  useDeleteIncidentAgentDirectiveMutation,
+  useGetIncidentAgentDirectivesQuery
+} from "../../../redux/services/digma";
+import type {
+  Directive,
+  IncidentAgentEvent
+} from "../../../redux/services/types";
 import { SortIcon } from "../../common/icons/16px/SortIcon";
 import { TrashBinIcon } from "../../common/icons/16px/TrashBinIcon";
 import { Direction } from "../../common/icons/types";
@@ -13,8 +21,9 @@ import { KebabMenu } from "../../common/KebabMenu";
 import { Checkmark } from "../../common/v3/Checkmark";
 import type { MenuItem } from "../../Navigation/common/MenuList/types";
 import * as s from "./styles";
-import type { ColumnMeta, Directive, ExtendedDirective } from "./types";
+import type { ColumnMeta, ExtendedDirective } from "./types";
 
+// TODO: remove
 const mockData: Directive[] = [
   {
     id: "1",
@@ -42,12 +51,72 @@ const mockData: Directive[] = [
   }
 ];
 
+// TODO: remove
+const mockEventsData: IncidentAgentEvent[] = [
+  {
+    agent_name: "incident_entry",
+    message: "",
+    type: "memory_update"
+  },
+  {
+    agent_name: "incident_entry",
+    message: "",
+    type: "memory_update"
+  },
+  {
+    agent_name: "incident_entry",
+    message: "",
+    type: "memory_update"
+  },
+  {
+    agent_name: "incident_entry",
+    message: "",
+    type: "memory_update"
+  },
+  {
+    agent_name: "incident_entry",
+    message: "",
+    type: "memory_update"
+  },
+  {
+    agent_name: "incident_entry",
+    message: "",
+    type: "memory_update"
+  },
+  {
+    agent_name: "incident_entry",
+    message: "",
+    type: "memory_update"
+  },
+  {
+    agent_name: "incident_entry",
+    message: "",
+    type: "memory_update"
+  },
+  {
+    agent_name: "incident_entry",
+    message: "",
+    type: "memory_update"
+  },
+  {
+    agent_name: "incident_entry",
+    message: "",
+    type: "memory_update"
+  }
+];
+
 const columnHelper = createColumnHelper<ExtendedDirective>();
 
 export const IncidentDirectives = () => {
   const [searchInputValue, setSearchInputValue] = useState("");
-  const [bottomInputValue, setBottomInputValue] = useState("");
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
+
+  const { data } = useGetIncidentAgentDirectivesQuery({
+    search_term: searchInputValue
+  });
+
+  const [deleteIncidentAgentDirective] =
+    useDeleteIncidentAgentDirectiveMutation();
 
   const handleSearchInputChange = (value: string) => {
     setSearchInputValue(value);
@@ -59,31 +128,32 @@ export const IncidentDirectives = () => {
     );
   };
 
-  const handleBottomInputChange = () => {
-    setBottomInputValue("");
+  const handleMessageSend = () => {
+    // TODO: implement
   };
 
-  const handleBottomInputSubmit = () => {
-    return undefined;
+  const handleSelectedConditionTagClick = (id: string) => () => {
+    setSelectedConditions((prev) => prev.filter((x) => x !== id));
   };
 
   const items = useMemo(() => {
-    const filteredItems = mockData.filter((item) => {
-      const conditionMatch = item.condition
-        .toLowerCase()
-        .includes(searchInputValue.toLowerCase());
-      const directiveMatch = item.directive
-        .toLowerCase()
-        .includes(searchInputValue.toLowerCase());
-      return conditionMatch || directiveMatch;
-    });
+    // const filteredItems = (data?.directives ?? mockData).filter((item) => {
+    //   const conditionMatch = item.condition
+    //     .toLowerCase()
+    //     .includes(searchInputValue.toLowerCase());
+    //   const directiveMatch = item.directive
+    //     .toLowerCase()
+    //     .includes(searchInputValue.toLowerCase());
+    //   return conditionMatch || directiveMatch;
+    // });
 
-    return filteredItems.map((item, index) => ({
+    // TODO: remove mock data
+    return (data?.directives ?? mockData)?.map((item, index) => ({
       ...item,
       number: index + 1,
       isSelected: selectedConditions.includes(item.id)
     }));
-  }, [searchInputValue, selectedConditions]);
+  }, [selectedConditions, data?.directives]);
 
   const columns = [
     columnHelper.accessor((x) => x, {
@@ -180,9 +250,13 @@ export const IncidentDirectives = () => {
         minWidth: 100,
         textAlign: "center"
       },
-      cell: () => {
+      cell: (info) => {
+        const value = info.getValue();
+
         const handleDeleteMenuItemClick = () => {
-          // TODO: implement
+          void deleteIncidentAgentDirective({
+            id: value.id
+          });
         };
 
         const items: MenuItem[] = [
@@ -200,7 +274,7 @@ export const IncidentDirectives = () => {
   ];
 
   const table = useReactTable({
-    data: items,
+    data: items ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -301,21 +375,26 @@ export const IncidentDirectives = () => {
           </s.TableBody>
         </s.Table>
       </s.TableContainer>
-      {selectedConditions.length > 0 && (
-        <s.SelectedConditionsContainer>
-          Selected Conditions
-          <s.SelectedConditionsList>
-            {selectedConditions.map((x) => (
-              <s.SelectedConditionTag key={x}>#{x}</s.SelectedConditionTag>
-            ))}
-          </s.SelectedConditionsList>
-        </s.SelectedConditionsContainer>
-      )}
-      <s.StyledPromptInput
-        onChange={handleBottomInputChange}
-        onSubmit={handleBottomInputSubmit}
-        value={bottomInputValue}
-        isDisabled={true}
+      <s.StyledAgentChat
+        // TODO: remove mock data
+        data={mockEventsData}
+        isDataLoading={false}
+        onMessageSend={handleMessageSend}
+        isMessageSending={false}
+        attachmentsComponent={
+          selectedConditions.length > 0 && (
+            <s.SelectedConditionsContainer>
+              {selectedConditions.map((x) => (
+                <s.SelectedConditionTag
+                  onClick={handleSelectedConditionTagClick(x)}
+                  key={x}
+                >
+                  #{x}
+                </s.SelectedConditionTag>
+              ))}
+            </s.SelectedConditionsContainer>
+          )
+        }
       />
     </s.Container>
   );

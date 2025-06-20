@@ -12,6 +12,7 @@ export const Chat = ({
   onMessageSend,
   chatContent,
   className,
+  attachmentsComponent,
   promptFontSize
 }: ChatProps) => {
   const [inputValue, setInputValue] = useState("");
@@ -42,6 +43,7 @@ export const Chat = ({
         isSubmitting={isMessageSending}
         placeholder={"Write your prompt here"}
         fontSize={promptFontSize}
+        attachmentsComponent={attachmentsComponent}
       />
     </s.Container>
   );

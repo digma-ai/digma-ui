@@ -6,7 +6,8 @@ import {
   subheading1RegularTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
-import { PromptInput } from "../common/PromptInput";
+import { AgentChat } from "../common/AgentChat";
+import { Form, TextArea } from "../common/PromptInput/styles";
 import { SearchInput } from "../common/SearchInput";
 import type { TableCellContentProps } from "./types";
 
@@ -132,23 +133,8 @@ export const Directive = styled.span`
 
 export const SelectedConditionsContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 24px;
-  border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
-  background: ${({ theme }) => theme.colors.v3.surface.secondary};
-  color: ${({ theme }) => theme.colors.v3.text.primary};
-  font-size: 14px;
-  font-weight: 600;
-`;
-
-export const SelectedConditionsList = styled.div`
-  display: flex;
-  gap: 10px;
+  gap: 6px;
   flex-wrap: wrap;
-  height: 35px;
-  overflow: auto;
 `;
 
 export const SelectedConditionTag = styled.div`
@@ -156,23 +142,33 @@ export const SelectedConditionTag = styled.div`
   align-items: center;
   justify-content: center;
   padding: 6px 8px;
-  background: ${({ theme }) => theme.colors.v3.surface.brandTertiary};
+  background: ${({ theme }) => theme.colors.v3.surface.primary};
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
   border-radius: 5px;
   color: ${({ theme }) => theme.colors.v3.text.primary};
   font-size: 16px;
   line-height: 20px;
+  box-shadow: 0 3px 5px 0 rgb(0 0 0 / 13%);
+  cursor: pointer;
 `;
 
-export const StyledPromptInput = styled(PromptInput)`
-  height: 96px;
+export const StyledAgentChat = styled(AgentChat)`
   ${/* TODO: change to color from the theme */ ""}
-  border: 1px solid #6063f6;
+  background: #000;
+  border-radius: 8px;
+  padding: 24px;
+  gap: 12px;
+  max-height: 306px;
 
-  & > textarea {
-    height: 100%;
+  & ${Form} {
+    height: 117px;
+    ${/* TODO: change to color from the theme */ ""}
+    border: 1px solid #6063f6;
 
-    &::placeholder {
+    & ${TextArea} {
+      ${subheading1RegularTypography}
       color: ${({ theme }) => theme.colors.v3.text.primary};
+      height: 100%;
     }
   }
 `;
