@@ -25,6 +25,7 @@ import * as s from "./styles";
 import type { ColumnMeta, ExtendedDirective } from "./types";
 
 // TODO: remove
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mockData: Directive[] = [
   {
     id: "1",
@@ -170,8 +171,7 @@ export const IncidentDirectives = () => {
     //   return conditionMatch || directiveMatch;
     // });
 
-    // TODO: remove mock data
-    return (data?.directives ?? mockData)?.map((item, index) => ({
+    return data?.directives?.map((item, index) => ({
       ...item,
       number: index + 1,
       isSelected: selectedConditions.includes(item.id)
