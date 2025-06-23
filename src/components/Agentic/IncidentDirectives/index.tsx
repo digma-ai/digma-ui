@@ -14,6 +14,7 @@ import type {
   Directive,
   IncidentAgentEvent
 } from "../../../redux/services/types";
+import { CancelConfirmation } from "../../common/CancelConfirmation";
 import { SortIcon } from "../../common/icons/16px/SortIcon";
 import { TrashBinIcon } from "../../common/icons/16px/TrashBinIcon";
 import { Direction } from "../../common/icons/types";
@@ -52,6 +53,7 @@ const mockData: Directive[] = [
 ];
 
 // TODO: remove
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mockEventsData: IncidentAgentEvent[] = [
   {
     agent_name: "incident_entry",
@@ -105,15 +107,23 @@ const mockEventsData: IncidentAgentEvent[] = [
   }
 ];
 
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+
 const columnHelper = createColumnHelper<ExtendedDirective>();
 
 export const IncidentDirectives = () => {
   const [searchInputValue, setSearchInputValue] = useState("");
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
+  const [directiveToDelete, setDirectiveToDelete] = useState<string>();
 
-  const { data } = useGetIncidentAgentDirectivesQuery({
-    search_term: searchInputValue
-  });
+  const { data } = useGetIncidentAgentDirectivesQuery(
+    {
+      search_term: searchInputValue || undefined
+    },
+    {
+      pollingInterval: REFRESH_INTERVAL
+    }
+  );
 
   const [deleteIncidentAgentDirective] =
     useDeleteIncidentAgentDirectiveMutation();
@@ -126,6 +136,19 @@ export const IncidentDirectives = () => {
     setSelectedConditions((prev) =>
       value ? [...prev, id] : prev.filter((x) => x !== id)
     );
+  };
+
+  const handleDeleteDirectiveDialogConfirm = () => {
+    if (directiveToDelete) {
+      void deleteIncidentAgentDirective({
+        id: directiveToDelete
+      });
+    }
+    setDirectiveToDelete(undefined);
+  };
+
+  const handleDeleteDirectiveDialogClose = () => {
+    setDirectiveToDelete(undefined);
   };
 
   const handleMessageSend = () => {
@@ -254,9 +277,7 @@ export const IncidentDirectives = () => {
         const value = info.getValue();
 
         const handleDeleteMenuItemClick = () => {
-          void deleteIncidentAgentDirective({
-            id: value.id
-          });
+          setDirectiveToDelete(value.id);
         };
 
         const items: MenuItem[] = [
@@ -376,8 +397,7 @@ export const IncidentDirectives = () => {
         </s.Table>
       </s.TableContainer>
       <s.StyledAgentChat
-        // TODO: remove mock data
-        data={mockEventsData}
+        data={[]}
         isDataLoading={false}
         onMessageSend={handleMessageSend}
         isMessageSending={false}
@@ -396,6 +416,16 @@ export const IncidentDirectives = () => {
           )
         }
       />
+      {directiveToDelete && (
+        <s.StyledOverlay>
+          <CancelConfirmation
+            header={"Delete directive"}
+            description={"Are you sure you want to delete this directive?"}
+            onClose={handleDeleteDirectiveDialogClose}
+            onConfirm={handleDeleteDirectiveDialogConfirm}
+          />
+        </s.StyledOverlay>
+      )}
     </s.Container>
   );
 };

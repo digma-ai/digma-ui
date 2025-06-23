@@ -6,6 +6,7 @@ import {
   subheading1RegularTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
+import { Overlay } from "../../common/Overlay";
 import { AgentChat } from "../common/AgentChat";
 import { Form, TextArea } from "../common/PromptInput/styles";
 import { SearchInput } from "../common/SearchInput";
@@ -171,4 +172,8 @@ export const StyledAgentChat = styled(AgentChat)`
       height: 100%;
     }
   }
+`;
+
+export const StyledOverlay = styled(Overlay)`
+  align-items: center;
 `;
