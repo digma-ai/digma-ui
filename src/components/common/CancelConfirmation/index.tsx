@@ -8,7 +8,8 @@ export const CancelConfirmation = ({
   onClose,
   header,
   description,
-  cancelBtnText
+  cancelBtnText = "Yes, cancel",
+  confirmBtnText = "No, continue"
 }: CancelConfirmationProps) => {
   const handleConfirmButtonClick = () => {
     onConfirm();
@@ -34,12 +35,12 @@ export const CancelConfirmation = ({
       <s.ButtonsContainer>
         <NewButton
           buttonType={"primary"}
-          label={"No, continue"}
+          label={confirmBtnText}
           onClick={handleCancelButtonClick}
         />
         <s.CancelButton
           buttonType={"secondary"}
-          label={cancelBtnText ?? "Yes, cancel"}
+          label={cancelBtnText}
           onClick={handleConfirmButtonClick}
         />
       </s.ButtonsContainer>

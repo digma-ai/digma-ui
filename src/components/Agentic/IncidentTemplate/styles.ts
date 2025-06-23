@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { heading2BoldTypography } from "../../common/App/typographies";
 import { AgentFlowChart } from "../IncidentDetails/AgentFlowChart";
 import { PromptInput } from "../common/PromptInput";
+import { TextArea } from "../common/PromptInput/styles";
 
 export const Container = styled.div`
   padding: 24px;
@@ -33,7 +34,7 @@ export const StyledAgentFlowChart = styled(AgentFlowChart)`
 export const StyledIncidentPromptInput = styled(PromptInput)`
   height: 105px;
 
-  & > textarea {
+  & ${TextArea} {
     height: 100%;
 
     &::placeholder {
@@ -47,7 +48,7 @@ export const StyledAgentPromptInput = styled(PromptInput)`
   ${/* TODO: change to color from the theme */ ""}
   border: 1px solid #6063f6;
 
-  & > textarea {
+  & ${TextArea} {
     height: 100%;
 
     &::placeholder {
