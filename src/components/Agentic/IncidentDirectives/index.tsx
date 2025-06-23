@@ -171,12 +171,14 @@ export const IncidentDirectives = () => {
     //   return conditionMatch || directiveMatch;
     // });
 
-    return data?.directives?.map((item, index) => ({
-      ...item,
-      number: index + 1,
-      isSelected: selectedConditions.includes(item.id)
-    }));
-  }, [selectedConditions, data?.directives]);
+    return (
+      data?.directives?.map((item, index) => ({
+        ...item,
+        number: index + 1,
+        isSelected: selectedConditions.includes(item.id)
+      })) ?? []
+    );
+  }, [selectedConditions, data]);
 
   const columns = [
     columnHelper.accessor((x) => x, {
@@ -295,7 +297,7 @@ export const IncidentDirectives = () => {
   ];
 
   const table = useReactTable({
-    data: items ?? [],
+    data: items,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
