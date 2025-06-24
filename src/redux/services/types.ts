@@ -1232,7 +1232,7 @@ export interface DeleteIncidentAgentDirectivePayload {
 export interface MCPServerData {
   uid: string;
   name: string;
-  connection: string;
+  config: string;
   agents: string[];
   editable: boolean;
   selected_tools: string[];

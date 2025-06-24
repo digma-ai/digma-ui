@@ -23,7 +23,7 @@ export const MCPServerDialog = ({
 }: MCPServerDialogProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [connectionSettings, setConnectionSettings] = useState(
-    serverData?.connection ?? ""
+    serverData?.config ?? ""
   );
   const [testServerError, setTestServerError] = useState<string>();
   const [addServerError, setAddServerError] = useState<string>();
