@@ -93,6 +93,7 @@ export const MCPServerDialog = ({
         id: serverData.uid,
         data: payload
       })
+        .unwrap()
         .then(() => {
           onComplete();
         })
