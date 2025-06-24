@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { heading2BoldTypography } from "../../common/App/typographies";
+import { Overlay } from "../../common/Overlay";
 import { AgentFlowChart } from "../IncidentDetails/AgentFlowChart";
 import { PromptInput } from "../common/PromptInput";
 import { TextArea } from "../common/PromptInput/styles";
@@ -55,4 +56,8 @@ export const StyledAgentPromptInput = styled(PromptInput)`
       color: ${({ theme }) => theme.colors.v3.text.primary};
     }
   }
+`;
+
+export const StyledOverlay = styled(Overlay)`
+  align-items: center;
 `;

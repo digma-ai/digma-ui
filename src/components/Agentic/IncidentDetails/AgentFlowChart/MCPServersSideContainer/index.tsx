@@ -1,4 +1,5 @@
 import { useViewport } from "@xyflow/react";
+import { Tooltip } from "../../../../common/v3/Tooltip";
 import { MCPServerIcon } from "../MCPServerIcon";
 import * as s from "./styles";
 import type { MCPServersSideContainerProps } from "./types";
@@ -18,17 +19,15 @@ export const MCPServersSideContainer = ({
   return (
     <s.Container $zoomLevel={zoomLevel}>
       {servers?.map((x) => (
-        <s.MCPServerBlock
-          key={x.name}
-          $isActive={x.active}
-          $zoomLevel={viewport.zoom}
-        >
-          <MCPServerIcon
-            type={x.name}
-            isActive={x.active}
-            size={DEFAULT_ICON_SIZE * viewport.zoom}
-          />
-        </s.MCPServerBlock>
+        <Tooltip title={x.display_name} key={x.name}>
+          <s.MCPServerBlock $isActive={x.active} $zoomLevel={viewport.zoom}>
+            <MCPServerIcon
+              type={x.name}
+              isActive={x.active}
+              size={DEFAULT_ICON_SIZE * viewport.zoom}
+            />
+          </s.MCPServerBlock>
+        </Tooltip>
       ))}
     </s.Container>
   );

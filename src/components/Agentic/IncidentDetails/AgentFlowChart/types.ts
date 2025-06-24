@@ -13,10 +13,16 @@ export interface AgentFlowChartProps {
     server: string,
     position: Position
   ) => void;
+  onDeleteMCPServer?: (
+    agentId: string,
+    server: string,
+    position: Position
+  ) => void;
 }
 
 export interface ExtendedAgentMCPServer extends AgentMCPServer {
   position?: Position;
+  isEditable?: boolean;
 }
 
 export interface ExtendedAgent extends Agent {

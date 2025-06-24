@@ -425,8 +425,8 @@ export const IncidentDirectives = () => {
             description={"Are you sure you want to delete this directive?"}
             onClose={handleDeleteDirectiveDialogClose}
             onConfirm={handleDeleteDirectiveDialogConfirm}
-            confirmBtnText={"Yes, continue"}
-            cancelBtnText={"No, cancel"}
+            confirmBtnText={"Yes, delete"}
+            cancelBtnText={"No, keep it"}
           />
         </s.StyledOverlay>
       )}

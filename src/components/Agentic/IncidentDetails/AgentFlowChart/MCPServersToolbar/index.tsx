@@ -1,8 +1,10 @@
 import { useNodeId, useViewport } from "@xyflow/react";
 import { useState } from "react";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
+import { TrashBinIcon } from "../../../../common/icons/16px/TrashBinIcon";
 import { WrenchIcon } from "../../../../common/icons/16px/WrenchIcon";
 import { NewPopover } from "../../../../common/NewPopover";
+import { Tooltip } from "../../../../common/v3/Tooltip";
 import { MenuList } from "../../../../Navigation/common/MenuList";
 import type { MenuItem } from "../../../../Navigation/common/MenuList/types";
 import { Popup } from "../../../../Navigation/common/Popup";
@@ -13,7 +15,8 @@ import type { MCPServersToolbarProps } from "./types";
 
 export const MCPServersToolbar = ({
   servers,
-  onEditMCPServer
+  onEditMCPServer,
+  onDeleteMCPServer
 }: MCPServersToolbarProps) => {
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
   const [selectedMCPServer, setSelectedMCPServer] = useState<string>();
@@ -51,6 +54,12 @@ export const MCPServersToolbar = ({
         }
         break;
       }
+      case "delete": {
+        if (selectedMCPServer) {
+          onDeleteMCPServer(selectedMCPServer);
+        }
+        break;
+      }
     }
 
     setIsKebabMenuOpen(false);
@@ -62,6 +71,12 @@ export const MCPServersToolbar = ({
       icon: <WrenchIcon size={16} color={"currentColor"} />,
       label: "Edit",
       onClick: () => handleKebabMenuItemClick("edit")
+    },
+    {
+      id: "delete",
+      icon: <TrashBinIcon size={16} color={"currentColor"} />,
+      label: "Delete",
+      onClick: () => handleKebabMenuItemClick("delete")
     }
   ];
 
@@ -76,12 +91,18 @@ export const MCPServersToolbar = ({
               <MenuList items={kebabMenuItems} />
             </Popup>
           }
-          isOpen={isKebabMenuOpen && selectedMCPServer === x.name}
+          isOpen={Boolean(
+            isKebabMenuOpen && selectedMCPServer === x.name && x.isEditable
+          )}
           onOpenChange={handleKebabMenuOpenChange(x.name)}
         >
-          <s.MCPServerIconContainer>
-            <MCPServerIcon type={x.name} isActive={x.active} size={17} />
-          </s.MCPServerIconContainer>
+          <div>
+            <Tooltip title={x.display_name}>
+              <s.MCPServerIconContainer $isEditable={x.isEditable}>
+                <MCPServerIcon type={x.name} isActive={x.active} size={17} />
+              </s.MCPServerIconContainer>
+            </Tooltip>
+          </div>
         </NewPopover>
       ))}
     </s.Container>

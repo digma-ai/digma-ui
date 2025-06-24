@@ -93,7 +93,7 @@ export const UdemyPromotion = ({
               description={
                 "Are you sure you want to miss out on this exclusive, limited-time offer?"
               }
-              cancelBtnText={"Yes, discard"}
+              confirmBtnText={"Yes, discard"}
               onClose={handleCancelConfirmationClose}
               onConfirm={handleCancelConfirmationAccept}
             />

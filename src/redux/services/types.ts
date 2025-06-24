@@ -1225,6 +1225,45 @@ export interface GetDirectivesResponse {
   directives: Directive[];
 }
 
-export interface DeleteIncidentAgentDirective {
+export interface DeleteIncidentAgentDirectivePayload {
+  id: string;
+}
+
+export interface MCPServerData {
+  uid: string;
+  name: string;
+  connection: string;
+  agents: string[];
+  editable: boolean;
+  selected_tools: string[];
+  all_tools: string[];
+  instructions_prompt: string;
+}
+
+export interface GetMCPServersResponse {
+  mcps: MCPServerData[];
+}
+
+export interface TestMCPServerPayload {
+  config_json: string;
+}
+
+export interface TestMCPServerResponse {
+  tools: string[];
+}
+
+export interface AddMCPServerPayload {
+  config_json: string;
+  selected_tools: string[];
+  agent: string;
+  instructions_prompt: string;
+}
+
+export interface UpdateMCPServerPayload {
+  id: string;
+  data: AddMCPServerPayload;
+}
+
+export interface DeleteMCPServerPayload {
   id: string;
 }

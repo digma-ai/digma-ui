@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import type { ContainerProps } from "./types";
+import type { ContainerProps, MCPServerIconContainerProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`
   display: flex;
@@ -18,10 +18,11 @@ export const Container = styled.div<ContainerProps>`
     );
 `;
 
-export const MCPServerIconContainer = styled.div`
+export const MCPServerIconContainer = styled.div<MCPServerIconContainerProps>`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: ${({ $isEditable }) => ($isEditable ? "pointer" : "default")};
 `;
 
 export const KebabMenuButton = styled.button`
