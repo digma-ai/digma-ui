@@ -104,15 +104,22 @@ export const AgentEvents = () => {
             speed={shouldShowTypingForEvent(i) ? TYPING_SPEED : undefined}
           />
         );
-      case "tool":
+      case "tool": {
+        let toolName = event.tool_name;
+
+        if (event.mcp_name) {
+          toolName += ` ${[event.mcp_name, "MCP tool"]
+            .filter(Boolean)
+            .join(" ")})`;
+        }
+
         return (
           <Accordion
-            summary={`${event.tool_name} (${[event.mcp_name, "MCP tool"]
-              .filter(Boolean)
-              .join(" ")})`}
+            summary={toolName}
             content={<TypingMarkdown text={convertToMarkdown(event.message)} />}
           />
         );
+      }
       default:
         return null;
     }
