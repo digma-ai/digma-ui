@@ -77,7 +77,6 @@ const getFlowChartNodeData = ({
         label: agent.display_name,
         isActive: isSelected,
         isRunning: agent.running,
-        isPending: agent.status === "pending",
         isInteractive,
         isDisabled: agent.status === "inactive",
         sideContainers: Object.values(Position).map((position) => ({

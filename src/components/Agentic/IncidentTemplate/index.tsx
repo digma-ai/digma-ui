@@ -4,7 +4,7 @@ import {
   useDeleteIncidentAgentMCPServerMutation,
   useGetIncidentAgentMCPServersQuery
 } from "../../../redux/services/digma";
-import { ConfirmationDialog } from "../../common/ConfirmationDialog";
+import { CancelConfirmation } from "../../common/CancelConfirmation";
 import { Overlay } from "../../common/Overlay";
 import type { ExtendedAgent } from "../IncidentDetails/AgentFlowChart/types";
 import { MCPServerDialog } from "./MCPServerDialog";
@@ -199,11 +199,13 @@ export const IncidentTemplate = () => {
       )}
       {mcpServerIdToDelete && (
         <s.StyledOverlay>
-          <ConfirmationDialog
+          <CancelConfirmation
             header={"Delete MCP server"}
             description={"Are you sure you want to delete this MCP server?"}
             onClose={handleDeleteMCPServerDialogClose}
             onConfirm={handleDeleteMCPServerDialogConfirm}
+            confirmBtnText={"Yes, delete"}
+            cancelBtnText={"No, keep it"}
           />
         </s.StyledOverlay>
       )}
