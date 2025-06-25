@@ -1,6 +1,6 @@
 import { Position } from "@xyflow/react";
 import { PlusIcon } from "../../../../common/icons/16px/PlusIcon";
-import { MCPServersContainer } from "../MCPServersSideContainer";
+import { MCPServersContainer } from "../MCPServersContainer";
 import { MCPServersToolbar } from "../MCPServersToolbar";
 import * as s from "./styles";
 import type { AgentFlowChartNodeToolbarProps } from "./types";
