@@ -13,21 +13,25 @@ export const ToolsStep = ({
   tools,
   selectedTools: initialSelectedTools = [],
   isLoading,
+  instructions = "",
   error
 }: ToolsStepProps) => {
-  const [textAreaValue, setTextAreaValue] = useState("");
+  const [instructionsTextAreaValue, setInstructionsTextAreaValue] =
+    useState(instructions);
   const [selectedTools, setSelectedTools] = useState(initialSelectedTools);
   const [searchInputValue, setSearchInputValue] = useState("");
 
-  const handleTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setTextAreaValue(e.target.value);
+  const handleInstructionsTextAreaChange = (
+    e: ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setInstructionsTextAreaValue(e.target.value);
   };
 
   const handleSaveButtonClick = () => {
     sendUserActionTrackingEvent(
       trackingEvents.INCIDENT_TEMPLATE_EDIT_MCP_DIALOG_SAVE_BUTTON_CLICKED
     );
-    onSave(selectedTools, textAreaValue);
+    onSave(selectedTools, instructionsTextAreaValue);
   };
 
   const handleCancelButtonClick = () => {
@@ -95,9 +99,9 @@ export const ToolsStep = ({
           </s.ToolsList>
         )}
       </s.ToolsEditor>
-      <s.TextArea
-        value={textAreaValue}
-        onChange={handleTextAreaChange}
+      <s.InstructionsTextArea
+        value={instructionsTextAreaValue}
+        onChange={handleInstructionsTextAreaChange}
         placeholder={
           "Describe any specific instructions on how this MCP should be used"
         }

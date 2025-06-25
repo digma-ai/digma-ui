@@ -91,7 +91,7 @@ export const ToolTag = styled.div<ToolTagProps>`
   user-select: none;
 `;
 
-export const TextArea = styled.textarea`
+export const InstructionsTextArea = styled.textarea`
   ${({ theme }) => getCodeFont(theme.codeFont)}
   display: flex;
   flex-grow: 1;

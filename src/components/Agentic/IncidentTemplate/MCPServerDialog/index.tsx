@@ -140,6 +140,7 @@ export const MCPServerDialog = ({
       onSave={handleToolsStepSave}
       tools={tools}
       selectedTools={serverData?.selected_tools}
+      instructions={serverData?.instructions_prompt}
       isLoading={
         addMCPServerResult.isLoading || updateMCPServerResult.isLoading
       }
