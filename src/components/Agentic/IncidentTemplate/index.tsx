@@ -1,4 +1,3 @@
-import { Position } from "@xyflow/react";
 import { useEffect, useState } from "react";
 import {
   useDeleteIncidentAgentMCPServerMutation,
@@ -149,9 +148,7 @@ export const IncidentTemplate = () => {
               name: x.name,
               display_name: x.name,
               active: true,
-              isEditable: x.editable,
-              position:
-                agent.name === "code_resolver" ? Position.Bottom : Position.Top
+              isEditable: x.editable
             }))
           };
         })

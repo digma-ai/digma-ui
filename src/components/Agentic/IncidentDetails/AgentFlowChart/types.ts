@@ -1,4 +1,3 @@
-import type { Position } from "@xyflow/react";
 import type { Agent, AgentMCPServer } from "../../../../redux/services/types";
 
 export interface AgentFlowChartProps {
@@ -7,21 +6,12 @@ export interface AgentFlowChartProps {
   selectedAgentId: string | null;
   className?: string;
   isEditMode?: boolean;
-  onAddMCPServer?: (agentId: string, position: Position) => void;
-  onEditMCPServer?: (
-    agentId: string,
-    server: string,
-    position: Position
-  ) => void;
-  onDeleteMCPServer?: (
-    agentId: string,
-    server: string,
-    position: Position
-  ) => void;
+  onAddMCPServer?: (agentId: string) => void;
+  onEditMCPServer?: (agentId: string, server: string) => void;
+  onDeleteMCPServer?: (agentId: string, server: string) => void;
 }
 
 export interface ExtendedAgentMCPServer extends AgentMCPServer {
-  position?: Position;
   isEditable?: boolean;
 }
 

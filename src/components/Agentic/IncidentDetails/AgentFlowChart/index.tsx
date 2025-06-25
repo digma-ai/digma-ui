@@ -1,6 +1,5 @@
 import { Position, type Edge } from "@xyflow/react";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { groupBy } from "../../../../utils/groupBy";
 import { FlowChart } from "../../common/FlowChart";
 import type {
   FlowChartNode,
@@ -23,24 +22,15 @@ const getFlowChartNodeData = ({
   isInteractive?: boolean;
   isSelected?: boolean;
   isEditMode?: boolean;
-  onAddMCPServer?: (agentName: string, position: Position) => void;
-  onEditMCPServer?: (
-    agentName: string,
-    server: string,
-    position: Position
-  ) => void;
-  onDeleteMCPServer?: (
-    agentName: string,
-    server: string,
-    position: Position
-  ) => void;
+  onAddMCPServer?: (agentName: string) => void;
+  onEditMCPServer?: (agentName: string, server: string) => void;
+  onDeleteMCPServer?: (agentName: string, server: string) => void;
 }): Partial<FlowChartNodeData> => {
-  const handleAddMCPServer = (position: Position) => () => {
+  const handleAddMCPServer = () => {
     sendUserActionTrackingEvent(
       trackingEvents.AGENT_FLOW_CHART_NODE_ADD_MCP_SERVER_BUTTON_CLICKED,
       {
-        agentName: agent?.name,
-        position
+        agentName: agent?.name
       }
     );
 
@@ -48,29 +38,27 @@ const getFlowChartNodeData = ({
       return;
     }
 
-    onAddMCPServer?.(agent.name, position);
+    onAddMCPServer?.(agent.name);
   };
 
-  const handleEditMCPServer = (position: Position) => (server: string) => {
+  const handleEditMCPServer = (server: string) => {
     if (!agent) {
       return;
     }
 
-    onEditMCPServer?.(agent.name, server, position);
+    onEditMCPServer?.(agent.name, server);
   };
 
-  const handleDeleteMCPServer = (position: Position) => (server: string) => {
+  const handleDeleteMCPServer = (server: string) => {
     if (!agent) {
       return;
     }
 
-    onDeleteMCPServer?.(agent.name, server, position);
+    onDeleteMCPServer?.(agent.name, server);
   };
 
-  const serverGroups = groupBy(
-    agent?.mcp_servers ?? [],
-    (server) => server.position ?? Position.Top
-  );
+  const sideContainerPosition =
+    agent?.name === "code_resolver" ? Position.Bottom : Position.Top;
 
   return agent
     ? {
@@ -79,32 +67,24 @@ const getFlowChartNodeData = ({
         isRunning: agent.running,
         isInteractive,
         isDisabled: agent.status === "inactive",
-        sideContainers: Object.values(Position).map((position) => ({
-          isVisible: Boolean(
-            serverGroups[position]?.length > 0 ||
-              (isEditMode && [Position.Top, Position.Bottom].includes(position))
-          ),
-          position,
-          element: (
-            <AgentFlowChartNodeToolbar
-              isEditMode={isEditMode}
-              position={position}
-              servers={serverGroups[position] ?? []}
-              onAddMCPServer={handleAddMCPServer(position)}
-              onEditMCPServer={handleEditMCPServer(position)}
-              onDeleteMCPServer={handleDeleteMCPServer(position)}
-              showPlusButton={
-                isEditMode &&
-                (["watchman", "triager"].includes(agent.name) ||
-                  (agent.name === "code_resolver" &&
-                    position === Position.Bottom) ||
-                  (agent.name === "infra_resolver" &&
-                    position === Position.Top))
-              }
-            />
-          ),
-          isKebabMenuVisible: isEditMode
-        }))
+        sideContainers: [
+          {
+            isVisible: Boolean(agent.mcp_servers.length > 0 || isEditMode),
+            position: sideContainerPosition,
+            element: (
+              <AgentFlowChartNodeToolbar
+                isEditMode={isEditMode}
+                position={sideContainerPosition}
+                servers={agent.mcp_servers}
+                onAddMCPServer={handleAddMCPServer}
+                onEditMCPServer={handleEditMCPServer}
+                onDeleteMCPServer={handleDeleteMCPServer}
+                showPlusButton={isEditMode}
+              />
+            )
+          }
+        ],
+        isKebabMenuVisible: isEditMode
       }
     : {};
 };
@@ -131,11 +111,7 @@ export const AgentFlowChart = ({
     ...agents.map((agent) => ({
       ...agent,
       mcp_servers: agent.mcp_servers.map((server) => ({
-        ...server,
-        position:
-          agent.name === "code_resolver" && !isEditMode
-            ? Position.Bottom
-            : server.position
+        ...server
       }))
     })),
     {

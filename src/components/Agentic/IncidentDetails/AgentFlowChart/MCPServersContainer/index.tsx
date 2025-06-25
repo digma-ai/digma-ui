@@ -2,13 +2,11 @@ import { useViewport } from "@xyflow/react";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import { MCPServerIcon } from "../MCPServerIcon";
 import * as s from "./styles";
-import type { MCPServersSideContainerProps } from "./types";
+import type { MCPServersContainerProps } from "./types";
 
 const DEFAULT_ICON_SIZE = 27; // in pixels
 
-export const MCPServersSideContainer = ({
-  servers
-}: MCPServersSideContainerProps) => {
+export const MCPServersContainer = ({ servers }: MCPServersContainerProps) => {
   const viewport = useViewport();
   const zoomLevel = viewport.zoom;
 

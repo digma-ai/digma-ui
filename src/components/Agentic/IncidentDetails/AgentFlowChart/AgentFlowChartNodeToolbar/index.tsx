@@ -1,6 +1,6 @@
 import { Position } from "@xyflow/react";
 import { PlusIcon } from "../../../../common/icons/16px/PlusIcon";
-import { MCPServersSideContainer } from "../MCPServersSideContainer";
+import { MCPServersContainer } from "../MCPServersSideContainer";
 import { MCPServersToolbar } from "../MCPServersToolbar";
 import * as s from "./styles";
 import type { AgentFlowChartNodeToolbarProps } from "./types";
@@ -15,15 +15,15 @@ export const AgentFlowChartNodeToolbar = ({
   showPlusButton
 }: AgentFlowChartNodeToolbarProps) => {
   const handleAddMCPServer = () => {
-    onAddMCPServer(position);
+    onAddMCPServer();
   };
 
   const handleEditMCPServer = (server: string) => {
-    onEditMCPServer(server, position);
+    onEditMCPServer(server);
   };
 
   const handleDeleteMCPServer = (server: string) => {
-    onDeleteMCPServer(server, position);
+    onDeleteMCPServer(server);
   };
 
   const toolbarItems = [
@@ -55,11 +55,9 @@ export const AgentFlowChartNodeToolbar = ({
   return (
     <>
       {isEditMode ? (
-        [Position.Top, Position.Bottom].includes(position) && (
-          <s.NodeToolbarContainer>{sortedToolbarItems}</s.NodeToolbarContainer>
-        )
+        <s.NodeToolbarContainer>{sortedToolbarItems}</s.NodeToolbarContainer>
       ) : (
-        <MCPServersSideContainer servers={servers} />
+        <MCPServersContainer servers={servers} />
       )}
     </>
   );
