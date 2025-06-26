@@ -1085,14 +1085,12 @@ export interface GetBlockedTracesResponse {
   total: number;
 }
 
-export type IncidentActivityStatus = "active" | "paused" | "closed";
+export type IncidentStatus = "active" | "pending" | "closed";
 
 export interface IncidentResponseItem {
   id: string;
   name: string;
-  active_status: IncidentActivityStatus;
-  created_at: string;
-  closed_at: string | null;
+  execution_status: IncidentStatus;
 }
 
 export interface GetIncidentsResponse {
@@ -1100,6 +1098,10 @@ export interface GetIncidentsResponse {
 }
 
 export interface GetIncidentPayload {
+  id: string;
+}
+
+export interface CloseIncidentPayload {
   id: string;
 }
 
@@ -1136,15 +1138,19 @@ export interface GetIncidentResponse {
   name: string;
   status: string;
   summary: string;
-  active_status: IncidentActivityStatus;
+  execution_status: IncidentStatus;
   related_issues: GenericIncidentIssue[];
   related_artifacts: IncidentArtifact[];
   affected_services: string[];
-  created_at: string;
-  closed_at: string | null;
+  status_timestamps: Partial<Record<IncidentStatus, string>>;
 }
 
-export type AgentStatus = "pending" | "active" | "inactive";
+export type AgentStatus =
+  | "waiting"
+  | "running"
+  | "skipped"
+  | "pending"
+  | "completed";
 
 export interface AgentMCPServer {
   name: string;
@@ -1156,8 +1162,7 @@ export interface Agent {
   name: string;
   display_name: string;
   description: string;
-  running: boolean;
-  status: AgentStatus;
+  execution_status: AgentStatus;
   mcp_servers: AgentMCPServer[];
 }
 

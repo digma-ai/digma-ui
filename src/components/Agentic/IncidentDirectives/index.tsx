@@ -10,10 +10,6 @@ import {
   useDeleteIncidentAgentDirectiveMutation,
   useGetIncidentAgentDirectivesQuery
 } from "../../../redux/services/digma";
-import type {
-  Directive,
-  IncidentAgentEvent
-} from "../../../redux/services/types";
 import { CancelConfirmation } from "../../common/CancelConfirmation";
 import { SortIcon } from "../../common/icons/16px/SortIcon";
 import { TrashBinIcon } from "../../common/icons/16px/TrashBinIcon";
@@ -23,90 +19,6 @@ import { Checkmark } from "../../common/v3/Checkmark";
 import type { MenuItem } from "../../Navigation/common/MenuList/types";
 import * as s from "./styles";
 import type { ColumnMeta, ExtendedDirective } from "./types";
-
-// TODO: remove
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const mockData: Directive[] = [
-  {
-    id: "1",
-    condition: "All database issues",
-    directive: "Also update migration file",
-    agents: ["Agent 1", "Agent 2"]
-  },
-  {
-    id: "2",
-    condition: "Checkout service",
-    directive: "IAC files at /chart in repo",
-    agents: ["Agent 3"]
-  },
-  {
-    id: "3",
-    condition: "Share Service",
-    directive: "Also update migration file",
-    agents: ["Agent 4", "Agent 5"]
-  },
-  {
-    id: "4",
-    condition: "Metadata Service",
-    directive: "IAC files at /chart in repo",
-    agents: ["Agent 6"]
-  }
-];
-
-// TODO: remove
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const mockEventsData: IncidentAgentEvent[] = [
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  }
-];
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
@@ -160,25 +72,15 @@ export const IncidentDirectives = () => {
     setSelectedConditions((prev) => prev.filter((x) => x !== id));
   };
 
-  const items = useMemo(() => {
-    // const filteredItems = (data?.directives ?? mockData).filter((item) => {
-    //   const conditionMatch = item.condition
-    //     .toLowerCase()
-    //     .includes(searchInputValue.toLowerCase());
-    //   const directiveMatch = item.directive
-    //     .toLowerCase()
-    //     .includes(searchInputValue.toLowerCase());
-    //   return conditionMatch || directiveMatch;
-    // });
-
-    return (
+  const items = useMemo(
+    () =>
       data?.directives?.map((item, index) => ({
         ...item,
         number: index + 1,
         isSelected: selectedConditions.includes(item.id)
-      })) ?? []
-    );
-  }, [selectedConditions, data]);
+      })) ?? [],
+    [selectedConditions, data]
+  );
 
   const columns = [
     columnHelper.accessor((x) => x, {

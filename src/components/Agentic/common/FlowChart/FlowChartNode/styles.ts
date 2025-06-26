@@ -55,6 +55,11 @@ export const StyledPulsatingDot = styled(PulsatingDot)`
   background: ${({ theme }) => theme.colors.v3.surface.brandPrimary};
 `;
 
+export const PauseIconContainer = styled.div`
+  display: flex;
+  flex-shrink: 0;
+`;
+
 export const InputHandle = styled(Handle)`
   height: 24px;
   width: 24px;

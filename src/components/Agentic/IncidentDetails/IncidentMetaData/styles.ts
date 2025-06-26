@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { subheading1RegularTypography } from "../../../common/App/typographies";
+import { NewButton } from "../../../common/v3/NewButton";
 
 export const Container = styled.div`
   display: flex;
@@ -13,6 +14,11 @@ export const DividerContainer = styled.div`
   color: ${({ theme }) => theme.colors.v3.stroke.primary};
   height: 25px;
   display: flex;
+`;
+
+export const CloseIncidentButton = styled(NewButton)`
+  margin-left: auto;
+  margin-right: 16px;
 `;
 
 export const DateAttribute = styled.div`

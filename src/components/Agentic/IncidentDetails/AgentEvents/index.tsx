@@ -80,7 +80,11 @@ export const AgentEvents = () => {
   );
 
   const isAgentRunning = useMemo(
-    () => Boolean(agentsData?.agents.find((x) => x.name === agentId)?.running),
+    () =>
+      Boolean(
+        agentsData?.agents.find((x) => x.name === agentId)?.execution_status ===
+          "running"
+      ),
     [agentsData, agentId]
   );
 

@@ -14,24 +14,21 @@ const initialAgents: ExtendedAgent[] = [
     name: "digma",
     display_name: "Digma",
     description: "Digma",
-    running: false,
-    status: "active",
+    execution_status: "waiting",
     mcp_servers: []
   },
   {
     name: "watchman",
     display_name: "Watchman",
     description: "Watchman",
-    running: false,
-    status: "active",
+    execution_status: "waiting",
     mcp_servers: []
   },
   {
     name: "triager",
     display_name: "Triager",
     description: "Triager",
-    running: false,
-    status: "active",
+    execution_status: "waiting",
     mcp_servers: []
   },
 
@@ -39,24 +36,21 @@ const initialAgents: ExtendedAgent[] = [
     name: "code_resolver",
     display_name: "Code Resolver",
     description: "Code Resolver",
-    running: false,
-    status: "active",
+    execution_status: "waiting",
     mcp_servers: []
   },
   {
     name: "infra_resolver",
     display_name: "Infrastructure Resolver",
     description: "Infrastructure Resolver",
-    running: false,
-    status: "active",
+    execution_status: "waiting",
     mcp_servers: []
   },
   {
     name: "validator",
     display_name: "Validator",
     description: "Validator",
-    running: false,
-    status: "active",
+    execution_status: "waiting",
     mcp_servers: []
   }
 ];

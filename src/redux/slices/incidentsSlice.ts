@@ -5,11 +5,13 @@ import type { BaseState } from "./types";
 
 export interface IncidentsState extends BaseState {
   isCreateIncidentChatOpen: boolean;
+  incidentToClose: string | null;
 }
 
 const initialState: IncidentsState = {
   version: STATE_VERSION,
-  isCreateIncidentChatOpen: false
+  isCreateIncidentChatOpen: false,
+  incidentToClose: null
 };
 
 export const incidentsSlice = createSlice({
@@ -19,6 +21,9 @@ export const incidentsSlice = createSlice({
     setIsCreateIncidentChatOpen: (state, action: { payload: boolean }) => {
       state.isCreateIncidentChatOpen = action.payload;
     },
+    setIncidentToClose: (state, action: { payload: string | null }) => {
+      state.incidentToClose = action.payload;
+    },
     clear: () => initialState
   },
   extraReducers: (builder) => {
@@ -26,6 +31,7 @@ export const incidentsSlice = createSlice({
   }
 });
 
-export const { setIsCreateIncidentChatOpen, clear } = incidentsSlice.actions;
+export const { setIsCreateIncidentChatOpen, setIncidentToClose, clear } =
+  incidentsSlice.actions;
 
 export default incidentsSlice.reducer;

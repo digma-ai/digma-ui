@@ -12,6 +12,7 @@ import type { IncidentResponseItem } from "../../../redux/services/types";
 import { setIsCreateIncidentChatOpen } from "../../../redux/slices/incidentsSlice";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getThemeKind } from "../../common/App/styles";
+import { PauseIcon } from "../../common/icons/12px/PauseIcon";
 import { LogoutIcon } from "../../common/icons/16px/LogoutIcon";
 import { NewPopover } from "../../common/NewPopover";
 import { NewButton } from "../../common/v3/NewButton";
@@ -23,9 +24,11 @@ import * as s from "./styles";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
-const isIncidentActive = (incident: IncidentResponseItem): boolean => {
-  return incident.active_status === "active";
-};
+const isIncidentActive = (incident: IncidentResponseItem): boolean =>
+  incident.execution_status === "active";
+
+const isIncidentPending = (incident: IncidentResponseItem): boolean =>
+  incident.execution_status === "pending";
 
 export const Sidebar = () => {
   const theme = useTheme();
@@ -105,14 +108,7 @@ export const Sidebar = () => {
     };
   }, [posthog, result.isSuccess]);
 
-  const sortedIncidents = useMemo(
-    () =>
-      [...(data?.items ?? [])].sort(
-        (a, b) =>
-          new Date(b.created_at).valueOf() - new Date(a.created_at).valueOf()
-      ),
-    [data]
-  );
+  const incidents = useMemo(() => data?.items ?? [], [data]);
 
   const user = useAgenticSelector((state) => state.auth.user);
   const userInitial = (user?.email[0] ?? "").toLocaleUpperCase();
@@ -136,7 +132,7 @@ export const Sidebar = () => {
           <NewButton label={"Create"} onClick={handleCreateButtonClick} />
         </s.IncidentsListHeader>
         <s.IncidentsList>
-          {sortedIncidents.map((incident) => (
+          {incidents.map((incident) => (
             <s.IncidentItem
               key={incident.name}
               $isSelected={incident.id === incidentId}
@@ -147,6 +143,11 @@ export const Sidebar = () => {
               <Tooltip title={incident.name}>
                 <s.IncidentItemTitle>{incident.name}</s.IncidentItemTitle>
               </Tooltip>
+              {isIncidentPending(incident) && (
+                <s.PauseIconContainer>
+                  <PauseIcon color={"currentColor"} />
+                </s.PauseIconContainer>
+              )}
             </s.IncidentItem>
           ))}
         </s.IncidentsList>

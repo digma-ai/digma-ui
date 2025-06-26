@@ -6,6 +6,7 @@ import {
 } from "@xyflow/react";
 import { useState, type ReactNode } from "react";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
+import { PauseIcon } from "../../../../common/icons/12px/PauseIcon";
 import { ChevronIcon } from "../../../../common/icons/16px/ChevronIcon";
 import { CopyIcon } from "../../../../common/icons/16px/CopyIcon";
 import { RefreshIcon } from "../../../../common/icons/16px/RefreshIcon";
@@ -22,7 +23,7 @@ import * as s from "./styles";
 
 export type Orientation = "horizontal" | "vertical";
 
-// TODO: Fix types
+// TODO: fix types
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type FlowChartNodeData = {
   label?: string;
@@ -30,6 +31,7 @@ export type FlowChartNodeData = {
   type?: "default" | "input" | "output";
   isActive?: boolean;
   isRunning?: boolean;
+  isPending?: boolean;
   isDisabled?: boolean;
   isInteractive?: boolean;
   sideContainers?: {
@@ -112,6 +114,11 @@ export const FlowChartNode = ({ id, data }: NodeProps<FlowChartNode>) => {
           <s.Label $orientation={data.orientation}>{data.label}</s.Label>
         )}
         {data.isRunning && <s.StyledPulsatingDot />}
+        {data.isPending && (
+          <s.PauseIconContainer>
+            <PauseIcon color={"currentColor"} />
+          </s.PauseIconContainer>
+        )}
         {data.type !== "input" && (
           <s.InputHandle type={"target"} position={Position.Left} id={"a"}>
             <ChevronIcon
