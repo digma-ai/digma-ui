@@ -83,17 +83,22 @@ export const TableBody = styled.div`
   color: ${({ theme }) => theme.colors.v3.text.primary};
   display: flex;
   flex-direction: column;
+  border: 1px solid ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
 `;
 
 export const TableBodyRow = styled.div`
   display: flex;
   height: 70px;
   box-sizing: border-box;
-  border-top: 1px solid
+  border-bottom: 1px solid
     ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
 
   &:nth-child(even) {
     background: ${({ theme }) => theme.colors.v3.surface.primary};
+  }
+
+  &:first-child {
+    border-bottom: none;
   }
 `;
 
@@ -130,6 +135,13 @@ export const Condition = styled.span`
 export const Directive = styled.span`
   ${subheading1RegularTypography}
   color: ${({ theme }) => theme.colors.v3.text.secondary};
+`;
+
+export const LoadingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
 `;
 
 export const SelectedConditionsContainer = styled.div`

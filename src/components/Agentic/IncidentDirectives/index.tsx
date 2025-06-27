@@ -1,114 +1,39 @@
 import {
+  fetchEventSource,
+  type EventSourceMessage
+} from "@microsoft/fetch-event-source";
+import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useBlocker } from "react-router";
+import { useAgenticDispatch } from "../../../containers/Agentic/hooks";
 import {
+  digmaApi,
   useDeleteIncidentAgentDirectiveMutation,
-  useGetIncidentAgentDirectivesQuery
+  useGetIncidentAgentDirectivesChatEventsQuery,
+  useGetIncidentAgentDirectivesQuery,
+  useSendMessageToIncidentAgentDirectivesChatMutation
 } from "../../../redux/services/digma";
-import type {
-  Directive,
-  IncidentAgentEvent
-} from "../../../redux/services/types";
+import type { IncidentAgentEvent } from "../../../redux/services/types";
+import { isString } from "../../../typeGuards/isString";
 import { CancelConfirmation } from "../../common/CancelConfirmation";
 import { SortIcon } from "../../common/icons/16px/SortIcon";
 import { TrashBinIcon } from "../../common/icons/16px/TrashBinIcon";
 import { Direction } from "../../common/icons/types";
 import { KebabMenu } from "../../common/KebabMenu";
 import { Checkmark } from "../../common/v3/Checkmark";
+import { Spinner } from "../../common/v3/Spinner";
 import type { MenuItem } from "../../Navigation/common/MenuList/types";
 import * as s from "./styles";
 import type { ColumnMeta, ExtendedDirective } from "./types";
 
-// TODO: remove
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const mockData: Directive[] = [
-  {
-    id: "1",
-    condition: "All database issues",
-    directive: "Also update migration file",
-    agents: ["Agent 1", "Agent 2"]
-  },
-  {
-    id: "2",
-    condition: "Checkout service",
-    directive: "IAC files at /chart in repo",
-    agents: ["Agent 3"]
-  },
-  {
-    id: "3",
-    condition: "Share Service",
-    directive: "Also update migration file",
-    agents: ["Agent 4", "Agent 5"]
-  },
-  {
-    id: "4",
-    condition: "Metadata Service",
-    directive: "IAC files at /chart in repo",
-    agents: ["Agent 6"]
-  }
-];
-
-// TODO: remove
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const mockEventsData: IncidentAgentEvent[] = [
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  },
-  {
-    agent_name: "incident_entry",
-    message: "",
-    type: "memory_update"
-  }
-];
-
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+const REFRESH_INTERVAL_DURING_STREAMING = 3 * 1000; // in milliseconds
 
 const columnHelper = createColumnHelper<ExtendedDirective>();
 
@@ -116,8 +41,24 @@ export const IncidentDirectives = () => {
   const [searchInputValue, setSearchInputValue] = useState("");
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
   const [directiveToDelete, setDirectiveToDelete] = useState<string>();
+  const [conversationId, setConversationId] = useState<string>();
+  const [isStartMessageSending, setIsStartMessageSending] = useState(false);
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const [accumulatedEvents, setAccumulatedEvents] =
+    useState<IncidentAgentEvent[]>();
 
-  const { data } = useGetIncidentAgentDirectivesQuery(
+  const dispatch = useAgenticDispatch();
+
+  const [sendMessage, { isLoading: isSubsequentMessageSending }] =
+    useSendMessageToIncidentAgentDirectivesChatMutation();
+
+  const isMessageSending = isStartMessageSending || isSubsequentMessageSending;
+
+  const shouldBlockNavigation = Boolean(conversationId) || isMessageSending;
+
+  const blocker = useBlocker(shouldBlockNavigation);
+
+  const { data: directives } = useGetIncidentAgentDirectivesQuery(
     {
       search_term: searchInputValue || undefined
     },
@@ -125,6 +66,19 @@ export const IncidentDirectives = () => {
       pollingInterval: REFRESH_INTERVAL
     }
   );
+
+  const { data: events, isLoading: areEventsLoading } =
+    useGetIncidentAgentDirectivesChatEventsQuery(
+      {
+        conversationId: conversationId ?? ""
+      },
+      {
+        skip: !conversationId,
+        pollingInterval: isMessageSending
+          ? REFRESH_INTERVAL_DURING_STREAMING
+          : REFRESH_INTERVAL
+      }
+    );
 
   const [deleteIncidentAgentDirective] =
     useDeleteIncidentAgentDirectiveMutation();
@@ -152,33 +106,116 @@ export const IncidentDirectives = () => {
     setDirectiveToDelete(undefined);
   };
 
-  const handleMessageSend = () => {
-    // TODO: implement
+  const handleMessageSend = (text: string) => {
+    // Send first message to start the incident creation chat
+    if (!conversationId) {
+      setAccumulatedEvents([
+        {
+          type: "human",
+          agent_name: "incident_entry",
+          message: text,
+          tool_name: null,
+          mcp_name: null
+        }
+      ]);
+      // Stop any existing connection
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+
+      abortControllerRef.current = new AbortController();
+
+      setIsStartMessageSending(true);
+      void fetchEventSource(
+        `${
+          isString(window.digmaApiProxyPrefix)
+            ? window.digmaApiProxyPrefix
+            : "/api/"
+        }Agentic/directives/chat`,
+        {
+          method: "POST",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          signal: abortControllerRef.current.signal,
+          body: JSON.stringify({
+            text,
+            ids: selectedConditions
+          }),
+          onopen: (response: Response) => {
+            if (response.ok) {
+              setConversationId(
+                response.headers.get("agentic-conversation-id") ?? ""
+              );
+              // eslint-disable-next-line no-console
+              console.log(
+                `[${new Date().toISOString()}] Got conversation ID:`,
+                response.headers.get("agentic-conversation-id") ?? ""
+              );
+              setIsStartMessageSending(false);
+              return Promise.resolve();
+            } else {
+              setIsStartMessageSending(false);
+              return Promise.reject(
+                new Error(`HTTP ${response.status}: ${response.statusText}`)
+              );
+            }
+          },
+          onmessage: (message: EventSourceMessage) => {
+            // eslint-disable-next-line no-console
+            console.log(
+              `[${new Date().toISOString()}] Received message:`,
+              message
+            );
+          },
+          onerror: (err: unknown) => {
+            abortControllerRef.current = null;
+            setIsStartMessageSending(false);
+            if (err instanceof Error) {
+              // eslint-disable-next-line no-console
+              console.error("Error starting directives chat:", err);
+            } else {
+              // eslint-disable-next-line no-console
+              console.error("Unknown error starting directives chat");
+            }
+          },
+          onclose: () => {
+            abortControllerRef.current = null;
+          }
+        }
+      );
+    } else {
+      // Send subsequent messages to the incident creation chat
+      void sendMessage({
+        conversationId,
+        data: { text, ids: selectedConditions }
+      });
+    }
   };
 
   const handleSelectedConditionTagClick = (id: string) => () => {
     setSelectedConditions((prev) => prev.filter((x) => x !== id));
   };
 
-  const items = useMemo(() => {
-    // const filteredItems = (data?.directives ?? mockData).filter((item) => {
-    //   const conditionMatch = item.condition
-    //     .toLowerCase()
-    //     .includes(searchInputValue.toLowerCase());
-    //   const directiveMatch = item.directive
-    //     .toLowerCase()
-    //     .includes(searchInputValue.toLowerCase());
-    //   return conditionMatch || directiveMatch;
-    // });
+  const handleNavigationConfirmationDialogConfirm = () => {
+    blocker.proceed?.();
+  };
 
-    return (
-      data?.directives?.map((item, index) => ({
+  const handleNavigationConfirmationDialogClose = () => {
+    blocker.reset?.();
+  };
+
+  const items = useMemo(
+    () =>
+      directives?.directives?.map((item, index) => ({
         ...item,
         number: index + 1,
         isSelected: selectedConditions.includes(item.id)
-      })) ?? []
-    );
-  }, [selectedConditions, data]);
+      })) ?? [],
+
+    [selectedConditions, directives]
+  );
 
   const columns = [
     columnHelper.accessor((x) => x, {
@@ -304,6 +341,45 @@ export const IncidentDirectives = () => {
     enableSortingRemoval: false
   });
 
+  useEffect(() => {
+    setSelectedConditions((prev) =>
+      prev.filter((x) => directives?.directives.find((item) => item.id === x))
+    );
+  }, [directives]);
+
+  useEffect(() => {
+    const isCurrentConversationEnded =
+      conversationId &&
+      events?.some(
+        (event) =>
+          event.type === "agent_end" &&
+          event.agent_name === "directives_manager" &&
+          event.conversation_id === conversationId
+      );
+
+    if (isCurrentConversationEnded) {
+      setConversationId(undefined);
+      dispatch(digmaApi.util.invalidateTags(["IncidentAgentDirective"]));
+    }
+  }, [events, conversationId, dispatch]);
+
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, []);
+
+  // Filter out internal tool events
+  const filteredEvents = useMemo(
+    () =>
+      events?.filter(
+        (event) => !(event.type === "tool" && event.mcp_name === "")
+      ) ?? [],
+    [events]
+  );
+
   return (
     <s.Container>
       <s.Header>
@@ -314,95 +390,101 @@ export const IncidentDirectives = () => {
         />
       </s.Header>
       <s.TableContainer>
-        <s.Table>
-          <s.TableHead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <s.TableHeadRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  const meta = header.column.columnDef.meta as ColumnMeta;
+        {directives ? (
+          <s.Table>
+            <s.TableHead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <s.TableHeadRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    const meta = header.column.columnDef.meta as ColumnMeta;
 
-                  return (
-                    <s.TableHeaderCell
-                      key={header.id}
-                      style={{
-                        width: meta.width,
-                        minWidth: meta.minWidth
-                      }}
-                    >
-                      <s.TableHeaderCellContent
-                        onClick={
-                          header.column.columnDef.enableSorting
-                            ? header.column.getToggleSortingHandler()
-                            : undefined
-                        }
-                        $align={meta.textAlign}
+                    return (
+                      <s.TableHeaderCell
+                        key={header.id}
+                        style={{
+                          width: meta.width,
+                          minWidth: meta.minWidth
+                        }}
                       >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                        {header.column.columnDef.enableSorting &&
-                          {
-                            asc: (
-                              <s.SortingOrderIconContainer>
-                                <SortIcon
-                                  color={"currentColor"}
-                                  size={16}
-                                  direction={Direction.Up}
-                                />
-                              </s.SortingOrderIconContainer>
-                            ),
-                            desc: (
-                              <s.SortingOrderIconContainer>
-                                <SortIcon
-                                  color={"currentColor"}
-                                  size={16}
-                                  direction={Direction.Down}
-                                />
-                              </s.SortingOrderIconContainer>
-                            )
-                          }[header.column.getIsSorted() as string]}
-                      </s.TableHeaderCellContent>
-                    </s.TableHeaderCell>
-                  );
-                })}
-              </s.TableHeadRow>
-            ))}
-          </s.TableHead>
-          <s.TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <s.TableBodyRow key={row.id}>
-                {row.getVisibleCells().map((cell) => {
-                  const meta = cell.column.columnDef.meta as ColumnMeta;
+                        <s.TableHeaderCellContent
+                          onClick={
+                            header.column.columnDef.enableSorting
+                              ? header.column.getToggleSortingHandler()
+                              : undefined
+                          }
+                          $align={meta.textAlign}
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                          {header.column.columnDef.enableSorting &&
+                            {
+                              asc: (
+                                <s.SortingOrderIconContainer>
+                                  <SortIcon
+                                    color={"currentColor"}
+                                    size={16}
+                                    direction={Direction.Up}
+                                  />
+                                </s.SortingOrderIconContainer>
+                              ),
+                              desc: (
+                                <s.SortingOrderIconContainer>
+                                  <SortIcon
+                                    color={"currentColor"}
+                                    size={16}
+                                    direction={Direction.Down}
+                                  />
+                                </s.SortingOrderIconContainer>
+                              )
+                            }[header.column.getIsSorted() as string]}
+                        </s.TableHeaderCellContent>
+                      </s.TableHeaderCell>
+                    );
+                  })}
+                </s.TableHeadRow>
+              ))}
+            </s.TableHead>
+            <s.TableBody>
+              {table.getRowModel().rows.map((row) => (
+                <s.TableBodyRow key={row.id}>
+                  {row.getVisibleCells().map((cell) => {
+                    const meta = cell.column.columnDef.meta as ColumnMeta;
 
-                  return (
-                    <s.TableBodyCell
-                      key={cell.id}
-                      style={{
-                        width: meta.width,
-                        minWidth: meta.minWidth,
-                        justifyContent: meta.textAlign
-                      }}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </s.TableBodyCell>
-                  );
-                })}
-              </s.TableBodyRow>
-            ))}
-          </s.TableBody>
-        </s.Table>
+                    return (
+                      <s.TableBodyCell
+                        key={cell.id}
+                        style={{
+                          width: meta.width,
+                          minWidth: meta.minWidth,
+                          justifyContent: meta.textAlign
+                        }}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </s.TableBodyCell>
+                    );
+                  })}
+                </s.TableBodyRow>
+              ))}
+            </s.TableBody>
+          </s.Table>
+        ) : (
+          <s.LoadingContainer>
+            <Spinner size={32} />
+          </s.LoadingContainer>
+        )}
       </s.TableContainer>
       <s.StyledAgentChat
-        data={[]}
-        isDataLoading={false}
+        data={filteredEvents.length > 0 ? filteredEvents : accumulatedEvents}
+        isDataLoading={areEventsLoading}
         onMessageSend={handleMessageSend}
-        isMessageSending={false}
+        isMessageSending={isMessageSending}
         attachmentsComponent={
           selectedConditions.length > 0 && (
             <s.SelectedConditionsContainer>
@@ -411,7 +493,7 @@ export const IncidentDirectives = () => {
                   onClick={handleSelectedConditionTagClick(x)}
                   key={x}
                 >
-                  #{x}
+                  #{items.find((d) => d.id === x)?.number}
                 </s.SelectedConditionTag>
               ))}
             </s.SelectedConditionsContainer>
@@ -427,6 +509,20 @@ export const IncidentDirectives = () => {
             onConfirm={handleDeleteDirectiveDialogConfirm}
             confirmBtnText={"Yes, delete"}
             cancelBtnText={"No, keep it"}
+          />
+        </s.StyledOverlay>
+      )}
+      {blocker.state === "blocked" && (
+        <s.StyledOverlay>
+          <CancelConfirmation
+            header={"Leave this page"}
+            description={
+              "Are you sure you want to leave? You will lose all chat history."
+            }
+            onClose={handleNavigationConfirmationDialogClose}
+            onConfirm={handleNavigationConfirmationDialogConfirm}
+            confirmBtnText={"Yes, leave"}
+            cancelBtnText={"No, stay"}
           />
         </s.StyledOverlay>
       )}

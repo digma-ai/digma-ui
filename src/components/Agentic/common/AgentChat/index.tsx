@@ -126,7 +126,8 @@ export const AgentChat = ({
             </s.AgentMessage>
           );
         }
-        break;
+
+        return null;
       }
       case "memory_update":
         return (

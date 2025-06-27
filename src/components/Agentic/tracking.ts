@@ -9,8 +9,7 @@ export const trackingEvents = addPrefix(
     SIDEBAR_USER_MENU_ITEM_CLICKED: "sidebar user menu item clicked",
     SIDEBAR_INCIDENTS_LIST_ITEM_CLICKED: "sidebar incidents list item clicked",
     SIDEBAR_CREATE_BUTTON_CLICKED: "sidebar create button clicked",
-    SIDEBAR_DIRECTIVES_BUTTON_CLICKED: "sidebar directives button clicked",
-    SIDEBAR_TEMPLATE_BUTTON_CLICKED: "sidebar template button clicked",
+    SIDEBAR_LINK_BUTTON_CLICKED: "sidebar link button clicked",
     INCIDENT_CREATION_CHAT_DIALOG_CLOSED:
       "incident creation chat dialog closed",
     VIEW_NEW_INCIDENT_LINK_CLICKED: "view incident link clicked",

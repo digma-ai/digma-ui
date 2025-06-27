@@ -27,6 +27,19 @@ const isIncidentActive = (incident: IncidentResponseItem): boolean => {
   return incident.active_status === "active";
 };
 
+const linkButtons: { id: string; label: string; route: string }[] = [
+  {
+    id: "incidents",
+    label: "Directives",
+    route: "/incidents/directives"
+  },
+  {
+    id: "template",
+    label: "Template",
+    route: "/incidents/template"
+  }
+];
+
 export const Sidebar = () => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
@@ -60,16 +73,18 @@ export const Sidebar = () => {
     dispatch(setIsCreateIncidentChatOpen(true));
   };
 
-  const handleDirectivesButtonClick = () => {
-    sendUserActionTrackingEvent(
-      trackingEvents.SIDEBAR_DIRECTIVES_BUTTON_CLICKED
-    );
-    void navigate("/incidents/directives");
-  };
+  const handleLinkButtonClick = (id: string) => () => {
+    sendUserActionTrackingEvent(trackingEvents.SIDEBAR_LINK_BUTTON_CLICKED, {
+      id
+    });
 
-  const handleTemplateButtonClick = () => {
-    sendUserActionTrackingEvent(trackingEvents.SIDEBAR_TEMPLATE_BUTTON_CLICKED);
-    void navigate("/incidents/template");
+    const button = linkButtons.find((button) => button.id === id);
+
+    if (!button) {
+      return;
+    }
+
+    void navigate(button.route);
   };
 
   const handleLogoutMenuItemClick = () => {
@@ -116,10 +131,6 @@ export const Sidebar = () => {
 
   const user = useAgenticSelector((state) => state.auth.user);
   const userInitial = (user?.email[0] ?? "").toLocaleUpperCase();
-  const isTemplateButtonHighlighted =
-    location.pathname === "/incidents/template";
-  const isDirectivesButtonHighlighted =
-    location.pathname === "/incidents/directives";
 
   return (
     <s.Container>
@@ -151,16 +162,18 @@ export const Sidebar = () => {
           ))}
         </s.IncidentsList>
       </s.IncidentsListContainer>
-      <s.LinkButton
-        buttonType={isDirectivesButtonHighlighted ? "primary" : "secondary"}
-        label={"Directives"}
-        onClick={handleDirectivesButtonClick}
-      />
-      <s.LinkButton
-        buttonType={isTemplateButtonHighlighted ? "primary" : "secondary"}
-        label={"Template"}
-        onClick={handleTemplateButtonClick}
-      />
+      {linkButtons.map((button) => {
+        const isHighlighted = location.pathname === button.route;
+
+        return (
+          <s.LinkButton
+            key={button.label}
+            buttonType={isHighlighted ? "primary" : "secondary"}
+            label={button.label}
+            onClick={handleLinkButtonClick(button.id)}
+          />
+        );
+      })}
       <NewPopover
         content={
           <Popup>

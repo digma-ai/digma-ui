@@ -1,4 +1,7 @@
-import { fetchEventSource } from "@microsoft/fetch-event-source";
+import {
+  fetchEventSource,
+  type EventSourceMessage
+} from "@microsoft/fetch-event-source";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAgenticDispatch } from "../../../../containers/Agentic/hooks";
@@ -93,6 +96,11 @@ export const CreateIncidentChatOverlay = () => {
               setIncidentId(
                 response.headers.get("agentic-conversation-id") ?? ""
               );
+              // eslint-disable-next-line no-console
+              console.log(
+                `[${new Date().toISOString()}] Got conversation ID:`,
+                response.headers.get("agentic-conversation-id") ?? ""
+              );
               setIsStartMessageSending(false);
               return Promise.resolve();
             } else {
@@ -102,26 +110,31 @@ export const CreateIncidentChatOverlay = () => {
               );
             }
           },
-          // onmessage: (message: EventSourceMessage) => {
-          //   if (message.data) {
-          //     try {
-          //       const parsedData = JSON.parse(
-          //         message.data
-          //       ) as IncidentAgentEvent;
-          //       if (["human", "token"].includes(parsedData.type)) {
-          //         setAccumulatedData((prev) =>
-          //           prev ? [...prev, parsedData] : [parsedData]
-          //         );
-          //       }
-          //       if (parsedData.type === "input_user_required") {
-          //         setIsStartMessageSending(false);
-          //       }
-          //     } catch (error) {
-          //       // eslint-disable-next-line no-console
-          //       console.error("Error parsing message data:", error);
-          //     }
-          //   }
-          // },
+          onmessage: (message: EventSourceMessage) => {
+            // eslint-disable-next-line no-console
+            console.log(
+              `[${new Date().toISOString()}] Received message:`,
+              message
+            );
+            // if (message.data) {
+            //   try {
+            //     const parsedData = JSON.parse(
+            //       message.data
+            //     ) as IncidentAgentEvent;
+            //     if (["human", "token"].includes(parsedData.type)) {
+            //       setAccumulatedData((prev) =>
+            //         prev ? [...prev, parsedData] : [parsedData]
+            //       );
+            //     }
+            //     if (parsedData.type === "input_user_required") {
+            //       setIsStartMessageSending(false);
+            //     }
+            //   } catch (error) {
+            //     // eslint-disable-next-line no-console
+            //     console.error("Error parsing message data:", error);
+            //   }
+            // }
+          },
           onerror: (err: unknown) => {
             abortControllerRef.current = null;
             setIsStartMessageSending(false);
@@ -138,10 +151,8 @@ export const CreateIncidentChatOverlay = () => {
           }
         }
       );
-    }
-
-    // Send subsequent messages to the incident creation chat
-    if (incidentId) {
+    } else {
+      // Send subsequent messages to the incident creation chat
       void sendMessage({
         incidentId,
         data: { text }
