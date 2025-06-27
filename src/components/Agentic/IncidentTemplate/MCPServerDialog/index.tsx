@@ -117,7 +117,7 @@ export const MCPServerDialog = ({
   };
 
   const handleToolsStepCancel = () => {
-    setCurrentStep((prev) => prev - 1);
+    onClose();
   };
 
   const tools = useMemo(
@@ -156,7 +156,7 @@ export const MCPServerDialog = ({
   };
 
   return (
-    <Dialog title={"Wizard"} onClose={handleDialogClose}>
+    <Dialog title={"Add MCP Server"} onClose={handleDialogClose}>
       {steps[currentStep]}
     </Dialog>
   );

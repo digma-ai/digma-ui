@@ -6,6 +6,18 @@ import { Footer } from "../Footer";
 import * as s from "./styles";
 import type { ServerStepProps } from "./types";
 
+const placeholderText = JSON.stringify(
+  {
+    weather: {
+      transport: "stdio",
+      command: "npx",
+      args: ["-y", "@h1deya/mcp-server-weather"]
+    }
+  },
+  null,
+  2
+);
+
 export const ServerStep = ({
   onConnect,
   connectionSettings,
@@ -29,7 +41,11 @@ export const ServerStep = ({
 
   return (
     <s.Container>
-      <s.TextArea value={connectionSettings} onChange={handleTextAreaChange} />
+      <s.TextArea
+        value={connectionSettings}
+        placeholder={placeholderText}
+        onChange={handleTextAreaChange}
+      />
       <Footer
         isLoading={isLoading}
         errorMessage={error}

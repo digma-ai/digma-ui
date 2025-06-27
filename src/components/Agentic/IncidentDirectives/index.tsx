@@ -44,8 +44,12 @@ export const IncidentDirectives = () => {
   const [conversationId, setConversationId] = useState<string>();
   const [isStartMessageSending, setIsStartMessageSending] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
-  const [accumulatedEvents, setAccumulatedEvents] =
-    useState<IncidentAgentEvent[]>();
+  const [fetchedEvents, setFetchedEvents] = useState<IncidentAgentEvent[]>([]);
+  const [placeholderEvents, setPlaceholderEvents] = useState<
+    IncidentAgentEvent[]
+  >([]);
+  const [isCurrentConversationEnded, setIsCurrentConversationEnded] =
+    useState(false);
 
   const dispatch = useAgenticDispatch();
 
@@ -73,7 +77,7 @@ export const IncidentDirectives = () => {
         conversationId: conversationId ?? ""
       },
       {
-        skip: !conversationId,
+        skip: !conversationId || isCurrentConversationEnded,
         pollingInterval: isMessageSending
           ? REFRESH_INTERVAL_DURING_STREAMING
           : REFRESH_INTERVAL
@@ -107,9 +111,11 @@ export const IncidentDirectives = () => {
   };
 
   const handleMessageSend = (text: string) => {
-    // Send first message to start the incident creation chat
-    if (!conversationId) {
-      setAccumulatedEvents([
+    // Send first message to start the new conversation
+    if (!conversationId || isCurrentConversationEnded) {
+      setConversationId(undefined);
+      setFetchedEvents([]);
+      setPlaceholderEvents([
         {
           type: "human",
           agent_name: "incident_entry",
@@ -186,7 +192,7 @@ export const IncidentDirectives = () => {
         }
       );
     } else {
-      // Send subsequent messages to the incident creation chat
+      // Send subsequent messages to continue the current conversation
       void sendMessage({
         conversationId,
         data: { text, ids: selectedConditions }
@@ -348,20 +354,28 @@ export const IncidentDirectives = () => {
   }, [directives]);
 
   useEffect(() => {
-    const isCurrentConversationEnded =
+    const isConversationEnded = Boolean(
       conversationId &&
-      events?.some(
-        (event) =>
-          event.type === "agent_end" &&
-          event.agent_name === "directives_manager" &&
-          event.conversation_id === conversationId
-      );
+        fetchedEvents?.some(
+          (event) =>
+            event.type === "agent_end" &&
+            event.agent_name === "directives_manager" &&
+            event.conversation_id === conversationId
+        )
+    );
 
-    if (isCurrentConversationEnded) {
-      setConversationId(undefined);
+    setIsCurrentConversationEnded(isConversationEnded);
+
+    if (isConversationEnded) {
       dispatch(digmaApi.util.invalidateTags(["IncidentAgentDirective"]));
     }
-  }, [events, conversationId, dispatch]);
+  }, [conversationId, fetchedEvents, dispatch]);
+
+  useEffect(() => {
+    if (events && events.extra.conversationId === conversationId) {
+      setFetchedEvents(events.data);
+    }
+  }, [events, conversationId]);
 
   useEffect(() => {
     return () => {
@@ -371,13 +385,21 @@ export const IncidentDirectives = () => {
     };
   }, []);
 
+  const chatEvents = useMemo(
+    () =>
+      (conversationId && fetchedEvents.length > 0
+        ? fetchedEvents
+        : placeholderEvents) ?? [],
+    [placeholderEvents, fetchedEvents, conversationId]
+  );
+
   // Filter out internal tool events
   const filteredEvents = useMemo(
     () =>
-      events?.filter(
+      chatEvents.filter(
         (event) => !(event.type === "tool" && event.mcp_name === "")
       ) ?? [],
-    [events]
+    [chatEvents]
   );
 
   return (
@@ -481,7 +503,8 @@ export const IncidentDirectives = () => {
         )}
       </s.TableContainer>
       <s.StyledAgentChat
-        data={filteredEvents.length > 0 ? filteredEvents : accumulatedEvents}
+        key={conversationId}
+        data={filteredEvents}
         isDataLoading={areEventsLoading}
         onMessageSend={handleMessageSend}
         isMessageSending={isMessageSending}
