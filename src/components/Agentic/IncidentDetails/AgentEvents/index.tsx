@@ -87,6 +87,7 @@ export const AgentEvents = () => {
   const shouldShowTypingForEvent = (index: number) =>
     isNumber(initialEventsCount) && index >= initialEventsCount;
 
+  // TODO: move to a separate component
   const renderEvent = (
     event: GetIncidentAgentEventsResponse[number],
     i: number
@@ -108,7 +109,7 @@ export const AgentEvents = () => {
         let toolName = event.tool_name;
 
         if (event.mcp_name) {
-          toolName += ` ${[event.mcp_name, "MCP tool"]
+          toolName += ` (${[event.mcp_name, "MCP tool"]
             .filter(Boolean)
             .join(" ")})`;
         }

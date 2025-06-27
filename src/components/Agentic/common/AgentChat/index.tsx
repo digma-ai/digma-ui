@@ -82,6 +82,7 @@ export const AgentChat = ({
   const shouldShowTypingForEvent = (index: number) =>
     Boolean(initialEventsCount && index >= initialEventsCount);
 
+  // TODO: move to a separate component
   const renderChatEvent = (event: IncidentAgentEvent, i: number) => {
     switch (event.type) {
       case "ai":
@@ -101,7 +102,7 @@ export const AgentChat = ({
         let toolName = event.tool_name;
 
         if (event.mcp_name) {
-          toolName += ` ${[event.mcp_name, "MCP tool"]
+          toolName += ` (${[event.mcp_name, "MCP tool"]
             .filter(Boolean)
             .join(" ")})`;
         }
