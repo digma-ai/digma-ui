@@ -1,6 +1,6 @@
 {
   "name": "digma-ui",
-  "version": "15.3.0-alpha.5",
+  "version": "15.3.0-alpha.6",
   "description": "Digma UI",
   "scripts": {
     "lint:eslint": "eslint --cache .",
