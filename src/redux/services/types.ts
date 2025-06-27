@@ -1054,9 +1054,7 @@ export interface GetIssueRecommendationsResponse {
 
 export interface ExtendedGetSpanEnvironmentsResponse {
   data: GetSpanEnvironmentsResponse;
-  extra: {
-    spanCodeObjectId: string;
-  };
+  extra: GetSpanEnvironmentsPayload;
 }
 
 export interface GetBlockedTracesPayload {
@@ -1240,6 +1238,11 @@ export interface GetDirectivesChatEventsPayload {
 }
 
 export type GetDirectivesChatEventsResponse = IncidentAgentEvent[];
+
+export interface ExtendedGetDirectivesChatEventsResponse {
+  data: GetDirectivesChatEventsResponse;
+  extra: GetDirectivesChatEventsPayload;
+}
 
 export interface MCPServerData {
   uid: string;
