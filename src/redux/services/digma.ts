@@ -10,6 +10,7 @@ import type {
   DeleteMCPServerPayload,
   DismissErrorPayload,
   DismissUndismissInsightPayload,
+  ExtendedGetDirectivesChatEventsResponse,
   ExtendedGetInsightsPayload,
   ExtendedGetInsightsResponse,
   ExtendedGetInsightsStatsResponse,
@@ -554,9 +555,7 @@ export const digmaApi = createApi({
       }),
       transformResponse: (response: GetSpanEnvironmentsResponse, _, arg) => ({
         data: response,
-        extra: {
-          spanCodeObjectId: arg.spanCodeObjectId
-        }
+        extra: arg
       })
     }),
     getIssueRecommendations: builder.query<
@@ -666,13 +665,21 @@ export const digmaApi = createApi({
       invalidatesTags: ["IncidentEntryAgentChatEvent"]
     }),
     getIncidentAgentDirectivesChatEvents: builder.query<
-      GetDirectivesChatEventsResponse,
+      ExtendedGetDirectivesChatEventsResponse,
       GetDirectivesChatEventsPayload
     >({
       query: ({ conversationId }) => ({
         url: `Agentic/directives/chat/${window.encodeURIComponent(
           conversationId
         )}/events`
+      }),
+      transformResponse: (
+        response: GetDirectivesChatEventsResponse,
+        _,
+        arg
+      ) => ({
+        data: response,
+        extra: arg
       })
     }),
     getIncidentAgentMCPServers: builder.query<GetMCPServersResponse, void>({
