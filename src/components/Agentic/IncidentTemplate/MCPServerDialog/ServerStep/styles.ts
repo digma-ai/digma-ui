@@ -26,10 +26,3 @@ export const TextArea = styled.textarea`
   font-weight: 500;
   resize: none;
 `;
-
-export const Footer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  justify-content: flex-end;
-`;

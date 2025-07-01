@@ -20,7 +20,7 @@ Run tests:
 npm run test
 ```
 
-Start dev server:
+Start dev server (with Web distribution):
 
 ```shell
 npm run start
@@ -42,21 +42,28 @@ Supported `platform` values:
 
 Build of the package will be in the `./dist` directory
 
-## Environment variables
+## Environment variables for Web distribution
 
 To set environment variables use .env file
 
-| Name              | Type   | Default | Description                                               |
-| ----------------- | ------ | ------- | --------------------------------------------------------- |
-| PORT              | number | 3000    | Port (for dev server)                                     |
-| UI_BASE_URL       | string | -       | Base URL to proxy requests to ingress (for dev server)    |
-| JAEGER_API_PATH   | string | -       | URL path to proxy requests to Jaeger UI (for dev server ) |
-| API_BASE_URL      | string | -       | Base URL to proxy Digma API requests (for dev server)     |
-| AUTH_API_BASE_URL | string | -       | Base URL to proxy auth API requests (for dev server)      |
-| API_TOKEN         | string | -       | API token (for dev server)                                |
-| USERNAME          | string | -       | User login (for dev server)                               |
-| PASSWORD          | string | -       | User password (for dev server)                            |
-| JAEGER_UI_PATH    | string | -       | Path to custom Jaeger UI build                            |
+| Name                            | Type    | Default | Description                                              |
+| ------------------------------- | ------- | ------- | -------------------------------------------------------- |
+| PORT                            | number  | 3000    | Port (for dev server)                                    |
+| UI_BASE_URL                     | string  | -       | Base URL to proxy requests to ingress (for dev server)   |
+| JAEGER_API_PATH                 | string  | -       | URL path to proxy requests to Jaeger UI (for dev server) |
+| API_BASE_URL                    | string  | -       | Base URL to proxy Digma API requests (for dev server)    |
+| AUTH_API_BASE_URL               | string  | -       | Base URL to proxy auth API requests (for dev server)     |
+| API_TOKEN                       | string  | -       | API token (for dev server)                               |
+| LOGIN                           | string  | -       | User login (for dev server)                              |
+| PASSWORD                        | string  | -       | User password (for dev server)                           |
+| IS_JAEGER_ENABLED               | boolean | false   | Enable links to Jaeger                                   |
+| JAEGER_UI_PATH                  | string  | -       | Path to custom Jaeger UI build                           |
+| IS_SANDBOX_ENABLED              | boolean | false   | Enable Sandbox (demo) mode                               |
+| ARE_INSIGHT_SUGGESTIONS_ENABLED | boolean | false   | Enable insight suggestions                               |
+| GOOGLE_CLIENT_ID                | string  | -       | Google client ID                                         |
+| POSTHOG_API_KEY                 | string  | -       | PostHog API key                                          |
+| POSTHOG_URL                     | string  | -       | PostHog URL                                              |
+| PRODUCT_FRUITS_WORKSPACE_CODE   | string  | -       | Product Fruits workspace code                            |
 
 ## Jaeger UI
 

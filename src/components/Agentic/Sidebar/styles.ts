@@ -18,6 +18,8 @@ export const Container = styled.aside`
   position: relative;
   overflow: hidden;
   z-index: 0;
+  flex-shrink: 0;
+  box-sizing: border-box;
 `;
 
 export const GradientBackground = styled.div`
@@ -103,7 +105,12 @@ export const StyledPulsatingDot = styled(PulsatingDot)`
   background: ${({ theme }) => theme.colors.v3.status.high};
 `;
 
-export const TemplateButton = styled(NewButton)`
+export const PauseIconContainer = styled.div`
+  display: flex;
+  flex-shrink: 0;
+`;
+
+export const LinkButton = styled(NewButton)`
   color: ${({ theme }) => theme.colors.v3.text.white};
   width: 100%;
   font-size: 18px;

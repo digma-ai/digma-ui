@@ -69,10 +69,12 @@ export const SummaryContainer = styled.div`
   padding: 24px;
   flex-direction: column;
   flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
   gap: 24px;
   border-radius: 16px;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
-  width: 60%;
 `;
 
 export const SummaryContainerToolbar = styled.div`
@@ -161,7 +163,8 @@ export const AdditionalInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: 40%;
+  width: 30%;
+  min-width: 401px;
   border-radius: 16px;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
   flex-shrink: 0;

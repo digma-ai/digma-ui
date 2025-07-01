@@ -2,6 +2,7 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import type { IncidentAgentEvent } from "../../../../redux/services/types";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import { MagicWandIcon } from "../../../common/icons/16px/MagicWandIcon";
 import { Chat } from "../../common/Chat";
 import { Accordion } from "../../IncidentDetails/AgentEvents/Accordion";
 import { TypingMarkdown } from "../../IncidentDetails/TypingMarkdown";
@@ -20,7 +21,8 @@ export const AgentChat = ({
   className,
   data,
   isDataLoading,
-  onNavigateToIncident
+  onNavigateToIncident,
+  attachmentsComponent
 }: AgentChatProps) => {
   const [initialEventsCount, setInitialEventsCount] = useState<number>();
   const [eventsVisibleCount, setEventsVisibleCount] = useState<number>();
@@ -95,15 +97,22 @@ export const AgentChat = ({
             speed={shouldShowTypingForEvent(i) ? TYPING_SPEED : undefined}
           />
         );
-      case "tool":
+      case "tool": {
+        let toolName = event.tool_name;
+
+        if (event.mcp_name) {
+          toolName += ` ${[event.mcp_name, "MCP tool"]
+            .filter(Boolean)
+            .join(" ")})`;
+        }
+
         return (
           <Accordion
-            summary={`${event.tool_name} (${[event.mcp_name, "MCP tool"]
-              .filter(Boolean)
-              .join(" ")})`}
+            summary={toolName}
             content={<TypingMarkdown text={convertToMarkdown(event.message)} />}
           />
         );
+      }
       case "human":
         return <s.HumanMessage>{event.message}</s.HumanMessage>;
       case "agent_end": {
@@ -119,6 +128,13 @@ export const AgentChat = ({
         }
         break;
       }
+      case "memory_update":
+        return (
+          <s.MemoryUpdateMessage>
+            <MagicWandIcon color={"currentColor"} />
+            Updated saved memory
+          </s.MemoryUpdateMessage>
+        );
       default:
         return null;
     }
@@ -126,6 +142,7 @@ export const AgentChat = ({
 
   return (
     <Chat
+      attachmentsComponent={attachmentsComponent}
       isInitialLoading={!data && isDataLoading}
       isMessageSending={isMessageSending}
       onMessageSend={handleMessageSend}

@@ -22,14 +22,14 @@ const DEFAULT_PORT = 3000;
 
 dotenv.config();
 
-if (!process.env.USERNAME || !process.env.PASSWORD) {
-  throw new Error("Username and password must be provided");
+if (!process.env.LOGIN || !process.env.PASSWORD) {
+  throw new Error("Login and password must be provided");
 }
 
 let session: Session | undefined;
 
 const credentials: Credentials = {
-  username: process.env.USERNAME,
+  username: process.env.LOGIN,
   password: process.env.PASSWORD
 };
 
@@ -43,16 +43,13 @@ const apiProxyClient = axios.create({
   }
 });
 
-const login = async ({ username, password }: Credentials) => {
+const login = async (credentials: Credentials) => {
   const response = await apiProxyClient.post<{
     accessToken: string;
     refreshToken: string;
     expiration: string;
     userId: string;
-  }>("/authentication/login", {
-    username,
-    password
-  });
+  }>("/authentication/login", credentials);
 
   return response.data;
 };
@@ -147,17 +144,19 @@ const config: WebpackConfiguration = {
       webApps.forEach((app) =>
         devServer.app?.get(`/${app}/env.js`, (req, res) => {
           const envVariables = {
-            // Put app environment variables here
-            isJaegerEnabled: true,
-            // jaegerURL: "",
-            jaegerApiPath: process.env.JAEGER_API_PATH,
             platform: "Web",
-            areInsightSuggestionsEnabled: true,
-            // googleClientId: "",
-            // postHogApiKey: "",
-            // postHogHost: "",
-            isSandboxModeEnabled: false
-            // productFruitsWorkspaceCode: ""
+            isJaegerEnabled: process.env.IS_JAEGER_ENABLED === "true",
+            jaegerURL: process.env.JAEGER_URL,
+            jaegerApiPath: process.env.JAEGER_API_PATH,
+            isSandboxModeEnabled:
+              process.env.IS_SANDBOX_MODE_ENABLED === "true",
+            areInsightSuggestionsEnabled:
+              process.env.ARE_INSIGHT_SUGGESTIONS_ENABLED === "true",
+            googleClientId: process.env.GOOGLE_CLIENT_ID,
+            postHogApiKey: process.env.POSTHOG_API_KEY,
+            postHogHost: process.env.POSTHOG_URL,
+            productFruitsWorkspaceCode:
+              process.env.PRODUCT_FRUITS_WORKSPACE_CODE
           };
 
           let envFileContent = "";

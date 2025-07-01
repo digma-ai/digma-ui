@@ -91,7 +91,7 @@ export const IncidentDetails = () => {
     return null;
   }
 
-  const incidentStatus = incidentData?.status;
+  const incidentStatus = incidentData?.status_description;
 
   const agentName = agentsData?.agents.find(
     (agent) => agent.name === agentId

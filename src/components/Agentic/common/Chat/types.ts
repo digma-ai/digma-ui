@@ -7,4 +7,5 @@ export interface ChatProps {
   chatContent: ReactNode;
   className?: string;
   promptFontSize?: number; // in pixels
+  attachmentsComponent?: ReactNode;
 }

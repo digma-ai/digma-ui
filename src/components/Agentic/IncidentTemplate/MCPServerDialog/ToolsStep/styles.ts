@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { getCodeFont } from "../../../../common/App/styles";
 import { subscriptRegularTypography } from "../../../../common/App/typographies";
 import { ToggleSwitch } from "../../../../common/v3/ToggleSwitch";
-import type { ToolTagDeleteButtonProps, ToolTagProps } from "./types";
+import type { ToolTagProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -91,21 +91,7 @@ export const ToolTag = styled.div<ToolTagProps>`
   user-select: none;
 `;
 
-export const ToolTagDeleteButton = styled.button<ToolTagDeleteButtonProps>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: ${({ theme, $isHighlighted }) =>
-    $isHighlighted
-      ? theme.colors.v3.icon.primary
-      : theme.colors.v3.stroke.primary};
-`;
-
-export const TextArea = styled.textarea`
+export const InstructionsTextArea = styled.textarea`
   ${({ theme }) => getCodeFont(theme.codeFont)}
   display: flex;
   flex-grow: 1;
@@ -130,6 +116,12 @@ export const TextArea = styled.textarea`
 export const Footer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+`;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  align-items: center;
   gap: 8px;
-  justify-content: flex-end;
+  margin-left: auto;
 `;

@@ -1,6 +1,6 @@
 import type { ExtendedAgentMCPServer } from "../types";
 
-export interface MCPServersSideContainerProps {
+export interface MCPServersContainerProps {
   servers: ExtendedAgentMCPServer[];
 }
 

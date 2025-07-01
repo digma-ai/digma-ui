@@ -1,8 +1,12 @@
-import { Position } from "@xyflow/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  useDeleteIncidentAgentMCPServerMutation,
+  useGetIncidentAgentMCPServersQuery
+} from "../../../redux/services/digma";
+import { CancelConfirmation } from "../../common/CancelConfirmation";
 import { Overlay } from "../../common/Overlay";
 import type { ExtendedAgent } from "../IncidentDetails/AgentFlowChart/types";
-import { AddMCPServerDialog } from "./AddMCPServerDialog";
+import { MCPServerDialog } from "./MCPServerDialog";
 import * as s from "./styles";
 
 const initialAgents: ExtendedAgent[] = [
@@ -10,135 +14,61 @@ const initialAgents: ExtendedAgent[] = [
     name: "digma",
     display_name: "Digma",
     description: "Digma",
-    running: false,
-    status: "active",
+    status: "waiting",
     mcp_servers: []
   },
   {
     name: "watchman",
     display_name: "Watchman",
     description: "Watchman",
-    running: false,
-    status: "active",
-    mcp_servers: [
-      {
-        name: "postgres",
-        display_name: "Postgres",
-        active: true,
-        position: Position.Bottom
-      },
-      {
-        name: "digma",
-        display_name: "Digma",
-        active: true,
-        position: Position.Bottom
-      },
-      {
-        name: "github",
-        display_name: "GitHub",
-        active: true,
-        position: Position.Bottom
-      }
-    ]
+    status: "waiting",
+    mcp_servers: []
   },
   {
     name: "triager",
     display_name: "Triager",
     description: "Triager",
-    running: false,
-    status: "active",
-    mcp_servers: [
-      {
-        name: "postgres",
-        display_name: "Postgres",
-        active: true,
-        position: Position.Bottom
-      },
-      {
-        name: "digma",
-        display_name: "Digma",
-        active: true,
-        position: Position.Bottom
-      },
-      {
-        name: "github",
-        display_name: "GitHub",
-        active: true,
-        position: Position.Bottom
-      }
-    ]
+    status: "waiting",
+    mcp_servers: []
   },
 
   {
     name: "code_resolver",
     display_name: "Code Resolver",
     description: "Code Resolver",
-    running: false,
-    status: "active",
-    mcp_servers: [
-      {
-        name: "postgres",
-        display_name: "Postgres",
-        active: true,
-        position: Position.Bottom
-      },
-      {
-        name: "digma",
-        display_name: "Digma",
-        active: true,
-        position: Position.Bottom
-      },
-      {
-        name: "github",
-        display_name: "GitHub",
-        active: true,
-        position: Position.Bottom
-      }
-    ]
+    status: "waiting",
+    mcp_servers: []
   },
   {
     name: "infra_resolver",
     display_name: "Infrastructure Resolver",
     description: "Infrastructure Resolver",
-    running: false,
-    status: "active",
-    mcp_servers: [
-      {
-        name: "postgres",
-        display_name: "Postgres",
-        active: true,
-        position: Position.Top
-      },
-      {
-        name: "digma",
-        display_name: "Digma",
-        active: true,
-        position: Position.Top
-      },
-      {
-        name: "github",
-        display_name: "GitHub",
-        active: true,
-        position: Position.Top
-      }
-    ]
+    status: "waiting",
+    mcp_servers: []
   },
   {
     name: "validator",
     display_name: "Validator",
     description: "Validator",
-    running: false,
-    status: "active",
+    status: "waiting",
     mcp_servers: []
   }
 ];
 
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+
 export const IncidentTemplate = () => {
   const [agentId, setAgentId] = useState<string | null>("watchman");
   const [agents, setAgents] = useState<ExtendedAgent[]>(initialAgents);
-  const [agentToUpdate, setAgentToUpdate] = useState<ExtendedAgent>();
-  const [isAddMCPServerDialogOpen, setIsAddMCPServerDialogOpen] =
-    useState(false);
+  const [agentIdToUpdate, setAgentIdToUpdate] = useState<string>();
+  const [mcpServerIdToUpdate, setMCPServerIdToUpdate] = useState<string>();
+  const [mcpServerIdToDelete, setMCPServerIdToDelete] = useState<string>();
+
+  const { data: mcpServers } = useGetIncidentAgentMCPServersQuery(undefined, {
+    pollingInterval: REFRESH_INTERVAL
+  });
+
+  const [deleteMCPServer] = useDeleteIncidentAgentMCPServerMutation();
 
   const handleInputChange = () => {
     return undefined;
@@ -148,55 +78,77 @@ export const IncidentTemplate = () => {
     return undefined;
   };
 
-  const handleAddMCPServer = (agentId: string, position: Position) => {
-    const agent = agents.find((agent) => agent.name === agentId);
+  const handleAddMCPServer = (agentId: string) => {
+    setAgentIdToUpdate(agentId);
+  };
 
-    if (!agent) {
+  const handleEditMCPServer = (agentId: string, serverName: string) => {
+    const serverId = mcpServers?.mcps.find((x) => x.name === serverName)?.uid;
+
+    if (!serverId) {
       return;
     }
 
-    setAgentToUpdate({
-      ...agent,
-      mcp_servers: [
-        ...agent.mcp_servers,
-        {
-          name: "mcp",
-          display_name: "MCP Server",
-          active: true,
-          position
-        }
-      ]
-    });
-
-    setIsAddMCPServerDialogOpen(true);
+    setAgentIdToUpdate(agentId);
+    setMCPServerIdToUpdate(serverId);
   };
 
-  const handleEditMCPServers = () => {
-    setIsAddMCPServerDialogOpen(true);
-  };
+  const handleDeleteMCPServer = (_: string, serverName: string) => {
+    const serverId = mcpServers?.mcps.find((x) => x.name === serverName)?.uid;
 
-  const handleAddMCPServerDialogComplete = () => {
-    if (!agentToUpdate) {
+    if (!serverId) {
       return;
     }
 
-    const updatedAgents = agents.map((agent) => {
-      if (agent.name === agentToUpdate.name) {
-        return {
-          ...agent,
-          mcp_servers: agentToUpdate.mcp_servers
-        };
-      }
-      return agent;
-    });
-
-    setAgents(updatedAgents);
-    setIsAddMCPServerDialogOpen(false);
+    setMCPServerIdToDelete(serverId);
   };
 
-  const handleAddMCPServerDialogClose = () => {
-    setIsAddMCPServerDialogOpen(false);
+  const handleDeleteMCPServerDialogConfirm = () => {
+    if (mcpServerIdToDelete) {
+      void deleteMCPServer({ id: mcpServerIdToDelete });
+    }
+    setMCPServerIdToDelete(undefined);
   };
+
+  const handleDeleteMCPServerDialogClose = () => {
+    setMCPServerIdToDelete(undefined);
+  };
+
+  const handleMCPServerDialogComplete = () => {
+    setAgentIdToUpdate(undefined);
+    setMCPServerIdToUpdate(undefined);
+  };
+
+  const handleMCPServerDialogClose = () => {
+    setAgentIdToUpdate(undefined);
+    setMCPServerIdToUpdate(undefined);
+  };
+
+  const serverDataToUpdate = mcpServers?.mcps.find(
+    (x) => x.uid === mcpServerIdToUpdate
+  );
+
+  useEffect(() => {
+    if (mcpServers) {
+      setAgents((prev) =>
+        prev.map((agent) => {
+          const agentMCPServers = mcpServers.mcps.filter((x) =>
+            x.agents.includes(agent.name)
+          );
+
+          return {
+            ...agent,
+            mcp_servers: agentMCPServers.map((x) => ({
+              name: x.name,
+              display_name: x.name,
+              active: true,
+              isEditable: x.editable
+            }))
+          };
+        })
+      );
+    }
+  }, [mcpServers]);
 
   return (
     <s.Container>
@@ -216,7 +168,8 @@ export const IncidentTemplate = () => {
         selectedAgentId={agentId}
         isEditMode={true}
         onAddMCPServer={handleAddMCPServer}
-        onEditMCPServers={handleEditMCPServers}
+        onEditMCPServer={handleEditMCPServer}
+        onDeleteMCPServer={handleDeleteMCPServer}
       />
       <s.StyledAgentPromptInput
         onChange={handleInputChange}
@@ -225,13 +178,27 @@ export const IncidentTemplate = () => {
         isDisabled={true}
         placeholder={"Enter a custom prompt"}
       />
-      {isAddMCPServerDialogOpen && (
+      {agentIdToUpdate && (
         <Overlay>
-          <AddMCPServerDialog
-            onComplete={handleAddMCPServerDialogComplete}
-            onClose={handleAddMCPServerDialogClose}
+          <MCPServerDialog
+            agentId={agentIdToUpdate}
+            serverData={serverDataToUpdate}
+            onComplete={handleMCPServerDialogComplete}
+            onClose={handleMCPServerDialogClose}
           />
         </Overlay>
+      )}
+      {mcpServerIdToDelete && (
+        <s.StyledOverlay>
+          <CancelConfirmation
+            header={"Delete MCP server"}
+            description={"Are you sure you want to delete this MCP server?"}
+            onClose={handleDeleteMCPServerDialogClose}
+            onConfirm={handleDeleteMCPServerDialogConfirm}
+            confirmBtnText={"Yes, delete"}
+            cancelBtnText={"No, keep it"}
+          />
+        </s.StyledOverlay>
       )}
     </s.Container>
   );

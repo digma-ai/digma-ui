@@ -1085,14 +1085,12 @@ export interface GetBlockedTracesResponse {
   total: number;
 }
 
-export type IncidentActivityStatus = "active" | "paused" | "closed";
+export type IncidentStatus = "active" | "pending" | "closed";
 
 export interface IncidentResponseItem {
   id: string;
   name: string;
-  active_status: IncidentActivityStatus;
-  created_at: string;
-  closed_at: string | null;
+  status: IncidentStatus;
 }
 
 export interface GetIncidentsResponse {
@@ -1100,6 +1098,10 @@ export interface GetIncidentsResponse {
 }
 
 export interface GetIncidentPayload {
+  id: string;
+}
+
+export interface CloseIncidentPayload {
   id: string;
 }
 
@@ -1134,17 +1136,21 @@ export interface IncidentArtifact {
 export interface GetIncidentResponse {
   id: string;
   name: string;
-  status: string;
+  status_description: string;
   summary: string;
-  active_status: IncidentActivityStatus;
+  status: IncidentStatus;
   related_issues: GenericIncidentIssue[];
   related_artifacts: IncidentArtifact[];
   affected_services: string[];
-  created_at: string;
-  closed_at: string | null;
+  status_timestamps: Partial<Record<IncidentStatus, string>>;
 }
 
-export type AgentStatus = "pending" | "active" | "inactive";
+export type AgentStatus =
+  | "waiting"
+  | "running"
+  | "skipped"
+  | "pending"
+  | "completed";
 
 export interface AgentMCPServer {
   name: string;
@@ -1156,7 +1162,6 @@ export interface Agent {
   name: string;
   display_name: string;
   description: string;
-  running: boolean;
   status: AgentStatus;
   mcp_servers: AgentMCPServer[];
 }
@@ -1182,7 +1187,8 @@ export interface IncidentAgentEvent {
     | "tool"
     | "error"
     | "agent_end"
-    | "input_user_required";
+    | "input_user_required"
+    | "memory_update";
   message: string;
   agent_name: string;
   tool_name?: string | null;
@@ -1207,4 +1213,62 @@ export interface SendMessageToIncidentAgentChatPayload {
 export interface SendMessageToIncidentCreationChatPayload {
   incidentId: string;
   data: { text: string };
+}
+
+export interface GetDirectivesPayload {
+  search_term?: string;
+}
+
+export interface Directive {
+  id: string;
+  directive: string;
+  condition: string;
+  agents: string[];
+}
+
+export interface GetDirectivesResponse {
+  directives: Directive[];
+}
+
+export interface DeleteIncidentAgentDirectivePayload {
+  id: string;
+}
+
+export interface MCPServerData {
+  uid: string;
+  name: string;
+  config: string;
+  agents: string[];
+  editable: boolean;
+  selected_tools: string[];
+  all_tools: string[];
+  instructions_prompt: string;
+}
+
+export interface GetMCPServersResponse {
+  mcps: MCPServerData[];
+}
+
+export interface TestMCPServerPayload {
+  config_json: string;
+}
+
+export interface TestMCPServerResponse {
+  tools: string[];
+}
+
+export interface AddMCPServerPayload {
+  config_json: string;
+  selected_tools: string[];
+  agent: string;
+  instructions_prompt: string;
+}
+
+export interface UpdateMCPServerPayload {
+  id: string;
+  data: AddMCPServerPayload;
+}
+
+export interface DeleteMCPServerPayload {
+  id: string;
 }

@@ -132,6 +132,9 @@ export const CreateIncidentChatOverlay = () => {
               // eslint-disable-next-line no-console
               console.error("Unknown error starting incident creation chat");
             }
+          },
+          onclose: () => {
+            abortControllerRef.current = null;
           }
         }
       );
@@ -201,6 +204,7 @@ export const CreateIncidentChatOverlay = () => {
             description={
               "Are you sure that you want to stop creating the new incident?"
             }
+            confirmBtnText={"Yes, close"}
             onClose={handleCloseConfirmationDialogClose}
             onConfirm={handleCloseConfirmationDialogConfirm}
           />

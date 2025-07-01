@@ -1,10 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { isString } from "../../typeGuards/isString";
 import type {
+  AddMCPServerPayload,
+  CloseIncidentPayload,
   CreateEnvironmentPayload,
   CreateEnvironmentResponse,
   DeleteEnvironmentPayload,
   DeleteEnvironmentResponse,
+  DeleteIncidentAgentDirectivePayload,
+  DeleteMCPServerPayload,
   DismissErrorPayload,
   DismissUndismissInsightPayload,
   ExtendedGetInsightsPayload,
@@ -20,6 +24,8 @@ import type {
   GetAssetsResponse,
   GetBlockedTracesPayload,
   GetBlockedTracesResponse,
+  GetDirectivesPayload,
+  GetDirectivesResponse,
   GetEndpointsIssuesPayload,
   GetEnvironmentServicesPayload,
   GetEnvironmentServicesResponse,
@@ -54,6 +60,7 @@ import type {
   GetIssuesFiltersResponse,
   GetIssuesPayload,
   GetIssuesResponse,
+  GetMCPServersResponse,
   GetMetricsReportDataPayloadV1,
   GetMetricsReportDataPayloadV2,
   GetPerformanceHighlightsPayload,
@@ -92,9 +99,12 @@ import type {
   SetMetricsReportDataPayload,
   SetServiceEndpointsPayload,
   SetServiceEnvironmentsPayload,
+  TestMCPServerPayload,
+  TestMCPServerResponse,
   UndismissErrorPayload,
   UnlinkTicketFromIssuePayload,
-  UnpinErrorPayload
+  UnpinErrorPayload,
+  UpdateMCPServerPayload
 } from "./types";
 
 export const digmaApi = createApi({
@@ -105,8 +115,11 @@ export const digmaApi = createApi({
     "Error",
     "Insight",
     "RecentActivity",
+    "Incident",
     "IncidentAgentChatEvent",
-    "IncidentEntryAgentChatEvent"
+    "IncidentEntryAgentChatEvent",
+    "IncidentAgentDirective",
+    "IncidentAgentMCPServer"
   ],
   reducerPath: "digmaApi",
   baseQuery: fetchBaseQuery({
@@ -557,12 +570,21 @@ export const digmaApi = createApi({
     getIncidents: builder.query<GetIncidentsResponse, void>({
       query: () => ({
         url: "Agentic/incidents"
-      })
+      }),
+      providesTags: ["Incident"]
     }),
     getIncident: builder.query<GetIncidentResponse, GetIncidentPayload>({
       query: ({ id }) => ({
         url: `Agentic/incidents/${window.encodeURIComponent(id)}`
-      })
+      }),
+      providesTags: ["Incident"]
+    }),
+    closeIncident: builder.mutation<void, CloseIncidentPayload>({
+      query: ({ id }) => ({
+        url: `Agentic/incidents/${window.encodeURIComponent(id)}/close`,
+        method: "PUT"
+      }),
+      invalidatesTags: ["Incident"]
     }),
     getIncidentAgents: builder.query<
       GetIncidentAgentsResponse,
@@ -617,6 +639,71 @@ export const digmaApi = createApi({
         body: data
       }),
       invalidatesTags: ["IncidentEntryAgentChatEvent"]
+    }),
+    getIncidentAgentDirectives: builder.query<
+      GetDirectivesResponse,
+      GetDirectivesPayload
+    >({
+      query: (data) => ({
+        url: "Agentic/directives",
+        params: data
+      }),
+      providesTags: ["IncidentAgentDirective"]
+    }),
+    deleteIncidentAgentDirective: builder.mutation<
+      void,
+      DeleteIncidentAgentDirectivePayload
+    >({
+      query: ({ id }) => ({
+        url: `Agentic/directives/${window.encodeURIComponent(id)}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ["IncidentAgentDirective"]
+    }),
+    getIncidentAgentMCPServers: builder.query<GetMCPServersResponse, void>({
+      query: () => ({
+        url: "Agentic/mcps"
+      }),
+      providesTags: ["IncidentAgentMCPServer"]
+    }),
+    testIncidentAgentMCPServer: builder.mutation<
+      TestMCPServerResponse,
+      TestMCPServerPayload
+    >({
+      query: (data) => ({
+        url: `Agentic/mcps/test`,
+        method: "POST",
+        body: data
+      })
+    }),
+    addIncidentAgentMCPServer: builder.mutation<void, AddMCPServerPayload>({
+      query: (data) => ({
+        url: `Agentic/mcps`,
+        method: "POST",
+        body: data
+      }),
+      invalidatesTags: ["IncidentAgentMCPServer"]
+    }),
+    updateIncidentAgentMCPServer: builder.mutation<
+      void,
+      UpdateMCPServerPayload
+    >({
+      query: ({ id, data }) => ({
+        url: `Agentic/mcps/${window.encodeURIComponent(id)}`,
+        method: "PUT",
+        body: data
+      }),
+      invalidatesTags: ["IncidentAgentMCPServer"]
+    }),
+    deleteIncidentAgentMCPServer: builder.mutation<
+      void,
+      DeleteMCPServerPayload
+    >({
+      query: ({ id }) => ({
+        url: `Agentic/mcps/${window.encodeURIComponent(id)}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ["IncidentAgentMCPServer"]
     })
   })
 });
@@ -673,9 +760,17 @@ export const {
   useGetIssueRecommendationsQuery,
   useGetIncidentsQuery,
   useGetIncidentQuery,
+  useCloseIncidentMutation,
   useGetIncidentAgentsQuery,
   useGetIncidentAgentEventsQuery,
   useGetIncidentAgentChatEventsQuery,
   useSendMessageToIncidentAgentChatMutation,
-  useSendMessageToIncidentCreationChatMutation
+  useSendMessageToIncidentCreationChatMutation,
+  useGetIncidentAgentDirectivesQuery,
+  useDeleteIncidentAgentDirectiveMutation,
+  useGetIncidentAgentMCPServersQuery,
+  useTestIncidentAgentMCPServerMutation,
+  useAddIncidentAgentMCPServerMutation,
+  useUpdateIncidentAgentMCPServerMutation,
+  useDeleteIncidentAgentMCPServerMutation
 } = digmaApi;

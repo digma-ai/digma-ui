@@ -27,9 +27,7 @@ export const MCPServerIcon = ({
           themeKind={isActive ? "light" : "dark"}
         />
       );
-    case "mcp":
-      return <MCPLogoIcon size={size} color={"currentColor"} />;
     default:
-      return null;
+      return <MCPLogoIcon size={size} color={"currentColor"} />;
   }
 };

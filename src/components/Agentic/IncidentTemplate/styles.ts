@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import { heading2BoldTypography } from "../../common/App/typographies";
+import { Overlay } from "../../common/Overlay";
 import { AgentFlowChart } from "../IncidentDetails/AgentFlowChart";
 import { PromptInput } from "../common/PromptInput";
+import { TextArea } from "../common/PromptInput/styles";
 
 export const Container = styled.div`
   padding: 24px;
@@ -15,9 +17,7 @@ export const Header = styled.header`
 
   display: flex;
   padding: 32px 24px 24px;
-  align-items: flex-start;
-  gap: var(--spacing-guides-715-rem-24-px, 24px);
-  align-self: stretch;
+  gap: 24px;
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
@@ -35,7 +35,7 @@ export const StyledAgentFlowChart = styled(AgentFlowChart)`
 export const StyledIncidentPromptInput = styled(PromptInput)`
   height: 105px;
 
-  & > textarea {
+  & ${TextArea} {
     height: 100%;
 
     &::placeholder {
@@ -49,11 +49,15 @@ export const StyledAgentPromptInput = styled(PromptInput)`
   ${/* TODO: change to color from the theme */ ""}
   border: 1px solid #6063f6;
 
-  & > textarea {
+  & ${TextArea} {
     height: 100%;
 
     &::placeholder {
       color: ${({ theme }) => theme.colors.v3.text.primary};
     }
   }
+`;
+
+export const StyledOverlay = styled(Overlay)`
+  align-items: center;
 `;

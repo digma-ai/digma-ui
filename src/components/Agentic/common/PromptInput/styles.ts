@@ -19,6 +19,13 @@ export const Form = styled.form<FormProps>`
   flex-shrink: 0;
 `;
 
+export const TextAreaContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-grow: 1;
+`;
+
 export const TextArea = styled.textarea<TextAreaProps>`
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
   font-size: ${({ $fontSize }) => $fontSize}px;
