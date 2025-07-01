@@ -22,14 +22,14 @@ const DEFAULT_PORT = 3000;
 
 dotenv.config();
 
-if (!process.env.USERNAME || !process.env.PASSWORD) {
-  throw new Error("Username and password must be provided");
+if (!process.env.LOGIN || !process.env.PASSWORD) {
+  throw new Error("Login and password must be provided");
 }
 
 let session: Session | undefined;
 
 const credentials: Credentials = {
-  username: process.env.USERNAME,
+  username: process.env.LOGIN,
   password: process.env.PASSWORD
 };
 
@@ -43,16 +43,13 @@ const apiProxyClient = axios.create({
   }
 });
 
-const login = async ({ username, password }: Credentials) => {
+const login = async (credentials: Credentials) => {
   const response = await apiProxyClient.post<{
     accessToken: string;
     refreshToken: string;
     expiration: string;
     userId: string;
-  }>("/authentication/login", {
-    username,
-    password
-  });
+  }>("/authentication/login", credentials);
 
   return response.data;
 };

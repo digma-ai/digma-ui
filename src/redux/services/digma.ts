@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { isString } from "../../typeGuards/isString";
 import type {
   AddMCPServerPayload,
+  CloseIncidentPayload,
   CreateEnvironmentPayload,
   CreateEnvironmentResponse,
   DeleteEnvironmentPayload,
@@ -118,6 +119,7 @@ export const digmaApi = createApi({
     "Error",
     "Insight",
     "RecentActivity",
+    "Incident",
     "IncidentAgentChatEvent",
     "IncidentEntryAgentChatEvent",
     "IncidentAgentDirective",
@@ -570,12 +572,21 @@ export const digmaApi = createApi({
     getIncidents: builder.query<GetIncidentsResponse, void>({
       query: () => ({
         url: "Agentic/incidents"
-      })
+      }),
+      providesTags: ["Incident"]
     }),
     getIncident: builder.query<GetIncidentResponse, GetIncidentPayload>({
       query: ({ id }) => ({
         url: `Agentic/incidents/${window.encodeURIComponent(id)}`
-      })
+      }),
+      providesTags: ["Incident"]
+    }),
+    closeIncident: builder.mutation<void, CloseIncidentPayload>({
+      query: ({ id }) => ({
+        url: `Agentic/incidents/${window.encodeURIComponent(id)}/close`,
+        method: "PUT"
+      }),
+      invalidatesTags: ["Incident"]
     }),
     getIncidentAgents: builder.query<
       GetIncidentAgentsResponse,
@@ -782,6 +793,7 @@ export const {
   useGetIssueRecommendationsQuery,
   useGetIncidentsQuery,
   useGetIncidentQuery,
+  useCloseIncidentMutation,
   useGetIncidentAgentsQuery,
   useGetIncidentAgentEventsQuery,
   useGetIncidentAgentChatEventsQuery,

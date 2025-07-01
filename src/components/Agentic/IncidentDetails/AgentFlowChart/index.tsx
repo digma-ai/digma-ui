@@ -64,9 +64,10 @@ const getFlowChartNodeData = ({
     ? {
         label: agent.display_name,
         isActive: isSelected,
-        isRunning: agent.running,
+        isRunning: agent.status === "running",
+        isPending: agent.status === "pending",
         isInteractive,
-        isDisabled: agent.status === "inactive",
+        isDisabled: agent.status === "skipped",
         sideContainers: [
           {
             isVisible: Boolean(agent.mcp_servers.length > 0 || isEditMode),
@@ -104,8 +105,7 @@ export const AgentFlowChart = ({
       name: "digma",
       display_name: "Digma",
       description: "Digma",
-      running: false,
-      status: "active",
+      status: "waiting",
       mcp_servers: []
     },
     ...agents.map((agent) => ({
@@ -118,8 +118,7 @@ export const AgentFlowChart = ({
       name: "validator",
       display_name: "Validator",
       description: "Validator",
-      running: false,
-      status: "active",
+      status: "waiting",
       mcp_servers: []
     }
   ];
@@ -138,7 +137,7 @@ export const AgentFlowChart = ({
       case "code_resolver":
         {
           if (
-            extendedAgents?.find((a) => a.name === id)?.status === "inactive"
+            extendedAgents?.find((a) => a.name === id)?.status === "skipped"
           ) {
             break;
           }
@@ -175,7 +174,7 @@ export const AgentFlowChart = ({
           isSelected: "watchman" === selectedAgentId,
           isInteractive:
             extendedAgents?.find((a) => a.name === "watchman")?.status !==
-            "inactive",
+            "skipped",
           isEditMode,
           onAddMCPServer,
           onEditMCPServer,
@@ -192,7 +191,7 @@ export const AgentFlowChart = ({
           isSelected: "triager" === selectedAgentId,
           isInteractive:
             extendedAgents?.find((a) => a.name === "triager")?.status !==
-            "inactive",
+            "skipped",
           isEditMode,
           onAddMCPServer,
           onEditMCPServer,
@@ -209,7 +208,7 @@ export const AgentFlowChart = ({
           isSelected: "infra_resolver" === selectedAgentId,
           isInteractive:
             extendedAgents?.find((a) => a.name === "infra_resolver")?.status !==
-            "inactive",
+            "skipped",
           isEditMode,
           onAddMCPServer,
           onEditMCPServer,
@@ -226,7 +225,7 @@ export const AgentFlowChart = ({
           isSelected: "code_resolver" === selectedAgentId,
           isInteractive:
             extendedAgents?.find((a) => a.name === "code_resolver")?.status !==
-            "inactive",
+            "skipped",
           isEditMode,
           onAddMCPServer,
           onEditMCPServer,

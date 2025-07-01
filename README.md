@@ -54,7 +54,7 @@ To set environment variables use .env file
 | API_BASE_URL                    | string  | -       | Base URL to proxy Digma API requests (for dev server)    |
 | AUTH_API_BASE_URL               | string  | -       | Base URL to proxy auth API requests (for dev server)     |
 | API_TOKEN                       | string  | -       | API token (for dev server)                               |
-| USERNAME                        | string  | -       | User login (for dev server)                              |
+| LOGIN                           | string  | -       | User login (for dev server)                              |
 | PASSWORD                        | string  | -       | User password (for dev server)                           |
 | IS_JAEGER_ENABLED               | boolean | false   | Enable links to Jaeger                                   |
 | JAEGER_UI_PATH                  | string  | -       | Path to custom Jaeger UI build                           |

@@ -1,12 +1,19 @@
 import styled from "styled-components";
 import { subheading1RegularTypography } from "../../../common/App/typographies";
+import { NewButton } from "../../../common/v3/NewButton";
 
 export const Container = styled.div`
   display: flex;
-  align-items: center;
   padding-top: 24px;
-  height: 51px;
+  min-height: 51px;
   flex-shrink: 0;
+  align-items: start;
+`;
+
+export const AttributesList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 `;
 
 export const DividerContainer = styled.div`
@@ -15,7 +22,14 @@ export const DividerContainer = styled.div`
   display: flex;
 `;
 
-export const DateAttribute = styled.div`
+export const CloseIncidentButton = styled(NewButton)`
+  flex-shrink: 0;
+  margin-top: 12px;
+  margin-left: auto;
+  margin-right: 16px;
+`;
+
+export const Attribute = styled.div`
   ${subheading1RegularTypography}
   display: flex;
   gap: 12px;
@@ -23,12 +37,16 @@ export const DateAttribute = styled.div`
   padding: 16px;
 `;
 
-export const DateLabel = styled.span`
+export const AttributeLabel = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;
 
-export const DateValue = styled.span`
+export const AttributeValue = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.primary};
+`;
+
+export const StatusAttributeValue = styled(AttributeValue)`
+  text-transform: capitalize;
 `;
 
 export const ServicesContainer = styled.div`

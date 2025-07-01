@@ -97,7 +97,7 @@ export const TableBodyRow = styled.div`
     background: ${({ theme }) => theme.colors.v3.surface.primary};
   }
 
-  &:first-child {
+  &:last-child {
     border-bottom: none;
   }
 `;
