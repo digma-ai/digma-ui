@@ -25,10 +25,10 @@ import * as s from "./styles";
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 const isIncidentActive = (incident: IncidentResponseItem): boolean =>
-  incident.execution_status === "active";
+  incident.status === "active";
 
 const isIncidentPending = (incident: IncidentResponseItem): boolean =>
-  incident.execution_status === "pending";
+  incident.status === "pending";
 
 export const Sidebar = () => {
   const theme = useTheme();

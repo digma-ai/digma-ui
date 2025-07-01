@@ -96,7 +96,7 @@ export const IncidentMetaData = () => {
           </s.ServicesContainer>
         </>
       )}
-      {data.execution_status === "pending" && (
+      {data.status === "pending" && (
         <s.CloseIncidentButton
           label={"Close incident"}
           onClick={handleCloseButtonClick}

@@ -1090,7 +1090,7 @@ export type IncidentStatus = "active" | "pending" | "closed";
 export interface IncidentResponseItem {
   id: string;
   name: string;
-  execution_status: IncidentStatus;
+  status: IncidentStatus;
 }
 
 export interface GetIncidentsResponse {
@@ -1136,9 +1136,9 @@ export interface IncidentArtifact {
 export interface GetIncidentResponse {
   id: string;
   name: string;
-  status: string;
+  status_description: string;
   summary: string;
-  execution_status: IncidentStatus;
+  status: IncidentStatus;
   related_issues: GenericIncidentIssue[];
   related_artifacts: IncidentArtifact[];
   affected_services: string[];
@@ -1162,7 +1162,7 @@ export interface Agent {
   name: string;
   display_name: string;
   description: string;
-  execution_status: AgentStatus;
+  status: AgentStatus;
   mcp_servers: AgentMCPServer[];
 }
 
