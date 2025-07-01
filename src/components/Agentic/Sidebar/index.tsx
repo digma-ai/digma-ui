@@ -145,7 +145,7 @@ export const Sidebar = () => {
         <s.IncidentsList>
           {incidents.map((incident) => (
             <s.IncidentItem
-              key={incident.name}
+              key={incident.id}
               $isSelected={incident.id === incidentId}
               $isActive={isIncidentActive(incident)}
               onClick={handleIncidentListItemClick(incident.id)}

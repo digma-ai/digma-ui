@@ -1,5 +1,10 @@
-import { type ChangeEvent } from "react";
+import { json } from "@codemirror/lang-json";
+import { oneDark } from "@codemirror/theme-one-dark";
+import { EditorView } from "@codemirror/view";
+import CodeMirror from "@uiw/react-codemirror";
+import { useTheme } from "styled-components";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
+import { getCodeFontFamilyRulesValue } from "../../../../common/App/styles";
 import { NewButton } from "../../../../common/v3/NewButton";
 import { trackingEvents } from "../../../tracking";
 import { Footer } from "../Footer";
@@ -25,9 +30,21 @@ export const ServerStep = ({
   isLoading,
   error
 }: ServerStepProps) => {
-  const handleTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    onConnectionSettingsChange(e.target.value);
-  };
+  const theme = useTheme();
+
+  const codeMirrorTheme = EditorView.theme({
+    "&": {
+      padding: "24px",
+      borderRadius: "8px",
+      fontFamily: getCodeFontFamilyRulesValue(theme.codeFont),
+      fontSize: "14px",
+      fontWeight: "500",
+      backgroundColor: "#000 !important"
+    },
+    ".cm-scroller": {
+      overflow: "auto"
+    }
+  });
 
   const handleConnectButtonClick = () => {
     sendUserActionTrackingEvent(
@@ -41,10 +58,26 @@ export const ServerStep = ({
 
   return (
     <s.Container>
-      <s.TextArea
+      <CodeMirror
         value={connectionSettings}
+        onChange={onConnectionSettingsChange}
+        extensions={[codeMirrorTheme, EditorView.lineWrapping, json()]}
         placeholder={placeholderText}
-        onChange={handleTextAreaChange}
+        theme={oneDark}
+        height={"343px"}
+        basicSetup={{
+          lineNumbers: false,
+          foldGutter: false,
+          allowMultipleSelections: false,
+          rectangularSelection: false,
+          highlightActiveLine: false,
+          highlightSelectionMatches: false,
+          closeBracketsKeymap: false,
+          searchKeymap: false,
+          foldKeymap: false,
+          completionKeymap: false,
+          lintKeymap: false
+        }}
       />
       <Footer
         isLoading={isLoading}
