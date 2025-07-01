@@ -111,7 +111,7 @@ export const AgentEvents = () => {
         let toolName = event.tool_name;
 
         if (event.mcp_name) {
-          toolName += ` ${[event.mcp_name, "MCP tool"]
+          toolName += ` (${[event.mcp_name, "MCP tool"]
             .filter(Boolean)
             .join(" ")})`;
         }
