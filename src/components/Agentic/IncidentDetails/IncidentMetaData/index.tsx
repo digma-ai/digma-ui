@@ -104,7 +104,7 @@ export const IncidentMetaData = () => {
         </s.DividerContainer>
         <s.Attribute>
           <s.AttributeLabel>Status:</s.AttributeLabel>
-          <s.AttributeValue>{data.status}</s.AttributeValue>
+          <s.StatusAttributeValue>{data.status}</s.StatusAttributeValue>
         </s.Attribute>
       </s.AttributesList>
       {data.status === "pending" && (
