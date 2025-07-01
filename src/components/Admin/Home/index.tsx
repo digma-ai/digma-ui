@@ -66,6 +66,7 @@ export const Home = () => {
     setIssuesQuery(undefined);
   };
 
+  // TODO: replace with useEffect
   useMount(() => {
     if (environmentParam) {
       dispatch(setSelectedEnvironmentId(environmentParam));

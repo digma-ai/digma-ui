@@ -67,6 +67,7 @@ export const MetricsReport = () => {
     });
   }, []);
 
+  // TODO: replace with useEffect
   useMount(() => {
     if (isString(window.dashboardEnvironment)) {
       dispatch(setSelectedEnvironmentId(window.dashboardEnvironment));
