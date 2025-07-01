@@ -60,6 +60,7 @@ export const CreateIncidentChatOverlay = () => {
     if (!incidentId) {
       setAccumulatedData([
         {
+          id: "__start_message",
           type: "human",
           agent_name: "incident_entry",
           message: text,
@@ -160,9 +161,13 @@ export const CreateIncidentChatOverlay = () => {
     }
   };
 
-  const handleIncidentNavigate = (id: string) => {
+  const handleIncidentNavigate = () => {
+    if (!incidentId) {
+      return;
+    }
+
     dispatch(setIsCreateIncidentChatOpen(false));
-    void navigate(`/incidents/${id}`);
+    void navigate(`/incidents/${incidentId}`);
   };
 
   const handleCreateIncidentChatDialogClose = () => {
@@ -197,7 +202,6 @@ export const CreateIncidentChatOverlay = () => {
           title={"Add new incident"}
         >
           <s.StyledAgentChat
-            incidentId={incidentId}
             agentId={AGENT_ID}
             data={data && data.length > 0 ? data : accumulatedData}
             isDataLoading={isLoading}
@@ -205,6 +209,7 @@ export const CreateIncidentChatOverlay = () => {
             isMessageSending={isMessageSending}
             promptFontSize={PROMPT_FONT_SIZE}
             onNavigateToIncident={handleIncidentNavigate}
+            typeInitialMessages={true}
           />
         </Dialog>
       </s.StyledOverlay>

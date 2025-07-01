@@ -21,16 +21,18 @@ export const PromptInput = ({
   fontSize = s.TEXT_AREA_DEFAULT_FONT_SIZE,
   attachmentsComponent
 }: PromptInputProps) => {
-  const isSubmittingDisabled = isSubmitting ?? value.trim() === "";
+  const isSubmittingDisabled = Boolean(isSubmitting ?? value.trim() === "");
   const formRef = useRef<HTMLFormElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [textAreaHeight, setTextAreaHeight] = useState<number>(
     s.TEXT_AREA_MIN_HEIGHT
   );
+  const [shouldRefocus, setShouldRefocus] = useState(false);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!isSubmittingDisabled) {
+      setShouldRefocus(true);
       onSubmit();
     }
   };
@@ -79,6 +81,14 @@ export const PromptInput = ({
       setTextAreaHeight(Math.max(newLinesHeight, s.TEXT_AREA_MIN_HEIGHT));
     }
   }, [value, fontSize]);
+
+  // TODO: check if working
+  useEffect(() => {
+    if (shouldRefocus && value === "" && textAreaRef.current) {
+      textAreaRef.current.focus();
+      setShouldRefocus(false);
+    }
+  }, [value, shouldRefocus]);
 
   const formHeight = textAreaHeight + s.FORM_TOP_BOTTOM_PADDING * 2;
 

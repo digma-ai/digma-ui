@@ -16,8 +16,8 @@ import type { ToggleOption } from "../../common/v3/Toggle/types";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
 import { AdditionalInfo } from "./AdditionalInfo";
-import { AgentEvents } from "./AgentEvents";
 import { AgentFlowChart } from "./AgentFlowChart";
+import { AgentSummary } from "./AgentSummary";
 import { IncidentAgentChat } from "./IncidentAgentChat";
 import { IncidentMetaData } from "./IncidentMetaData";
 import * as s from "./styles";
@@ -187,7 +187,7 @@ export const IncidentDetails = () => {
                 agentViewMode === "chat" ? (
                   <IncidentAgentChat key={agentId} />
                 ) : (
-                  <AgentEvents key={agentId} />
+                  <AgentSummary key={agentId} />
                 )
               ) : (
                 <s.IncidentSummaryText>

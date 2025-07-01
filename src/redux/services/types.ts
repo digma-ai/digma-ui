@@ -1173,6 +1173,7 @@ export interface GetIncidentAgentEventsPayload {
 }
 
 export interface IncidentAgentEvent {
+  id: string;
   type:
     | "token"
     | "ai"

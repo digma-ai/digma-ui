@@ -117,6 +117,7 @@ export const IncidentDirectives = () => {
       setFetchedEvents([]);
       setPlaceholderEvents([
         {
+          id: "__start_message",
           type: "human",
           agent_name: "incident_entry",
           message: text,
@@ -503,11 +504,12 @@ export const IncidentDirectives = () => {
         )}
       </s.TableContainer>
       <s.StyledAgentChat
-        key={conversationId}
+        conversationId={conversationId}
         data={filteredEvents}
         isDataLoading={areEventsLoading}
         onMessageSend={handleMessageSend}
         isMessageSending={isMessageSending}
+        typeInitialMessages={true}
         attachmentsComponent={
           selectedConditions.length > 0 && (
             <s.SelectedConditionsContainer>

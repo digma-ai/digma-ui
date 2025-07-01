@@ -43,10 +43,10 @@ export const IncidentAgentChat = () => {
     <AgentChat
       data={data}
       isDataLoading={isLoading}
-      incidentId={incidentId}
       agentId={agentId ?? ""}
       onMessageSend={handleMessageSend}
       isMessageSending={isMessageSending}
+      typeInitialMessages={false}
     />
   );
 };
