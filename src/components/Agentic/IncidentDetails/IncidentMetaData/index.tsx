@@ -49,53 +49,64 @@ export const IncidentMetaData = () => {
 
   return (
     <s.Container>
-      {data.status_timestamps.active && (
-        <s.DateAttribute>
-          <s.DateLabel>Incident start time:</s.DateLabel>
-          <Tooltip title={new Date(data.status_timestamps.active).toString()}>
-            <s.DateValue>
-              {format(data.status_timestamps.active, DATE_FORMAT)}
-            </s.DateValue>
-          </Tooltip>
-        </s.DateAttribute>
-      )}
-      {data.status_timestamps.closed && (
-        <>
-          <s.DividerContainer>
-            <Divider color={"currentColor"} />
-          </s.DividerContainer>
-          <s.DateAttribute>
-            <s.DateLabel>Incident close time:</s.DateLabel>
-            <Tooltip title={new Date(data.status_timestamps.closed).toString()}>
-              <s.DateValue>
-                {format(data.status_timestamps.closed, DATE_FORMAT)}
-              </s.DateValue>
+      <s.AttributesList>
+        {data.status_timestamps.active && (
+          <s.Attribute>
+            <s.AttributeLabel>Incident start time:</s.AttributeLabel>
+            <Tooltip title={new Date(data.status_timestamps.active).toString()}>
+              <s.AttributeValue>
+                {format(data.status_timestamps.active, DATE_FORMAT)}
+              </s.AttributeValue>
             </Tooltip>
-          </s.DateAttribute>
-        </>
-      )}
-      {data.affected_services.length > 0 && (
-        <>
-          <s.DividerContainer>
-            <Divider color={"currentColor"} />
-          </s.DividerContainer>
-          <s.ServicesContainer>
-            <span>Affected services:</span>
-            {serviceTagsToShow.map((x) => (
-              <Tooltip key={x} title={x}>
-                <s.ServiceTag>{x}</s.ServiceTag>
+          </s.Attribute>
+        )}
+        {data.status_timestamps.closed && (
+          <>
+            <s.DividerContainer>
+              <Divider color={"currentColor"} />
+            </s.DividerContainer>
+            <s.Attribute>
+              <s.AttributeLabel>Incident close time:</s.AttributeLabel>
+              <Tooltip
+                title={new Date(data.status_timestamps.closed).toString()}
+              >
+                <s.AttributeValue>
+                  {format(data.status_timestamps.closed, DATE_FORMAT)}
+                </s.AttributeValue>
               </Tooltip>
-            ))}
-            {hiddenServices.length > 0 && (
-              <Tooltip title={hiddenServices.join(", ")}>
-                <s.HiddenServicesCountTag>
-                  +{hiddenServices.length}
-                </s.HiddenServicesCountTag>
-              </Tooltip>
-            )}
-          </s.ServicesContainer>
-        </>
-      )}
+            </s.Attribute>
+          </>
+        )}
+        {data.affected_services.length > 0 && (
+          <>
+            <s.DividerContainer>
+              <Divider color={"currentColor"} />
+            </s.DividerContainer>
+            <s.ServicesContainer>
+              <span>Affected services:</span>
+              {serviceTagsToShow.map((x) => (
+                <Tooltip key={x} title={x}>
+                  <s.ServiceTag>{x}</s.ServiceTag>
+                </Tooltip>
+              ))}
+              {hiddenServices.length > 0 && (
+                <Tooltip title={hiddenServices.join(", ")}>
+                  <s.HiddenServicesCountTag>
+                    +{hiddenServices.length}
+                  </s.HiddenServicesCountTag>
+                </Tooltip>
+              )}
+            </s.ServicesContainer>
+          </>
+        )}
+        <s.DividerContainer>
+          <Divider color={"currentColor"} />
+        </s.DividerContainer>
+        <s.Attribute>
+          <s.AttributeLabel>Status:</s.AttributeLabel>
+          <s.AttributeValue>{data.status}</s.AttributeValue>
+        </s.Attribute>
+      </s.AttributesList>
       {data.status === "pending" && (
         <s.CloseIncidentButton
           label={"Close incident"}
