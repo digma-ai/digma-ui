@@ -4,14 +4,14 @@ import { EditorView } from "@codemirror/view";
 import CodeMirror from "@uiw/react-codemirror";
 import { useTheme } from "styled-components";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
-import { getCodeFontFamilyRulesValue } from "../../../../common/App/styles";
+import { getCodeFontFamilyValue } from "../../../../common/App/styles";
 import { NewButton } from "../../../../common/v3/NewButton";
 import { trackingEvents } from "../../../tracking";
 import { Footer } from "../Footer";
 import * as s from "./styles";
 import type { ServerStepProps } from "./types";
 
-const placeholderText = JSON.stringify(
+const PLACEHOLDER_TEXT = JSON.stringify(
   {
     weather: {
       transport: "stdio",
@@ -36,7 +36,7 @@ export const ServerStep = ({
     "&": {
       padding: "24px",
       borderRadius: "8px",
-      fontFamily: getCodeFontFamilyRulesValue(theme.codeFont),
+      fontFamily: getCodeFontFamilyValue(theme.codeFont),
       fontSize: "14px",
       fontWeight: "500",
       backgroundColor: "#000 !important"
@@ -62,7 +62,7 @@ export const ServerStep = ({
         value={connectionSettings}
         onChange={onConnectionSettingsChange}
         extensions={[codeMirrorTheme, EditorView.lineWrapping, json()]}
-        placeholder={placeholderText}
+        placeholder={PLACEHOLDER_TEXT}
         theme={oneDark}
         height={"343px"}
         basicSetup={{

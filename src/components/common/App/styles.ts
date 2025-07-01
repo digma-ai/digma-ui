@@ -42,7 +42,7 @@ export const getMainFont = (customFont: string) => {
   `;
 };
 
-export const getCodeFontFamilyRulesValue = (customFont: string): string => {
+export const getCodeFontFamilyValue = (customFont: string): string => {
   const customFontString = customFont ? `"${customFont}"` : "";
 
   let osFontString = "";
@@ -75,7 +75,7 @@ export const getCodeFontFamilyRulesValue = (customFont: string): string => {
 };
 
 export const getCodeFont = (customFont: string) => {
-  const value = getCodeFontFamilyRulesValue(customFont);
+  const value = getCodeFontFamilyValue(customFont);
 
   return css`
     font-family: ${value};
