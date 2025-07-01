@@ -45,6 +45,10 @@ export const AttributeValue = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
+export const StatusAttributeValue = styled(AttributeValue)`
+  text-transform: capitalize;
+`;
+
 export const ServicesContainer = styled.div`
   ${subheading1RegularTypography}
   display: flex;
