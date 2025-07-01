@@ -27,12 +27,10 @@ export const PromptInput = ({
   const [textAreaHeight, setTextAreaHeight] = useState<number>(
     s.TEXT_AREA_MIN_HEIGHT
   );
-  const [shouldRefocus, setShouldRefocus] = useState(false);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!isSubmittingDisabled) {
-      setShouldRefocus(true);
       onSubmit();
     }
   };
@@ -82,14 +80,6 @@ export const PromptInput = ({
     }
   }, [value, fontSize]);
 
-  // TODO: check if working
-  useEffect(() => {
-    if (shouldRefocus && value === "" && textAreaRef.current) {
-      textAreaRef.current.focus();
-      setShouldRefocus(false);
-    }
-  }, [value, shouldRefocus]);
-
   const formHeight = textAreaHeight + s.FORM_TOP_BOTTOM_PADDING * 2;
 
   return (
@@ -109,7 +99,7 @@ export const PromptInput = ({
           onChange={handleChange}
           placeholder={placeholder}
           onKeyDown={handleKeyDown}
-          disabled={isDisabled ?? isSubmittingDisabled}
+          disabled={isDisabled}
         />
       </s.TextAreaContainer>
       <s.SubmitButton type={"submit"} disabled={isSubmittingDisabled}>

@@ -123,6 +123,7 @@ export const digmaApi = createApi({
     "IncidentAgentChatEvent",
     "IncidentEntryAgentChatEvent",
     "IncidentAgentDirective",
+    "IncidentDirectivesAgentChatEvent",
     "IncidentAgentMCPServer"
   ],
   reducerPath: "digmaApi",
@@ -662,19 +663,6 @@ export const digmaApi = createApi({
       }),
       invalidatesTags: ["IncidentAgentDirective"]
     }),
-    sendMessageToIncidentAgentDirectivesChat: builder.mutation<
-      unknown, // text/event-stream
-      SendMessageToDirectivesChatPayload
-    >({
-      query: ({ conversationId, data }) => ({
-        url: `Agentic/directives/chat/${window.encodeURIComponent(
-          conversationId
-        )}`,
-        method: "POST",
-        body: data
-      }),
-      invalidatesTags: ["IncidentEntryAgentChatEvent"]
-    }),
     getIncidentAgentDirectivesChatEvents: builder.query<
       ExtendedGetDirectivesChatEventsResponse,
       GetDirectivesChatEventsPayload
@@ -691,7 +679,21 @@ export const digmaApi = createApi({
       ) => ({
         data: response,
         extra: arg
-      })
+      }),
+      providesTags: ["IncidentDirectivesAgentChatEvent"]
+    }),
+    sendMessageToIncidentAgentDirectivesChat: builder.mutation<
+      unknown, // text/event-stream
+      SendMessageToDirectivesChatPayload
+    >({
+      query: ({ conversationId, data }) => ({
+        url: `Agentic/directives/chat/${window.encodeURIComponent(
+          conversationId
+        )}`,
+        method: "POST",
+        body: data
+      }),
+      invalidatesTags: ["IncidentDirectivesAgentChatEvent"]
     }),
     getIncidentAgentMCPServers: builder.query<GetMCPServersResponse, void>({
       query: () => ({

@@ -42,6 +42,13 @@ export const MCPServerDialog = ({
   const handleServerStepConnect = (settings: string) => {
     setTestServerError(undefined);
 
+    try {
+      JSON.parse(settings);
+    } catch {
+      setTestServerError("Invalid JSON");
+      return;
+    }
+
     void testMCPServer({
       config_json: settings
     })

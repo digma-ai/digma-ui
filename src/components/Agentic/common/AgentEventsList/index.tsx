@@ -1,8 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { isNumber } from "../../../../typeGuards/isNumber";
 import { AgentEvent } from "./AgentEvent";
 import type { AgentEventsListProps } from "./types";
 
-// TODO: fix
 export const AgentEventsList = ({
   events,
   onNavigateToIncident,
@@ -11,21 +11,10 @@ export const AgentEventsList = ({
   const [initialEventsCount] = useState<number>(
     typeInitialEvents ? 0 : events.length
   );
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [eventsVisibleCount, setEventsVisibleCount] = useState<number>(
     typeInitialEvents ? 0 : events.length
   );
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [lastRenderedAgentEventIndex, setLastRenderedAgentEventIndex] =
-    useState<number | undefined>(
-      typeInitialEvents
-        ? undefined
-        : events.length > 0
-        ? events.length - 1
-        : undefined
-    );
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const agentEventsIndexes = useMemo(
     () =>
       events.reduce((acc, event, index) => {
@@ -39,15 +28,14 @@ export const AgentEventsList = ({
 
   const handleEventTypingComplete = (id: string) => {
     const i = events.findIndex((x) => x.id === id);
-    setLastRenderedAgentEventIndex(i);
 
-    // const nextAgentEventIndex = agentEventsIndexes.find((el) => el > i);
+    const nextAgentEventIndex = agentEventsIndexes.find((el) => el > i);
 
-    // if (isNumber(nextAgentEventIndex) && nextAgentEventIndex >= 0) {
-    //   setEventsVisibleCount(nextAgentEventIndex + 1);
-    // } else {
-    //   setEventsVisibleCount(events.length);
-    // }
+    if (isNumber(nextAgentEventIndex)) {
+      setEventsVisibleCount(nextAgentEventIndex + 1);
+    } else {
+      setEventsVisibleCount(events.length);
+    }
   };
 
   const visibleEvents = useMemo(
@@ -64,6 +52,20 @@ export const AgentEventsList = ({
 
     return index >= initialEventsCount;
   };
+
+  useEffect(() => {
+    if (events.length > eventsVisibleCount) {
+      const nextAgentEventIndex = agentEventsIndexes.find(
+        (index) => index >= eventsVisibleCount
+      );
+
+      if (isNumber(nextAgentEventIndex)) {
+        setEventsVisibleCount(nextAgentEventIndex + 1);
+      } else {
+        setEventsVisibleCount(events.length);
+      }
+    }
+  }, [events.length, eventsVisibleCount, agentEventsIndexes]);
 
   return visibleEvents.map((event) => (
     <AgentEvent
