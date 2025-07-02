@@ -22,6 +22,7 @@ export const MCPServersContainer = ({ servers }: MCPServersContainerProps) => {
             <MCPServerIcon
               type={x.name}
               isActive={x.active}
+              isCustom={x.isEditable}
               size={DEFAULT_ICON_SIZE * viewport.zoom}
             />
           </s.MCPServerBlock>

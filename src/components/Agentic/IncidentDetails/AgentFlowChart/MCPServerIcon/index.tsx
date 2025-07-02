@@ -9,9 +9,14 @@ export const DEFAULT_SIZE = 12; // in pixels
 
 export const MCPServerIcon = ({
   type,
+  isCustom,
   isActive,
   size = DEFAULT_SIZE
 }: MCPServerIconProps) => {
+  if (isCustom) {
+    return <MCPLogoIcon size={size} color={"currentColor"} />;
+  }
+
   switch (type) {
     case "github":
       return <GitHubLogoIcon size={size} color={"currentColor"} />;
