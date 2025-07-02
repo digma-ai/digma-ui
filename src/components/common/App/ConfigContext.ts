@@ -33,7 +33,8 @@ export const initialState: ConfigContextData = {
   userId: isString(window.userId) ? window.userId : "",
   isDigmathonGameFinished: window.isDigmathonGameFinished === true,
   runConfig: undefined,
-  areInsightSuggestionsEnabled: window.areInsightSuggestionsEnabled === true,
+  areInsightSuggestionsEnabled: window.isAgenticEnabled === true,
+  isAgenticEnabled: window.isAgenticEnabled === true,
   googleClientId: isString(window.googleClientId) ? window.googleClientId : ""
 };
 

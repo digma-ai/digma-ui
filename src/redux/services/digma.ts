@@ -5,6 +5,8 @@ import type {
   CloseIncidentPayload,
   CreateEnvironmentPayload,
   CreateEnvironmentResponse,
+  CreateIncidentFromInsightPayload,
+  CreateIncidentFromInsightResponse,
   DeleteEnvironmentPayload,
   DeleteEnvironmentResponse,
   DeleteIncidentAgentDirectivePayload,
@@ -739,6 +741,15 @@ export const digmaApi = createApi({
         method: "DELETE"
       }),
       invalidatesTags: ["IncidentAgentMCPServer"]
+    }),
+    createIncidentFromInsight: builder.mutation<
+      CreateIncidentFromInsightResponse,
+      CreateIncidentFromInsightPayload
+    >({
+      query: ({ insightId }) => ({
+        url: `Agentic/issue-entry/${window.encodeURIComponent(insightId)}`,
+        method: "POST"
+      })
     })
   })
 });
@@ -809,5 +820,6 @@ export const {
   useTestIncidentAgentMCPServerMutation,
   useAddIncidentAgentMCPServerMutation,
   useUpdateIncidentAgentMCPServerMutation,
-  useDeleteIncidentAgentMCPServerMutation
+  useDeleteIncidentAgentMCPServerMutation,
+  useCreateIncidentFromInsightMutation
 } = digmaApi;

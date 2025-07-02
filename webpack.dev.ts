@@ -152,6 +152,7 @@ const config: WebpackConfiguration = {
               process.env.IS_SANDBOX_MODE_ENABLED === "true",
             areInsightSuggestionsEnabled:
               process.env.ARE_INSIGHT_SUGGESTIONS_ENABLED === "true",
+            isAgenticEnabled: process.env.IS_AGENTIC_ENABLED === "true",
             googleClientId: process.env.GOOGLE_CLIENT_ID,
             postHogApiKey: process.env.POSTHOG_API_KEY,
             postHogHost: process.env.POSTHOG_URL,

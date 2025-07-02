@@ -181,6 +181,7 @@ export interface ConfigContextData {
   userInfo?: UserInfo;
   runConfig?: RunConfiguration;
   areInsightSuggestionsEnabled: boolean;
+  isAgenticEnabled: boolean;
   googleClientId: string;
 }
 
