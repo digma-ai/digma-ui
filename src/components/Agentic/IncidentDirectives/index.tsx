@@ -1,26 +1,39 @@
 import {
+  fetchEventSource,
+  type EventSourceMessage
+} from "@microsoft/fetch-event-source";
+import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useBlocker } from "react-router";
+import { useAgenticDispatch } from "../../../containers/Agentic/hooks";
 import {
+  digmaApi,
   useDeleteIncidentAgentDirectiveMutation,
-  useGetIncidentAgentDirectivesQuery
+  useGetIncidentAgentDirectivesChatEventsQuery,
+  useGetIncidentAgentDirectivesQuery,
+  useSendMessageToIncidentAgentDirectivesChatMutation
 } from "../../../redux/services/digma";
+import type { IncidentAgentEvent } from "../../../redux/services/types";
+import { isString } from "../../../typeGuards/isString";
 import { CancelConfirmation } from "../../common/CancelConfirmation";
 import { SortIcon } from "../../common/icons/16px/SortIcon";
 import { TrashBinIcon } from "../../common/icons/16px/TrashBinIcon";
 import { Direction } from "../../common/icons/types";
 import { KebabMenu } from "../../common/KebabMenu";
 import { Checkmark } from "../../common/v3/Checkmark";
+import { Spinner } from "../../common/v3/Spinner";
 import type { MenuItem } from "../../Navigation/common/MenuList/types";
 import * as s from "./styles";
 import type { ColumnMeta, ExtendedDirective } from "./types";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+const REFRESH_INTERVAL_DURING_STREAMING = 3 * 1000; // in milliseconds
 
 const columnHelper = createColumnHelper<ExtendedDirective>();
 
@@ -28,8 +41,28 @@ export const IncidentDirectives = () => {
   const [searchInputValue, setSearchInputValue] = useState("");
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
   const [directiveToDelete, setDirectiveToDelete] = useState<string>();
+  const [conversationId, setConversationId] = useState<string>();
+  const [isStartMessageSending, setIsStartMessageSending] = useState(false);
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const [fetchedEvents, setFetchedEvents] = useState<IncidentAgentEvent[]>([]);
+  const [placeholderEvents, setPlaceholderEvents] = useState<
+    IncidentAgentEvent[]
+  >([]);
+  const [isCurrentConversationEnded, setIsCurrentConversationEnded] =
+    useState(false);
 
-  const { data } = useGetIncidentAgentDirectivesQuery(
+  const dispatch = useAgenticDispatch();
+
+  const [sendMessage, { isLoading: isSubsequentMessageSending }] =
+    useSendMessageToIncidentAgentDirectivesChatMutation();
+
+  const isMessageSending = isStartMessageSending || isSubsequentMessageSending;
+
+  const shouldBlockNavigation = Boolean(conversationId) || isMessageSending;
+
+  const blocker = useBlocker(shouldBlockNavigation);
+
+  const { data: directives } = useGetIncidentAgentDirectivesQuery(
     {
       search_term: searchInputValue || undefined
     },
@@ -37,6 +70,19 @@ export const IncidentDirectives = () => {
       pollingInterval: REFRESH_INTERVAL
     }
   );
+
+  const { data: events, isLoading: areEventsLoading } =
+    useGetIncidentAgentDirectivesChatEventsQuery(
+      {
+        conversationId: conversationId ?? ""
+      },
+      {
+        skip: !conversationId || isCurrentConversationEnded,
+        pollingInterval: isMessageSending
+          ? REFRESH_INTERVAL_DURING_STREAMING
+          : REFRESH_INTERVAL
+      }
+    );
 
   const [deleteIncidentAgentDirective] =
     useDeleteIncidentAgentDirectiveMutation();
@@ -64,22 +110,118 @@ export const IncidentDirectives = () => {
     setDirectiveToDelete(undefined);
   };
 
-  const handleMessageSend = () => {
-    // TODO: implement
+  const handleMessageSend = (text: string) => {
+    // Send first message to start the new conversation
+    if (!conversationId || isCurrentConversationEnded) {
+      setConversationId(undefined);
+      setFetchedEvents([]);
+      setPlaceholderEvents([
+        {
+          id: "__start_message",
+          type: "human",
+          agent_name: "incident_entry",
+          message: text,
+          tool_name: null,
+          mcp_name: null
+        }
+      ]);
+      // Stop any existing connection
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+
+      abortControllerRef.current = new AbortController();
+
+      setIsStartMessageSending(true);
+      void fetchEventSource(
+        `${
+          isString(window.digmaApiProxyPrefix)
+            ? window.digmaApiProxyPrefix
+            : "/api/"
+        }Agentic/directives/chat`,
+        {
+          method: "POST",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          signal: abortControllerRef.current.signal,
+          body: JSON.stringify({
+            text,
+            ids: selectedConditions
+          }),
+          onopen: (response: Response) => {
+            if (response.ok) {
+              setConversationId(
+                response.headers.get("agentic-conversation-id") ?? ""
+              );
+              // eslint-disable-next-line no-console
+              console.log(
+                `[${new Date().toISOString()}] Got conversation ID:`,
+                response.headers.get("agentic-conversation-id") ?? ""
+              );
+              setIsStartMessageSending(false);
+              return Promise.resolve();
+            } else {
+              setIsStartMessageSending(false);
+              return Promise.reject(
+                new Error(`HTTP ${response.status}: ${response.statusText}`)
+              );
+            }
+          },
+          onmessage: (message: EventSourceMessage) => {
+            // eslint-disable-next-line no-console
+            console.log(
+              `[${new Date().toISOString()}] Received message:`,
+              message
+            );
+          },
+          onerror: (err: unknown) => {
+            abortControllerRef.current = null;
+            setIsStartMessageSending(false);
+            if (err instanceof Error) {
+              // eslint-disable-next-line no-console
+              console.error("Error starting directives chat:", err);
+            } else {
+              // eslint-disable-next-line no-console
+              console.error("Unknown error starting directives chat");
+            }
+          },
+          onclose: () => {
+            abortControllerRef.current = null;
+          }
+        }
+      );
+    } else {
+      // Send subsequent messages to continue the current conversation
+      void sendMessage({
+        conversationId,
+        data: { text, ids: selectedConditions }
+      });
+    }
   };
 
   const handleSelectedConditionTagClick = (id: string) => () => {
     setSelectedConditions((prev) => prev.filter((x) => x !== id));
   };
 
+  const handleNavigationConfirmationDialogConfirm = () => {
+    blocker.proceed?.();
+  };
+
+  const handleNavigationConfirmationDialogClose = () => {
+    blocker.reset?.();
+  };
+
   const items = useMemo(
     () =>
-      data?.directives?.map((item, index) => ({
+      directives?.directives?.map((item, index) => ({
         ...item,
         number: index + 1,
         isSelected: selectedConditions.includes(item.id)
       })) ?? [],
-    [selectedConditions, data]
+
+    [selectedConditions, directives]
   );
 
   const columns = [
@@ -206,6 +348,61 @@ export const IncidentDirectives = () => {
     enableSortingRemoval: false
   });
 
+  useEffect(() => {
+    setSelectedConditions((prev) =>
+      prev.filter((x) => directives?.directives.find((item) => item.id === x))
+    );
+  }, [directives]);
+
+  useEffect(() => {
+    const isConversationEnded = Boolean(
+      conversationId &&
+        fetchedEvents?.some(
+          (event) =>
+            event.type === "agent_end" &&
+            event.agent_name === "directives_manager" &&
+            event.conversation_id === conversationId
+        )
+    );
+
+    setIsCurrentConversationEnded(isConversationEnded);
+
+    if (isConversationEnded) {
+      dispatch(digmaApi.util.invalidateTags(["IncidentAgentDirective"]));
+    }
+  }, [conversationId, fetchedEvents, dispatch]);
+
+  useEffect(() => {
+    if (events && events.extra.conversationId === conversationId) {
+      setFetchedEvents(events.data);
+    }
+  }, [events, conversationId]);
+
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, []);
+
+  const chatEvents = useMemo(
+    () =>
+      (conversationId && fetchedEvents.length > 0
+        ? fetchedEvents
+        : placeholderEvents) ?? [],
+    [placeholderEvents, fetchedEvents, conversationId]
+  );
+
+  // Filter out internal tool events
+  const filteredEvents = useMemo(
+    () =>
+      chatEvents.filter(
+        (event) => !(event.type === "tool" && event.mcp_name === "")
+      ) ?? [],
+    [chatEvents]
+  );
+
   return (
     <s.Container>
       <s.Header>
@@ -216,95 +413,103 @@ export const IncidentDirectives = () => {
         />
       </s.Header>
       <s.TableContainer>
-        <s.Table>
-          <s.TableHead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <s.TableHeadRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  const meta = header.column.columnDef.meta as ColumnMeta;
+        {directives ? (
+          <s.Table>
+            <s.TableHead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <s.TableHeadRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    const meta = header.column.columnDef.meta as ColumnMeta;
 
-                  return (
-                    <s.TableHeaderCell
-                      key={header.id}
-                      style={{
-                        width: meta.width,
-                        minWidth: meta.minWidth
-                      }}
-                    >
-                      <s.TableHeaderCellContent
-                        onClick={
-                          header.column.columnDef.enableSorting
-                            ? header.column.getToggleSortingHandler()
-                            : undefined
-                        }
-                        $align={meta.textAlign}
+                    return (
+                      <s.TableHeaderCell
+                        key={header.id}
+                        style={{
+                          width: meta.width,
+                          minWidth: meta.minWidth
+                        }}
                       >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                        {header.column.columnDef.enableSorting &&
-                          {
-                            asc: (
-                              <s.SortingOrderIconContainer>
-                                <SortIcon
-                                  color={"currentColor"}
-                                  size={16}
-                                  direction={Direction.Up}
-                                />
-                              </s.SortingOrderIconContainer>
-                            ),
-                            desc: (
-                              <s.SortingOrderIconContainer>
-                                <SortIcon
-                                  color={"currentColor"}
-                                  size={16}
-                                  direction={Direction.Down}
-                                />
-                              </s.SortingOrderIconContainer>
-                            )
-                          }[header.column.getIsSorted() as string]}
-                      </s.TableHeaderCellContent>
-                    </s.TableHeaderCell>
-                  );
-                })}
-              </s.TableHeadRow>
-            ))}
-          </s.TableHead>
-          <s.TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <s.TableBodyRow key={row.id}>
-                {row.getVisibleCells().map((cell) => {
-                  const meta = cell.column.columnDef.meta as ColumnMeta;
+                        <s.TableHeaderCellContent
+                          onClick={
+                            header.column.columnDef.enableSorting
+                              ? header.column.getToggleSortingHandler()
+                              : undefined
+                          }
+                          $align={meta.textAlign}
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                          {header.column.columnDef.enableSorting &&
+                            {
+                              asc: (
+                                <s.SortingOrderIconContainer>
+                                  <SortIcon
+                                    color={"currentColor"}
+                                    size={16}
+                                    direction={Direction.Up}
+                                  />
+                                </s.SortingOrderIconContainer>
+                              ),
+                              desc: (
+                                <s.SortingOrderIconContainer>
+                                  <SortIcon
+                                    color={"currentColor"}
+                                    size={16}
+                                    direction={Direction.Down}
+                                  />
+                                </s.SortingOrderIconContainer>
+                              )
+                            }[header.column.getIsSorted() as string]}
+                        </s.TableHeaderCellContent>
+                      </s.TableHeaderCell>
+                    );
+                  })}
+                </s.TableHeadRow>
+              ))}
+            </s.TableHead>
+            <s.TableBody>
+              {table.getRowModel().rows.map((row) => (
+                <s.TableBodyRow key={row.id}>
+                  {row.getVisibleCells().map((cell) => {
+                    const meta = cell.column.columnDef.meta as ColumnMeta;
 
-                  return (
-                    <s.TableBodyCell
-                      key={cell.id}
-                      style={{
-                        width: meta.width,
-                        minWidth: meta.minWidth,
-                        justifyContent: meta.textAlign
-                      }}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </s.TableBodyCell>
-                  );
-                })}
-              </s.TableBodyRow>
-            ))}
-          </s.TableBody>
-        </s.Table>
+                    return (
+                      <s.TableBodyCell
+                        key={cell.id}
+                        style={{
+                          width: meta.width,
+                          minWidth: meta.minWidth,
+                          justifyContent: meta.textAlign
+                        }}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </s.TableBodyCell>
+                    );
+                  })}
+                </s.TableBodyRow>
+              ))}
+            </s.TableBody>
+          </s.Table>
+        ) : (
+          <s.LoadingContainer>
+            <Spinner size={32} />
+          </s.LoadingContainer>
+        )}
       </s.TableContainer>
       <s.StyledAgentChat
-        data={[]}
-        isDataLoading={false}
+        conversationId={conversationId}
+        data={filteredEvents}
+        isDataLoading={areEventsLoading}
         onMessageSend={handleMessageSend}
-        isMessageSending={false}
+        isMessageSending={isMessageSending}
+        typeInitialMessages={true}
         attachmentsComponent={
           selectedConditions.length > 0 && (
             <s.SelectedConditionsContainer>
@@ -313,7 +518,7 @@ export const IncidentDirectives = () => {
                   onClick={handleSelectedConditionTagClick(x)}
                   key={x}
                 >
-                  #{x}
+                  #{items.find((d) => d.id === x)?.number}
                 </s.SelectedConditionTag>
               ))}
             </s.SelectedConditionsContainer>
@@ -329,6 +534,20 @@ export const IncidentDirectives = () => {
             onConfirm={handleDeleteDirectiveDialogConfirm}
             confirmBtnText={"Yes, delete"}
             cancelBtnText={"No, keep it"}
+          />
+        </s.StyledOverlay>
+      )}
+      {blocker.state === "blocked" && (
+        <s.StyledOverlay>
+          <CancelConfirmation
+            header={"Leave this page"}
+            description={
+              "Are you sure you want to leave? You will lose all chat history."
+            }
+            onClose={handleNavigationConfirmationDialogClose}
+            onConfirm={handleNavigationConfirmationDialogConfirm}
+            confirmBtnText={"Yes, leave"}
+            cancelBtnText={"No, stay"}
           />
         </s.StyledOverlay>
       )}

@@ -42,7 +42,7 @@ export const getMainFont = (customFont: string) => {
   `;
 };
 
-export const getCodeFont = (customFont: string) => {
+export const getCodeFontFamilyValue = (customFont: string): string => {
   const customFontString = customFont ? `"${customFont}"` : "";
 
   let osFontString = "";
@@ -68,11 +68,17 @@ export const getCodeFont = (customFont: string) => {
     }
   }
 
+  return `${[customFontString, osFontString, "monospace"]
+    .filter(Boolean)
+    .join(", ")}
+  `;
+};
+
+export const getCodeFont = (customFont: string) => {
+  const value = getCodeFontFamilyValue(customFont);
+
   return css`
-    /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
-    font-family: ${[customFontString, osFontString, "monospace"]
-      .filter(Boolean)
-      .join(", ")};
+    font-family: ${value};
   `;
 };
 

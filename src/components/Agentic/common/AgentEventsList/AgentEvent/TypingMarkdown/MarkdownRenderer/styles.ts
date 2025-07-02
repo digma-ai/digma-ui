@@ -1,11 +1,11 @@
 import styled, { css } from "styled-components";
-import { getCodeFont } from "../../../common/App/styles";
+import { getCodeFont } from "../../../../../../common/App/styles";
 import {
   codeRegularTypography,
   subheading1RegularTypography
-} from "../../../common/App/typographies";
-import { CodeSnippet } from "../../../common/CodeSnippet";
-import { Link } from "../../../common/v3/Link";
+} from "../../../../../../common/App/typographies";
+import { CodeSnippet } from "../../../../../../common/CodeSnippet";
+import { Link } from "../../../../../../common/v3/Link";
 
 export const textStyles = css`
   ${subheading1RegularTypography}

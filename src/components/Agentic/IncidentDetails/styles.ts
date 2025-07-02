@@ -6,7 +6,7 @@ import {
 import { Toggle } from "../../common/v3/Toggle";
 import { OptionButton } from "../../common/v3/Toggle/styles";
 import type { ToggleProps } from "../../common/v3/Toggle/types";
-import { textStyles } from "./MarkdownRenderer/styles";
+import { textStyles } from "../common/AgentEventsList/AgentEvent/TypingMarkdown/MarkdownRenderer/styles";
 import type { AgentViewMode, BreadcrumbProps } from "./types";
 
 export const Container = styled.div`

@@ -158,6 +158,7 @@ export const GlobalErrorsList = ({
     !isUndefined(data.dismissedCount) &&
     data.dismissedCount > 0;
 
+  // TODO: replace with useEffect
   useMount(() => {
     return () => {
       window.clearTimeout(animationDelayTimerId.current);

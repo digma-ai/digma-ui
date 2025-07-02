@@ -29,6 +29,7 @@ export const AutoAnimatedContainerComponent = (
     [parent, ref]
   );
 
+  // TODO: replace with useEffect
   useMount(() => {
     enable(isAnimationEnabled);
   });

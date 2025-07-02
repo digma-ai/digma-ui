@@ -120,6 +120,7 @@ export const Errors = () => {
     isErrorDetailsWorkspaceItemsOnlyRehydrated
   ]);
 
+  // TODO: replace with useEffect
   // Cleanup errors store slice on unmount
   useMount(() => {
     return () => {

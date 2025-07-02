@@ -1,6 +1,6 @@
 {
   "name": "digma-ui",
-  "version": "16.0.1",
+  "version": "16.1.0-alpha.0",
   "description": "Digma UI",
   "scripts": {
     "lint:eslint": "eslint --cache .",
@@ -118,12 +118,14 @@
     "zip-webpack-plugin": "^4.0.2"
   },
   "dependencies": {
+    "@codemirror/lang-json": "^6.0.2",
     "@floating-ui/react": "^0.25.1",
     "@formkit/auto-animate": "^0.8.2",
     "@microsoft/fetch-event-source": "^2.0.1",
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.5.0",
     "@tanstack/react-table": "^8.7.8",
+    "@uiw/react-codemirror": "^4.23.14",
     "@xyflow/react": "^12.6.4",
     "allotment": "^1.19.0",
     "axios": "^1.8.4",

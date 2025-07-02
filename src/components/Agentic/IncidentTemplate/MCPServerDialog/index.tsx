@@ -42,6 +42,13 @@ export const MCPServerDialog = ({
   const handleServerStepConnect = (settings: string) => {
     setTestServerError(undefined);
 
+    try {
+      JSON.parse(settings);
+    } catch {
+      setTestServerError("Invalid JSON");
+      return;
+    }
+
     void testMCPServer({
       config_json: settings
     })
@@ -117,7 +124,7 @@ export const MCPServerDialog = ({
   };
 
   const handleToolsStepCancel = () => {
-    setCurrentStep((prev) => prev - 1);
+    onClose();
   };
 
   const tools = useMemo(
@@ -156,7 +163,7 @@ export const MCPServerDialog = ({
   };
 
   return (
-    <Dialog title={"Wizard"} onClose={handleDialogClose}>
+    <Dialog title={"Add MCP Server"} onClose={handleDialogClose}>
       {steps[currentStep]}
     </Dialog>
   );

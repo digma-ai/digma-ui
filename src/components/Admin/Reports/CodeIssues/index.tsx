@@ -208,6 +208,7 @@ export const CodeIssues = () => {
     dispatch(setSelectedEndpoints([]));
   };
 
+  // TODO: replace with useEffect
   useMount(() => {
     if (environmentParam) {
       dispatch(setSelectedEnvironmentId(environmentParam));

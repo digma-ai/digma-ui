@@ -61,6 +61,7 @@ export const useFetchData = <T, K>(
   const previousPayload = usePrevious(payload);
   const [isMounted, setIsMounted] = useState(false);
 
+  // TODO: replace with useEffect
   useMount(() => {
     // TODO: check if isEnabled and payload.isEnabled are equal
     if (isEnabled && fetchOnMount) {

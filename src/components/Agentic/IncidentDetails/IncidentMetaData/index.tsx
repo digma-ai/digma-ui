@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import { useAgenticDispatch } from "../../../../containers/Agentic/hooks";
 import { useGetIncidentQuery } from "../../../../redux/services/digma";
 import { setIncidentToClose } from "../../../../redux/slices/incidentsSlice";
+import { intersperse } from "../../../../utils/intersperse";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { Divider } from "./Divider";
 import * as s from "./styles";
@@ -47,25 +48,25 @@ export const IncidentMetaData = () => {
     return <s.Container />;
   }
 
-  return (
-    <s.Container>
-      <s.AttributesList>
-        {data.status_timestamps.active && (
-          <s.Attribute>
-            <s.AttributeLabel>Incident start time:</s.AttributeLabel>
-            <Tooltip title={new Date(data.status_timestamps.active).toString()}>
-              <s.AttributeValue>
-                {format(data.status_timestamps.active, DATE_FORMAT)}
-              </s.AttributeValue>
-            </Tooltip>
-          </s.Attribute>
-        )}
-        {data.status_timestamps.closed && (
-          <>
-            <s.DividerContainer>
-              <Divider color={"currentColor"} />
-            </s.DividerContainer>
-            <s.Attribute>
+  const attributes = intersperse(
+    [
+      ...(data.status_timestamps.active
+        ? [
+            <s.Attribute key={"start-time"}>
+              <s.AttributeLabel>Incident start time:</s.AttributeLabel>
+              <Tooltip
+                title={new Date(data.status_timestamps.active).toString()}
+              >
+                <s.AttributeValue>
+                  {format(data.status_timestamps.active, DATE_FORMAT)}
+                </s.AttributeValue>
+              </Tooltip>
+            </s.Attribute>
+          ]
+        : []),
+      ...(data.status_timestamps.closed
+        ? [
+            <s.Attribute key={"close-time"}>
               <s.AttributeLabel>Incident close time:</s.AttributeLabel>
               <Tooltip
                 title={new Date(data.status_timestamps.closed).toString()}
@@ -75,14 +76,11 @@ export const IncidentMetaData = () => {
                 </s.AttributeValue>
               </Tooltip>
             </s.Attribute>
-          </>
-        )}
-        {data.affected_services.length > 0 && (
-          <>
-            <s.DividerContainer>
-              <Divider color={"currentColor"} />
-            </s.DividerContainer>
-            <s.ServicesContainer>
+          ]
+        : []),
+      ...(data.affected_services.length > 0
+        ? [
+            <s.ServicesContainer key={"affected-services"}>
               <span>Affected services:</span>
               {serviceTagsToShow.map((x) => (
                 <Tooltip key={x} title={x}>
@@ -97,16 +95,23 @@ export const IncidentMetaData = () => {
                 </Tooltip>
               )}
             </s.ServicesContainer>
-          </>
-        )}
-        <s.DividerContainer>
-          <Divider color={"currentColor"} />
-        </s.DividerContainer>
-        <s.Attribute>
-          <s.AttributeLabel>Status:</s.AttributeLabel>
-          <s.StatusAttributeValue>{data.status}</s.StatusAttributeValue>
-        </s.Attribute>
-      </s.AttributesList>
+          ]
+        : []),
+      <s.Attribute key={"status"}>
+        <s.AttributeLabel>Status:</s.AttributeLabel>
+        <s.StatusAttributeValue>{data.status}</s.StatusAttributeValue>
+      </s.Attribute>
+    ],
+    (i) => (
+      <s.DividerContainer key={`separator-${i}`}>
+        <Divider color={"currentColor"} />
+      </s.DividerContainer>
+    )
+  );
+
+  return (
+    <s.Container>
+      <s.AttributesList>{attributes}</s.AttributesList>
       {data.status === "pending" && (
         <s.CloseIncidentButton
           label={"Close incident"}

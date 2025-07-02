@@ -11,6 +11,7 @@ import type {
   DeleteMCPServerPayload,
   DismissErrorPayload,
   DismissUndismissInsightPayload,
+  ExtendedGetDirectivesChatEventsResponse,
   ExtendedGetInsightsPayload,
   ExtendedGetInsightsResponse,
   ExtendedGetInsightsStatsResponse,
@@ -24,6 +25,8 @@ import type {
   GetAssetsResponse,
   GetBlockedTracesPayload,
   GetBlockedTracesResponse,
+  GetDirectivesChatEventsPayload,
+  GetDirectivesChatEventsResponse,
   GetDirectivesPayload,
   GetDirectivesResponse,
   GetEndpointsIssuesPayload,
@@ -93,6 +96,7 @@ import type {
   PinErrorPayload,
   RecheckInsightPayload,
   ResendConfirmationEmailPayload,
+  SendMessageToDirectivesChatPayload,
   SendMessageToIncidentAgentChatPayload,
   SendMessageToIncidentCreationChatPayload,
   SetEndpointsIssuesPayload,
@@ -119,6 +123,7 @@ export const digmaApi = createApi({
     "IncidentAgentChatEvent",
     "IncidentEntryAgentChatEvent",
     "IncidentAgentDirective",
+    "IncidentDirectivesAgentChatEvent",
     "IncidentAgentMCPServer"
   ],
   reducerPath: "digmaApi",
@@ -553,9 +558,7 @@ export const digmaApi = createApi({
       }),
       transformResponse: (response: GetSpanEnvironmentsResponse, _, arg) => ({
         data: response,
-        extra: {
-          spanCodeObjectId: arg.spanCodeObjectId
-        }
+        extra: arg
       })
     }),
     getIssueRecommendations: builder.query<
@@ -659,6 +662,38 @@ export const digmaApi = createApi({
         method: "DELETE"
       }),
       invalidatesTags: ["IncidentAgentDirective"]
+    }),
+    getIncidentAgentDirectivesChatEvents: builder.query<
+      ExtendedGetDirectivesChatEventsResponse,
+      GetDirectivesChatEventsPayload
+    >({
+      query: ({ conversationId }) => ({
+        url: `Agentic/directives/chat/${window.encodeURIComponent(
+          conversationId
+        )}/events`
+      }),
+      transformResponse: (
+        response: GetDirectivesChatEventsResponse,
+        _,
+        arg
+      ) => ({
+        data: response,
+        extra: arg
+      }),
+      providesTags: ["IncidentDirectivesAgentChatEvent"]
+    }),
+    sendMessageToIncidentAgentDirectivesChat: builder.mutation<
+      unknown, // text/event-stream
+      SendMessageToDirectivesChatPayload
+    >({
+      query: ({ conversationId, data }) => ({
+        url: `Agentic/directives/chat/${window.encodeURIComponent(
+          conversationId
+        )}`,
+        method: "POST",
+        body: data
+      }),
+      invalidatesTags: ["IncidentDirectivesAgentChatEvent"]
     }),
     getIncidentAgentMCPServers: builder.query<GetMCPServersResponse, void>({
       query: () => ({
@@ -768,6 +803,8 @@ export const {
   useSendMessageToIncidentCreationChatMutation,
   useGetIncidentAgentDirectivesQuery,
   useDeleteIncidentAgentDirectiveMutation,
+  useSendMessageToIncidentAgentDirectivesChatMutation,
+  useGetIncidentAgentDirectivesChatEventsQuery,
   useGetIncidentAgentMCPServersQuery,
   useTestIncidentAgentMCPServerMutation,
   useAddIncidentAgentMCPServerMutation,

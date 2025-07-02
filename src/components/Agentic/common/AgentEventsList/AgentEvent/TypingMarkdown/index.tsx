@@ -1,6 +1,6 @@
 import { memo, useEffect, useState } from "react";
-import { isNumber } from "../../../../typeGuards/isNumber";
-import { MarkdownRenderer } from "../MarkdownRenderer";
+import { isNumber } from "../../../../../../typeGuards/isNumber";
+import { MarkdownRenderer } from "./MarkdownRenderer";
 import type { TypingMarkdownProps } from "./types";
 
 export const TypingMarkdownComponent = ({

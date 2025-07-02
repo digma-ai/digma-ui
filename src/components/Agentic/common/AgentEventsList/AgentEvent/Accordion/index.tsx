@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { ChevronIcon } from "../../../../common/icons/16px/ChevronIcon";
-import { Direction } from "../../../../common/icons/types";
+import { ChevronIcon } from "../../../../../common/icons/16px/ChevronIcon";
+import { Direction } from "../../../../../common/icons/types";
 import * as s from "./styles";
 import type { AccordionProps } from "./types";
 

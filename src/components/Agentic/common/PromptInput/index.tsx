@@ -21,7 +21,7 @@ export const PromptInput = ({
   fontSize = s.TEXT_AREA_DEFAULT_FONT_SIZE,
   attachmentsComponent
 }: PromptInputProps) => {
-  const isSubmittingDisabled = isSubmitting ?? value.trim() === "";
+  const isSubmittingDisabled = Boolean(isSubmitting ?? value.trim() === "");
   const formRef = useRef<HTMLFormElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [textAreaHeight, setTextAreaHeight] = useState<number>(
@@ -99,7 +99,7 @@ export const PromptInput = ({
           onChange={handleChange}
           placeholder={placeholder}
           onKeyDown={handleKeyDown}
-          disabled={isDisabled ?? isSubmittingDisabled}
+          disabled={isDisabled}
         />
       </s.TextAreaContainer>
       <s.SubmitButton type={"submit"} disabled={isSubmittingDisabled}>

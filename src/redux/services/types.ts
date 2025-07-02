@@ -1054,9 +1054,7 @@ export interface GetIssueRecommendationsResponse {
 
 export interface ExtendedGetSpanEnvironmentsResponse {
   data: GetSpanEnvironmentsResponse;
-  extra: {
-    spanCodeObjectId: string;
-  };
+  extra: GetSpanEnvironmentsPayload;
 }
 
 export interface GetBlockedTracesPayload {
@@ -1180,6 +1178,7 @@ export interface GetIncidentAgentEventsPayload {
 }
 
 export interface IncidentAgentEvent {
+  id: string;
   type:
     | "token"
     | "ai"
@@ -1193,6 +1192,7 @@ export interface IncidentAgentEvent {
   agent_name: string;
   tool_name?: string | null;
   mcp_name?: string | null;
+  conversation_id?: string;
 }
 
 export type GetIncidentAgentEventsResponse = IncidentAgentEvent[];
@@ -1232,6 +1232,22 @@ export interface GetDirectivesResponse {
 
 export interface DeleteIncidentAgentDirectivePayload {
   id: string;
+}
+
+export interface SendMessageToDirectivesChatPayload {
+  conversationId: string;
+  data: { text: string; ids: string[] };
+}
+
+export interface GetDirectivesChatEventsPayload {
+  conversationId: string;
+}
+
+export type GetDirectivesChatEventsResponse = IncidentAgentEvent[];
+
+export interface ExtendedGetDirectivesChatEventsResponse {
+  data: GetDirectivesChatEventsResponse;
+  extra: GetDirectivesChatEventsPayload;
 }
 
 export interface MCPServerData {
