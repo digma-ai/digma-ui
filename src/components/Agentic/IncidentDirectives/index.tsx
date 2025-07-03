@@ -10,7 +10,7 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useBlocker } from "react-router";
+import { useBlocker, useNavigate } from "react-router";
 import { useAgenticDispatch } from "../../../containers/Agentic/hooks";
 import {
   digmaApi,
@@ -22,12 +22,14 @@ import {
 import type { IncidentAgentEvent } from "../../../redux/services/types";
 import { isString } from "../../../typeGuards/isString";
 import { CancelConfirmation } from "../../common/CancelConfirmation";
+import { CrossIcon } from "../../common/icons/16px/CrossIcon";
 import { SortIcon } from "../../common/icons/16px/SortIcon";
 import { TrashBinIcon } from "../../common/icons/16px/TrashBinIcon";
 import { Direction } from "../../common/icons/types";
 import { KebabMenu } from "../../common/KebabMenu";
 import { Checkmark } from "../../common/v3/Checkmark";
 import { Spinner } from "../../common/v3/Spinner";
+import { Tooltip } from "../../common/v3/Tooltip";
 import type { MenuItem } from "../../Navigation/common/MenuList/types";
 import * as s from "./styles";
 import type { ColumnMeta, ExtendedDirective } from "./types";
@@ -50,6 +52,7 @@ export const IncidentDirectives = () => {
   >([]);
   const [isCurrentConversationEnded, setIsCurrentConversationEnded] =
     useState(false);
+  const navigate = useNavigate();
 
   const dispatch = useAgenticDispatch();
 
@@ -86,6 +89,10 @@ export const IncidentDirectives = () => {
 
   const [deleteIncidentAgentDirective] =
     useDeleteIncidentAgentDirectiveMutation();
+
+  const handleCloseButtonClick = () => {
+    void navigate("/agentic/incidents");
+  };
 
   const handleSearchInputChange = (value: string) => {
     setSearchInputValue(value);
@@ -407,11 +414,16 @@ export const IncidentDirectives = () => {
     <s.Container>
       <s.Header>
         Directives
-        <s.StyledSearchInput
-          onChange={handleSearchInputChange}
-          value={searchInputValue}
-        />
+        <Tooltip title={"Close"}>
+          <s.CloseButton onClick={handleCloseButtonClick}>
+            <CrossIcon color={"currentColor"} size={24} />
+          </s.CloseButton>
+        </Tooltip>
       </s.Header>
+      <s.StyledSearchInput
+        onChange={handleSearchInputChange}
+        value={searchInputValue}
+      />
       <s.TableContainer>
         {directives ? (
           <s.Table>

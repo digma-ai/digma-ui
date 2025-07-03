@@ -57,4 +57,5 @@ export type Action =
   | "openTrace"
   | "openLiveView"
   | "pin"
-  | "openSuggestion";
+  | "openSuggestion"
+  | "investigate";

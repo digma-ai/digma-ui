@@ -15,6 +15,20 @@ import { ServerStep } from "./ServerStep";
 import { ToolsStep } from "./ToolsStep";
 import type { MCPServerDialogProps } from "./types";
 
+const formatErrorMessage = (error: FetchBaseQueryError, prefix: string) => {
+  let errorDetails = "";
+
+  if (isString(error.data)) {
+    errorDetails = error.data;
+  }
+
+  if (isObject(error.data) && isString(error.data.detail)) {
+    errorDetails = error.data.detail;
+  }
+
+  return [prefix, errorDetails].filter(Boolean).join(": ");
+};
+
 export const MCPServerDialog = ({
   agentId,
   serverData,
@@ -57,7 +71,9 @@ export const MCPServerDialog = ({
         setCurrentStep((prev) => prev + 1);
       })
       .catch((error: FetchBaseQueryError) => {
-        setTestServerError(`Failed to test MCP server: ${String(error.data)}`);
+        setTestServerError(
+          formatErrorMessage(error, "Failed to test MCP server")
+        );
       });
   };
 
@@ -79,19 +95,8 @@ export const MCPServerDialog = ({
           onComplete();
         })
         .catch((error: FetchBaseQueryError) => {
-          const errorPrefix = "Failed to add MCP server";
-
-          let errorDetails = "";
-          if (isString(error.data)) {
-            errorDetails = error.data;
-          }
-
-          if (isObject(error.data) && isString(error.data.detail)) {
-            errorDetails = error.data.detail;
-          }
-
           setAddServerError(
-            [errorPrefix, errorDetails].filter(Boolean).join(": ")
+            formatErrorMessage(error, "Failed to add MCP server")
           );
         });
     } else {
@@ -105,19 +110,8 @@ export const MCPServerDialog = ({
           onComplete();
         })
         .catch((error: FetchBaseQueryError) => {
-          const errorPrefix = "Failed to add MCP server";
-
-          let errorDetails = "";
-          if (isString(error.data)) {
-            errorDetails = error.data;
-          }
-
-          if (isObject(error.data) && isString(error.data.detail)) {
-            errorDetails = error.data.detail;
-          }
-
           setAddServerError(
-            [errorPrefix, errorDetails].filter(Boolean).join(": ")
+            formatErrorMessage(error, "Failed to update MCP server")
           );
         });
     }

@@ -67,6 +67,7 @@ declare global {
     isDigmathonGameFinished?: unknown;
     isLoggingEnabled?: unknown;
     areInsightSuggestionsEnabled?: unknown;
+    isAgenticEnabled?: unknown;
     googleClientId?: unknown;
     isSandboxModeEnabled?: unknown;
     postHogApiKey?: unknown;

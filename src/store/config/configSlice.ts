@@ -40,6 +40,7 @@ export interface ConfigState {
   selectedServices: string[] | null;
   scope: Scope | null;
   areInsightSuggestionsEnabled: boolean | null;
+  isAgenticEnabled: boolean | null;
   googleClientId: string | null;
   isSandboxModeEnabled: boolean | null;
   postHogApiKey: string | null;
@@ -98,6 +99,9 @@ const initialState: ConfigState = {
   scope: null,
   areInsightSuggestionsEnabled: isBoolean(window.areInsightSuggestionsEnabled)
     ? window.areInsightSuggestionsEnabled
+    : null,
+  isAgenticEnabled: isBoolean(window.isAgenticEnabled)
+    ? window.isAgenticEnabled
     : null,
   googleClientId: isString(window.googleClientId)
     ? window.googleClientId

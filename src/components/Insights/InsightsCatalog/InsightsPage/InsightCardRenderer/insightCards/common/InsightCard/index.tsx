@@ -2,6 +2,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { usePrevious } from "../../../../../../../../hooks/usePrevious";
 import { platform } from "../../../../../../../../platform";
 import {
+  useCreateIncidentFromInsightMutation,
   useMarkInsightReadMutation,
   useRecheckInsightMutation
 } from "../../../../../../../../redux/services/digma";
@@ -71,10 +72,13 @@ export const InsightCard = ({
   const {
     isJaegerEnabled,
     areInsightSuggestionsEnabled,
+    isAgenticEnabled,
     isSandboxModeEnabled
   } = useConfigSelector();
   const cardRef = useRef<HTMLDivElement>(null);
   const [showInfo, setShowInfo] = useState(false);
+  const [createIncidentFromInsight, createIncidentFromInsightResult] =
+    useCreateIncidentFromInsightMutation();
 
   const isCritical = insight.criticality > HIGH_CRITICALITY_THRESHOLD;
 
@@ -276,6 +280,28 @@ export const InsightCard = ({
     }
   };
 
+  const handleInvestigateButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.INSIGHT_CARD_INVESTIGATE_BUTTON_CLICKED,
+      {
+        insightType: insight.type
+      }
+    );
+
+    void createIncidentFromInsight({
+      insightId: insight.id
+    })
+      .unwrap()
+      .then((data) => {
+        const incidentId = data.incidentId;
+        openURLInDefaultBrowser(`/agentic/incidents/${incidentId}`);
+      })
+      .catch(() => {
+        // eslint-disable-next-line no-console
+        console.error("Failed to create incident from insight");
+      });
+  };
+
   if (viewMode === "compact") {
     return (
       <IssueCompactCard
@@ -435,6 +461,23 @@ export const InsightCard = ({
             label={"Suggestion"}
           />
         );
+      case "investigate":
+        return (
+          <s.InvestigateButton
+            icon={
+              createIncidentFromInsightResult.isLoading
+                ? () => <s.InvestigateButtonSpinner />
+                : LightBulbWithScrewIcon
+            }
+            onClick={handleInvestigateButtonClick}
+            isDisabled={createIncidentFromInsightResult.isLoading}
+            label={
+              createIncidentFromInsightResult.isLoading
+                ? "Investigating..."
+                : "Investigate"
+            }
+          />
+        );
 
       default:
         return null;
@@ -493,6 +536,10 @@ export const InsightCard = ({
 
     if (areInsightSuggestionsEnabled && onOpenSuggestion) {
       actions.push("openSuggestion");
+    }
+
+    if (isAgenticEnabled && insight.isDismissible && platform === "Web") {
+      actions.push("investigate");
     }
 
     if (actions.length === 0) {

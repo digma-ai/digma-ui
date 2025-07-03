@@ -82,9 +82,9 @@ export const MCPServersToolbar = ({
 
   return (
     <s.Container $zoomLevel={zoomLevel}>
-      {servers.map((x) => (
+      {servers.map((x, i) => (
         <NewPopover
-          key={x.name}
+          key={`${x.name}__${i}`}
           placement={"bottom-end"}
           content={
             <Popup>
@@ -99,7 +99,12 @@ export const MCPServersToolbar = ({
           <div>
             <Tooltip title={x.display_name}>
               <s.MCPServerIconContainer $isEditable={x.isEditable}>
-                <MCPServerIcon type={x.name} isActive={x.active} size={17} />
+                <MCPServerIcon
+                  type={x.name}
+                  isActive={x.active}
+                  size={17}
+                  isCustom={x.isEditable}
+                />
               </s.MCPServerIconContainer>
             </Tooltip>
           </div>

@@ -60,6 +60,7 @@ To set environment variables use .env file
 | JAEGER_UI_PATH                  | string  | -       | Path to custom Jaeger UI build                           |
 | IS_SANDBOX_ENABLED              | boolean | false   | Enable Sandbox (demo) mode                               |
 | ARE_INSIGHT_SUGGESTIONS_ENABLED | boolean | false   | Enable insight suggestions                               |
+| IS_AGENTIC_ENABLED              | boolean | false   | Enable Agentic service capabilities                      |
 | GOOGLE_CLIENT_ID                | string  | -       | Google client ID                                         |
 | POSTHOG_API_KEY                 | string  | -       | PostHog API key                                          |
 | POSTHOG_URL                     | string  | -       | PostHog URL                                              |

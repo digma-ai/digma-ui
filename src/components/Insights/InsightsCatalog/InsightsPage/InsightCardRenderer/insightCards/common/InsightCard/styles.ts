@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import { Card } from "../../../../../../../common/v3/Card";
 import { NewButton } from "../../../../../../../common/v3/NewButton";
 import { NewIconButton } from "../../../../../../../common/v3/NewIconButton";
+import { Spinner } from "../../../../../../../common/v3/Spinner";
 import type { StyledCardProps } from "./types";
 
 export const InsightFooter = styled.div`
@@ -66,6 +67,20 @@ export const SuggestionButton = styled(NewButton)`
     background: #b66b26;
     border-color: #b66b26;
   }
+`;
+
+export const InvestigateButton = styled(SuggestionButton)`
+  &:disabled {
+    color: ${({ theme }) => theme.colors.v3.icon.white};
+
+    span {
+      color: currentcolor;
+    }
+  }
+`;
+
+export const InvestigateButtonSpinner = styled(Spinner)`
+  color: currentcolor;
 `;
 
 export const TraceActionButtonIconContainer = styled.div`
