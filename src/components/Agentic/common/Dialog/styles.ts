@@ -4,7 +4,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 635px;
-  height: 420px;
+  min-height: 420px;
+  max-height: fit-content;
   padding: 12px;
   gap: 16px;
   border-radius: 4px;
