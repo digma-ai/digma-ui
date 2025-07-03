@@ -16,9 +16,20 @@ export const Header = styled.header`
   ${heading2BoldTypography}
 
   display: flex;
-  padding: 32px 24px 24px;
+  padding: 32px 0 24px;
   gap: 24px;
   color: ${({ theme }) => theme.colors.v3.text.primary};
+`;
+
+export const CloseButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: auto;
 `;
 
 export const StyledAgentFlowChart = styled(AgentFlowChart)`

@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import {
   useDeleteIncidentAgentMCPServerMutation,
   useGetIncidentAgentMCPServersQuery
 } from "../../../redux/services/digma";
 import { CancelConfirmation } from "../../common/CancelConfirmation";
+import { CrossIcon } from "../../common/icons/16px/CrossIcon";
 import { Overlay } from "../../common/Overlay";
+import { Tooltip } from "../../common/v3/Tooltip";
 import type { ExtendedAgent } from "../IncidentDetails/AgentFlowChart/types";
 import { MCPServerDialog } from "./MCPServerDialog";
 import * as s from "./styles";
@@ -64,11 +67,17 @@ export const IncidentTemplate = () => {
   const [mcpServerIdToUpdate, setMCPServerIdToUpdate] = useState<string>();
   const [mcpServerIdToDelete, setMCPServerIdToDelete] = useState<string>();
 
+  const navigate = useNavigate();
+
   const { data: mcpServers } = useGetIncidentAgentMCPServersQuery(undefined, {
     pollingInterval: REFRESH_INTERVAL
   });
 
   const [deleteMCPServer] = useDeleteIncidentAgentMCPServerMutation();
+
+  const handleCloseButtonClick = () => {
+    void navigate("/agentic/incidents");
+  };
 
   const handleInputChange = () => {
     return undefined;
@@ -152,7 +161,14 @@ export const IncidentTemplate = () => {
 
   return (
     <s.Container>
-      <s.Header>Template</s.Header>
+      <s.Header>
+        Template
+        <Tooltip title={"Close"}>
+          <s.CloseButton onClick={handleCloseButtonClick}>
+            <CrossIcon color={"currentColor"} size={24} />
+          </s.CloseButton>
+        </Tooltip>
+      </s.Header>
       <s.StyledIncidentPromptInput
         onChange={handleInputChange}
         onSubmit={handleInputSubmit}

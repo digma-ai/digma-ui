@@ -25,14 +25,26 @@ export const Header = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 32px 24px 24px;
+  padding: 32px 0 24px;
   gap: 24px;
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
 export const StyledSearchInput = styled(SearchInput)`
   width: 251px;
+  margin-left: auto;
   flex-grow: 0;
+`;
+
+export const CloseButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: auto;
 `;
 
 export const TableContainer = styled.div`
