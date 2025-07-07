@@ -2,16 +2,20 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { platform } from "../../../platform";
 import { ViewMode } from "../../../store/errors/errorsSlice";
 import { useErrorsSelector } from "../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../store/useStore";
 import { FeatureFlag } from "../../../types";
+import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { getIdeLauncherLinkForError } from "../../../utils/getIdeLauncherLinkForError";
 import {
   AffectedEndpointsSelector,
   getEndpointKey
 } from "../../common/AffectedEndpointsSelector";
 import type { Option } from "../../common/AffectedEndpointsSelector/types";
+import { CodeIcon } from "../../common/icons/16px/CodeIcon";
 import { HistogramIcon } from "../../common/icons/16px/HistogramIcon";
 import { PinFillIcon } from "../../common/icons/16px/PinFillIcon";
 import { PinIcon } from "../../common/icons/16px/PinIcon";
@@ -180,6 +184,17 @@ export const NewErrorCard = ({
     setIsHistogramVisible(!isHistogramVisible);
   };
 
+  const handleIdeButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ERROR_CARD_OPEN_IN_IDE_BUTTON_CLICKED
+    );
+    const errorIdeLauncherLink = getIdeLauncherLinkForError(id);
+
+    if (errorIdeLauncherLink) {
+      openURLInDefaultBrowser(errorIdeLauncherLink);
+    }
+  };
+
   const handlePinUnpinButtonClick = () => {
     const value = !data.pinnedAt;
     sendUserActionTrackingEvent(
@@ -244,6 +259,16 @@ export const NewErrorCard = ({
             buttonType={"secondaryBorderless"}
             icon={HistogramIcon}
             onClick={handleHistogramButtonClick}
+          />
+        ]
+      : []),
+    ...(platform === "Web"
+      ? [
+          <NewIconButton
+            key={"ide"}
+            buttonType={"secondaryBorderless"}
+            icon={CodeIcon}
+            onClick={handleIdeButtonClick}
           />
         ]
       : [])

@@ -15,7 +15,7 @@ import type { MCPServersToolbarProps } from "./types";
 
 export const MCPServersToolbar = ({
   servers,
-  onEditMCPServer,
+  onSetMCPServer,
   onDeleteMCPServer
 }: MCPServersToolbarProps) => {
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
@@ -48,9 +48,9 @@ export const MCPServersToolbar = ({
     );
 
     switch (id) {
-      case "edit": {
+      case "set": {
         if (selectedMCPServer) {
-          onEditMCPServer(selectedMCPServer);
+          onSetMCPServer(selectedMCPServer);
         }
         break;
       }
@@ -67,10 +67,10 @@ export const MCPServersToolbar = ({
 
   const kebabMenuItems: MenuItem[] = [
     {
-      id: "edit",
+      id: "set",
       icon: <WrenchIcon size={16} color={"currentColor"} />,
-      label: "Edit",
-      onClick: () => handleKebabMenuItemClick("edit")
+      label: "Set",
+      onClick: () => handleKebabMenuItemClick("set")
     },
     {
       id: "delete",

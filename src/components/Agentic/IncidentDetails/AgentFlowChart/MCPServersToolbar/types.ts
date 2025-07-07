@@ -2,7 +2,7 @@ import type { ExtendedAgentMCPServer } from "../types";
 
 export interface MCPServersToolbarProps {
   servers: ExtendedAgentMCPServer[];
-  onEditMCPServer: (server: string) => void;
+  onSetMCPServer: (server: string) => void;
   onDeleteMCPServer: (server: string) => void;
 }
 

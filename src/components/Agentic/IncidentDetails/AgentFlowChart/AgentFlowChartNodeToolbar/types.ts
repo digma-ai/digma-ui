@@ -6,7 +6,7 @@ export interface AgentFlowChartNodeToolbarProps {
   position: Position;
   servers: ExtendedAgentMCPServer[];
   onAddMCPServer: () => void;
-  onEditMCPServer: (server: string) => void;
+  onSetMCPServer: (server: string) => void;
   onDeleteMCPServer: (server: string) => void;
   showPlusButton?: boolean;
 }

@@ -9,6 +9,7 @@ export const trackingEvents = addPrefix(
     BACK_BUTTON_CLICKED: "back button clicked",
     FLOW_PAGINATION_BUTTON_CLICKED: "flow pagination button clicked",
     TRACE_BUTTON_CLICKED: "trace button clicked",
+    OPEN_IN_IDE_BUTTON_CLICKED: "open in ide button clicked",
     ERROR_STACK_TRACE_ITEM_CLICKED: "error stack trace item clicked",
     RAW_ERROR_STACK_TRACE_BUTTON_CLICKED:
       "raw error stack trace button clicked",
@@ -43,6 +44,8 @@ export const trackingEvents = addPrefix(
       "error card affected endpoint link clicked",
     ERROR_CARD_HISTOGRAM_BUTTON_CLICKED: "error card histogram button clicked",
     ERROR_CARD_PIN_UNPIN_BUTTON_CLICKED: "error card pin unpin button clicked",
+    ERROR_CARD_OPEN_IN_IDE_BUTTON_CLICKED:
+      "error card open in ide button clicked",
     ERROR_CARD_DISMISS_BUTTON_CLICKED: "error card dismiss button clicked",
     ERROR_CARD_PIN_UNDISMISS_BUTTON_CLICKED:
       "error card pin undismiss button clicked"

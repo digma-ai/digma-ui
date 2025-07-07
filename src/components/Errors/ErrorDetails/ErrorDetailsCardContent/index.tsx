@@ -119,7 +119,7 @@ export const ErrorDetailsCardContent = ({
           </s.IconButton>
         </s.FlowPagination>
         {flows.length > 0 && (
-          <FlowStack data={currentFlow} key={currentFlowStack} />
+          <FlowStack errorId={id} data={currentFlow} key={currentFlowStack} />
         )}
       </s.FlowsContainer>
     </s.Container>
