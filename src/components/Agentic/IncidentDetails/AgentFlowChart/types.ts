@@ -7,7 +7,7 @@ export interface AgentFlowChartProps {
   className?: string;
   isEditMode?: boolean;
   onAddMCPServer?: (agentId: string) => void;
-  onEditMCPServer?: (agentId: string, server: string) => void;
+  onSetMCPServer?: (agentId: string, server: string) => void;
   onDeleteMCPServer?: (agentId: string, server: string) => void;
 }
 

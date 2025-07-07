@@ -1253,7 +1253,6 @@ export interface ExtendedGetDirectivesChatEventsResponse {
 export interface MCPServerData {
   uid: string;
   name: string;
-  config: string;
   agents: string[];
   editable: boolean;
   selected_tools: string[];

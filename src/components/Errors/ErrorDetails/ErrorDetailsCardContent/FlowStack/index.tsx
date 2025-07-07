@@ -9,9 +9,12 @@ import { useStore } from "../../../../../store/useStore";
 import { isNull } from "../../../../../typeGuards/isNull";
 import { isString } from "../../../../../typeGuards/isString";
 import { openJaegerTraceInDefaultBrowser } from "../../../../../utils/actions/openJaegerTraceInDefaultBrowser";
+import { openURLInDefaultBrowser } from "../../../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
+import { getIdeLauncherLinkForError } from "../../../../../utils/getIdeLauncherLinkForError";
 import { openBrowserTabWithContent } from "../../../../../utils/openBrowserTabWithContent";
 import { TraceIcon } from "../../../../common/icons/16px/TraceIcon";
+import { CodeIcon } from "../../../../common/icons/CodeIcon";
 import { NewButton } from "../../../../common/v3/NewButton";
 import { ToggleSwitch } from "../../../../common/v3/ToggleSwitch";
 import { Tooltip } from "../../../../common/v3/Tooltip";
@@ -36,7 +39,7 @@ const filesURIsDataFetcherConfiguration: DataFetcherConfiguration = {
   refreshOnPayloadChange: true
 };
 
-export const FlowStack = ({ data }: FlowStackProps) => {
+export const FlowStack = ({ data, errorId }: FlowStackProps) => {
   const { errorDetailsWorkspaceItemsOnly: showWorkspaceOnly } =
     useErrorsSelector();
   const { setErrorDetailsWorkspaceItemsOnly } = useStore.getState();
@@ -118,6 +121,15 @@ export const FlowStack = ({ data }: FlowStackProps) => {
           stackTrace: data.stackTrace
         }
       });
+    }
+  };
+
+  const handleIdeButtonClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.OPEN_IN_IDE_BUTTON_CLICKED);
+    const errorIdeLauncherLink = getIdeLauncherLinkForError(errorId);
+
+    if (errorIdeLauncherLink) {
+      openURLInDefaultBrowser(errorIdeLauncherLink);
     }
   };
 
@@ -220,6 +232,11 @@ export const FlowStack = ({ data }: FlowStackProps) => {
               isDisabled={isNull(traceId)}
             />
           </Tooltip>
+          {platform === "Web" && (
+            <Tooltip title={"Open in IDE"}>
+              <NewButton icon={CodeIcon} onClick={handleIdeButtonClick} />
+            </Tooltip>
+          )}
         </s.FooterButtonsContainer>
       </s.Footer>
     </s.Container>
