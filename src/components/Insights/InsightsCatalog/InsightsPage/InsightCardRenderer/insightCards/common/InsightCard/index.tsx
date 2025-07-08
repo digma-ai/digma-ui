@@ -534,7 +534,7 @@ export const InsightCard = ({
       actions.push("pin");
     }
 
-    if (areInsightSuggestionsEnabled && onOpenSuggestion) {
+    if (areInsightSuggestionsEnabled && !isAgenticEnabled && onOpenSuggestion) {
       actions.push("openSuggestion");
     }
 

@@ -10,6 +10,7 @@ import {
   setIssuesInsightInfoToOpenTicket,
   setScope
 } from "../../../../../../redux/slices/repositorySlice";
+import { initialState } from "../../../../../../store/insights/insightsSlice";
 import { useStore } from "../../../../../../store/useStore";
 import { useInsightsData } from "../../../../../Insights/hooks/useInsightsData";
 import { InsightsContent } from "../../../../../Insights/InsightsContent";
@@ -24,7 +25,7 @@ export const Issues = ({
   onScopeChange,
   onGoToTab
 }: IssuesProps) => {
-  const { setInsightViewType } = useStore.getState();
+  const { setInsightViewType, setInsightsSorting } = useStore.getState();
   const [isDrawerTransitioning, setIsDrawerTransitioning] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
   const dispatch = useAdminDispatch();
@@ -109,6 +110,14 @@ export const Issues = ({
       })
     );
   }, [query, dispatch]);
+
+  // Set sorting on query change
+  useEffect(() => {
+    setInsightsSorting({
+      criterion: query?.sortBy ?? initialState.sorting.criterion,
+      order: query?.sortOrder ?? initialState.sorting.order
+    });
+  }, [query?.sortBy, query?.sortOrder, setInsightsSorting]);
 
   return (
     <s.Container>

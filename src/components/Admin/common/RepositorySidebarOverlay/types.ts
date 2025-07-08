@@ -8,6 +8,7 @@ export interface RepositorySidebarOverlayProps {
   isSidebarOpen: boolean;
   onSidebarClose: () => void;
   sidebarQuery?: RepositorySidebarQuery;
+  sidebarLocation?: TabLocation;
   scopeDisplayName?: string;
 }
 

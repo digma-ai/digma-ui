@@ -16,6 +16,16 @@ export const Header = () => (
           </HeaderContent>
         }
       />
+      <Route path={"navigate"}>
+        <Route
+          path={"*"}
+          element={
+            <HeaderContent>
+              <Greeting />
+            </HeaderContent>
+          }
+        />
+      </Route>
       <Route path={"reports"}>
         <Route
           path={"*"}

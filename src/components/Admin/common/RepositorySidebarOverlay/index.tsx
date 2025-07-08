@@ -55,11 +55,13 @@ export const RepositorySidebarOverlay = ({
   isSidebarOpen,
   onSidebarClose,
   sidebarQuery,
-  scopeDisplayName
+  scopeDisplayName,
+  sidebarLocation
 }: RepositorySidebarOverlayProps) => {
   const [isSidebarTransitioning, setIsSidebarTransitioning] = useState(false);
-  const [currentTabLocation, setCurrentTabLocation] =
-    useState<TabLocation>(initialTabLocation);
+  const [currentTabLocation, setCurrentTabLocation] = useState<TabLocation>(
+    sidebarLocation ?? initialTabLocation
+  );
   const [currentSpanCodeObjectId, setCurrentSpanCodeObjectId] = useState(
     sidebarQuery?.query?.scopedSpanCodeObjectId
   );

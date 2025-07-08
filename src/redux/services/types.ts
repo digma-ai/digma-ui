@@ -850,6 +850,14 @@ export interface GetErrorResponse {
   originServices: ErrorOriginService[] | null;
 }
 
+export interface GetErrorEnvironmentPayload {
+  id: string;
+}
+
+export interface GetErrorEnvironmentResponse {
+  environmentId: string;
+}
+
 export enum GlobalErrorsSortingCriterion {
   Criticality = "Criticality",
   Latest = "Latest"

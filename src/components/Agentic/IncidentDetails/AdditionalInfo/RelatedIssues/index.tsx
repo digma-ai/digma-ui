@@ -5,9 +5,9 @@ import { useStableSearchParams } from "../../../../../hooks/useStableSearchParam
 import { useGetIncidentQuery } from "../../../../../redux/services/digma";
 import type { GenericIncidentIssue } from "../../../../../redux/services/types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
-import { getIdeLauncherLinkForError } from "../../../../../utils/getIdeLauncherLinkForError";
-import { getIdeLauncherLinkForSpan } from "../../../../../utils/getIdeLauncherLinkForSpan";
 import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
+import { getWebAdminLinkForSpan } from "../../../../../utils/getWebAdminLinkForSpan";
+import { getWebAdminLinkForError } from "../../../../../utils/getWebAdminLinkToError";
 import { roundTo } from "../../../../../utils/roundTo";
 import type { TagType } from "../../../../common/v3/Tag/types";
 import { Tooltip } from "../../../../common/v3/Tooltip";
@@ -97,7 +97,7 @@ export const RelatedIssues = () => {
                   {issue.span_uid ? (
                     <s.Link
                       onClick={handleIssueLinkClick}
-                      href={getIdeLauncherLinkForSpan(issue.span_uid)}
+                      href={getWebAdminLinkForSpan(issue.span_uid)}
                       target={"_blank"}
                       rel={"noopener noreferrer"}
                     >
@@ -118,7 +118,7 @@ export const RelatedIssues = () => {
                 <Tooltip title={label}>
                   <s.Link
                     onClick={handleIssueLinkClick}
-                    href={getIdeLauncherLinkForError(issue.issue_id)}
+                    href={getWebAdminLinkForError(issue.issue_id)}
                     target={"_blank"}
                     rel={"noopener noreferrer"}
                   >

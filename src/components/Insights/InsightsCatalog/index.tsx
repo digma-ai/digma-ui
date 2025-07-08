@@ -63,6 +63,11 @@ const getSortingOptions = (
         defaultOrder: SortingOrder.Desc
       },
       {
+        value: InsightsSortingCriterion.Severity,
+        label: "Severity",
+        defaultOrder: SortingOrder.Desc
+      },
+      {
         value: InsightsSortingCriterion.Latest,
         label: "Latest",
         defaultOrder: SortingOrder.Desc

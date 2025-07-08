@@ -5,17 +5,36 @@ import {
 } from "../../../containers/Admin/hooks";
 import { useMount } from "../../../hooks/useMount";
 import { useStableSearchParams } from "../../../hooks/useStableSearchParams";
+import { useGetSpanByIdQuery } from "../../../redux/services/digma";
 import { InsightsSortingCriterion } from "../../../redux/services/types";
 import {
   setSelectedEnvironmentId,
   setSelectedServices
 } from "../../../redux/slices/issuesReportSlice";
 import { RepositorySidebarOverlay } from "../common/RepositorySidebarOverlay";
-import type { RepositorySidebarQuery } from "../common/RepositorySidebarOverlay/types";
+import type {
+  RepositorySidebarQuery,
+  TabLocation
+} from "../common/RepositorySidebarOverlay/types";
 import { Environments } from "./Environments";
 import { Overview } from "./Overview";
 import { Reports } from "./Reports";
 import * as s from "./styles";
+
+const getRepositorySidebarLocation = (
+  locationParam: string | null
+): TabLocation | undefined => {
+  if (!locationParam) {
+    return undefined;
+  }
+
+  try {
+    const parsedLocation = JSON.parse(locationParam) as TabLocation;
+    return parsedLocation;
+  } catch {
+    return undefined;
+  }
+};
 
 export const Home = () => {
   const environmentId = useAdminSelector(
@@ -29,9 +48,24 @@ export const Home = () => {
   const [searchParams, setSearchParams] = useStableSearchParams();
   const environmentParam = searchParams.get("environment");
   const issuesParam = searchParams.get("issues");
+  const [sidebarScope, setSidebarScope] = useState(
+    searchParams.get("sidebar-scope") ?? undefined
+  );
+  const [sidebarLocation, setSidebarLocation] = useState(
+    getRepositorySidebarLocation(searchParams.get("sidebar-view"))
+  );
   const servicesParam = useMemo(
     () => searchParams.getAll("services"),
     [searchParams]
+  );
+
+  const { data: spanInfo } = useGetSpanByIdQuery(
+    {
+      id: sidebarScope ?? ""
+    },
+    {
+      skip: !sidebarScope
+    }
   );
 
   const queries: Record<string, RepositorySidebarQuery> = useMemo(
@@ -64,6 +98,8 @@ export const Home = () => {
 
   const handleRepositorySidebarClose = () => {
     setIssuesQuery(undefined);
+    setSidebarScope(undefined);
+    setSidebarLocation(undefined);
   };
 
   // TODO: replace with useEffect
@@ -112,7 +148,48 @@ export const Home = () => {
     });
   }, [setSearchParams, issuesQuery]);
 
-  const repositorySidebarQuery = issuesQuery ? queries[issuesQuery] : undefined;
+  useEffect(() => {
+    setSearchParams((params) => {
+      if (sidebarScope) {
+        params.set("sidebar-scope", sidebarScope);
+      } else {
+        params.delete("sidebar-scope");
+      }
+      return params;
+    });
+  }, [setSearchParams, sidebarScope]);
+
+  useEffect(() => {
+    setSearchParams((params) => {
+      if (sidebarLocation) {
+        params.set("sidebar-view", JSON.stringify(sidebarLocation));
+      } else {
+        params.delete("sidebar-view");
+      }
+      return params;
+    });
+  }, [setSearchParams, sidebarLocation]);
+
+  const repositorySidebarQuery: RepositorySidebarQuery | undefined =
+    sidebarScope && spanInfo
+      ? {
+          query: {
+            environment: environmentId ?? undefined,
+            scopedSpanCodeObjectId: spanInfo?.spanCodeObjectId
+          }
+        }
+      : sidebarLocation
+      ? {
+          query: {
+            environment: environmentId ?? undefined
+          }
+        }
+      : issuesQuery
+      ? queries[issuesQuery]
+      : undefined;
+  const isRepositorySidebarOpen = Boolean(
+    repositorySidebarQuery ?? sidebarLocation
+  );
 
   return (
     <s.Container>
@@ -124,7 +201,8 @@ export const Home = () => {
       <Environments />
       <RepositorySidebarOverlay
         sidebarQuery={repositorySidebarQuery}
-        isSidebarOpen={Boolean(repositorySidebarQuery)}
+        sidebarLocation={sidebarLocation}
+        isSidebarOpen={isRepositorySidebarOpen}
         onSidebarClose={handleRepositorySidebarClose}
       />
     </s.Container>

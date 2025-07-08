@@ -35,6 +35,8 @@ import type {
   GetEnvironmentServicesPayload,
   GetEnvironmentServicesResponse,
   GetEnvironmentsResponse,
+  GetErrorEnvironmentPayload,
+  GetErrorEnvironmentResponse,
   GetErrorPayload,
   GetErrorResponse,
   GetErrorsPayload,
@@ -193,6 +195,15 @@ export const digmaApi = createApi({
         url: `CodeAnalytics/codeObjects/errors/${window.encodeURIComponent(id)}`
       }),
       providesTags: ["Error"]
+    }),
+    getErrorEnvironment: builder.query<
+      GetErrorEnvironmentResponse,
+      GetErrorEnvironmentPayload
+    >({
+      query: ({ id }) => ({
+        url: "CodeAnalytics/codeObjects/error_environment",
+        params: { errorId: id }
+      })
     }),
     getSpanInsight: builder.query<
       GetSpanInsightResponse,
@@ -764,6 +775,7 @@ export const {
   useGetBlockedTracesQuery,
   useGetErrorsQuery,
   useGetErrorQuery,
+  useGetErrorEnvironmentQuery,
   useGetGlobalErrorsQuery,
   useGetGlobalErrorFiltersQuery,
   useGetErrorTimeseriesQuery,
