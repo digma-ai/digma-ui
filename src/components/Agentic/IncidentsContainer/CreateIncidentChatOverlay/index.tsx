@@ -14,7 +14,6 @@ import { setIsCreateIncidentChatOpen } from "../../../../redux/slices/incidentsS
 import { isString } from "../../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { CancelConfirmation } from "../../../common/CancelConfirmation";
-import { Dialog } from "../../common/Dialog";
 import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
 
@@ -197,7 +196,7 @@ export const CreateIncidentChatOverlay = () => {
   return (
     <>
       <s.StyledOverlay>
-        <Dialog
+        <s.StyledDialog
           onClose={handleCreateIncidentChatDialogClose}
           title={"Add new incident"}
         >
@@ -211,7 +210,7 @@ export const CreateIncidentChatOverlay = () => {
             onNavigateToIncident={handleIncidentNavigate}
             typeInitialMessages={true}
           />
-        </Dialog>
+        </s.StyledDialog>
       </s.StyledOverlay>
       {isCloseConfirmationDialogVisible && (
         <s.StyledOverlay>

@@ -55,11 +55,13 @@ export const RepositorySidebarOverlay = ({
   isSidebarOpen,
   onSidebarClose,
   sidebarQuery,
-  scopeDisplayName
+  scopeDisplayName,
+  sidebarLocation
 }: RepositorySidebarOverlayProps) => {
   const [isSidebarTransitioning, setIsSidebarTransitioning] = useState(false);
-  const [currentTabLocation, setCurrentTabLocation] =
-    useState<TabLocation>(initialTabLocation);
+  const [currentTabLocation, setCurrentTabLocation] = useState<TabLocation>(
+    sidebarLocation ?? initialTabLocation
+  );
   const [currentSpanCodeObjectId, setCurrentSpanCodeObjectId] = useState(
     sidebarQuery?.query?.scopedSpanCodeObjectId
   );
@@ -155,10 +157,10 @@ export const RepositorySidebarOverlay = ({
       },
       {
         spanCodeObjectId: newSpanCodeObjectId,
-        tabLocation: { id: TAB_IDS.ISSUES }
+        tabLocation: sidebarLocation ?? { id: TAB_IDS.ISSUES }
       }
     );
-  }, [history, sidebarQuery?.query?.scopedSpanCodeObjectId]);
+  }, [history, sidebarQuery?.query?.scopedSpanCodeObjectId, sidebarLocation]);
 
   const handleSidebarClose = useCallback(() => {
     dispatch(clear());

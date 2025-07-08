@@ -2,8 +2,10 @@ import type { RouteObject } from "react-router";
 import { Navigate, createBrowserRouter, useRouteError } from "react-router";
 import { Admin } from "../../components/Admin";
 import { Environments } from "../../components/Admin/Environments";
+import { ErrorLinkResolver } from "../../components/Admin/ErrorLinkResolver";
 import { Home } from "../../components/Admin/Home";
 import { CodeIssues } from "../../components/Admin/Reports/CodeIssues";
+import { SpanLinkResolver } from "../../components/Admin/SpanLinkResolver";
 import { RejectedTraces } from "../../components/Admin/Troubleshooting/RejectedTraces";
 
 export const routes: RouteObject[] = [
@@ -53,6 +55,8 @@ export const routes: RouteObject[] = [
           }
         ]
       },
+      { path: "navigate/errors/:id", element: <ErrorLinkResolver /> },
+      { path: "navigate/:id", element: <SpanLinkResolver /> },
       {
         path: "*",
         element: <Navigate to={"/"} replace={true} />

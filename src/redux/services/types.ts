@@ -850,6 +850,14 @@ export interface GetErrorResponse {
   originServices: ErrorOriginService[] | null;
 }
 
+export interface GetErrorEnvironmentPayload {
+  id: string;
+}
+
+export interface GetErrorEnvironmentResponse {
+  environmentId: string;
+}
+
 export enum GlobalErrorsSortingCriterion {
   Criticality = "Criticality",
   Latest = "Latest"
@@ -1288,10 +1296,13 @@ export interface DeleteMCPServerPayload {
   id: string;
 }
 
-export interface CreateIncidentFromInsightPayload {
-  insightId: string;
+export interface AgenticInvestigatePayload {
+  data: {
+    targetId: string;
+    targetType: "issue" | "error";
+  };
 }
 
-export interface CreateIncidentFromInsightResponse {
+export interface AgenticInvestigateResponse {
   incidentId: string;
 }

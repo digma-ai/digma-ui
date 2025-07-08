@@ -3,6 +3,8 @@ import { CSSTransition } from "react-transition-group";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { platform } from "../../../platform";
+import { useInvestigateMutation } from "../../../redux/services/digma";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { ViewMode } from "../../../store/errors/errorsSlice";
 import { useErrorsSelector } from "../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../store/useStore";
@@ -17,10 +19,15 @@ import {
 import type { Option } from "../../common/AffectedEndpointsSelector/types";
 import { CodeIcon } from "../../common/icons/16px/CodeIcon";
 import { HistogramIcon } from "../../common/icons/16px/HistogramIcon";
+import { LightBulbWithScrewIcon } from "../../common/icons/16px/LightBulbWithScrewIcon";
 import { PinFillIcon } from "../../common/icons/16px/PinFillIcon";
 import { PinIcon } from "../../common/icons/16px/PinIcon";
 import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
+import {
+  InvestigateButton,
+  InvestigateButtonSpinner
+} from "../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/styles";
 import { TimestampKeyValue } from "../ErrorCard/TimestampKeyValue";
 import { usePinning } from "../GlobalErrorsList/usePinning";
 import { getTagType, HIGH_SEVERITY_SCORE_THRESHOLD } from "../Score";
@@ -46,8 +53,10 @@ export const NewErrorCard = ({
   const [isHistogramVisible, setIsHistogramVisible] = useState(false);
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const { globalErrorsList } = useErrorsSelector();
+  const { isAgenticEnabled } = useConfigSelector();
   const { setGlobalErrorsViewMode } = useStore.getState();
   const [isPinned, setIsPinned] = useState(Boolean(data.pinnedAt));
+  const [investigate, investigateResult] = useInvestigateMutation();
 
   const isOccurrenceChartEnabled = getFeatureFlagValue(
     backendInfo,
@@ -228,6 +237,28 @@ export const NewErrorCard = ({
     show();
   };
 
+  const handleInvestigateButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ERROR_CARD_INVESTIGATE_BUTTON_CLICKED
+    );
+
+    void investigate({
+      data: {
+        targetId: id,
+        targetType: "error"
+      }
+    })
+      .unwrap()
+      .then((data) => {
+        const incidentId = data.incidentId;
+        openURLInDefaultBrowser(`/agentic/incidents/${incidentId}`);
+      })
+      .catch(() => {
+        // eslint-disable-next-line no-console
+        console.error("Failed to create incident from error");
+      });
+  };
+
   const isCritical = score.score > HIGH_SEVERITY_SCORE_THRESHOLD;
 
   const selectedOption = useMemo(
@@ -241,34 +272,61 @@ export const NewErrorCard = ({
   const toolbarActions = [
     ...(isPinEnabled
       ? [
-          <NewIconButton
-            key={"pin-unpin"}
-            isHighlighted={isPinned}
-            buttonType={"secondaryBorderless"}
-            icon={isPinned ? PinFillIcon : PinIcon}
-            onClick={handlePinUnpinButtonClick}
-            isDisabled={isPinUnpinInProgress}
-          />
+          <Tooltip title={isPinned ? "Unpin" : "Pin"} key={"pin-unpin"}>
+            <NewIconButton
+              isHighlighted={isPinned}
+              buttonType={"secondaryBorderless"}
+              icon={isPinned ? PinFillIcon : PinIcon}
+              onClick={handlePinUnpinButtonClick}
+              isDisabled={isPinUnpinInProgress}
+            />
+          </Tooltip>
         ]
       : []),
     ...(isOccurrenceChartEnabled && selectedEndpointKey
       ? [
-          <NewIconButton
+          <Tooltip
+            title={
+              isHistogramVisible
+                ? "Hide occurrence chart"
+                : "Show occurrence chart"
+            }
             key={"toggle-occurrence-chart"}
-            isHighlighted={isHistogramVisible}
-            buttonType={"secondaryBorderless"}
-            icon={HistogramIcon}
-            onClick={handleHistogramButtonClick}
-          />
+          >
+            <NewIconButton
+              isHighlighted={isHistogramVisible}
+              buttonType={"secondaryBorderless"}
+              icon={HistogramIcon}
+              onClick={handleHistogramButtonClick}
+            />
+          </Tooltip>
         ]
       : []),
     ...(platform === "Web"
       ? [
-          <NewIconButton
-            key={"ide"}
-            buttonType={"secondaryBorderless"}
-            icon={CodeIcon}
-            onClick={handleIdeButtonClick}
+          <Tooltip title={"Open in IDE"} key={"ide"}>
+            <NewIconButton
+              buttonType={"secondaryBorderless"}
+              icon={CodeIcon}
+              onClick={handleIdeButtonClick}
+            />
+          </Tooltip>
+        ]
+      : []),
+    ...(platform === "Web" && isAgenticEnabled
+      ? [
+          <InvestigateButton
+            key={"investigate"}
+            icon={
+              investigateResult.isLoading
+                ? () => <InvestigateButtonSpinner />
+                : LightBulbWithScrewIcon
+            }
+            onClick={handleInvestigateButtonClick}
+            isDisabled={investigateResult.isLoading}
+            label={
+              investigateResult.isLoading ? "Investigating..." : "Investigate"
+            }
           />
         ]
       : [])

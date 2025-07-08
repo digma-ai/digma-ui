@@ -4,4 +4,5 @@ export interface DialogProps {
   title?: string;
   onClose: () => void;
   children: ReactNode;
+  className?: string;
 }
