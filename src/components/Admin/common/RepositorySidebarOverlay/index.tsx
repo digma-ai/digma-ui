@@ -157,10 +157,10 @@ export const RepositorySidebarOverlay = ({
       },
       {
         spanCodeObjectId: newSpanCodeObjectId,
-        tabLocation: { id: TAB_IDS.ISSUES }
+        tabLocation: sidebarLocation ?? { id: TAB_IDS.ISSUES }
       }
     );
-  }, [history, sidebarQuery?.query?.scopedSpanCodeObjectId]);
+  }, [history, sidebarQuery?.query?.scopedSpanCodeObjectId, sidebarLocation]);
 
   const handleSidebarClose = useCallback(() => {
     dispatch(clear());
