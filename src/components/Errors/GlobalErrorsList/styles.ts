@@ -57,6 +57,10 @@ export const BackToAllErrorsButton = styled.button`
   align-items: center;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.v3.text.primary};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.v3.text.link};
+  }
 `;
 
 export const ToolbarContainer = styled.div`
