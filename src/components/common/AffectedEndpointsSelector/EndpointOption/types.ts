@@ -11,11 +11,16 @@ export interface EndpointOptionProps<T> {
     label: string;
   };
   isHeader?: boolean;
+  className?: string;
 }
 
 export interface EndpointNameProps {
   $selected?: boolean;
   $clickable?: boolean;
+}
+
+export interface ServiceNameProps {
+  $selected?: boolean;
 }
 
 export interface SpanLinkProps {

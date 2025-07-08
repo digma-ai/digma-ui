@@ -27,7 +27,8 @@ const getPresetContent = (preset: EmptyStatePreset, theme: DefaultTheme) => {
     },
     noDismissedData: {
       icon: <CardsColoredIcon size={33} themeKind={themeKind} />,
-      title: "No dismissed issues"
+      title: "No dismissed issues",
+      message: "Click above to see all issues"
     },
     noInsightsYet: {
       icon: <CardsColoredIcon size={33} themeKind={themeKind} />,

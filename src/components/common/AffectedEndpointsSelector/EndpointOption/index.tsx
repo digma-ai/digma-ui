@@ -11,7 +11,8 @@ export const EndpointOption = <T,>({
   hideCopyIcon,
   onClick,
   metric,
-  isHeader
+  isHeader,
+  className
 }: EndpointOptionProps<T>) => {
   const title = `${serviceName} ${route}`;
 
@@ -28,14 +29,14 @@ export const EndpointOption = <T,>({
   };
 
   return (
-    <s.Container>
+    <s.Container className={className}>
       <Tooltip title={title}>
         <s.EndpointName
           $selected={selected}
           $clickable={Boolean(onClick)}
           onClick={handleEndpointNameClick}
         >
-          <s.ServiceName>{serviceName}</s.ServiceName>
+          <s.ServiceName $selected={selected}>{serviceName}</s.ServiceName>
           <s.Route>
             {spanCodeObjectId && onSpanLinkClick ? (
               <s.RouteLink $selected={selected} onClick={handleRouteLinkClick}>

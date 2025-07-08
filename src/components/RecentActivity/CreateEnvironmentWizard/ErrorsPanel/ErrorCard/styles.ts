@@ -3,7 +3,6 @@ import {
   bodySemiboldTypography,
   subscriptRegularTypography
 } from "../../../../common/App/typographies";
-import { Button } from "../../../../common/v3/Button";
 import type { ContainerProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`
@@ -22,14 +21,14 @@ export const Container = styled.div<ContainerProps>`
     }
     &.${$transitionClassName}-enter-active {
       transform: translateX(0);
-      transition: all ${$transitionDuration}ms ease;
+      transition: all ${$transitionDuration}ms ease-in-out;
     }
     &.${$transitionClassName}-exit {
       transform: translateX(0);
     }
     &.${$transitionClassName}-exit-active {
       transform: translateX(100%);
-      transition: all ${$transitionDuration}ms ease;
+      transition: all ${$transitionDuration}ms ease-in-out;
     }
   `}
 `;
@@ -50,11 +49,17 @@ export const Description = styled.div`
   color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
 
-export const CrossButton = styled(Button)`
-  padding: 0;
+export const CloseButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+  background: none;
+  border: none;
+  cursor: pointer;
 `;
 
 export const ErrorIconContainer = styled.div`
   display: flex;
-  color: ${({ theme }) => theme.colors.v3.icon.white};
+  color: ${({ theme }) => theme.colors.v3.icon.primary};
 `;

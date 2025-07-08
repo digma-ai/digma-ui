@@ -1,8 +1,12 @@
 import styled, { css } from "styled-components";
-import { footnoteRegularTypography } from "../../App/typographies";
+import { bodyRegularTypography } from "../../App/typographies";
 import { CopyButton } from "../../v3/CopyButton";
 import { Link as CommonLink } from "../../v3/Link";
-import type { EndpointNameProps, SpanLinkProps } from "./types";
+import type {
+  EndpointNameProps,
+  ServiceNameProps,
+  SpanLinkProps
+} from "./types";
 
 export const StyledCopyButton = styled(CopyButton)`
   display: none;
@@ -10,7 +14,7 @@ export const StyledCopyButton = styled(CopyButton)`
 `;
 
 export const Container = styled.div`
-  ${footnoteRegularTypography}
+  ${bodyRegularTypography}
 
   display: flex;
   gap: 4px;
@@ -52,14 +56,15 @@ export const EndpointName = styled.div<EndpointNameProps>`
       : ""}
 `;
 
-export const ServiceName = styled.span`
+export const ServiceName = styled.span<ServiceNameProps>`
   max-width: 100px;
   min-width: 30px;
   flex-shrink: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+  color: ${({ theme, $selected }) =>
+    $selected ? theme.colors.v3.text.secondary : theme.colors.v3.text.tertiary};
 `;
 
 export const Route = styled.span`
@@ -70,6 +75,8 @@ export const Route = styled.span`
 `;
 
 export const RouteLink = styled(CommonLink)<SpanLinkProps>`
+  ${bodyRegularTypography}
+
   ${({ $selected }) =>
     $selected
       ? css`

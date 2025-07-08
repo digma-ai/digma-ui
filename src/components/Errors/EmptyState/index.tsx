@@ -27,7 +27,8 @@ const getPresetContent = (preset: EmptyStatePreset) => {
     },
     noDismissedData: {
       icon: <CheckCircleIcon size={32} color={"currentColor"} />,
-      title: "No dismissed errors available"
+      title: "No dismissed errors available",
+      message: "Click above to see all errors"
     },
     selectAsset: {
       icon: <ErrorIcon size={32} color={"currentColor"} />,
