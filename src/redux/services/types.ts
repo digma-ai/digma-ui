@@ -1296,10 +1296,13 @@ export interface DeleteMCPServerPayload {
   id: string;
 }
 
-export interface CreateIncidentFromInsightPayload {
-  insightId: string;
+export interface AgenticInvestigatePayload {
+  data: {
+    targetId: string;
+    targetType: "issue" | "error";
+  };
 }
 
-export interface CreateIncidentFromInsightResponse {
+export interface AgenticInvestigateResponse {
   incidentId: string;
 }

@@ -3,7 +3,9 @@ import { v4 as uuidv4 } from "uuid";
 import type { DataFetcherConfiguration } from "../../../../../hooks/useFetchData";
 import { useFetchData } from "../../../../../hooks/useFetchData";
 import { platform } from "../../../../../platform";
+import { useInvestigateMutation } from "../../../../../redux/services/digma";
 import type { ErrorFlowFrame } from "../../../../../redux/services/types";
+import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
 import { useErrorsSelector } from "../../../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../../../store/useStore";
 import { isNull } from "../../../../../typeGuards/isNull";
@@ -13,6 +15,11 @@ import { openURLInDefaultBrowser } from "../../../../../utils/actions/openURLInD
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getIdeLauncherLinkForError } from "../../../../../utils/getIdeLauncherLinkForError";
 import { openBrowserTabWithContent } from "../../../../../utils/openBrowserTabWithContent";
+import {
+  InvestigateButton,
+  InvestigateButtonSpinner
+} from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/styles";
+import { LightBulbWithScrewIcon } from "../../../../common/icons/16px/LightBulbWithScrewIcon";
 import { TraceIcon } from "../../../../common/icons/16px/TraceIcon";
 import { CodeIcon } from "../../../../common/icons/CodeIcon";
 import { NewButton } from "../../../../common/v3/NewButton";
@@ -44,6 +51,8 @@ export const FlowStack = ({ data, errorId }: FlowStackProps) => {
     useErrorsSelector();
   const { setErrorDetailsWorkspaceItemsOnly } = useStore.getState();
   const stacksContainerRef = useRef<HTMLDivElement>(null);
+  const { isAgenticEnabled } = useConfigSelector();
+  const [investigate, investigateResult] = useInvestigateMutation();
 
   const frameStacks = useMemo(() => data.frameStacks ?? [], [data]);
 
@@ -131,6 +140,28 @@ export const FlowStack = ({ data, errorId }: FlowStackProps) => {
     if (errorIdeLauncherLink) {
       openURLInDefaultBrowser(errorIdeLauncherLink);
     }
+  };
+
+  const handleInvestigateButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ERROR_CARD_INVESTIGATE_BUTTON_CLICKED
+    );
+
+    void investigate({
+      data: {
+        targetId: errorId,
+        targetType: "error"
+      }
+    })
+      .unwrap()
+      .then((data) => {
+        const incidentId = data.incidentId;
+        openURLInDefaultBrowser(`/agentic/incidents/${incidentId}`);
+      })
+      .catch(() => {
+        // eslint-disable-next-line no-console
+        console.error("Failed to create incident from error");
+      });
   };
 
   const handleWorkspaceOnlyToggleSwitchChange = (value: boolean) => {
@@ -236,6 +267,21 @@ export const FlowStack = ({ data, errorId }: FlowStackProps) => {
             <Tooltip title={"Open in IDE"}>
               <NewButton icon={CodeIcon} onClick={handleIdeButtonClick} />
             </Tooltip>
+          )}
+          {platform === "Web" && isAgenticEnabled && (
+            <InvestigateButton
+              key={"investigate"}
+              icon={
+                investigateResult.isLoading
+                  ? () => <InvestigateButtonSpinner />
+                  : LightBulbWithScrewIcon
+              }
+              onClick={handleInvestigateButtonClick}
+              isDisabled={investigateResult.isLoading}
+              label={
+                investigateResult.isLoading ? "Investigating..." : "Investigate"
+              }
+            />
           )}
         </s.FooterButtonsContainer>
       </s.Footer>

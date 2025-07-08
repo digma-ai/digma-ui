@@ -2,11 +2,11 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { isString } from "../../typeGuards/isString";
 import type {
   AddMCPServerPayload,
+  AgenticInvestigatePayload,
+  AgenticInvestigateResponse,
   CloseIncidentPayload,
   CreateEnvironmentPayload,
   CreateEnvironmentResponse,
-  CreateIncidentFromInsightPayload,
-  CreateIncidentFromInsightResponse,
   DeleteEnvironmentPayload,
   DeleteEnvironmentResponse,
   DeleteIncidentAgentDirectivePayload,
@@ -753,13 +753,14 @@ export const digmaApi = createApi({
       }),
       invalidatesTags: ["IncidentAgentMCPServer"]
     }),
-    createIncidentFromInsight: builder.mutation<
-      CreateIncidentFromInsightResponse,
-      CreateIncidentFromInsightPayload
+    investigate: builder.mutation<
+      AgenticInvestigateResponse,
+      AgenticInvestigatePayload
     >({
-      query: ({ insightId }) => ({
-        url: `Agentic/issue-entry/${window.encodeURIComponent(insightId)}`,
-        method: "POST"
+      query: ({ data }) => ({
+        url: `Agentic/investigate`,
+        method: "POST",
+        body: data
       })
     })
   })
@@ -833,5 +834,5 @@ export const {
   useAddIncidentAgentMCPServerMutation,
   useUpdateIncidentAgentMCPServerMutation,
   useDeleteIncidentAgentMCPServerMutation,
-  useCreateIncidentFromInsightMutation
+  useInvestigateMutation
 } = digmaApi;

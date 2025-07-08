@@ -2,7 +2,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { usePrevious } from "../../../../../../../../hooks/usePrevious";
 import { platform } from "../../../../../../../../platform";
 import {
-  useCreateIncidentFromInsightMutation,
+  useInvestigateMutation,
   useMarkInsightReadMutation,
   useRecheckInsightMutation
 } from "../../../../../../../../redux/services/digma";
@@ -77,8 +77,7 @@ export const InsightCard = ({
   } = useConfigSelector();
   const cardRef = useRef<HTMLDivElement>(null);
   const [showInfo, setShowInfo] = useState(false);
-  const [createIncidentFromInsight, createIncidentFromInsightResult] =
-    useCreateIncidentFromInsightMutation();
+  const [investigate, investigateResult] = useInvestigateMutation();
 
   const isCritical = insight.criticality > HIGH_CRITICALITY_THRESHOLD;
 
@@ -288,8 +287,11 @@ export const InsightCard = ({
       }
     );
 
-    void createIncidentFromInsight({
-      insightId: insight.id
+    void investigate({
+      data: {
+        targetId: insight.id,
+        targetType: "issue"
+      }
     })
       .unwrap()
       .then((data) => {
@@ -465,16 +467,14 @@ export const InsightCard = ({
         return (
           <s.InvestigateButton
             icon={
-              createIncidentFromInsightResult.isLoading
+              investigateResult.isLoading
                 ? () => <s.InvestigateButtonSpinner />
                 : LightBulbWithScrewIcon
             }
             onClick={handleInvestigateButtonClick}
-            isDisabled={createIncidentFromInsightResult.isLoading}
+            isDisabled={investigateResult.isLoading}
             label={
-              createIncidentFromInsightResult.isLoading
-                ? "Investigating..."
-                : "Investigate"
+              investigateResult.isLoading ? "Investigating..." : "Investigate"
             }
           />
         );
