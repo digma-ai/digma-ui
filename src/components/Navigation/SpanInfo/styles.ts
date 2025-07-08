@@ -10,6 +10,7 @@ export const Container = styled.div`
   overflow: hidden;
   gap: 8px;
   padding: 8px 8px 12px;
+  width: 100%;
 `;
 
 export const StyledCodeSnippet = styled(CodeSnippet)`
