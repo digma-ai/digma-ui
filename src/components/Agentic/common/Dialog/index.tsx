@@ -3,8 +3,13 @@ import { CrossIcon } from "../../../common/icons/12px/CrossIcon";
 import * as s from "./styles";
 import type { DialogProps } from "./types";
 
-export const Dialog = ({ title, onClose, children }: DialogProps) => (
-  <s.Container>
+export const Dialog = ({
+  title,
+  onClose,
+  children,
+  className
+}: DialogProps) => (
+  <s.Container className={className}>
     <s.Header>
       <s.Header>
         {isString(title) ? title : null}
