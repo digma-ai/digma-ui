@@ -55,20 +55,6 @@ export const StyledIncidentPromptInput = styled(PromptInput)`
   }
 `;
 
-export const StyledAgentPromptInput = styled(PromptInput)`
-  height: 96px;
-  ${/* TODO: change to color from the theme */ ""}
-  border: 1px solid #6063f6;
-
-  & ${TextArea} {
-    height: 100%;
-
-    &::placeholder {
-      color: ${({ theme }) => theme.colors.v3.text.primary};
-    }
-  }
-`;
-
 export const StyledOverlay = styled(Overlay)`
   align-items: center;
 `;
