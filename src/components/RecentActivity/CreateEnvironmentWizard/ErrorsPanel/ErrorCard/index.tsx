@@ -29,7 +29,7 @@ export const ErrorCard = ({ title, description }: ErrorCardProps) => {
     startTimer();
   };
 
-  const handleCrossButtonClick = () => {
+  const handleCloseButtonClick = () => {
     setIsVisible(false);
   };
 
@@ -62,11 +62,9 @@ export const ErrorCard = ({ title, description }: ErrorCardProps) => {
           <s.Title>{title}</s.Title>
           <s.Description>{description}</s.Description>
         </s.ContentContainer>
-        <s.CrossButton
-          buttonType={"tertiary"}
-          icon={CrossIcon}
-          onClick={handleCrossButtonClick}
-        />
+        <s.CloseButton onClick={handleCloseButtonClick}>
+          <CrossIcon color={"currentColor"} />
+        </s.CloseButton>
       </s.Container>
     </CSSTransition>
   );

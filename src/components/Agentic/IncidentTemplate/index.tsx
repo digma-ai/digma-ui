@@ -187,13 +187,6 @@ export const IncidentTemplate = () => {
         onSetMCPServer={handleSetMCPServer}
         onDeleteMCPServer={handleDeleteMCPServer}
       />
-      <s.StyledAgentPromptInput
-        onChange={handleInputChange}
-        onSubmit={handleInputSubmit}
-        value={""}
-        isDisabled={true}
-        placeholder={"Enter a custom prompt"}
-      />
       {agentIdToUpdate && (
         <Overlay>
           <MCPServerDialog

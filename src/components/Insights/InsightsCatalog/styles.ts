@@ -87,6 +87,10 @@ export const BackToAllInsightsButton = styled.button`
   align-items: center;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.v3.text.primary};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.v3.text.link};
+  }
 `;
 
 export const MarkingAsReadToolbarActionsContainer = styled.div`

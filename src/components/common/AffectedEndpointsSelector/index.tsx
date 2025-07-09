@@ -70,7 +70,7 @@ export const AffectedEndpointsSelector = <T = undefined,>({
       isDisabled={isDisabled}
       listHeader={
         <s.ListHeader>
-          <EndpointOption
+          <s.ListHeaderEndpointOption
             route={"Endpoint"}
             serviceName={"Service"}
             hideCopyIcon={true}
