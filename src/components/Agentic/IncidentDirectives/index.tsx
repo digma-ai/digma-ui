@@ -157,6 +157,7 @@ export const IncidentDirectives = () => {
             text,
             ids: selectedConditions
           }),
+          openWhenHidden: true,
           onopen: (response: Response) => {
             if (response.ok) {
               setConversationId(
@@ -186,13 +187,15 @@ export const IncidentDirectives = () => {
           onerror: (err: unknown) => {
             abortControllerRef.current = null;
             setIsStartMessageSending(false);
+            let errorMessage = "Unknown error starting directives chat";
             if (err instanceof Error) {
-              // eslint-disable-next-line no-console
-              console.error("Error starting directives chat:", err);
-            } else {
-              // eslint-disable-next-line no-console
-              console.error("Unknown error starting directives chat");
+              errorMessage = err.message;
             }
+
+            // eslint-disable-next-line no-console
+            console.error(errorMessage);
+
+            throw new Error(errorMessage); // Rethrow the error to avoid retrying
           },
           onclose: () => {
             abortControllerRef.current = null;

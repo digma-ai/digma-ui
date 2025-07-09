@@ -139,13 +139,15 @@ export const CreateIncidentChatOverlay = () => {
           onerror: (err: unknown) => {
             abortControllerRef.current = null;
             setIsStartMessageSending(false);
+            let errorMessage = "Unknown error starting incident creation chat";
             if (err instanceof Error) {
-              // eslint-disable-next-line no-console
-              console.error("Error starting incident creation chat:", err);
-            } else {
-              // eslint-disable-next-line no-console
-              console.error("Unknown error starting incident creation chat");
+              errorMessage = err.message;
             }
+
+            // eslint-disable-next-line no-console
+            console.error(errorMessage);
+
+            throw new Error(errorMessage); // Rethrow the error to avoid retrying
           },
           onclose: () => {
             abortControllerRef.current = null;
