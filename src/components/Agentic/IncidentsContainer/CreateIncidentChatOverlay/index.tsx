@@ -91,6 +91,7 @@ export const CreateIncidentChatOverlay = () => {
           body: JSON.stringify({
             text
           }),
+          openWhenHidden: true,
           onopen: (response: Response) => {
             if (response.ok) {
               setIncidentId(
