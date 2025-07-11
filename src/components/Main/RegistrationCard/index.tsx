@@ -11,7 +11,7 @@ import { SuccessRegistration } from "./SuccessRegistration";
 import type { RegistrationCardProps } from "./types";
 
 const TRANSITION_CLASS_NAME = "registration-card";
-const DEFAULT_TRANSITION_DURATION = 1000;
+const DEFAULT_TRANSITION_DURATION = 300;
 
 export const RegistrationCard = ({
   onClose,
