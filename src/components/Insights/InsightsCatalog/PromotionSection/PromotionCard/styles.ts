@@ -55,14 +55,16 @@ export const Description = styled.span`
 `;
 
 const shineAnimation = keyframes`
-  0% { left: -33%; }
-  50% {left: 33%}
-  100% { left: -33%; }
+  0% { left: -100%; }
+  25% { left: 0%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
 `;
 
 export const AccessCourseButton = styled(Button)`
   padding: 6px 8px;
   position: relative;
+  overflow: hidden;
 
   &::before {
     content: "";
@@ -77,7 +79,7 @@ export const AccessCourseButton = styled(Button)`
       rgb(255 255 255 / 35%),
       rgb(255 255 255 / 0%) 70%
     );
-    animation: ${shineAnimation} 2s infinite linear;
+    animation: ${shineAnimation} 3s infinite linear;
   }
 `;
 

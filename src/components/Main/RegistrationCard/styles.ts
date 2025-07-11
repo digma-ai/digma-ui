@@ -59,9 +59,10 @@ export const FormContainer = styled.div`
 
 export const Register = styled(RegisterForm)`
   flex-direction: column;
+  gap: 3px;
 
   form {
-    gap: 2px;
+    gap: 4px;
   }
 `;
 
