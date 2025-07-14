@@ -71,7 +71,13 @@ export const RepositorySidebarOverlay = ({
   const insightIdToOpenSuggestion = useAdminSelector(
     (state) => state.repository.issues.insightIdToOpenSuggestion
   );
-  const { resetInsights, resetAssets, resetGlobalErrors } = useStore.getState();
+  const {
+    resetInsights,
+    resetAssets,
+    resetGlobalErrors,
+    setSelectedServices,
+    clearInsightsFilters
+  } = useStore.getState();
   const dispatch = useAdminDispatch();
   const [history, setHistory] = useState(
     () => new History<RepositorySidebarHistoryState>([])
@@ -211,6 +217,18 @@ export const RepositorySidebarOverlay = ({
     handleSidebarClose,
     dispatch
   ]);
+
+  // Set selected services on query change
+  useEffect(() => {
+    setSelectedServices(sidebarQuery?.query?.services ?? []);
+  }, [sidebarQuery?.query?.services, setSelectedServices]);
+
+  // Clear insights filters on sidebar close
+  useEffect(() => {
+    if (!isSidebarOpen) {
+      clearInsightsFilters();
+    }
+  }, [isSidebarOpen, clearInsightsFilters]);
 
   const handleSidebarTransitionStart = () => {
     setIsSidebarTransitioning(true);
