@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
+import { platform } from "../../../platform";
 import { useGetInsightsStatsQuery } from "../../../redux/services/digma";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
@@ -37,7 +38,12 @@ export const useInsightsStats = ({
     ? filteredInsightTypesInSpanScope
     : filteredInsightTypesInGlobalScope;
   const filteredServices = useMemo(
-    () => (spanCodeObjectId ? [] : services ?? []),
+    () =>
+      spanCodeObjectId
+        ? platform === "Web"
+          ? services ?? []
+          : []
+        : services ?? [],
     [services, spanCodeObjectId]
   );
 

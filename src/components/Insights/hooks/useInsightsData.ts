@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
+import { platform } from "../../../platform";
 import {
   useGetInsightsQuery,
   useGetIssuesQuery,
@@ -50,7 +51,12 @@ export const useInsightsData = () => {
   const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
 
   const filteredServices = useMemo(
-    () => (spanCodeObjectId ? [] : selectedServices ?? []),
+    () =>
+      spanCodeObjectId
+        ? platform === "Web"
+          ? selectedServices ?? []
+          : []
+        : selectedServices ?? [],
     [selectedServices, spanCodeObjectId]
   );
   const filteredInsightTypes = spanCodeObjectId
@@ -150,7 +156,11 @@ export const useInsightsData = () => {
       showDismissed,
       scopedSpanCodeObjectId: spanCodeObjectId ?? undefined,
       insightTypes: filteredInsightTypes,
-      services: spanCodeObjectId ? [] : filteredServices,
+      services: spanCodeObjectId
+        ? platform === "Web"
+          ? filteredServices
+          : []
+        : filteredServices,
       ...(isCriticalityLevelsFilterEnabled
         ? { criticalityFilter: filteredCriticalityLevels }
         : {}),
