@@ -393,8 +393,6 @@ export const CodeIssues = () => {
     ]
   );
 
-  const scopeDisplayName = selectedService ? undefined : scope?.value;
-
   return (
     <s.Container>
       <IssuesReport
@@ -428,7 +426,6 @@ export const CodeIssues = () => {
         isSidebarOpen={isRepositorySidebarOpen}
         onSidebarClose={handleRepositorySidebarClose}
         sidebarQuery={repositorySidebarQuery}
-        scopeDisplayName={scopeDisplayName}
       />
     </s.Container>
   );

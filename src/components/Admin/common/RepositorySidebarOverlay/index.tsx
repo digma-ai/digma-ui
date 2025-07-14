@@ -76,7 +76,12 @@ export const RepositorySidebarOverlay = ({
     resetAssets,
     resetGlobalErrors,
     setSelectedServices,
-    clearInsightsFilters
+    clearInsightsFilters,
+    setInsightsFilteredInsightTypes,
+    setInsightsFilteredInsightTypesInGlobalScope,
+    setInsightsFilteredCriticalityLevels,
+    setInsightsFilteredCriticalityLevelsInGlobalScope,
+    setInsightsLastDays
   } = useStore.getState();
   const dispatch = useAdminDispatch();
   const [history, setHistory] = useState(
@@ -218,17 +223,54 @@ export const RepositorySidebarOverlay = ({
     dispatch
   ]);
 
-  // Set selected services on query change
+  // Set selected services on sidebar open
   useEffect(() => {
-    setSelectedServices(sidebarQuery?.query?.services ?? []);
-  }, [sidebarQuery?.query?.services, setSelectedServices]);
+    if (isSidebarOpen) {
+      setSelectedServices(sidebarQuery?.query?.services ?? []);
+    }
+  }, [isSidebarOpen, sidebarQuery?.query?.services, setSelectedServices]);
 
-  // Clear insights filters on sidebar close
+  // Set selected criticality levels on sidebar open
+  useEffect(() => {
+    if (isSidebarOpen) {
+      setInsightsFilteredCriticalityLevels(
+        sidebarQuery?.query?.criticalityFilter ?? []
+      );
+      setInsightsFilteredCriticalityLevelsInGlobalScope(
+        sidebarQuery?.query?.criticalityFilter ?? []
+      );
+    }
+  }, [
+    isSidebarOpen,
+    sidebarQuery?.query?.criticalityFilter,
+    setInsightsFilteredCriticalityLevels,
+    setInsightsFilteredCriticalityLevelsInGlobalScope
+  ]);
+
+  // Set issues time period on sidebar open
+  useEffect(() => {
+    if (isSidebarOpen) {
+      setInsightsLastDays(sidebarQuery?.query?.lastDays ?? null);
+    }
+  }, [isSidebarOpen, sidebarQuery?.query?.lastDays, setInsightsLastDays]);
+
+  // Clear issues and analytics filters on sidebar close
   useEffect(() => {
     if (!isSidebarOpen) {
       clearInsightsFilters();
+      setInsightsFilteredInsightTypes([]);
+      setInsightsFilteredInsightTypesInGlobalScope([]);
+      setInsightsFilteredCriticalityLevels([]);
+      setInsightsFilteredCriticalityLevelsInGlobalScope([]);
     }
-  }, [isSidebarOpen, clearInsightsFilters]);
+  }, [
+    isSidebarOpen,
+    clearInsightsFilters,
+    setInsightsFilteredInsightTypes,
+    setInsightsFilteredInsightTypesInGlobalScope,
+    setInsightsFilteredCriticalityLevels,
+    setInsightsFilteredCriticalityLevelsInGlobalScope
+  ]);
 
   const handleSidebarTransitionStart = () => {
     setIsSidebarTransitioning(true);
