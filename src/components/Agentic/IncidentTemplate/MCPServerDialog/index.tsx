@@ -5,7 +5,6 @@ import {
   useTestIncidentAgentMCPServerMutation,
   useUpdateIncidentAgentMCPServerMutation
 } from "../../../../redux/services/digma";
-import type { AddMCPServerPayload } from "../../../../redux/services/types";
 import { isObject } from "../../../../typeGuards/isObject";
 import { isString } from "../../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
@@ -35,7 +34,7 @@ export const MCPServerDialog = ({
   onClose,
   onComplete
 }: MCPServerDialogProps) => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(serverData?.uid ? 1 : 0);
   const [connectionSettings, setConnectionSettings] = useState("");
   const [testServerError, setTestServerError] = useState<string>();
   const [addServerError, setAddServerError] = useState<string>();
@@ -78,16 +77,14 @@ export const MCPServerDialog = ({
   const handleToolsStepSave = (tools: string[], instructions: string) => {
     setAddServerError(undefined);
 
-    const payload: AddMCPServerPayload = {
-      agent: agentId,
-      config_json: connectionSettings,
-      selected_tools: tools,
-      instructions_prompt: instructions
-    };
-
     if (!serverData?.uid) {
       // Add new MCP server
-      void addMCPServer(payload)
+      void addMCPServer({
+        agent: agentId,
+        config_json: connectionSettings,
+        selected_tools: tools,
+        instructions_prompt: instructions
+      })
         .unwrap()
         .then(() => {
           onComplete();
@@ -101,7 +98,10 @@ export const MCPServerDialog = ({
       // Update existing MCP server
       void updateMCPServer({
         id: serverData.uid,
-        data: payload
+        data: {
+          selected_tools: tools,
+          instructions_prompt: instructions
+        }
       })
         .unwrap()
         .then(() => {
