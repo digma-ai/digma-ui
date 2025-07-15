@@ -91,7 +91,7 @@ export const IncidentTemplate = () => {
     setAgentIdToUpdate(agentId);
   };
 
-  const handleSetMCPServer = (agentId: string, serverName: string) => {
+  const handleEditMCPServer = (agentId: string, serverName: string) => {
     const serverId = mcpServers?.mcps.find((x) => x.name === serverName)?.uid;
 
     if (!serverId) {
@@ -184,7 +184,7 @@ export const IncidentTemplate = () => {
         selectedAgentId={agentId}
         isEditMode={true}
         onAddMCPServer={handleAddMCPServer}
-        onSetMCPServer={handleSetMCPServer}
+        onEditMCPServer={handleEditMCPServer}
         onDeleteMCPServer={handleDeleteMCPServer}
       />
       {agentIdToUpdate && (

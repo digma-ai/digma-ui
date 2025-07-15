@@ -1289,7 +1289,10 @@ export interface AddMCPServerPayload {
 
 export interface UpdateMCPServerPayload {
   id: string;
-  data: AddMCPServerPayload;
+  data: {
+    selected_tools: string[];
+    instructions_prompt: string;
+  };
 }
 
 export interface DeleteMCPServerPayload {
