@@ -34,7 +34,8 @@ export const MCPServerDialog = ({
   onClose,
   onComplete
 }: MCPServerDialogProps) => {
-  const [currentStep, setCurrentStep] = useState(serverData?.uid ? 1 : 0);
+  const isEditMode = Boolean(serverData);
+  const [currentStep, setCurrentStep] = useState(isEditMode ? 1 : 0);
   const [connectionSettings, setConnectionSettings] = useState("");
   const [testServerError, setTestServerError] = useState<string>();
   const [addServerError, setAddServerError] = useState<string>();
@@ -120,8 +121,11 @@ export const MCPServerDialog = ({
   };
 
   const tools = useMemo(
-    () => serverData?.all_tools ?? [],
-    [serverData?.all_tools]
+    () =>
+      isEditMode
+        ? serverData?.all_tools ?? []
+        : testMCPServerResult.data?.tools ?? [],
+    [isEditMode, serverData?.all_tools, testMCPServerResult.data?.tools]
   );
 
   const steps = [

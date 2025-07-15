@@ -82,7 +82,9 @@ export const RouteLink = styled(CommonLink)<SpanLinkProps>`
       ? css`
           width: 100%;
         `
-      : ""}
+      : css`
+          display: inline;
+        `}
 `;
 
 export const Duration = styled.span`
