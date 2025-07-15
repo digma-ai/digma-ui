@@ -120,8 +120,8 @@ export const MCPServerDialog = ({
   };
 
   const tools = useMemo(
-    () => testMCPServerResult.data?.tools ?? [],
-    [testMCPServerResult.data]
+    () => serverData?.all_tools ?? [],
+    [serverData?.all_tools]
   );
 
   const steps = [
