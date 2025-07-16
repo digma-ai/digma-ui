@@ -1,15 +1,16 @@
 import { useGetAboutQuery } from "../../../../../../redux/services/digma";
+import { useConfigSelector } from "../../../../../../store/config/useConfigSelector";
 import * as s from "./styles";
 import type { ErrorsProps } from "./types";
 
 export const Errors = ({
-  query,
   onGoToAssets,
   onScopeChange,
   selectedErrorId,
   onSelectedErrorIdChange
 }: ErrorsProps) => {
   const { data: about } = useGetAboutQuery();
+  const { selectedServices, scope, environment } = useConfigSelector();
 
   const handleGoToErrors = () => {
     onSelectedErrorIdChange(undefined);
@@ -24,11 +25,11 @@ export const Errors = ({
       onGoToAssets={onGoToAssets}
       onGoToErrors={handleGoToErrors}
       onErrorSelect={handleErrorSelect}
-      spanCodeObjectId={query?.scopedSpanCodeObjectId}
-      environmentId={query?.environment}
+      spanCodeObjectId={scope?.span?.spanCodeObjectId}
+      environmentId={environment?.id}
       errorId={selectedErrorId}
       backendInfo={about}
-      selectedServices={query?.services ?? undefined}
+      selectedServices={selectedServices ?? undefined}
       onScopeChange={onScopeChange}
     />
   );

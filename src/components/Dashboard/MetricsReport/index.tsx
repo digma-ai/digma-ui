@@ -1,9 +1,8 @@
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect, useMemo } from "react";
 import {
   useDashboardDispatch,
   useDashboardSelector
 } from "../../../containers/Dashboard/hooks";
-import { useMount } from "../../../hooks/useMount";
 import {
   type EndpointData,
   type IssueCriticality
@@ -27,6 +26,7 @@ import { ScopeChangeEvent } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { IssuesReport } from "../../common/IssuesReport";
 import type { TargetScope } from "../../common/IssuesReport/types";
+import { sortEnvironments } from "../../common/IssuesReport/utils";
 import { DigmaLogoIcon } from "../../common/icons/16px/DigmaLogoIcon";
 import { actions } from "../actions";
 import * as s from "./styles";
@@ -61,18 +61,36 @@ export const MetricsReport = () => {
 
   const dispatch = useDashboardDispatch();
 
+  const sortedEnvironments = useMemo(
+    () => (environments ? sortEnvironments(environments) : undefined),
+    [environments]
+  );
+
   useLayoutEffect(() => {
     window.sendMessageToDigma({
       action: actions.INITIALIZE
     });
   }, []);
 
-  // TODO: replace with useEffect
-  useMount(() => {
-    if (isString(window.dashboardEnvironment)) {
+  useEffect(() => {
+    if (
+      isString(window.dashboardEnvironment) &&
+      selectedEnvironmentId !== window.dashboardEnvironment
+    ) {
       dispatch(setSelectedEnvironmentId(window.dashboardEnvironment));
     }
-  });
+  }, [dispatch, selectedEnvironmentId]);
+
+  useEffect(() => {
+    if (
+      sortedEnvironments &&
+      sortedEnvironments.length > 0 &&
+      !selectedEnvironmentId &&
+      !isString(window.dashboardEnvironment)
+    ) {
+      dispatch(setSelectedEnvironmentId(sortedEnvironments[0].id));
+    }
+  }, [sortedEnvironments, selectedEnvironmentId, dispatch]);
 
   const goToEndpointIssues = ({
     spanCodeObjectId,

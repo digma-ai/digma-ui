@@ -7,8 +7,7 @@ import {
 import { setIsInsightJiraTicketHintShown } from "../../../../../../redux/slices/persistSlice";
 import {
   setIssuesInsightIdToOpenSuggestion,
-  setIssuesInsightInfoToOpenTicket,
-  setScope
+  setIssuesInsightInfoToOpenTicket
 } from "../../../../../../redux/slices/repositorySlice";
 import { initialState } from "../../../../../../store/insights/insightsSlice";
 import { useStore } from "../../../../../../store/useStore";
@@ -84,32 +83,6 @@ export const Issues = ({
   useEffect(() => {
     setInsightViewType("Issues");
   }, [setInsightViewType]);
-
-  // Set the scope on query change
-  useEffect(() => {
-    dispatch(
-      setScope({
-        span: query?.scopedSpanCodeObjectId
-          ? {
-              spanCodeObjectId: query.scopedSpanCodeObjectId,
-              displayName: "",
-              methodId: null,
-              serviceName: null,
-              role: null
-            }
-          : null,
-        code: {
-          relatedCodeDetailsList: [],
-          codeDetailsList: []
-        },
-        hasErrors: false,
-        issuesInsightsCount: 0,
-        analyticsInsightsCount: 0,
-        unreadInsightsCount: 0,
-        environmentId: query?.environment
-      })
-    );
-  }, [query, dispatch]);
 
   // Set sorting on query change
   useEffect(() => {

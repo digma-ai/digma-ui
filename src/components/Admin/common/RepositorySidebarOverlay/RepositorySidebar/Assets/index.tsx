@@ -10,12 +10,12 @@ import {
   SortingOrder,
   type AssetType
 } from "../../../../../../redux/services/types";
+import { useConfigSelector } from "../../../../../../store/config/useConfigSelector";
 import type { Sorting } from "../../../../../common/SortingSelector/types";
 import * as s from "./styles";
 import type { AssetsProps } from "./types";
 
 export const Assets = ({
-  query,
   onScopeChange,
   selectedAssetTypeId,
   onSelectedAssetTypeIdChange
@@ -24,16 +24,12 @@ export const Assets = ({
     criterion: AssetsSortingCriterion.CriticalInsights,
     order: SortingOrder.Desc
   });
+  const { selectedServices, scope, environment } = useConfigSelector();
 
   const dispatch = useAdminDispatch();
 
   const { data: about } = useGetAboutQuery();
   const { data: environments } = useGetEnvironmentsQuery();
-
-  const environment = useMemo(
-    () => environments?.find((x) => x.id === query?.environment),
-    [environments, query?.environment]
-  );
 
   const isImpactHidden = useMemo(
     () => !(about?.isCentralize && environment?.type === "Public"),
@@ -58,9 +54,9 @@ export const Assets = ({
 
   return (
     <s.Content
-      environmentId={query?.environment}
-      spanCodeObjectId={query?.scopedSpanCodeObjectId}
-      services={query?.services}
+      environmentId={environment?.id}
+      spanCodeObjectId={scope?.span?.spanCodeObjectId}
+      services={selectedServices ?? undefined}
       sorting={sorting}
       setSorting={setSorting}
       onScopeChange={onScopeChange}

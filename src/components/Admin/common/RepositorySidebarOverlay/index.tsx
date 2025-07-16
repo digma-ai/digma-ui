@@ -19,7 +19,8 @@ import type {
 import {
   clear,
   setIssuesInsightIdToOpenSuggestion,
-  setIssuesInsightInfoToOpenTicket
+  setIssuesInsightInfoToOpenTicket,
+  setScope
 } from "../../../../redux/slices/repositorySlice";
 import { useStore } from "../../../../store/useStore";
 import { isString } from "../../../../typeGuards/isString";
@@ -76,12 +77,10 @@ export const RepositorySidebarOverlay = ({
     resetAssets,
     resetGlobalErrors,
     setSelectedServices,
-    clearInsightsFilters,
-    setInsightsFilteredInsightTypes,
-    setInsightsFilteredInsightTypesInGlobalScope,
     setInsightsFilteredCriticalityLevels,
     setInsightsFilteredCriticalityLevelsInGlobalScope,
-    setInsightsLastDays
+    setInsightsLastDays,
+    setGlobalErrorsLastDays
   } = useStore.getState();
   const dispatch = useAdminDispatch();
   const [history, setHistory] = useState(
@@ -223,6 +222,39 @@ export const RepositorySidebarOverlay = ({
     dispatch
   ]);
 
+  // Set the scope and environment on sidebar open
+  useEffect(() => {
+    if (isSidebarOpen) {
+      dispatch(
+        setScope({
+          span: currentSpanCodeObjectId
+            ? {
+                spanCodeObjectId: currentSpanCodeObjectId,
+                displayName: "",
+                methodId: null,
+                serviceName: null,
+                role: null
+              }
+            : null,
+          code: {
+            relatedCodeDetailsList: [],
+            codeDetailsList: []
+          },
+          hasErrors: false,
+          issuesInsightsCount: 0,
+          analyticsInsightsCount: 0,
+          unreadInsightsCount: 0,
+          environmentId: sidebarQuery?.query?.environment
+        })
+      );
+    }
+  }, [
+    isSidebarOpen,
+    sidebarQuery?.query?.environment,
+    currentSpanCodeObjectId,
+    dispatch
+  ]);
+
   // Set selected services on sidebar open
   useEffect(() => {
     if (isSidebarOpen) {
@@ -230,7 +262,7 @@ export const RepositorySidebarOverlay = ({
     }
   }, [isSidebarOpen, sidebarQuery?.query?.services, setSelectedServices]);
 
-  // Set selected criticality levels on sidebar open
+  // Set insights criticality levels on sidebar open
   useEffect(() => {
     if (isSidebarOpen) {
       setInsightsFilteredCriticalityLevels(
@@ -251,25 +283,13 @@ export const RepositorySidebarOverlay = ({
   useEffect(() => {
     if (isSidebarOpen) {
       setInsightsLastDays(sidebarQuery?.query?.lastDays ?? null);
-    }
-  }, [isSidebarOpen, sidebarQuery?.query?.lastDays, setInsightsLastDays]);
-
-  // Clear issues and analytics filters on sidebar close
-  useEffect(() => {
-    if (!isSidebarOpen) {
-      clearInsightsFilters();
-      setInsightsFilteredInsightTypes([]);
-      setInsightsFilteredInsightTypesInGlobalScope([]);
-      setInsightsFilteredCriticalityLevels([]);
-      setInsightsFilteredCriticalityLevelsInGlobalScope([]);
+      setGlobalErrorsLastDays(sidebarQuery?.query?.lastDays ?? null);
     }
   }, [
     isSidebarOpen,
-    clearInsightsFilters,
-    setInsightsFilteredInsightTypes,
-    setInsightsFilteredInsightTypesInGlobalScope,
-    setInsightsFilteredCriticalityLevels,
-    setInsightsFilteredCriticalityLevelsInGlobalScope
+    sidebarQuery?.query?.lastDays,
+    setInsightsLastDays,
+    setGlobalErrorsLastDays
   ]);
 
   const handleSidebarTransitionStart = () => {
@@ -411,7 +431,6 @@ export const RepositorySidebarOverlay = ({
       case TAB_IDS.ASSETS:
         return (
           <Assets
-            query={currentQuery}
             onScopeChange={handleScopeChange}
             selectedAssetTypeId={
               currentTabLocation.path as AssetType | undefined
@@ -423,7 +442,6 @@ export const RepositorySidebarOverlay = ({
         return (
           <Analytics
             onScopeChange={handleScopeChange}
-            query={currentQuery}
             onGoToTab={handleGoToTab}
           />
         );
