@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import {
   useGetEndpointsIssuesQuery,
@@ -19,11 +19,7 @@ import { Header } from "./Header";
 import * as s from "./styles";
 import { Table } from "./Table";
 import type { IssuesReportProps, ScoreCriterion } from "./types";
-import {
-  sortEnvironments,
-  transformEndpointsData,
-  transformServicesData
-} from "./utils";
+import { transformEndpointsData, transformServicesData } from "./utils";
 
 const getEndpointDisplayName = (
   endpointsIssues: SetEndpointsIssuesPayload | undefined,
@@ -59,26 +55,7 @@ export const IssuesReport = ({
   showEnvironmentSelect = true,
   showServicesSelect = true
 }: IssuesReportProps) => {
-  const sortedEnvironments = useMemo(
-    () => (environments ? sortEnvironments(environments) : undefined),
-    [environments]
-  );
-
-  useEffect(() => {
-    if (
-      sortedEnvironments &&
-      sortedEnvironments.length > 0 &&
-      !selectedEnvironmentId
-    ) {
-      onSelectedEnvironmentIdChange(sortedEnvironments[0].id);
-    }
-  }, [
-    sortedEnvironments,
-    selectedEnvironmentId,
-    onSelectedEnvironmentIdChange
-  ]);
-
-  const isInitialized = Boolean(sortedEnvironments && backendInfo);
+  const isInitialized = Boolean(environments && backendInfo);
 
   const { data: services } = useGetEnvironmentServicesQuery(
     {
@@ -261,7 +238,7 @@ export const IssuesReport = ({
   return (
     <s.Container>
       {isInitialized ? (
-        sortedEnvironments && sortedEnvironments.length > 0 ? (
+        environments && environments.length > 0 ? (
           <>
             <Header
               backendInfo={backendInfo}

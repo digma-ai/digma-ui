@@ -8,14 +8,14 @@
       "type": "chrome",
       "request": "launch",
       "name": "Open Admin in Chrome",
-      "url": "http://localhost:3000/admin/",
+      "url": "http://localhost:3001/admin/",
       "webRoot": "${workspaceFolder}"
     },
     {
       "type": "chrome",
       "request": "launch",
       "name": "Open Agentic in Chrome",
-      "url": "http://localhost:3000/agentic/",
+      "url": "http://localhost:3001/agentic/",
       "webRoot": "${workspaceFolder}"
     }
   ]

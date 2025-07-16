@@ -118,7 +118,7 @@ export const errorsSlice = createSlice({
     ) => set({ errorDetailsWorkspaceItemsOnly }),
     setGlobalErrorsViewMode: (mode: ViewMode) =>
       set({ globalErrorsViewMode: mode }),
-    setGlobalErrorsLastDays: (days: number) =>
+    setGlobalErrorsLastDays: (days: number | null) =>
       set({ globalErrorsLastDays: days }),
     resetGlobalErrors: () => set({ ...globalErrorsWithoutFiltersInitialState })
   }
