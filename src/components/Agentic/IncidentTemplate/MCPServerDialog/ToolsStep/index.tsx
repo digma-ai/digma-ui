@@ -19,6 +19,8 @@ import * as s from "./styles";
 import type { ToolsStepProps } from "./types";
 
 const MAX_ICON_FILE_SIZE = 1024 * 1024; // in bytes
+const MAX_ICON_WIDTH = 500; // in pixels
+const MAX_ICON_HEIGHT = 500; // in pixels
 
 export const ToolsStep = ({
   onCancel,
@@ -47,8 +49,7 @@ export const ToolsStep = ({
       isString(window.digmaApiProxyPrefix)
         ? window.digmaApiProxyPrefix
         : "/api/"
-    }mcp/icon`,
-    withCredentials: true,
+    }/Agentic/mcp/icon`,
     onSuccess: (response) => {
       setIconId(response.id);
       setDropzoneError(undefined);
@@ -111,11 +112,27 @@ export const ToolsStep = ({
 
         if (acceptedFiles.length > 0) {
           const file = acceptedFiles[0];
-          setFileToUpload(file);
-          const formData = new FormData();
-          formData.append("icon_image", file);
+          const image = new Image();
 
-          void upload(formData);
+          image.onload = () => {
+            if (
+              image.width > MAX_ICON_WIDTH ||
+              image.height > MAX_ICON_HEIGHT
+            ) {
+              setDropzoneError(
+                `Image dimensions should not exceed ${MAX_ICON_WIDTH}x${MAX_ICON_HEIGHT}px.`
+              );
+              return;
+            }
+
+            setFileToUpload(file);
+            const formData = new FormData();
+            formData.append("icon_image", file);
+
+            void upload(formData);
+          };
+
+          image.src = window.URL.createObjectURL(file);
         }
       }
     }

@@ -20,7 +20,6 @@ export interface UseFormDataRequestOptions<T> {
 export const useFormDataRequest = <T = unknown>({
   method = "POST",
   url,
-  withCredentials,
   onSuccess,
   onError
 }: UseFormDataRequestOptions<T>): UseFormDataRequestResult => {
@@ -38,7 +37,6 @@ export const useFormDataRequest = <T = unknown>({
       const response = await axios.request<T>({
         method,
         url,
-        withCredentials,
         data: formData,
         signal: abortControllerRef.current.signal,
         onUploadProgress: (progressEvent: AxiosProgressEvent) => {
