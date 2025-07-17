@@ -99,12 +99,7 @@ export const MCPServersToolbar = ({
           <div>
             <Tooltip title={x.display_name}>
               <s.MCPServerIconContainer $isEditable={x.isEditable}>
-                <MCPServerIcon
-                  type={x.name}
-                  isActive={x.active}
-                  size={17}
-                  isCustom={x.isEditable}
-                />
+                <MCPServerIcon server={x} size={17} />
               </s.MCPServerIconContainer>
             </Tooltip>
           </div>

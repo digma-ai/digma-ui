@@ -1,6 +1,10 @@
+import type { ExtendedAgentMCPServer } from "../types";
+
 export interface MCPServerIconProps {
-  type: string;
-  isActive?: boolean;
-  isCustom?: boolean;
+  server: ExtendedAgentMCPServer;
   size?: number;
+}
+
+export interface CustomImageProps {
+  $size: number;
 }
