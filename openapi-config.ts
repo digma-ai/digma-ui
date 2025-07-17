@@ -35,10 +35,13 @@ const config: ConfigFile = {
   })),
   filterEndpoints: [
     /About/,
+    /Agentic/,
+    /AI/,
     /Assets/,
     /Authentication/,
     /CodeAnalytics/,
     /Dashboard/,
+    /Diagnostic/,
     /Environments/,
     /Errors/,
     /Graphs/,

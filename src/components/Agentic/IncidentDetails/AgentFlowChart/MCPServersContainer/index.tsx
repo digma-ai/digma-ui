@@ -20,9 +20,7 @@ export const MCPServersContainer = ({ servers }: MCPServersContainerProps) => {
         <Tooltip title={x.display_name} key={`${x.name}__${i}`}>
           <s.MCPServerBlock $isActive={x.active} $zoomLevel={viewport.zoom}>
             <MCPServerIcon
-              type={x.name}
-              isActive={x.active}
-              isCustom={x.isEditable}
+              server={x}
               size={DEFAULT_ICON_SIZE * viewport.zoom}
             />
           </s.MCPServerBlock>

@@ -22,7 +22,7 @@ export const MCPServerIconContainer = styled.div<MCPServerIconContainerProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: ${({ $isEditable }) => ($isEditable ? "pointer" : "default")};
+  cursor: ${({ $isEditable }) => ($isEditable ? "pointer" : "auto")};
 `;
 
 export const KebabMenuButton = styled.button`

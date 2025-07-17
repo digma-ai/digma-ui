@@ -151,7 +151,8 @@ export const IncidentTemplate = () => {
               name: x.name,
               display_name: x.name,
               active: true,
-              isEditable: x.editable
+              isEditable: x.editable,
+              icon: x.icon
             }))
           };
         })

@@ -136,6 +136,7 @@
     "react": "^18.2.0",
     "react-cool-dimensions": "^3.0.1",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.3.8",
     "react-error-boundary": "^5.0.0",
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.48.2",

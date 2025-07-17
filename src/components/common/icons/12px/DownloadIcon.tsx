@@ -1,9 +1,23 @@
 import React from "react";
 import { useIconProps } from "../hooks";
-import type { IconProps } from "../types";
+import type { RotatableIconProps } from "../types";
+import { Direction } from "../types";
 
-const DownloadIconComponent = (props: IconProps) => {
+const directionRotateMap: Record<Direction, string> = {
+  [Direction.Down]: "0",
+  [Direction.Left]: "90",
+  [Direction.Up]: "180",
+  [Direction.Right]: "270"
+};
+
+const DownloadIconComponent = (props: RotatableIconProps) => {
   const { size, color } = useIconProps(props);
+
+  const transform = {
+    transform: `rotate(${
+      directionRotateMap[props.direction ?? Direction.Down]
+    })`
+  };
 
   return (
     <svg
@@ -12,6 +26,7 @@ const DownloadIconComponent = (props: IconProps) => {
       height={size}
       fill="none"
       viewBox="0 0 12 12"
+      {...transform}
     >
       <g
         stroke={color}

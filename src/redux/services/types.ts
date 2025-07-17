@@ -1162,6 +1162,7 @@ export interface AgentMCPServer {
   name: string;
   display_name: string;
   active: boolean;
+  icon?: MCPServerIcon;
 }
 
 export interface Agent {
@@ -1258,6 +1259,13 @@ export interface ExtendedGetDirectivesChatEventsResponse {
   extra: GetDirectivesChatEventsPayload;
 }
 
+export interface MCPServerIcon {
+  id: string;
+  url: string;
+  fileName: string;
+  fileSize: number;
+}
+
 export interface MCPServerData {
   uid: string;
   name: string;
@@ -1266,6 +1274,7 @@ export interface MCPServerData {
   selected_tools: string[];
   all_tools: string[];
   instructions_prompt: string;
+  icon?: MCPServerIcon;
 }
 
 export interface GetMCPServersResponse {
@@ -1285,6 +1294,7 @@ export interface AddMCPServerPayload {
   selected_tools: string[];
   agent: string;
   instructions_prompt: string;
+  icon_id?: string;
 }
 
 export interface UpdateMCPServerPayload {
@@ -1292,7 +1302,12 @@ export interface UpdateMCPServerPayload {
   data: {
     selected_tools: string[];
     instructions_prompt: string;
+    icon_id: string | null;
   };
+}
+
+export interface UploadMCPServerIconPayload {
+  file: File;
 }
 
 export interface DeleteMCPServerPayload {

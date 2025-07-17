@@ -1,8 +1,18 @@
 import styled from "styled-components";
 import { getCodeFont } from "../../../../common/App/styles";
-import { subscriptRegularTypography } from "../../../../common/App/typographies";
+import {
+  footnoteBoldTypography,
+  footnoteRegularTypography,
+  subscriptRegularTypography
+} from "../../../../common/App/typographies";
+import { NewIconButton } from "../../../../common/v3/NewIconButton";
 import { ToggleSwitch } from "../../../../common/v3/ToggleSwitch";
-import type { ToolTagProps } from "./types";
+import type {
+  DropzoneContainerProps,
+  DropzoneContentIconContainerProps,
+  DropzoneContentProps,
+  ToolTagProps
+} from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -124,4 +134,93 @@ export const ButtonsContainer = styled.div`
   align-items: center;
   gap: 8px;
   margin-left: auto;
+`;
+
+export const DropzoneContainer = styled.div<DropzoneContainerProps>`
+  display: flex;
+  padding: 16px 24px;
+  border-radius: 12px;
+  border: 1px solid
+    ${({ theme, $isDragActive }) =>
+      $isDragActive
+        ? theme.colors.v3.stroke.brandSecondary
+        : theme.colors.v3.stroke.tertiary};
+  background: ${({ theme }) => theme.colors.v3.surface.secondary};
+  cursor: ${({ $isDisabled }) => ($isDisabled ? "auto" : "pointer")};
+  overflow: hidden;
+`;
+
+export const DropzoneContent = styled.div<DropzoneContentProps>`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+  flex-grow: 1;
+`;
+
+export const FileIconContainer = styled.div`
+  color: ${({ theme }) => theme.colors.v3.surface.brandSecondary};
+`;
+
+export const FileExtension = styled.span`
+  ${/* TODO: change to color from the theme */ ""}
+  color: #000;
+  ${/* TODO: add the font */ ""}
+  font-family: Inter, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  position: absolute;
+  bottom: 6px;
+  left: auto;
+  right: auto;
+`;
+
+export const DownloadIconContainer = styled.div<DropzoneContentIconContainerProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  color: ${({ theme }) => theme.colors.v3.icon.primary};
+  border: 1px solid
+    ${({ theme, $isDragActive }) =>
+      $isDragActive
+        ? theme.colors.v3.stroke.brandSecondary
+        : theme.colors.v3.stroke.tertiary};
+  background: ${({ theme, $isDragActive }) =>
+    $isDragActive
+      ? theme.colors.v3.surface.brandPrimary
+      : theme.colors.v3.surface.primary};
+`;
+
+export const DropzoneContentTextContainer = styled.div`
+  ${footnoteRegularTypography}
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
+  overflow: hidden;
+`;
+
+export const EmphasizedText = styled.span`
+  ${footnoteBoldTypography}
+  color:${({ theme }) => theme.colors.v3.surface.brandSecondary};
+`;
+
+export const FileName = styled.span`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+export const FileDetails = styled.span`
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+`;
+
+export const RemoveIconButton = styled(NewIconButton)`
+  margin-left: auto;
+  align-self: flex-start;
 `;

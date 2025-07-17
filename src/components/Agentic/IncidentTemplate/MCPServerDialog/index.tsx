@@ -75,7 +75,11 @@ export const MCPServerDialog = ({
       });
   };
 
-  const handleToolsStepSave = (tools: string[], instructions: string) => {
+  const handleToolsStepSave = (
+    tools: string[],
+    instructions: string,
+    iconId: string | null
+  ) => {
     setAddServerError(undefined);
 
     if (!serverData?.uid) {
@@ -84,7 +88,8 @@ export const MCPServerDialog = ({
         agent: agentId,
         config_json: connectionSettings,
         selected_tools: tools,
-        instructions_prompt: instructions
+        instructions_prompt: instructions,
+        ...(iconId ? { icon_id: iconId } : {})
       })
         .unwrap()
         .then(() => {
@@ -101,7 +106,8 @@ export const MCPServerDialog = ({
         id: serverData.uid,
         data: {
           selected_tools: tools,
-          instructions_prompt: instructions
+          instructions_prompt: instructions,
+          icon_id: iconId
         }
       })
         .unwrap()
@@ -144,6 +150,7 @@ export const MCPServerDialog = ({
       tools={tools}
       selectedTools={serverData?.selected_tools}
       instructions={serverData?.instructions_prompt}
+      icon={serverData?.icon}
       isLoading={
         addMCPServerResult.isLoading || updateMCPServerResult.isLoading
       }

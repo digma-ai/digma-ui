@@ -21,7 +21,7 @@ export const PromptInput = ({
   fontSize = s.TEXT_AREA_DEFAULT_FONT_SIZE,
   attachmentsComponent
 }: PromptInputProps) => {
-  const isSubmittingDisabled = Boolean(isSubmitting ?? value.trim() === "");
+  const isSubmittingDisabled = Boolean(isSubmitting) || value.trim() === "";
   const formRef = useRef<HTMLFormElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [textAreaHeight, setTextAreaHeight] = useState<number>(
@@ -41,8 +41,7 @@ export const PromptInput = ({
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
-      if (e.ctrlKey || e.metaKey) {
-        // Ctrl+Enter or Cmd+Enter: insert new line
+      if (e.ctrlKey) {
         e.preventDefault();
         const textarea = e.currentTarget;
         const { selectionStart, selectionEnd } = textarea;
