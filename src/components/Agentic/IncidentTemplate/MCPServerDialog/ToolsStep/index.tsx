@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, type ChangeEvent } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { useDropzone } from "react-dropzone";
 import { useFormDataRequest } from "../../../../../hooks/useFormDataRequest";
 import type { MCPServerIcon } from "../../../../../redux/services/types";
@@ -35,7 +35,7 @@ export const ToolsStep = ({
   const [selectedTools, setSelectedTools] = useState(initialSelectedTools);
   const [searchInputValue, setSearchInputValue] = useState("");
   const [dropzoneError, setDropzoneError] = useState<string>();
-  const [iconId, setIconId] = useState<string | null>(null);
+  const [iconId, setIconId] = useState<string | null>(icon?.id ?? null);
   const [fileToUpload, setFileToUpload] = useState<File | null>(null);
   const {
     send: upload,
@@ -65,19 +65,20 @@ export const ToolsStep = ({
     }
   });
 
-  const fileDetails = icon
-    ? {
-        name: icon.fileName,
-        size: icon.fileSize,
-        type: icon.fileName.split(".")[1] ?? ""
-      }
-    : fileToUpload
-    ? {
-        name: fileToUpload.name,
-        size: fileToUpload.size,
-        type: fileToUpload.type.split("/")[1]
-      }
-    : null;
+  const fileDetails =
+    iconId && icon?.id === iconId
+      ? {
+          name: icon.fileName,
+          size: icon.fileSize,
+          type: icon.fileName.split(".")[1] ?? ""
+        }
+      : fileToUpload
+      ? {
+          name: fileToUpload.name,
+          size: fileToUpload.size,
+          type: fileToUpload.type.split("/")[1]
+        }
+      : null;
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
@@ -176,6 +177,15 @@ export const ToolsStep = ({
     setIconId(null);
     setDropzoneError(undefined);
   };
+
+  useEffect(() => {
+    if (icon?.id) {
+      setFileToUpload(null);
+      setIconId(icon.id);
+    } else {
+      setIconId(null);
+    }
+  }, [icon?.id]);
 
   const formattedFileSize = fileDetails
     ? fileDetails.size >= MAX_ICON_FILE_SIZE

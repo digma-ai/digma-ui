@@ -160,6 +160,8 @@ export const DropzoneContent = styled.div<DropzoneContentProps>`
 
 export const FileIconContainer = styled.div`
   color: ${({ theme }) => theme.colors.v3.surface.brandSecondary};
+  position: relative;
+  display: flex;
 `;
 
 export const FileExtension = styled.span`
@@ -172,8 +174,11 @@ export const FileExtension = styled.span`
   text-transform: uppercase;
   position: absolute;
   bottom: 6px;
-  left: auto;
-  right: auto;
+  left: 0;
+  right: 0;
+  user-select: none;
+  width: 100%;
+  text-align: center;
 `;
 
 export const DownloadIconContainer = styled.div<DropzoneContentIconContainerProps>`
@@ -193,6 +198,7 @@ export const DownloadIconContainer = styled.div<DropzoneContentIconContainerProp
     $isDragActive
       ? theme.colors.v3.surface.brandPrimary
       : theme.colors.v3.surface.primary};
+  box-sizing: border-box;
 `;
 
 export const DropzoneContentTextContainer = styled.div`
