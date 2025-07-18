@@ -104,9 +104,7 @@ export const useHistory = () => {
       environmentId: environment?.id,
       spanCodeObjectId: scopeSpanCodeObjectId,
       spanDisplayName: scopeSpanCodeObjectId
-        ? scope?.span?.displayName
-          ? scope.span.displayName
-          : location?.state?.spanDisplayName
+        ? scope?.span?.displayName ?? location?.state?.spanDisplayName
         : undefined
     };
 

@@ -3,7 +3,6 @@ import {
   useAgenticSelector
 } from "../../../../containers/Agentic/hooks";
 import { setStatusDetails } from "../../../../redux/slices/incidentsSlice";
-import { CodeSnippet } from "../../../common/CodeSnippet";
 import * as s from "./styles";
 import { isErrorStatusDetails } from "./typeGuards";
 
@@ -25,7 +24,8 @@ export const StatusDetailsOverlay = () => {
       <s.ErrorDetailsContentContainer>
         <span>Exception type: {statusDetails.info.exception_type}</span>
         <span>Message: {statusDetails.info.message}</span>
-        <CodeSnippet text={statusDetails.info.stack_trace} />
+        <span>Stack trace: </span>
+        <s.StyledCodeSnippet text={statusDetails.info.stack_trace} />
       </s.ErrorDetailsContentContainer>
     );
   }
