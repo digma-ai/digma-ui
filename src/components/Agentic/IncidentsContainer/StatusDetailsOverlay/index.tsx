@@ -5,7 +5,7 @@ import {
 import { setStatusDetails } from "../../../../redux/slices/incidentsSlice";
 import { CodeSnippet } from "../../../common/CodeSnippet";
 import * as s from "./styles";
-import { isErrorStatusDetails } from "./typeguards";
+import { isErrorStatusDetails } from "./typeGuards";
 
 export const StatusDetailsOverlay = () => {
   const statusDetails = useAgenticSelector(
