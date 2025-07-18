@@ -51,17 +51,19 @@ export const IncidentsListContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 24px;
+  padding: 24px 0;
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   background: ${({ theme }) => theme.colors.v3.surface.primary};
   flex-grow: 1;
+  overflow: auto;
 `;
 
 export const IncidentsListHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 24px;
 `;
 
 export const IncidentsListTitle = styled.div`
@@ -74,7 +76,8 @@ export const IncidentsList = styled.ul`
   flex-direction: column;
   gap: 4px;
   margin: 0;
-  padding: 0;
+  padding: 0 24px;
+  overflow: auto;
 `;
 
 export const IncidentItem = styled.li<IncidentItemProps>`

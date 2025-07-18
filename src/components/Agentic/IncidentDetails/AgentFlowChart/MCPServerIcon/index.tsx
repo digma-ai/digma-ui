@@ -13,7 +13,13 @@ export const MCPServerIcon = ({
   server
 }: MCPServerIconProps) => {
   if (server.icon) {
-    return <s.CustomImage $size={size} src={server.icon.url} />;
+    return (
+      <s.CustomImage
+        $size={size}
+        src={server.icon.url}
+        $isActive={server.active}
+      />
+    );
   }
 
   if (server.isEditable) {
