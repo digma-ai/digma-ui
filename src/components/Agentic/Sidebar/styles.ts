@@ -145,6 +145,5 @@ export const Avatar = styled.span`
   background: #6271b6;
   color: ${({ theme }) => theme.colors.v3.text.white};
   font-size: 14px;
-  ${/* TODO: add the font */ ""}
-  font-family: Inter, sans-serif;
+  font-family: Inter;
 `;

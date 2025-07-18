@@ -14,9 +14,9 @@ import { Direction } from "../../common/icons/types";
 import { Spinner } from "../../common/v3/Spinner";
 import type { ToggleOption } from "../../common/v3/Toggle/types";
 import { Tooltip } from "../../common/v3/Tooltip";
+import { AgentFlowChart } from "../common/AgentFlowChart";
 import { trackingEvents } from "../tracking";
 import { AdditionalInfo } from "./AdditionalInfo";
-import { AgentFlowChart } from "./AgentFlowChart";
 import { AgentSummary } from "./AgentSummary";
 import { IncidentAgentChat } from "./IncidentAgentChat";
 import { IncidentMetaData } from "./IncidentMetaData";
@@ -91,7 +91,7 @@ export const IncidentDetails = () => {
     return null;
   }
 
-  const incidentStatus = incidentData?.status_description;
+  const incidentStatus = incidentData?.description;
 
   const agentName = agentsData?.agents.find(
     (agent) => agent.name === agentId

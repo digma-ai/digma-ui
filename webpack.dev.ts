@@ -94,6 +94,9 @@ const webApps = Object.entries(appData)
 const config: WebpackConfiguration = {
   extends: path.resolve(__dirname, "./webpack.common.ts"),
   mode: "development",
+  output: {
+    filename: "[name]/index.js" // Do not use contenthash to avoid piling up files in memory on recompile
+  },
   devtool: "eval-source-map",
   devServer: {
     historyApiFallback: {
