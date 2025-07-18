@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 import { useDropzone } from "react-dropzone";
 import { useFormDataRequest } from "../../../../../hooks/useFormDataRequest";
 import type { MCPServerIcon } from "../../../../../redux/services/types";
@@ -184,7 +184,8 @@ export const ToolsStep = ({
   );
   const areAllSelected = tools.every((x) => selectedTools.includes(x));
 
-  const isSaveButtonEnabled = selectedTools.length > 0 && !isLoading;
+  const isSaveButtonEnabled =
+    selectedTools.length > 0 && !isLoading && !isSending;
 
   const handleRemoveFile = () => {
     if (isSending) {
@@ -194,15 +195,6 @@ export const ToolsStep = ({
     setIconId(null);
     setDropzoneError(undefined);
   };
-
-  useEffect(() => {
-    if (icon?.id) {
-      setFileToUpload(null);
-      setIconId(icon.id);
-    } else {
-      setIconId(null);
-    }
-  }, [icon?.id]);
 
   const formattedFileSize = fileDetails
     ? fileDetails.size >= MAX_ICON_FILE_SIZE

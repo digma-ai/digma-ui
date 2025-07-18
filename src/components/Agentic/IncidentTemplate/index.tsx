@@ -98,7 +98,9 @@ export const IncidentTemplate = () => {
   };
 
   const handleEditMCPServer = (agentId: string, serverName: string) => {
-    const serverId = mcpServers?.mcps.find((x) => x.name === serverName)?.uid;
+    const serverId = mcpServers?.mcps.find(
+      (x) => x.name === serverName && x.agents.includes(agentId)
+    )?.uid;
 
     if (!serverId) {
       return;
@@ -108,8 +110,10 @@ export const IncidentTemplate = () => {
     setMCPServerIdToUpdate(serverId);
   };
 
-  const handleDeleteMCPServer = (_: string, serverName: string) => {
-    const serverId = mcpServers?.mcps.find((x) => x.name === serverName)?.uid;
+  const handleDeleteMCPServer = (agentId: string, serverName: string) => {
+    const serverId = mcpServers?.mcps.find(
+      (x) => x.name === serverName && x.agents.includes(agentId)
+    )?.uid;
 
     if (!serverId) {
       return;

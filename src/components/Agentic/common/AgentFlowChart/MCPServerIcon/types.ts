@@ -7,4 +7,5 @@ export interface MCPServerIconProps {
 
 export interface CustomImageProps {
   $size: number;
+  $isActive?: boolean;
 }
