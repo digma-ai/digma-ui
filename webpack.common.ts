@@ -2,7 +2,7 @@ import * as cheerio from "cheerio";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
-import type { Configuration as WebpackConfiguration } from "webpack";
+import type { Configuration } from "webpack";
 import ZipPlugin from "zip-webpack-plugin";
 import type { WebpackEnv } from "./apps";
 import { appData } from "./apps";
@@ -28,7 +28,7 @@ const getZipFilename = (env: WebpackEnv): string => {
     .replace(/-{2,}/g, "-");
 };
 
-const getConfig = (env: WebpackEnv): WebpackConfiguration => {
+const getConfig = (env: WebpackEnv): Configuration => {
   const entriesToBuild: Record<string, string> = Object.entries(appData)
     .filter(
       ([, entry]) => !env.PLATFORM || entry.platforms.includes(env.PLATFORM)

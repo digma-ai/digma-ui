@@ -9,6 +9,9 @@ const jestConfig: JestConfigWithTsJest = {
     "!src/**/*.d.ts"
   ],
   testEnvironment: "jsdom",
+  testEnvironmentOptions: {
+    globalsCleanup: "on"
+  },
   transform: {
     ...createDefaultPreset().transform
   }

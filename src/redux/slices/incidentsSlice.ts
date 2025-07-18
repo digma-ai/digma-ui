@@ -3,15 +3,22 @@ import { globalClear } from "../actions";
 import { STATE_VERSION } from "../constants";
 import type { BaseState } from "./types";
 
+export interface StatusDetails<T = unknown> {
+  status: string;
+  info: T;
+}
+
 export interface IncidentsState extends BaseState {
   isCreateIncidentChatOpen: boolean;
   incidentToClose: string | null;
+  statusDetails: StatusDetails | null;
 }
 
 const initialState: IncidentsState = {
   version: STATE_VERSION,
   isCreateIncidentChatOpen: false,
-  incidentToClose: null
+  incidentToClose: null,
+  statusDetails: null
 };
 
 export const incidentsSlice = createSlice({
@@ -24,6 +31,9 @@ export const incidentsSlice = createSlice({
     setIncidentToClose: (state, action: { payload: string | null }) => {
       state.incidentToClose = action.payload;
     },
+    setStatusDetails: (state, action: { payload: StatusDetails | null }) => {
+      state.statusDetails = action.payload;
+    },
     clear: () => initialState
   },
   extraReducers: (builder) => {
@@ -31,7 +41,11 @@ export const incidentsSlice = createSlice({
   }
 });
 
-export const { setIsCreateIncidentChatOpen, setIncidentToClose, clear } =
-  incidentsSlice.actions;
+export const {
+  setIsCreateIncidentChatOpen,
+  setIncidentToClose,
+  setStatusDetails,
+  clear
+} = incidentsSlice.actions;
 
 export default incidentsSlice.reducer;

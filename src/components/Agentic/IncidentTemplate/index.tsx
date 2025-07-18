@@ -8,7 +8,7 @@ import { CancelConfirmation } from "../../common/CancelConfirmation";
 import { CrossIcon } from "../../common/icons/16px/CrossIcon";
 import { Overlay } from "../../common/Overlay";
 import { Tooltip } from "../../common/v3/Tooltip";
-import type { ExtendedAgent } from "../IncidentDetails/AgentFlowChart/types";
+import type { ExtendedAgent } from "../common/AgentFlowChart/types";
 import { MCPServerDialog } from "./MCPServerDialog";
 import * as s from "./styles";
 
@@ -18,6 +18,7 @@ const initialAgents: ExtendedAgent[] = [
     display_name: "Digma",
     description: "Digma",
     status: "waiting",
+    status_details: {},
     mcp_servers: []
   },
   {
@@ -25,6 +26,7 @@ const initialAgents: ExtendedAgent[] = [
     display_name: "Watchman",
     description: "Watchman",
     status: "waiting",
+    status_details: {},
     mcp_servers: []
   },
   {
@@ -32,6 +34,7 @@ const initialAgents: ExtendedAgent[] = [
     display_name: "Triager",
     description: "Triager",
     status: "waiting",
+    status_details: {},
     mcp_servers: []
   },
 
@@ -40,6 +43,7 @@ const initialAgents: ExtendedAgent[] = [
     display_name: "Code Resolver",
     description: "Code Resolver",
     status: "waiting",
+    status_details: {},
     mcp_servers: []
   },
   {
@@ -47,6 +51,7 @@ const initialAgents: ExtendedAgent[] = [
     display_name: "Infrastructure Resolver",
     description: "Infrastructure Resolver",
     status: "waiting",
+    status_details: {},
     mcp_servers: []
   },
   {
@@ -54,6 +59,7 @@ const initialAgents: ExtendedAgent[] = [
     display_name: "Validator",
     description: "Validator",
     status: "waiting",
+    status_details: {},
     mcp_servers: []
   }
 ];

@@ -167,8 +167,7 @@ export const FileIconContainer = styled.div`
 export const FileExtension = styled.span`
   ${/* TODO: change to color from the theme */ ""}
   color: #000;
-  ${/* TODO: add the font */ ""}
-  font-family: Inter, sans-serif;
+  font-family: Inter;
   font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;

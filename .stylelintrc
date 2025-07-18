@@ -4,7 +4,7 @@
   "rules": {
     "font-family-no-missing-generic-family-keyword": [
       true,
-      { "ignoreFontFamilies": ["JetBrains Mono"] }
+      { "ignoreFontFamilies": ["Alexandria", "Inter", "JetBrains Mono"] }
     ]
   }
 }

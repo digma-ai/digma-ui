@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { heading2BoldTypography } from "../../common/App/typographies";
 import { Overlay } from "../../common/Overlay";
-import { AgentFlowChart } from "../IncidentDetails/AgentFlowChart";
+import { AgentFlowChart } from "../common/AgentFlowChart";
 import { PromptInput } from "../common/PromptInput";
 import { TextArea } from "../common/PromptInput/styles";
 
