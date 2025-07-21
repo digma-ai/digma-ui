@@ -8,7 +8,13 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: ["!.storybook", "dist/", "jaeger-ui/", "storybook-static/"]
+    ignores: [
+      "!.storybook",
+      "dist/",
+      "jaeger-ui/",
+      "storybook-static/",
+      "digmaCodeGen.ts"
+    ]
   },
   eslint.configs.recommended,
   tseslint.configs.recommendedTypeChecked,

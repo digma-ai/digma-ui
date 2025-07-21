@@ -1140,9 +1140,11 @@ export interface IncidentArtifact {
 }
 
 export interface ErrorStatusInfo {
-  message: string;
-  stack_trace: string | null;
-  exception_type: string | null;
+  error: {
+    message: string;
+    stack_trace: string | null;
+    exception_type: string | null;
+  };
 }
 
 export interface StatusData {

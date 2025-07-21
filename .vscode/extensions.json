@@ -1,11 +1,15 @@
 {
   "recommendations": [
-    "dbaeumer.vscode-eslint",
     "davidanson.vscode-markdownlint",
+    "dbaeumer.vscode-eslint",
+    "docker.docker",
+    "dotenv.dotenv-vscode",
     "esbenp.prettier-vscode",
+    "GitHub.copilot",
+    "GitHub.copilot-chat",
     "Orta.vscode-jest",
     "streetsidesoftware.code-spell-checker",
-    "stylelint.vscode-stylelint",
-    "styled-components.vscode-styled-components"
+    "styled-components.vscode-styled-components",
+    "stylelint.vscode-stylelint"
   ]
 }

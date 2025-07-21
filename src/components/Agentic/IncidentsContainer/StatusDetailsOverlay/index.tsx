@@ -22,10 +22,10 @@ export const StatusDetailsOverlay = () => {
   if (statusDetails && isErrorStatusDetails(statusDetails)) {
     content = (
       <s.ErrorDetailsContentContainer>
-        <span>Exception type: {statusDetails.info.exception_type}</span>
-        <span>Message: {statusDetails.info.message}</span>
+        <span>Exception type: {statusDetails.info.error.exception_type}</span>
+        <span>Message: {statusDetails.info.error.message}</span>
         <span>Stack trace: </span>
-        <s.StyledCodeSnippet text={statusDetails.info.stack_trace} />
+        <s.StyledCodeSnippet text={statusDetails.info.error.stack_trace} />
       </s.ErrorDetailsContentContainer>
     );
   }

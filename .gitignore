@@ -6,3 +6,5 @@ storybook-static/
 .DS_Store
 .env
 .eslintcache
+digmaCodeGen.ts
+swagger.json
