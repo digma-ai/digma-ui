@@ -125,11 +125,14 @@ export const IncidentMetaData = () => {
         <s.AttributeLabel>Status:</s.AttributeLabel>
         <s.StatusAttributeValue>{data.status}</s.StatusAttributeValue>
         {currentStatusData?.status_info && (
-          <NewIconButton
-            icon={InfoCircleIcon}
-            onClick={handleInfoButtonClick}
-            buttonType={"secondaryBorderless"}
-          />
+          <Tooltip title={"Additional details"}>
+            <NewIconButton
+              icon={InfoCircleIcon}
+              onClick={handleInfoButtonClick}
+              buttonType={"secondaryBorderless"}
+              size={"large"}
+            />
+          </Tooltip>
         )}
       </s.Attribute>
     ],
