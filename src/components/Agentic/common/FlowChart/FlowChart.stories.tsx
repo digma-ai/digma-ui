@@ -20,6 +20,7 @@ export const Default: Story = {
   args: {
     nodes: [
       {
+        type: "flowChart",
         id: "1",
         position: { x: 0, y: -31 },
         data: {
@@ -30,26 +31,31 @@ export const Default: Story = {
         }
       },
       {
+        type: "flowChart",
         id: "2",
         position: { x: 200, y: 0 },
         data: { label: "Watchman", isActive: true }
       },
       {
+        type: "flowChart",
         id: "3",
         position: { x: 500, y: 0 },
         data: { label: "Triage" }
       },
       {
+        type: "flowChart",
         id: "4",
         position: { x: 800, y: -50 },
         data: { label: "Infra Resolution" }
       },
       {
+        type: "flowChart",
         id: "5",
         position: { x: 800, y: 50 },
         data: { label: "Code Resolution" }
       },
       {
+        type: "flowChart",
         id: "6",
         position: { x: 1100, y: 0 },
         data: { label: "Validator", type: "output" }

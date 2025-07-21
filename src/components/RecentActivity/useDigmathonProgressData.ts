@@ -23,16 +23,19 @@ const getData = () => {
 };
 
 const getMinFoundDate = (insights: DigmathonProgressInsightData[]) =>
-  insights.reduce((minDate, cur) => {
-    if (
-      isNull(minDate) ||
-      new Date(cur.foundAt).valueOf() < new Date(minDate).valueOf()
-    ) {
-      return cur.foundAt;
-    }
+  insights.reduce(
+    (minDate, cur) => {
+      if (
+        isNull(minDate) ||
+        new Date(cur.foundAt).valueOf() < new Date(minDate).valueOf()
+      ) {
+        return cur.foundAt;
+      }
 
-    return minDate;
-  }, null as string | null);
+      return minDate;
+    },
+    null as string | null
+  );
 
 const getFoundAt = (
   insights: DigmathonProgressInsightData[],

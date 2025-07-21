@@ -79,7 +79,7 @@ export const AssetsFilter = ({
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const isServicesFilterEnabled = !scopeSpanCodeObjectId;
   const [selectedServices, setSelectedServices] = useState<string[]>(
-    isServicesFilterEnabled ? globallySelectedServices ?? [] : []
+    isServicesFilterEnabled ? (globallySelectedServices ?? []) : []
   );
   const [selectedEndpoints, setSelectedEndpoints] = useState<string[]>(
     filters?.endpoints ?? []
@@ -198,7 +198,7 @@ export const AssetsFilter = ({
 
   const discardChanges = useCallback(() => {
     const services = isServicesFilterEnabled
-      ? globallySelectedServices ?? []
+      ? (globallySelectedServices ?? [])
       : [];
     setSelectedServices(services ?? []);
     setSelectedEndpoints(filters?.endpoints ?? []);
@@ -417,7 +417,7 @@ export const AssetsFilter = ({
 
   const appliedFiltersCount = filters
     ? [
-        ...(isServicesFilterEnabled ? globallySelectedServices ?? [] : []),
+        ...(isServicesFilterEnabled ? (globallySelectedServices ?? []) : []),
         ...filters.endpoints,
         ...filters.consumers,
         ...filters.internals,

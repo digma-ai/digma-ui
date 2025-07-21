@@ -129,8 +129,8 @@ export const CodeButtonMenu = ({
         {codeContext.isInstrumented === false
           ? renderNoObservability()
           : codeContext.spans.assets.length > 0
-          ? renderSpans()
-          : renderNoData()}
+            ? renderSpans()
+            : renderNoData()}
       </s.Container>
     </Popup>
   );

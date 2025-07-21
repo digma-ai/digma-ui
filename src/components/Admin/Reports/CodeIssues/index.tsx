@@ -369,8 +369,8 @@ export const CodeIssues = () => {
         services: selectedService
           ? [selectedService]
           : scope?.value
-          ? [scope.value]
-          : [],
+            ? [scope.value]
+            : [],
         ...(isCriticalityLevelsFilterEnabled
           ? { criticalityFilter: criticalityLevels }
           : {}),

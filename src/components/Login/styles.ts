@@ -9,7 +9,8 @@ import { Link } from "../common/v3/Link";
 import { NewButton } from "../common/v3/NewButton";
 
 export const Container = styled.div`
-  background: radial-gradient(
+  background:
+    radial-gradient(
       100% 100% at 50% 0%,
       rgb(124 144 248 / 20%) 0%,
       rgb(124 144 248 / 0%) 100%

@@ -1,22 +1,16 @@
 // Inspired by: https://github.com/zustandjs/zustand-slices/blob/main/src/with-actions.ts
 
-type InferStateActions<Actions> = Actions extends Record<
-  string,
-  (...args: never[]) => unknown
->
-  ? {
-      [actionName in keyof Actions]: (
-        ...args: Parameters<Actions[actionName]>
-      ) => void;
-    }
-  : unknown;
+type InferStateActions<Actions> =
+  Actions extends Record<string, (...args: never[]) => unknown>
+    ? {
+        [actionName in keyof Actions]: (
+          ...args: Parameters<Actions[actionName]>
+        ) => void;
+      }
+    : unknown;
 
-type IsValidActions<State, Actions> = Extract<
-  keyof Actions,
-  keyof State
-> extends never
-  ? Actions
-  : never;
+type IsValidActions<State, Actions> =
+  Extract<keyof Actions, keyof State> extends never ? Actions : never;
 
 export function withMutableActions<
   State,

@@ -30,7 +30,7 @@ const CodeSnippetComponent = (
   const highlighterTheme = getHighlighterTheme(theme);
   const codeRef = useRef<HTMLElement>(null);
 
-  const textToCopy = isString(text) ? text : codeRef.current?.innerText ?? "";
+  const textToCopy = isString(text) ? text : (codeRef.current?.innerText ?? "");
 
   return (
     <s.Container className={className} ref={ref}>

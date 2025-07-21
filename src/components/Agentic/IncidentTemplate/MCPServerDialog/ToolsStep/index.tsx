@@ -60,8 +60,8 @@ export const ToolsStep = ({
           ? String(error.response.data)
           : error.message
         : error instanceof Error
-        ? error.message
-        : "Unknown error";
+          ? error.message
+          : "Unknown error";
       setDropzoneError(`Failed to upload icon: ${errorMessage}`);
     }
   });
@@ -74,12 +74,12 @@ export const ToolsStep = ({
           type: icon.fileName.split(".")[1] ?? ""
         }
       : fileToUpload
-      ? {
-          name: fileToUpload.name,
-          size: fileToUpload.size,
-          type: fileToUpload.type.split("/")[1]
-        }
-      : null;
+        ? {
+            name: fileToUpload.name,
+            size: fileToUpload.size,
+            type: fileToUpload.type.split("/")[1]
+          }
+        : null;
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {

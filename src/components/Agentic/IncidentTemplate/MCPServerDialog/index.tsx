@@ -129,8 +129,8 @@ export const MCPServerDialog = ({
   const tools = useMemo(
     () =>
       isEditMode
-        ? serverData?.all_tools ?? []
-        : testMCPServerResult.data?.tools ?? [],
+        ? (serverData?.all_tools ?? [])
+        : (testMCPServerResult.data?.tools ?? []),
     [isEditMode, serverData?.all_tools, testMCPServerResult.data?.tools]
   );
 

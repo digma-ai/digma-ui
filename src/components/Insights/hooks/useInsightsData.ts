@@ -54,9 +54,9 @@ export const useInsightsData = () => {
     () =>
       spanCodeObjectId
         ? platform === "Web"
-          ? selectedServices ?? []
+          ? (selectedServices ?? [])
           : []
-        : selectedServices ?? [],
+        : (selectedServices ?? []),
     [selectedServices, spanCodeObjectId]
   );
   const filteredInsightTypes = spanCodeObjectId

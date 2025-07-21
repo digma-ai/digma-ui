@@ -33,8 +33,8 @@ export const SelectBar = styled.div<SelectBarProps>`
     $isDisabled
       ? theme.colors.surface.primary
       : $isOpen
-      ? theme.colors.v3.surface.primaryLight
-      : theme.colors.v3.surface.primary};
+        ? theme.colors.v3.surface.primaryLight
+        : theme.colors.v3.surface.primary};
   color: ${({ theme, $isDisabled }) =>
     $isDisabled
       ? theme.colors.v3.text.disabled

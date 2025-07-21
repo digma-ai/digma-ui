@@ -179,8 +179,8 @@ export const InsightsCatalog = ({
             ? 1
             : 0
           : filters.includes("criticality")
-          ? 1
-          : 0) +
+            ? 1
+            : 0) +
         (filteredInsightTypes.length > 0 ? 1 : 0) +
         (isServicesFilterEnabled &&
         selectedServices &&
@@ -207,9 +207,9 @@ export const InsightsCatalog = ({
   const selectorEnvironments: SelectorEnvironment[] = areSpanEnvironmentsEnabled
     ? scopeSpanCodeObjectId &&
       scopeSpanCodeObjectId === spanEnvironments?.extra.spanCodeObjectId
-      ? spanEnvironments?.data ?? []
+      ? (spanEnvironments?.data ?? [])
       : []
-    : environments?.map((x) => ({ environment: x })) ?? [];
+    : (environments?.map((x) => ({ environment: x })) ?? []);
 
   const isDismissalViewModeButtonVisible =
     isIssuesView && data && (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
@@ -307,8 +307,8 @@ export const InsightsCatalog = ({
         allIssuesCount={insightStats?.data.issuesInsightsCount}
         unreadCount={
           areInsightStatsEnabled
-            ? insightStats?.data.unreadInsightsCount ?? 0
-            : unreadCount ?? 0
+            ? (insightStats?.data.unreadInsightsCount ?? 0)
+            : (unreadCount ?? 0)
         }
       />
     );

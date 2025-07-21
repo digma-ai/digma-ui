@@ -166,9 +166,9 @@ const groupInsights = (
         // TODO: get span name only from methodInfo spans
         name: insights[0]
           ? insights[0].spanInfo?.displayName
-          : spans.find(
+          : (spans.find(
               (methodSpan) => spanDisplayName === methodSpan.spanDisplayName
-            )?.spanDisplayName ?? "",
+            )?.spanDisplayName ?? ""),
         insights
       }))
       .sort(sortByName)

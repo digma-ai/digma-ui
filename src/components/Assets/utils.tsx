@@ -65,6 +65,6 @@ export const checkIfAnyFiltersApplied = (
         ...filters.endpoints,
         ...filters.consumers,
         ...filters.internals,
-        ...(isServicesFilterEnabled ? globallySelectedServices ?? [] : [])
+        ...(isServicesFilterEnabled ? (globallySelectedServices ?? []) : [])
       ].length > 0
   ) || searchQuery.length > 0;

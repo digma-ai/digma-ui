@@ -22,8 +22,8 @@ export const ReferenceLineLabel = ({
   const labels = isString(value)
     ? value.split(DIVIDER)
     : isNumber(value)
-    ? [value]
-    : undefined;
+      ? [value]
+      : undefined;
 
   const viewBox = labelViewBox as CartesianViewBox | undefined;
   const x = viewBox?.x;

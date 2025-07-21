@@ -420,8 +420,8 @@ export const NewErrorCard = ({
                   isDismissalChangeInProgress
                     ? "in-progress"
                     : isDismissed
-                    ? "dismissed"
-                    : "visible"
+                      ? "dismissed"
+                      : "visible"
                 }
               />
             )}

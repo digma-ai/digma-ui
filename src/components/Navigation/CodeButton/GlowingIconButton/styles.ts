@@ -13,14 +13,16 @@ export const BorderContainer = styled.div<BorderContainerProps>`
   ${({ $type }) => {
     if ($type === "error") {
       return css`
-        box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 25%),
+        box-shadow:
+          1px 1px 4px 0 rgb(0 0 0 / 25%),
           0 0 9.1px 0 rgb(218 45 95 / 30%);
         background-image: linear-gradient(135deg, #3d2327, #da2d5f);
       `;
     }
 
     return css`
-      box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 25%),
+      box-shadow:
+        1px 1px 4px 0 rgb(0 0 0 / 25%),
         0 0 9.1px 0 rgb(96 99 246 / 30%);
       background-image: linear-gradient(135deg, rgb(123 83 178 / 50%), #6568cf);
     `;
