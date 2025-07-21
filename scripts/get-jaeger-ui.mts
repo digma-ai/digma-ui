@@ -54,6 +54,7 @@ const downloadReleaseAsset = async ({
     if (!asset) {
       // eslint-disable-next-line no-console
       console.error("GitHub release asset not found in release.");
+      process.exit(1);
       return;
     }
 
@@ -72,6 +73,7 @@ const downloadReleaseAsset = async ({
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error("Error downloading GitHub release asset:", error.message);
+    process.exit(1);
   }
 };
 

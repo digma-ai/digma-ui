@@ -25,8 +25,8 @@ export const Node = styled.div<ContainerProps>`
     $isDisabled
       ? "none"
       : $isActive
-      ? "linear-gradient(180deg, #34384C 0%, #1E2026 100%)"
-      : "linear-gradient(180deg, #28292D 0%, #1A1B1E 100%), linear-gradient(180deg, rgb(255 255  255 / 10%) 0%, rgb(255 255 255 / 0%) 100%)"};
+        ? "linear-gradient(180deg, #34384C 0%, #1E2026 100%)"
+        : "linear-gradient(180deg, #28292D 0%, #1A1B1E 100%), linear-gradient(180deg, rgb(255 255  255 / 10%) 0%, rgb(255 255 255 / 0%) 100%)"};
   ${({ $isInteractive }) =>
     $isInteractive
       ? ""
@@ -55,7 +55,7 @@ export const StyledPulsatingDot = styled(PulsatingDot)`
   background: ${({ theme }) => theme.colors.v3.surface.brandPrimary};
 `;
 
-export const PauseIconContainer = styled.div`
+export const IconContainer = styled.div`
   display: flex;
   flex-shrink: 0;
 `;
