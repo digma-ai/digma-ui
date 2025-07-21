@@ -1091,7 +1091,12 @@ export interface GetBlockedTracesResponse {
   total: number;
 }
 
-export type IncidentStatus = "active" | "pending" | "closed" | "error";
+export type IncidentStatus =
+  | "active"
+  | "pending"
+  | "closed"
+  | "error"
+  | "cancelled";
 
 export interface IncidentResponseItem {
   id: string;
@@ -1108,6 +1113,14 @@ export interface GetIncidentPayload {
 }
 
 export interface CloseIncidentPayload {
+  id: string;
+}
+
+export interface CancelIncidentPayload {
+  id: string;
+}
+
+export interface DeleteIncidentPayload {
   id: string;
 }
 

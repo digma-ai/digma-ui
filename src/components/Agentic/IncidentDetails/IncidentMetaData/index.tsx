@@ -4,13 +4,17 @@ import { useParams } from "react-router";
 import { useAgenticDispatch } from "../../../../containers/Agentic/hooks";
 import { useGetIncidentQuery } from "../../../../redux/services/digma";
 import {
+  setIncidentToCancel,
   setIncidentToClose,
+  setIncidentToDelete,
   setStatusDetails
 } from "../../../../redux/slices/incidentsSlice";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { intersperse } from "../../../../utils/intersperse";
 import { InfoCircleIcon } from "../../../common/icons/InfoCircleIcon";
 import { NewIconButton } from "../../../common/v3/NewIconButton";
 import { Tooltip } from "../../../common/v3/Tooltip";
+import { trackingEvents } from "../../tracking";
 import { Divider } from "./Divider";
 import * as s from "./styles";
 
@@ -56,12 +60,31 @@ export const IncidentMetaData = () => {
     );
   };
 
+  const handleCancelButtonClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.INCIDENT_CANCEL_BUTTON_CLICKED);
+    if (!incidentId) {
+      return;
+    }
+
+    dispatch(setIncidentToCancel(incidentId));
+  };
+
   const handleCloseButtonClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.INCIDENT_CLOSE_BUTTON_CLICKED);
     if (!incidentId) {
       return;
     }
 
     dispatch(setIncidentToClose(incidentId));
+  };
+
+  const handleDeleteButtonClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.INCIDENT_DELETE_BUTTON_CLICKED);
+    if (!incidentId) {
+      return;
+    }
+
+    dispatch(setIncidentToDelete(incidentId));
   };
 
   if (!data) {
@@ -160,10 +183,22 @@ export const IncidentMetaData = () => {
   return (
     <s.Container>
       <s.AttributesList>{attributes}</s.AttributesList>
+      {data.status === "active" && (
+        <s.CloseIncidentButton
+          label={"Cancel incident"}
+          onClick={handleCancelButtonClick}
+        />
+      )}
       {data.status === "pending" && (
         <s.CloseIncidentButton
           label={"Close incident"}
           onClick={handleCloseButtonClick}
+        />
+      )}
+      {["closed", "cancelled"].includes(data.status) && (
+        <s.CloseIncidentButton
+          label={"Delete incident"}
+          onClick={handleDeleteButtonClick}
         />
       )}
     </s.Container>

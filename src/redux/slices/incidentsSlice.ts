@@ -10,14 +10,18 @@ export interface StatusDetails<T = unknown> {
 
 export interface IncidentsState extends BaseState {
   isCreateIncidentChatOpen: boolean;
+  incidentToCancel: string | null;
   incidentToClose: string | null;
+  incidentToDelete: string | null;
   statusDetails: StatusDetails | null;
 }
 
 const initialState: IncidentsState = {
   version: STATE_VERSION,
   isCreateIncidentChatOpen: false,
+  incidentToCancel: null,
   incidentToClose: null,
+  incidentToDelete: null,
   statusDetails: null
 };
 
@@ -28,8 +32,14 @@ export const incidentsSlice = createSlice({
     setIsCreateIncidentChatOpen: (state, action: { payload: boolean }) => {
       state.isCreateIncidentChatOpen = action.payload;
     },
+    setIncidentToCancel: (state, action: { payload: string | null }) => {
+      state.incidentToCancel = action.payload;
+    },
     setIncidentToClose: (state, action: { payload: string | null }) => {
       state.incidentToClose = action.payload;
+    },
+    setIncidentToDelete: (state, action: { payload: string | null }) => {
+      state.incidentToDelete = action.payload;
     },
     setStatusDetails: (state, action: { payload: StatusDetails | null }) => {
       state.statusDetails = action.payload;
@@ -43,7 +53,9 @@ export const incidentsSlice = createSlice({
 
 export const {
   setIsCreateIncidentChatOpen,
+  setIncidentToCancel,
   setIncidentToClose,
+  setIncidentToDelete,
   setStatusDetails,
   clear
 } = incidentsSlice.actions;
