@@ -198,11 +198,14 @@ export const IncidentDetails = () => {
                       <s.BreadcrumbsDivider>/</s.BreadcrumbsDivider>
                       <s.AgentBreadcrumb>{agent?.name}</s.AgentBreadcrumb>
                       {currentStatusData?.status_info && (
-                        <NewIconButton
-                          icon={InfoCircleIcon}
-                          onClick={handleInfoButtonClick}
-                          buttonType={"secondaryBorderless"}
-                        />
+                        <Tooltip title={"Additional details"}>
+                          <NewIconButton
+                            icon={InfoCircleIcon}
+                            onClick={handleInfoButtonClick}
+                            buttonType={"secondaryBorderless"}
+                            size={"large"}
+                          />
+                        </Tooltip>
                       )}
                     </>
                   )}

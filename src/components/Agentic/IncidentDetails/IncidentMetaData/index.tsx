@@ -102,6 +102,20 @@ export const IncidentMetaData = () => {
             </s.Attribute>
           ]
         : []),
+      ...(data.status_details.error
+        ? [
+            <s.Attribute key={"error-time"}>
+              <s.AttributeLabel>Incident error time:</s.AttributeLabel>
+              <Tooltip
+                title={new Date(data.status_details.error.timestamp).toString()}
+              >
+                <s.AttributeValue>
+                  {format(data.status_details.error.timestamp, DATE_FORMAT)}
+                </s.AttributeValue>
+              </Tooltip>
+            </s.Attribute>
+          ]
+        : []),
       ...(data.affected_services.length > 0
         ? [
             <s.ServicesContainer key={"affected-services"}>

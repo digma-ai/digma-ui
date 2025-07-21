@@ -36,7 +36,7 @@ const renderIncidentStatusIcon = (incident: IncidentResponseItem) => {
       icon = <PauseIcon color={"currentColor"} />;
       break;
     case "error":
-      icon = <WarningCircleLargeIcon color={"currentColor"} />;
+      icon = <WarningCircleLargeIcon color={"currentColor"} size={16} />;
       break;
   }
 
