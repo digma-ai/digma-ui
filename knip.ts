@@ -13,9 +13,7 @@ const config: KnipConfig = {
     "babel-loader",
     "css-loader",
     "style-loader",
-    "ts-loader",
-    "ts-node",
-    "webpack-cli"
+    "ts-node"
   ]
 };
 

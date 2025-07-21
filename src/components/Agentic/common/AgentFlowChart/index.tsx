@@ -1,11 +1,11 @@
 import { Position, type Edge } from "@xyflow/react";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { FlowChart } from "../../common/FlowChart";
+import { trackingEvents } from "../../tracking";
+import { FlowChart } from "../FlowChart";
 import type {
   FlowChartNode,
   FlowChartNodeData
-} from "../../common/FlowChart/FlowChartNode";
-import { trackingEvents } from "../../tracking";
+} from "../FlowChart/FlowChartNode";
 import { AgentFlowChartNodeToolbar } from "./AgentFlowChartNodeToolbar";
 import type { AgentFlowChartProps, ExtendedAgent } from "./types";
 
@@ -66,6 +66,7 @@ const getFlowChartNodeData = ({
         isActive: isSelected,
         isRunning: agent.status === "running",
         isPending: agent.status === "pending",
+        hasError: agent.status === "error",
         isInteractive,
         isDisabled: agent.status === "skipped",
         sideContainers: [
@@ -106,6 +107,7 @@ export const AgentFlowChart = ({
       display_name: "Digma",
       description: "Digma",
       status: "waiting",
+      status_details: {},
       mcp_servers: []
     },
     ...agents.map((agent) => ({
@@ -119,6 +121,7 @@ export const AgentFlowChart = ({
       display_name: "Validator",
       description: "Validator",
       status: "waiting",
+      status_details: {},
       mcp_servers: []
     }
   ];

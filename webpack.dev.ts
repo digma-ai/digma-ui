@@ -2,7 +2,7 @@ import axios from "axios";
 import dotenv from "dotenv";
 import https from "https";
 import path from "path";
-import createStyledComponentsTransformer from "typescript-plugin-styled-components";
+import { createTransformer as createStyledComponentsTransformer } from "typescript-plugin-styled-components";
 import type { WebpackConfiguration } from "webpack-dev-server";
 import { appData } from "./apps";
 
@@ -94,6 +94,9 @@ const webApps = Object.entries(appData)
 const config: WebpackConfiguration = {
   extends: path.resolve(__dirname, "./webpack.common.ts"),
   mode: "development",
+  output: {
+    filename: "[name]/index.js" // Do not use contenthash to avoid piling up files in memory on recompile
+  },
   devtool: "eval-source-map",
   devServer: {
     historyApiFallback: {
@@ -175,9 +178,8 @@ const config: WebpackConfiguration = {
         getSession(credentials, session)
           .then((session) => {
             req.headers.authorization = `Bearer ${session?.accessToken}`;
-            req.headers[
-              "Digma-Access-Token"
-            ] = `Token ${process.env.API_TOKEN}`;
+            req.headers["Digma-Access-Token"] =
+              `Token ${process.env.API_TOKEN}`;
           })
           .catch((error) => {
             // eslint-disable-next-line no-console

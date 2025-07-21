@@ -16,7 +16,7 @@ export const Code = styled.code`
   ${({ theme }) => getCodeFont(theme.codeFont)}
 
   white-space: pre-wrap;
-  word-break: break-word;
+  overflow-wrap: anywhere;
   padding: 6px 0 6px 8px;
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;

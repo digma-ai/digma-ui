@@ -41,7 +41,16 @@ const downloadReleaseAsset = async ({
   outputPath,
   extractPath
 }: DownloadReleaseAssetOptions) => {
-  const octokit = new Octokit();
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN
+  });
+
+  if (!process.env.GITHUB_TOKEN) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      "No GitHub token provided, using unauthenticated requests (rate limited)"
+    );
+  }
 
   try {
     const release = await octokit.rest.repos.getReleaseByTag({
@@ -54,6 +63,7 @@ const downloadReleaseAsset = async ({
     if (!asset) {
       // eslint-disable-next-line no-console
       console.error("GitHub release asset not found in release.");
+      process.exit(1);
       return;
     }
 
@@ -72,6 +82,7 @@ const downloadReleaseAsset = async ({
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error("Error downloading GitHub release asset:", error.message);
+    process.exit(1);
   }
 };
 

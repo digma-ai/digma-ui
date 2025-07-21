@@ -80,7 +80,7 @@ export const TextContainer = styled.div`
 `;
 
 export const ErrorMessage = styled.span`
-  word-break: break-word;
+  overflow-wrap: anywhere;
   max-width: 300px;
   white-space: pre-line;
   color: ${({ theme }) => {

@@ -5,7 +5,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  font-family: Alexandria, sans-serif;
+  font-family: Alexandria;
 `;
 
 export const Header = styled.header`

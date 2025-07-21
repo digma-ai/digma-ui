@@ -3,8 +3,13 @@ import { useMemo } from "react";
 import { useParams } from "react-router";
 import { useAgenticDispatch } from "../../../../containers/Agentic/hooks";
 import { useGetIncidentQuery } from "../../../../redux/services/digma";
-import { setIncidentToClose } from "../../../../redux/slices/incidentsSlice";
+import {
+  setIncidentToClose,
+  setStatusDetails
+} from "../../../../redux/slices/incidentsSlice";
 import { intersperse } from "../../../../utils/intersperse";
+import { InfoCircleIcon } from "../../../common/icons/InfoCircleIcon";
+import { NewIconButton } from "../../../common/v3/NewIconButton";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { Divider } from "./Divider";
 import * as s from "./styles";
@@ -26,6 +31,8 @@ export const IncidentMetaData = () => {
     }
   );
 
+  const currentStatusData = data?.status_details[data?.status];
+
   const hiddenServices = useMemo(
     () => data?.affected_services.slice(SERVICE_TAGS_TO_SHOW) ?? [],
     [data]
@@ -35,6 +42,19 @@ export const IncidentMetaData = () => {
     () => data?.affected_services.slice(0, SERVICE_TAGS_TO_SHOW) ?? [],
     [data]
   );
+
+  const handleInfoButtonClick = () => {
+    if (!data || !currentStatusData?.status_info) {
+      return;
+    }
+
+    dispatch(
+      setStatusDetails({
+        status: data.status,
+        info: currentStatusData.status_info
+      })
+    );
+  };
 
   const handleCloseButtonClick = () => {
     if (!incidentId) {
@@ -50,29 +70,47 @@ export const IncidentMetaData = () => {
 
   const attributes = intersperse(
     [
-      ...(data.status_timestamps.active
+      ...(data.status_details.active
         ? [
             <s.Attribute key={"start-time"}>
               <s.AttributeLabel>Incident start time:</s.AttributeLabel>
               <Tooltip
-                title={new Date(data.status_timestamps.active).toString()}
+                title={new Date(
+                  data.status_details.active.timestamp
+                ).toString()}
               >
                 <s.AttributeValue>
-                  {format(data.status_timestamps.active, DATE_FORMAT)}
+                  {format(data.status_details.active.timestamp, DATE_FORMAT)}
                 </s.AttributeValue>
               </Tooltip>
             </s.Attribute>
           ]
         : []),
-      ...(data.status_timestamps.closed
+      ...(data.status_details.closed
         ? [
             <s.Attribute key={"close-time"}>
               <s.AttributeLabel>Incident close time:</s.AttributeLabel>
               <Tooltip
-                title={new Date(data.status_timestamps.closed).toString()}
+                title={new Date(
+                  data.status_details.closed.timestamp
+                ).toString()}
               >
                 <s.AttributeValue>
-                  {format(data.status_timestamps.closed, DATE_FORMAT)}
+                  {format(data.status_details.closed.timestamp, DATE_FORMAT)}
+                </s.AttributeValue>
+              </Tooltip>
+            </s.Attribute>
+          ]
+        : []),
+      ...(data.status_details.error
+        ? [
+            <s.Attribute key={"error-time"}>
+              <s.AttributeLabel>Incident error time:</s.AttributeLabel>
+              <Tooltip
+                title={new Date(data.status_details.error.timestamp).toString()}
+              >
+                <s.AttributeValue>
+                  {format(data.status_details.error.timestamp, DATE_FORMAT)}
                 </s.AttributeValue>
               </Tooltip>
             </s.Attribute>
@@ -100,6 +138,16 @@ export const IncidentMetaData = () => {
       <s.Attribute key={"status"}>
         <s.AttributeLabel>Status:</s.AttributeLabel>
         <s.StatusAttributeValue>{data.status}</s.StatusAttributeValue>
+        {currentStatusData?.status_info && (
+          <Tooltip title={"Additional details"}>
+            <NewIconButton
+              icon={InfoCircleIcon}
+              onClick={handleInfoButtonClick}
+              buttonType={"secondaryBorderless"}
+              size={"large"}
+            />
+          </Tooltip>
+        )}
       </s.Attribute>
     ],
     (i) => (

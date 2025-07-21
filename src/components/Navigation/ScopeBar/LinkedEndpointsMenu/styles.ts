@@ -12,7 +12,6 @@ export const Container = styled.div`
 
 export const MenuItem = styled.div`
   display: flex;
-  flex-direction: 4px;
   padding: 0 8px;
   gap: 4px;
   align-items: center;

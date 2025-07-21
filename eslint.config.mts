@@ -1,5 +1,6 @@
 import eslint from "@eslint/js";
-import eslintConfigPrettier from "eslint-config-prettier";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
+import jestPlugin from "eslint-plugin-jest";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import storybookPlugin from "eslint-plugin-storybook";
@@ -7,7 +8,13 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: ["!.storybook", "dist/", "jaeger-ui/", "storybook-static/"]
+    ignores: [
+      "!.storybook",
+      "dist/",
+      "jaeger-ui/",
+      "storybook-static/",
+      "digmaCodeGen.ts"
+    ]
   },
   eslint.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
@@ -42,6 +49,13 @@ export default tseslint.config(
     ...reactHooksPlugin.configs["recommended-latest"]
   },
   storybookPlugin.configs["flat/recommended"],
+  {
+    files: ["**/*.test.ts"],
+    plugins: { jest: jestPlugin },
+    languageOptions: {
+      globals: jestPlugin.environments.globals.globals
+    }
+  },
   eslintConfigPrettier,
   // Custom rules
   {

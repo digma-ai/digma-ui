@@ -24,6 +24,10 @@
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
+  "github.copilot.enable": {
+    "*": true,
+    "dotenv": false
+  },
   "jest.runMode": "on-demand",
   "stylelint.validate": ["typescript"],
   "typescript.preferences.preferTypeOnlyAutoImports": true

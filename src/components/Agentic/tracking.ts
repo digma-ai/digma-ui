@@ -42,6 +42,7 @@ export const trackingEvents = addPrefix(
     INCIDENT_TEMPLATE_EDIT_MCP_DIALOG_TOOL_TAG_CLICKED:
       "incident template edit mcp dialog tool tag clicked",
     INCIDENT_HOME_BREADCRUMB_CLICKED: "incident home breadcrumb clicked",
+    INCIDENT_AGENT_INFO_BUTTON_CLICKED: "incident agent info button clicked",
     INCIDENT_AGENT_VIEW_MODE_TOGGLE_CHANGED:
       "incident agent view mode toggle changed",
     INCIDENT_AGENT_MESSAGE_SUBMITTED: "incident agent message submitted",

@@ -19,19 +19,17 @@ export function useStableSearchParams(
 
   paramsRef.current = searchParams;
 
-  if (!stableSetSearchParamsRef.current) {
-    stableSetSearchParamsRef.current = (
-      nextInit?:
-        | URLSearchParamsInit
-        | ((prev: URLSearchParams) => URLSearchParamsInit),
-      navigateOptions?: NavigateOptions
-    ) => {
-      const nextParams =
-        typeof nextInit === "function" ? nextInit(paramsRef.current) : nextInit;
+  stableSetSearchParamsRef.current ??= (
+    nextInit?:
+      | URLSearchParamsInit
+      | ((prev: URLSearchParams) => URLSearchParamsInit),
+    navigateOptions?: NavigateOptions
+  ) => {
+    const nextParams =
+      typeof nextInit === "function" ? nextInit(paramsRef.current) : nextInit;
 
-      setSearchParams(nextParams, navigateOptions);
-    };
-  }
+    setSearchParams(nextParams, navigateOptions);
+  };
 
   return [searchParams, stableSetSearchParamsRef.current];
 }

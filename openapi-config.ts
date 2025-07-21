@@ -4,7 +4,7 @@ const config: ConfigFile = {
   schemaFile: "./swagger.json",
   apiFile: "./src/redux/services/digmaEmpty.ts",
   apiImport: "digmaEmptyApi",
-  outputFile: "./src/redux/services/digmaCodeGen.ts",
+  outputFile: "digmaCodeGen.ts",
   exportName: "digmaCodeGenApi",
   endpointOverrides: [
     "postCodeAnalyticsErrorsCodeobjectSummary",

@@ -1,7 +1,7 @@
 import path from "path";
-import type { Configuration as WebpackConfiguration } from "webpack";
+import type { Configuration } from "webpack";
 
-const config: WebpackConfiguration = {
+const config: Configuration = {
   extends: path.resolve(__dirname, "./webpack.common.ts"),
   mode: "production",
   module: {

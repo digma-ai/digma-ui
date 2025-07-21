@@ -6,6 +6,7 @@ export const mockedAgents: Agent[] = [
     display_name: "Digma",
     description: "Digma",
     status: "waiting",
+    status_details: {},
     mcp_servers: []
   },
   {
@@ -13,6 +14,7 @@ export const mockedAgents: Agent[] = [
     display_name: "Watchman",
     description: "Watchman",
     status: "waiting",
+    status_details: {},
     mcp_servers: [
       {
         name: "github",
@@ -36,6 +38,7 @@ export const mockedAgents: Agent[] = [
     display_name: "Triage",
     description: "Triage",
     status: "pending",
+    status_details: {},
     mcp_servers: [
       {
         name: "github",
@@ -59,6 +62,7 @@ export const mockedAgents: Agent[] = [
     display_name: "Infra Resolution",
     description: "Infra Resolution",
     status: "pending",
+    status_details: {},
     mcp_servers: [
       {
         name: "github",
@@ -82,6 +86,7 @@ export const mockedAgents: Agent[] = [
     display_name: "Code Resolution",
     description: "Code Resolution",
     status: "skipped",
+    status_details: {},
     mcp_servers: [
       {
         name: "github",
@@ -105,6 +110,7 @@ export const mockedAgents: Agent[] = [
     display_name: "Validator",
     description: "Validator",
     status: "pending",
+    status_details: {},
     mcp_servers: [
       {
         name: "github",

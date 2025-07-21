@@ -76,12 +76,12 @@ export const ScopeBar = ({
   const spanDisplayName = scope?.span?.displayName;
   const spanCodeObjectId = scope?.span?.spanCodeObjectId;
   // Take scope display name from history state if it's not provided
-  const scopeDisplayName = spanDisplayName
-    ? spanDisplayName
-    : isString(spanCodeObjectId) &&
-      spanCodeObjectId === location?.state?.spanCodeObjectId
-    ? location?.state?.spanDisplayName
-    : "";
+  const scopeDisplayName =
+    spanDisplayName ??
+    (isString(spanCodeObjectId) &&
+    spanCodeObjectId === location?.state?.spanCodeObjectId
+      ? location?.state?.spanDisplayName
+      : "");
 
   const targetButtonTooltip = getTargetButtonTooltip(codeContext, scope);
 
