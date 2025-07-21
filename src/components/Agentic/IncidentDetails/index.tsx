@@ -3,14 +3,18 @@ import "allotment/dist/style.css";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useTheme } from "styled-components";
+import { useAgenticDispatch } from "../../../containers/Agentic/hooks";
 import { useStableSearchParams } from "../../../hooks/useStableSearchParams";
 import {
   useGetIncidentAgentsQuery,
   useGetIncidentQuery
 } from "../../../redux/services/digma";
+import { setStatusDetails } from "../../../redux/slices/incidentsSlice";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { TwoVerticalLinesIcon } from "../../common/icons/16px/TwoVerticalLinesIcon";
+import { InfoCircleIcon } from "../../common/icons/InfoCircleIcon";
 import { Direction } from "../../common/icons/types";
+import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Spinner } from "../../common/v3/Spinner";
 import type { ToggleOption } from "../../common/v3/Toggle/types";
 import { Tooltip } from "../../common/v3/Tooltip";
@@ -43,6 +47,8 @@ export const IncidentDetails = () => {
   const [searchParams, setSearchParams] = useStableSearchParams();
   const agentId = searchParams.get("agent");
   const [agentViewMode, setAgentViewMode] = useState<AgentViewMode>("summary");
+
+  const dispatch = useAgenticDispatch();
 
   const { data: agentsData } = useGetIncidentAgentsQuery(
     { id: incidentId ?? "" },
@@ -83,6 +89,29 @@ export const IncidentDetails = () => {
     setAgentViewMode(value);
   };
 
+  const agent = agentsData?.agents.find((agent) => agent.name === agentId);
+  const currentStatusData = agent?.status_details[agent?.status];
+
+  const handleInfoButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.INCIDENT_AGENT_INFO_BUTTON_CLICKED,
+      {
+        agentName: agentId ?? ""
+      }
+    );
+
+    if (!agent || !currentStatusData?.status_info) {
+      return;
+    }
+
+    dispatch(
+      setStatusDetails({
+        status: agent.status,
+        info: currentStatusData.status_info
+      })
+    );
+  };
+
   useEffect(() => {
     setAgentViewMode("summary");
   }, [agentId]);
@@ -92,10 +121,6 @@ export const IncidentDetails = () => {
   }
 
   const incidentStatus = incidentData?.description;
-
-  const agentName = agentsData?.agents.find(
-    (agent) => agent.name === agentId
-  )?.display_name;
 
   const isAgentChatEnabled = agentsData?.agents.find(
     (agent) => agent.name === `${agentId}_chat`
@@ -171,7 +196,14 @@ export const IncidentDetails = () => {
                   {agentId && (
                     <>
                       <s.BreadcrumbsDivider>/</s.BreadcrumbsDivider>
-                      <s.AgentBreadcrumb>{agentName}</s.AgentBreadcrumb>
+                      <s.AgentBreadcrumb>{agent?.name}</s.AgentBreadcrumb>
+                      {currentStatusData?.status_info && (
+                        <NewIconButton
+                          icon={InfoCircleIcon}
+                          onClick={handleInfoButtonClick}
+                          buttonType={"secondaryBorderless"}
+                        />
+                      )}
                     </>
                   )}
                 </s.Breadcrumbs>

@@ -108,7 +108,7 @@ export const StyledPulsatingDot = styled(PulsatingDot)`
   background: ${({ theme }) => theme.colors.v3.status.high};
 `;
 
-export const PauseIconContainer = styled.div`
+export const IncidentStatusIconContainer = styled.div`
   display: flex;
   flex-shrink: 0;
 `;

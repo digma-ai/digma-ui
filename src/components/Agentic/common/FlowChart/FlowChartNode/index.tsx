@@ -14,6 +14,7 @@ import { TrashBinIcon } from "../../../../common/icons/16px/TrashBinIcon";
 import { WrenchIcon } from "../../../../common/icons/16px/WrenchIcon";
 import { ThreeDotsVerticalIcon } from "../../../../common/icons/ThreeDotsVerticalIcon";
 import { Direction } from "../../../../common/icons/types";
+import { WarningCircleLargeIcon } from "../../../../common/icons/WarningCircleLargeIcon";
 import { NewPopover } from "../../../../common/NewPopover";
 import { MenuList } from "../../../../Navigation/common/MenuList";
 import type { MenuItem } from "../../../../Navigation/common/MenuList/types";
@@ -32,6 +33,7 @@ export type FlowChartNodeData = {
   isActive?: boolean;
   isRunning?: boolean;
   isPending?: boolean;
+  hasError?: boolean;
   isDisabled?: boolean;
   isInteractive?: boolean;
   sideContainers?: {
@@ -115,9 +117,14 @@ export const FlowChartNode = ({ id, data }: NodeProps<FlowChartNode>) => {
         )}
         {data.isRunning && <s.StyledPulsatingDot />}
         {data.isPending && (
-          <s.PauseIconContainer>
+          <s.IconContainer>
             <PauseIcon color={"currentColor"} />
-          </s.PauseIconContainer>
+          </s.IconContainer>
+        )}
+        {data.hasError && (
+          <s.IconContainer>
+            <WarningCircleLargeIcon color={"currentColor"} />
+          </s.IconContainer>
         )}
         {data.type !== "input" && (
           <s.InputHandle type={"target"} position={Position.Left} id={"a"}>

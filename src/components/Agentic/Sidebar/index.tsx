@@ -14,6 +14,7 @@ import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActi
 import { getThemeKind } from "../../common/App/styles";
 import { PauseIcon } from "../../common/icons/12px/PauseIcon";
 import { LogoutIcon } from "../../common/icons/16px/LogoutIcon";
+import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIcon";
 import { NewPopover } from "../../common/NewPopover";
 import { NewButton } from "../../common/v3/NewButton";
 import { Tooltip } from "../../common/v3/Tooltip";
@@ -27,8 +28,22 @@ const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 const isIncidentActive = (incident: IncidentResponseItem): boolean =>
   incident.status === "active";
 
-const isIncidentPending = (incident: IncidentResponseItem): boolean =>
-  incident.status === "pending";
+const renderIncidentStatusIcon = (incident: IncidentResponseItem) => {
+  let icon: JSX.Element | null = null;
+
+  switch (incident.status) {
+    case "pending":
+      icon = <PauseIcon color={"currentColor"} />;
+      break;
+    case "error":
+      icon = <WarningCircleLargeIcon color={"currentColor"} />;
+      break;
+  }
+
+  return icon ? (
+    <s.IncidentStatusIconContainer>{icon}</s.IncidentStatusIconContainer>
+  ) : null;
+};
 
 const linkButtons: { id: string; label: string; route: string }[] = [
   {
@@ -154,11 +169,7 @@ export const Sidebar = () => {
               <Tooltip title={incident.name}>
                 <s.IncidentItemTitle>{incident.name}</s.IncidentItemTitle>
               </Tooltip>
-              {isIncidentPending(incident) && (
-                <s.PauseIconContainer>
-                  <PauseIcon color={"currentColor"} />
-                </s.PauseIconContainer>
-              )}
+              {renderIncidentStatusIcon(incident)}
             </s.IncidentItem>
           ))}
         </s.IncidentsList>

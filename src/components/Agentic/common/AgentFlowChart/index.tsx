@@ -66,6 +66,7 @@ const getFlowChartNodeData = ({
         isActive: isSelected,
         isRunning: agent.status === "running",
         isPending: agent.status === "pending",
+        hasError: agent.status === "error",
         isInteractive,
         isDisabled: agent.status === "skipped",
         sideContainers: [
