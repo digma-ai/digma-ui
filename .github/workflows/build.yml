@@ -25,7 +25,9 @@ jobs:
 
       - run: npm ci
 
-      - run: npm run build:prod:${{ inputs.platform }}
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run build:prod:${{ inputs.platform }}
 
       - name: Get artifact name
         id: get-artifact-name

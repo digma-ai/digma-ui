@@ -41,7 +41,16 @@ const downloadReleaseAsset = async ({
   outputPath,
   extractPath
 }: DownloadReleaseAssetOptions) => {
-  const octokit = new Octokit();
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN
+  });
+
+  if (!process.env.GITHUB_TOKEN) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      "No GitHub token provided, using unauthenticated requests (rate limited)"
+    );
+  }
 
   try {
     const release = await octokit.rest.repos.getReleaseByTag({
