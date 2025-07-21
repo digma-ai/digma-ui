@@ -123,7 +123,7 @@ export const FlowChartNode = ({ id, data }: NodeProps<FlowChartNode>) => {
         )}
         {data.hasError && (
           <s.IconContainer>
-            <WarningCircleLargeIcon color={"currentColor"} size={22} />
+            <WarningCircleLargeIcon color={"currentColor"} size={20} />
           </s.IconContainer>
         )}
         {data.type !== "input" && (
