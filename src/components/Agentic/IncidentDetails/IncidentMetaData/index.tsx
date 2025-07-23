@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import { useAgenticDispatch } from "../../../../containers/Agentic/hooks";
 import { useGetIncidentQuery } from "../../../../redux/services/digma";
@@ -26,12 +26,13 @@ export const IncidentMetaData = () => {
   const params = useParams();
   const incidentId = params.id;
   const dispatch = useAgenticDispatch();
+  const [isIncidentNotFound, setIsIncidentNotFound] = useState(false);
 
-  const { data } = useGetIncidentQuery(
+  const { data, error } = useGetIncidentQuery(
     { id: incidentId ?? "" },
     {
       skip: !incidentId,
-      pollingInterval: REFRESH_INTERVAL
+      pollingInterval: isIncidentNotFound ? 0 : REFRESH_INTERVAL
     }
   );
 
@@ -86,6 +87,16 @@ export const IncidentMetaData = () => {
 
     dispatch(setIncidentToDelete(incidentId));
   };
+
+  useEffect(() => {
+    setIsIncidentNotFound(false);
+  }, [incidentId]);
+
+  useEffect(() => {
+    if (error && "status" in error && error.status === 404) {
+      setIsIncidentNotFound(true);
+    }
+  }, [error]);
 
   if (!data) {
     return <s.Container />;

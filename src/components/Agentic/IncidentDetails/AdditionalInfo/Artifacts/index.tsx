@@ -1,5 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import { useStableSearchParams } from "../../../../../hooks/useStableSearchParams";
 import { useGetIncidentQuery } from "../../../../../redux/services/digma";
@@ -35,16 +35,27 @@ export const Artifacts = () => {
   const incidentId = params.id;
   const [searchParams] = useStableSearchParams();
   const agentId = searchParams.get("agent");
+  const [isIncidentNotFound, setIsIncidentNotFound] = useState(false);
 
-  const { data } = useGetIncidentQuery(
+  const { data, error } = useGetIncidentQuery(
     {
       id: incidentId ?? ""
     },
     {
       skip: !incidentId,
-      pollingInterval: REFRESH_INTERVAL
+      pollingInterval: isIncidentNotFound ? 0 : REFRESH_INTERVAL
     }
   );
+
+  useEffect(() => {
+    setIsIncidentNotFound(false);
+  }, [incidentId]);
+
+  useEffect(() => {
+    if (error && "status" in error && error.status === 404) {
+      setIsIncidentNotFound(true);
+    }
+  }, [error]);
 
   const artifacts = useMemo(
     () => [...(data?.related_artifacts ?? [])].sort((a, b) => a.id - b.id),

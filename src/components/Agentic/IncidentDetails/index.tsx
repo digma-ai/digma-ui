@@ -47,6 +47,7 @@ export const IncidentDetails = () => {
   const [searchParams, setSearchParams] = useStableSearchParams();
   const agentId = searchParams.get("agent");
   const [agentViewMode, setAgentViewMode] = useState<AgentViewMode>("summary");
+  const [isIncidentNotFound, setIsIncidentNotFound] = useState(false);
 
   const dispatch = useAgenticDispatch();
 
@@ -65,7 +66,7 @@ export const IncidentDetails = () => {
   } = useGetIncidentQuery(
     { id: incidentId ?? "" },
     {
-      pollingInterval: REFRESH_INTERVAL,
+      pollingInterval: isIncidentNotFound ? 0 : REFRESH_INTERVAL,
       skip: !incidentId
     }
   );
@@ -115,6 +116,16 @@ export const IncidentDetails = () => {
   useEffect(() => {
     setAgentViewMode("summary");
   }, [agentId]);
+
+  useEffect(() => {
+    setIsIncidentNotFound(false);
+  }, [incidentId]);
+
+  useEffect(() => {
+    if (error && "status" in error && error.status === 404) {
+      setIsIncidentNotFound(true);
+    }
+  }, [error]);
 
   if (!incidentId) {
     return null;
