@@ -24,6 +24,7 @@ export const StyledCodeSnippet = styled(CodeSnippet)`
 export const Paragraph = styled.p`
   ${subheading1RegularTypography}
   color: ${({ theme }) => theme.colors.v3.text.secondary};
+  margin: 4px 0;
 `;
 
 export const Code = styled.code`
@@ -34,41 +35,49 @@ export const Code = styled.code`
 `;
 
 export const Heading1 = styled.h1`
-  font-size: 38px;
+  font-size: 30px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
+  margin: 4px 0;
 `;
 
 export const Heading2 = styled.h2`
-  font-size: 34px;
+  font-size: 26px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
+  margin: 4px 0;
 `;
 
 export const Heading3 = styled.h3`
-  font-size: 30px;
+  font-size: 22px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
+  margin: 4px 0;
 `;
 
 export const Heading4 = styled.h4`
-  font-size: 26px;
+  font-size: 22px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
+  margin: 4px 0;
 `;
 
 export const Heading5 = styled.h5`
   font-size: 22px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
+  margin: 4px 0;
 `;
 
 export const Heading6 = styled.h6`
-  font-size: ${({ theme }) => theme.typographies.subheading1.fontSize}px;
+  font-size: 22px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
+  margin: 4px 0;
 `;
 
 export const UnorderedList = styled.ul`
   ${textStyles}
+  margin: 4px 0;
 `;
 
 export const OrderedList = styled.ol`
   ${textStyles}
+  margin: 4px 0;
 `;
 
 export const ListItem = styled.li`
@@ -77,6 +86,8 @@ export const ListItem = styled.li`
 
 export const Blockquote = styled.blockquote`
   ${textStyles}
+  margin-top: 4px;
+  margin-bottom: 4px;
 `;
 
 export const Strong = styled.strong`
