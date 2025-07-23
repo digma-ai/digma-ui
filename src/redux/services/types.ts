@@ -1096,7 +1096,7 @@ export type IncidentStatus =
   | "pending"
   | "closed"
   | "error"
-  | "cancelled";
+  | "canceled";
 
 export interface IncidentResponseItem {
   id: string;
@@ -1214,6 +1214,8 @@ export interface GetIncidentAgentEventsPayload {
   agentId: string;
 }
 
+export type IncidentAgentEventStatus = "success" | "error";
+
 export interface IncidentAgentEvent {
   id: string;
   type:
@@ -1230,6 +1232,7 @@ export interface IncidentAgentEvent {
   tool_name?: string | null;
   mcp_name?: string | null;
   conversation_id?: string;
+  status?: IncidentAgentEventStatus;
 }
 
 export type GetIncidentAgentEventsResponse = IncidentAgentEvent[];

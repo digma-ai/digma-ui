@@ -206,7 +206,7 @@ export const IncidentMetaData = () => {
           onClick={handleCloseButtonClick}
         />
       )}
-      {["closed", "cancelled"].includes(data.status) && (
+      {["closed", "canceled"].includes(data.status) && (
         <s.CloseIncidentButton
           label={"Delete incident"}
           onClick={handleDeleteButtonClick}
