@@ -19,23 +19,144 @@ type Story = StoryObj<typeof MarkdownRenderer>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
   args: {
-    text: `I'll help investigate this incident following the established process.
+    text: `# Heading 1
 
-1. Scope of Work:
-    - Incident involves performance degradation in Patient Records query in MySQL
-    - Affects spring-petclinic.main service
-    - Specific issue ID: b3e0d82a-662e-11f0-8757-3a7d612f2bc2
-    - Has a relevant trace ID: D323FD8B7A20F936D43F3D8A3E2BF7A7
+## Heading 2
 
-2. Initial Plan:
-    1. Use Digma tool to analyze observability data and establish timeline
-    2. Use Database investigation tool to examine MySQL query performance
-    3. Use Code investigation tool to check for recent changes
-    4. Update incident record with findings
+### Heading 3
 
-Let's begin the investigation:
+#### Heading 4
 
-1. First, let's get observability data:
+##### Heading 5
+
+###### Heading 6
+
+This is a paragraph with some **bold text**, *italic text* and \`code\`.
+
+> This is a blockquote. It can span multiple lines and is used to highlight important information.
+
+[Link](https://example.com)
+
+Here is a code block:
+\`\`\`javascript
+const greeting = "Hello, World!";
+console.log(greeting);
+\`\`\`
+
+Ordered list:
+1. Item 1
+2. Item 2
+3. Item 3
+
+Unordered list:
+- Item 1
+- Item 2 
+- Item 3
+
+Nested list:
+1. Item 1
+  - Subitem 1
+  - Subitem 2
+2. Item 2
+  - Subitem 1
+  - Subitem 2
 `
+  }
+};
+
+export const Heading1: Story = {
+  args: {
+    text: `# Heading 1`
+  }
+};
+
+export const Heading2: Story = {
+  args: {
+    text: `## Heading 2`
+  }
+};
+
+export const Heading3: Story = {
+  args: {
+    text: `### Heading 3`
+  }
+};
+
+export const Heading4: Story = {
+  args: {
+    text: `#### Heading 4`
+  }
+};
+
+export const Heading5: Story = {
+  args: {
+    text: `##### Heading 5`
+  }
+};
+
+export const Heading6: Story = {
+  args: {
+    text: `###### Heading 6`
+  }
+};
+
+export const Paragraph: Story = {
+  args: {
+    text: `This is a paragraph text`
+  }
+};
+
+export const Code: Story = {
+  args: {
+    text: `\`javascript\``
+  }
+};
+
+export const CodeBlock: Story = {
+  args: {
+    text: `\`\`\`javascript
+const greeting = "Hello, World!";
+console.log(greeting);
+\`\`\``
+  }
+};
+
+export const UnorderedList: Story = {
+  args: {
+    text: `- Item 1
+- Item 2
+- Item 3`
+  }
+};
+
+export const OrderedList: Story = {
+  args: {
+    text: `1. First item
+2. Second item
+3. Third item`
+  }
+};
+
+export const Blockquote: Story = {
+  args: {
+    text: `> This is a blockquote. It can span multiple lines and is used to highlight important information.`
+  }
+};
+
+export const Link: Story = {
+  args: {
+    text: `[Link](https://example.com)`
+  }
+};
+
+export const StrongText: Story = {
+  args: {
+    text: `This is some **strong text** that should be emphasized.`
+  }
+};
+
+export const EmphasisText: Story = {
+  args: {
+    text: `This is some *emphasized text* that should be italicized.`
   }
 };
