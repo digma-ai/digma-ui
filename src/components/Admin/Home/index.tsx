@@ -179,14 +179,14 @@ export const Home = () => {
           }
         }
       : sidebarLocation
-      ? {
-          query: {
-            environment: environmentId ?? undefined
+        ? {
+            query: {
+              environment: environmentId ?? undefined
+            }
           }
-        }
-      : issuesQuery
-      ? queries[issuesQuery]
-      : undefined;
+        : issuesQuery
+          ? queries[issuesQuery]
+          : undefined;
   const isRepositorySidebarOpen = Boolean(
     repositorySidebarQuery ?? sidebarLocation
   );

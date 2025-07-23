@@ -74,7 +74,7 @@ export const IssuesReport = ({
   const getServicesIssuesPayloadV1: GetMetricsReportDataPayloadV1 =
     useMemo(() => {
       const servicesArray =
-        selectedServices.length > 0 ? selectedServices : services ?? [];
+        selectedServices.length > 0 ? selectedServices : (services ?? []);
 
       return {
         keys: servicesArray.map((x) => ({
@@ -94,7 +94,7 @@ export const IssuesReport = ({
   const getServicesIssuesPayloadV2: GetMetricsReportDataPayloadV2 =
     useMemo(() => {
       const servicesArray =
-        selectedServices.length > 0 ? selectedServices : services ?? [null];
+        selectedServices.length > 0 ? selectedServices : (services ?? [null]);
 
       return {
         criticalities: criticalityLevels,

@@ -350,8 +350,8 @@ export const IssuesFilter = ({
     (isCriticalityLevelsFilterEnabled
       ? selectedCriticalityLevels.length
       : isCriticalOnly
-      ? 1
-      : 0) +
+        ? 1
+        : 0) +
     (isUnreadOnly ? 1 : 0);
 
   const appliedFiltersCount =
@@ -360,8 +360,8 @@ export const IssuesFilter = ({
     (isCriticalityLevelsFilterEnabled
       ? filteredCriticalityLevels.length
       : filters.includes("criticality")
-      ? 1
-      : 0) +
+        ? 1
+        : 0) +
     (filters.includes("unread") ? 1 : 0);
 
   const filterComponents = [

@@ -1,6 +1,7 @@
 import { isRejectedWithValue } from "@reduxjs/toolkit";
 import type { Dispatch, UnknownAction } from "redux";
 import posthog from "../posthog";
+import { isNumber } from "../typeGuards/isNumber";
 import { sendErrorTrackingEvent } from "../utils/actions/sendErrorTrackingEvent";
 import { digmaApi } from "./services/digma";
 
@@ -20,6 +21,8 @@ interface RejectedQueryAction {
   };
 }
 
+const ignoredHTTPStatuses = [502, 503];
+
 export const posthogMiddleware =
   () => (next: Dispatch<UnknownAction>) => (action: UnknownAction) => {
     if (digmaApi.endpoints.getAbout.matchFulfilled(action)) {
@@ -38,6 +41,20 @@ export const posthogMiddleware =
 
       const queryName = rejectedAction.meta.arg.endpointName;
       const status = rejectedAction.meta.baseQueryMeta?.response?.status;
+
+      if (isNumber(status) && ignoredHTTPStatuses.includes(status)) {
+        return next(action);
+      }
+
+      if (
+        rejectedAction.payload.error?.includes(
+          "Error: TypeError: Failed to fetch"
+        )
+      ) {
+        // Ignore network errors
+        return next(action);
+      }
+
       const errorMessage = rejectedAction.payload.error ?? "Unknown error";
 
       sendErrorTrackingEvent(

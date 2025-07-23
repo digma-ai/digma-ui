@@ -1,4 +1,3 @@
-import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useMemo, useState } from "react";
 import {
   useAddIncidentAgentMCPServerMutation,
@@ -14,15 +13,17 @@ import { ServerStep } from "./ServerStep";
 import { ToolsStep } from "./ToolsStep";
 import type { MCPServerDialogProps } from "./types";
 
-const formatErrorMessage = (error: FetchBaseQueryError, prefix: string) => {
+const formatErrorMessage = (error: unknown, prefix: string) => {
   let errorDetails = "";
 
-  if (isString(error.data)) {
-    errorDetails = error.data;
-  }
+  if (isObject(error) && "data" in error) {
+    if (isString(error.data)) {
+      errorDetails = error.data;
+    }
 
-  if (isObject(error.data) && isString(error.data.detail)) {
-    errorDetails = error.data.detail;
+    if (isObject(error.data) && isString(error.data.detail)) {
+      errorDetails = error.data.detail;
+    }
   }
 
   return [prefix, errorDetails].filter(Boolean).join(": ");
@@ -68,7 +69,7 @@ export const MCPServerDialog = ({
       .then(() => {
         setCurrentStep((prev) => prev + 1);
       })
-      .catch((error: FetchBaseQueryError) => {
+      .catch((error) => {
         setTestServerError(
           formatErrorMessage(error, "Failed to test MCP server")
         );
@@ -95,7 +96,7 @@ export const MCPServerDialog = ({
         .then(() => {
           onComplete();
         })
-        .catch((error: FetchBaseQueryError) => {
+        .catch((error) => {
           setAddServerError(
             formatErrorMessage(error, "Failed to add MCP server")
           );
@@ -114,7 +115,7 @@ export const MCPServerDialog = ({
         .then(() => {
           onComplete();
         })
-        .catch((error: FetchBaseQueryError) => {
+        .catch((error) => {
           setAddServerError(
             formatErrorMessage(error, "Failed to update MCP server")
           );
@@ -129,8 +130,8 @@ export const MCPServerDialog = ({
   const tools = useMemo(
     () =>
       isEditMode
-        ? serverData?.all_tools ?? []
-        : testMCPServerResult.data?.tools ?? [],
+        ? (serverData?.all_tools ?? [])
+        : (testMCPServerResult.data?.tools ?? []),
     [isEditMode, serverData?.all_tools, testMCPServerResult.data?.tools]
   );
 

@@ -6,15 +6,18 @@ export const showIdeProject = async (
   project: string,
   params: Record<string, string>
 ): Promise<ShowIdeProjectResult> => {
-  const pluginParams = Object.entries(params).reduce((acc, [key, value]) => {
-    const KEY_PREFIX = "plugin.";
-    if (key.startsWith(KEY_PREFIX)) {
-      const newKey = key.replace(KEY_PREFIX, "");
-      acc[newKey] = value;
-    }
+  const pluginParams = Object.entries(params).reduce(
+    (acc, [key, value]) => {
+      const KEY_PREFIX = "plugin.";
+      if (key.startsWith(KEY_PREFIX)) {
+        const newKey = key.replace(KEY_PREFIX, "");
+        acc[newKey] = value;
+      }
 
-    return acc;
-  }, {} as Record<string, string>);
+      return acc;
+    },
+    {} as Record<string, string>
+  );
 
   try {
     await axios.get(`http://localhost:${port}/api/digma/show`, {

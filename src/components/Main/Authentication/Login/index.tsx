@@ -34,7 +34,7 @@ export const Login = ({
     handleSubmit,
     control,
     clearErrors,
-    watch,
+    subscribe,
     setError,
     getValues,
     formState: { errors, isValid },
@@ -61,10 +61,12 @@ export const Login = ({
   }, [setError, error]);
 
   useEffect(() => {
-    watch(() => {
-      clearErrors();
+    subscribe({
+      callback: () => {
+        clearErrors();
+      }
     });
-  }, [clearErrors, watch]);
+  }, [clearErrors, subscribe]);
 
   const onSubmit = (data: LoginFormValues) => {
     onLogin();

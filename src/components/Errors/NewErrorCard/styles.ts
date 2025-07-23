@@ -21,8 +21,8 @@ export const Container = styled.div<ContainerProps>`
       $isPinned
         ? theme.colors.v3.stroke.primary
         : $isCritical
-        ? theme.colors.v3.pieChart.darkRed
-        : theme.colors.v3.surface.secondary};
+          ? theme.colors.v3.pieChart.darkRed
+          : theme.colors.v3.surface.secondary};
   background: ${({ theme, $isCritical }) =>
     $isCritical
       ? theme.colors.v3.pieChart.darkRed

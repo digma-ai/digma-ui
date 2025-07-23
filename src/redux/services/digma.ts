@@ -4,12 +4,14 @@ import type {
   AddMCPServerPayload,
   AgenticInvestigatePayload,
   AgenticInvestigateResponse,
+  CancelIncidentPayload,
   CloseIncidentPayload,
   CreateEnvironmentPayload,
   CreateEnvironmentResponse,
   DeleteEnvironmentPayload,
   DeleteEnvironmentResponse,
   DeleteIncidentAgentDirectivePayload,
+  DeleteIncidentPayload,
   DeleteMCPServerPayload,
   DismissErrorPayload,
   DismissUndismissInsightPayload,
@@ -602,6 +604,20 @@ export const digmaApi = createApi({
       }),
       invalidatesTags: ["Incident"]
     }),
+    cancelIncident: builder.mutation<void, CancelIncidentPayload>({
+      query: ({ id }) => ({
+        url: `Agentic/incidents/${window.encodeURIComponent(id)}/cancel`,
+        method: "PUT"
+      }),
+      invalidatesTags: ["Incident"]
+    }),
+    deleteIncident: builder.mutation<void, DeleteIncidentPayload>({
+      query: ({ id }) => ({
+        url: `Agentic/incidents/${window.encodeURIComponent(id)}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ["Incident"]
+    }),
     getIncidentAgents: builder.query<
       GetIncidentAgentsResponse,
       GetIncidentAgentsPayload
@@ -820,6 +836,8 @@ export const {
   useGetIncidentsQuery,
   useGetIncidentQuery,
   useCloseIncidentMutation,
+  useCancelIncidentMutation,
+  useDeleteIncidentMutation,
   useGetIncidentAgentsQuery,
   useGetIncidentAgentEventsQuery,
   useGetIncidentAgentChatEventsQuery,

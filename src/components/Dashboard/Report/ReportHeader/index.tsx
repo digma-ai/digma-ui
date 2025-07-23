@@ -44,8 +44,8 @@ export const ReportHeader = ({
       option === selectedEnvironment
         ? [""]
         : Array.isArray(option)
-        ? option
-        : [option];
+          ? option
+          : [option];
 
     setSelectedEnvironment(newItem[0]);
     onFilterChange({ environmentId: newItem[0], services: selectedServices });

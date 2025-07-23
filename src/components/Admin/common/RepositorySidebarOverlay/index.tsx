@@ -97,7 +97,7 @@ export const RepositorySidebarOverlay = ({
 
   const scopeBarDisplayName = currentSpanCodeObjectId
     ? spanInfo?.displayName
-    : scopeDisplayName ?? "Home";
+    : (scopeDisplayName ?? "Home");
 
   const extendedScope: Scope = useMemo(
     () => ({

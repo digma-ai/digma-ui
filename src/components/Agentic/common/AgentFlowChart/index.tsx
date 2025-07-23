@@ -156,6 +156,7 @@ export const AgentFlowChart = ({
 
   const nodes: FlowChartNode[] = [
     {
+      type: "flowChart",
       id: "digma",
       position: { x: 0, y: -31 }, // TODO: find a way to center this
       data: {
@@ -169,6 +170,7 @@ export const AgentFlowChart = ({
       }
     },
     {
+      type: "flowChart",
       id: "watchman",
       position: { x: 200, y: 0 },
       data: {
@@ -186,6 +188,7 @@ export const AgentFlowChart = ({
       }
     },
     {
+      type: "flowChart",
       id: "triager",
       position: { x: 500, y: 0 },
       data: {
@@ -203,6 +206,7 @@ export const AgentFlowChart = ({
       }
     },
     {
+      type: "flowChart",
       id: "infra_resolver",
       position: { x: 800, y: -50 },
       data: {
@@ -220,6 +224,7 @@ export const AgentFlowChart = ({
       }
     },
     {
+      type: "flowChart",
       id: "code_resolver",
       position: { x: 800, y: 50 },
       data: {
@@ -237,6 +242,7 @@ export const AgentFlowChart = ({
       }
     },
     {
+      type: "flowChart",
       id: "validator",
       position: { x: 1100, y: 0 },
       data: {

@@ -42,7 +42,7 @@ export const Notifications = ({ viewMode }: NotificationsProps) => {
     window.notificationsViewMode
   )
     ? window.notificationsViewMode
-    : viewMode ?? "full";
+    : (viewMode ?? "full");
   const pageSize = notificationsViewMode === "popup" ? 3 : 10;
 
   useEffect(() => {

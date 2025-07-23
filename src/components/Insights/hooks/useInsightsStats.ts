@@ -41,9 +41,9 @@ export const useInsightsStats = ({
     () =>
       spanCodeObjectId
         ? platform === "Web"
-          ? services ?? []
+          ? (services ?? [])
           : []
-        : services ?? [],
+        : (services ?? []),
     [services, spanCodeObjectId]
   );
 

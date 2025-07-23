@@ -1,9 +1,10 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
   subheading1RegularTypography,
   subscriptRegularTypography
 } from "../../../../common/App/typographies";
 import { Link } from "../../../../common/v3/Link";
+import type { ToolNameProps } from "./types";
 
 export const HumanMessage = styled.div`
   background: ${({ theme }) => theme.colors.v3.surface.highlight};
@@ -27,4 +28,14 @@ export const MemoryUpdateMessage = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
+`;
+
+export const ToolName = styled.span<ToolNameProps>`
+  ${({ theme, $status }) => {
+    return $status === "error"
+      ? css`
+          color: ${theme.colors.v3.status.high};
+        `
+      : null;
+  }}
 `;

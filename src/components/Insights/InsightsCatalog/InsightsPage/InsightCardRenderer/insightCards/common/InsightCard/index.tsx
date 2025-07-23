@@ -608,8 +608,8 @@ export const InsightCard = ({
                   isDismissalChangeInProgress
                     ? "in-progress"
                     : insight.isDismissed
-                    ? "dismissed"
-                    : "visible"
+                      ? "dismissed"
+                      : "visible"
                 }
               />
             )}

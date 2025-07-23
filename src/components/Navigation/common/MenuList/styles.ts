@@ -43,8 +43,8 @@ export const ListItem = styled.li<ListItemProps>`
     $isDisabled
       ? theme.colors.v3.text.disabled
       : $isHighlighted
-      ? theme.colors.v3.text.link
-      : theme.colors.v3.text.primary};
+        ? theme.colors.v3.text.link
+        : theme.colors.v3.text.primary};
   cursor: ${({ $isDisabled }) => ($isDisabled ? "initial" : "pointer")};
 
   &:hover {
@@ -68,8 +68,8 @@ export const ListItemIconContainer = styled.div<ListItemIconContainerProps>`
     $isDisabled
       ? theme.colors.v3.icon.disabled
       : $isHighlighted
-      ? theme.colors.v3.icon.brandTertiary
-      : theme.colors.v3.icon.tertiary};
+        ? theme.colors.v3.icon.brandTertiary
+        : theme.colors.v3.icon.tertiary};
 
   &:hover,
   &:active {
@@ -77,8 +77,8 @@ export const ListItemIconContainer = styled.div<ListItemIconContainerProps>`
       $isDisabled
         ? theme.colors.v3.icon.disabled
         : $isHighlighted
-        ? theme.colors.v3.icon.brandTertiary
-        : theme.colors.v3.icon.primary};
+          ? theme.colors.v3.icon.brandTertiary
+          : theme.colors.v3.icon.primary};
   }
 `;
 

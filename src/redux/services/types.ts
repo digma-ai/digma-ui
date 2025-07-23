@@ -1091,7 +1091,12 @@ export interface GetBlockedTracesResponse {
   total: number;
 }
 
-export type IncidentStatus = "active" | "pending" | "closed" | "error";
+export type IncidentStatus =
+  | "active"
+  | "pending"
+  | "closed"
+  | "error"
+  | "canceled";
 
 export interface IncidentResponseItem {
   id: string;
@@ -1108,6 +1113,14 @@ export interface GetIncidentPayload {
 }
 
 export interface CloseIncidentPayload {
+  id: string;
+}
+
+export interface CancelIncidentPayload {
+  id: string;
+}
+
+export interface DeleteIncidentPayload {
   id: string;
 }
 
@@ -1201,6 +1214,8 @@ export interface GetIncidentAgentEventsPayload {
   agentId: string;
 }
 
+export type IncidentAgentEventStatus = "success" | "error";
+
 export interface IncidentAgentEvent {
   id: string;
   type:
@@ -1217,6 +1232,7 @@ export interface IncidentAgentEvent {
   tool_name?: string | null;
   mcp_name?: string | null;
   conversation_id?: string;
+  status?: IncidentAgentEventStatus;
 }
 
 export type GetIncidentAgentEventsResponse = IncidentAgentEvent[];

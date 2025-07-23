@@ -10,7 +10,8 @@ export const Container = styled.div<ContainerProps>`
   box-sizing: border-box;
   border-radius: 7px;
   border: 1px solid rgb(255 255 255 / 10%);
-  background: linear-gradient(180deg, #28292d 0%, #1a1b1e 100%),
+  background:
+    linear-gradient(180deg, #28292d 0%, #1a1b1e 100%),
     linear-gradient(
       180deg,
       rgb(255 255 255 / 10%) 0%,

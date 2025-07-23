@@ -48,7 +48,7 @@ export const AgentEvent = ({
 
       return (
         <Accordion
-          summary={toolName}
+          summary={<s.ToolName $status={event.status}>{toolName}</s.ToolName>}
           content={<TypingMarkdown text={convertToMarkdown(event.message)} />}
         />
       );

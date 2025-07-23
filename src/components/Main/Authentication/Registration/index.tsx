@@ -51,7 +51,7 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
     handleSubmit,
     control,
     getValues,
-    watch,
+    subscribe,
     setError,
     clearErrors,
     resetField,
@@ -82,10 +82,12 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
   }, [setFocus]);
 
   useEffect(() => {
-    watch(() => {
-      setResponseStatus(undefined);
+    subscribe({
+      callback: () => {
+        setResponseStatus(undefined);
+      }
     });
-  }, [clearErrors, watch, setResponseStatus]);
+  }, [clearErrors, subscribe, setResponseStatus]);
 
   useEffect(() => {
     if (isSucceed) {

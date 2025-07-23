@@ -16,7 +16,9 @@ export const Link = styled(RouterLink)<LinkProps>`
   box-sizing: border-box;
   overflow: hidden;
   cursor: ${({ $isEnabled }) => ($isEnabled ? "pointer" : "initial")};
-  transition: border-color, 300ms ease-out;
+  transition:
+    border-color,
+    300ms ease-out;
 
   ${({ $isEnabled, theme }) =>
     $isEnabled &&
@@ -59,7 +61,9 @@ export const Title = styled.span`
   ${subheading2RegularTypography}
   color: ${({ theme }) => theme.colors.v3.text.primary};
   text-transform: capitalize;
-  transition: color, 300ms ease-out;
+  transition:
+    color,
+    300ms ease-out;
 `;
 
 export const SoonBadge = styled.div`
