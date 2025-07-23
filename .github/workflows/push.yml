@@ -58,6 +58,7 @@ jobs:
   build-docker-image:
     name: Build Docker image
     needs: [build-jetbrains, build-vs, build-web]
+    if: github.actor != 'dependabot[bot]'
     uses: ./.github/workflows/docker-image.yml
     secrets: inherit
     with:
