@@ -834,6 +834,7 @@ export const {
   useGetSpanEnvironmentsQuery,
   useGetIssueRecommendationsQuery,
   useGetIncidentsQuery,
+  useLazyGetIncidentsQuery,
   useGetIncidentQuery,
   useCloseIncidentMutation,
   useCancelIncidentMutation,

@@ -8,12 +8,13 @@ import { CodeSnippet } from "../../../../../../common/CodeSnippet";
 import { Link } from "../../../../../../common/v3/Link";
 
 export const textStyles = css`
-  ${subheading1RegularTypography}
+  font-size: ${({ theme }) => theme.typographies.subheading1.fontSize}px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
 
 export const StyledLink = styled(Link)`
-  ${textStyles}
+  font-size: ${({ theme }) => theme.typographies.subheading1.fontSize}px;
+  display: inline;
 `;
 
 export const StyledCodeSnippet = styled(CodeSnippet)`
@@ -21,7 +22,8 @@ export const StyledCodeSnippet = styled(CodeSnippet)`
 `;
 
 export const Paragraph = styled.p`
-  ${textStyles}
+  ${subheading1RegularTypography}
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
 
 export const Code = styled.code`
@@ -32,27 +34,33 @@ export const Code = styled.code`
 `;
 
 export const Heading1 = styled.h1`
-  ${textStyles}
+  font-size: 38px;
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
 
 export const Heading2 = styled.h2`
-  ${textStyles}
+  font-size: 34px;
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
 
 export const Heading3 = styled.h3`
-  ${textStyles}
+  font-size: 30px;
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
 
 export const Heading4 = styled.h4`
-  ${textStyles}
+  font-size: 26px;
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
 
 export const Heading5 = styled.h5`
-  ${textStyles}
+  font-size: 22px;
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
 
 export const Heading6 = styled.h6`
-  ${textStyles}
+  font-size: ${({ theme }) => theme.typographies.subheading1.fontSize}px;
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
 
 export const UnorderedList = styled.ul`
