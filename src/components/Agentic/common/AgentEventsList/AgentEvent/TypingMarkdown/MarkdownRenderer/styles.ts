@@ -37,7 +37,7 @@ export const Code = styled.code`
 export const Heading1 = styled.h1`
   font-size: 30px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
-  margin: 4px 0;
+  margin: 8px 0;
 `;
 
 export const Heading2 = styled.h2`
