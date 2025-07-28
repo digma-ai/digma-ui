@@ -5,16 +5,18 @@ on:
   release:
     types: [prereleased, released]
 
-permissions:
-  contents: write
-
 jobs:
   lint-test:
     name: Lint & test
+    permissions:
+      contents: read
     uses: ./.github/workflows/lint-test.yml
 
   build-jetbrains:
     name: Build for JetBrains
+    permissions:
+      contents: read
+      actions: write
     needs: lint-test
     uses: ./.github/workflows/build.yml
     with:
@@ -22,6 +24,9 @@ jobs:
 
   attach-release-jetbrains-asset:
     name: Attach release JetBrains asset
+    permissions:
+      contents: write
+      actions: read
     needs: build-jetbrains
     uses: ./.github/workflows/release-asset.yml
     with:
@@ -29,6 +34,9 @@ jobs:
 
   build-vs:
     name: Build for Visual Studio
+    permissions:
+      contents: read
+      actions: write
     needs: lint-test
     uses: ./.github/workflows/build.yml
     with:
@@ -36,6 +44,9 @@ jobs:
 
   attach-release-vs-asset:
     name: Attach release Visual Studio asset
+    permissions:
+      contents: write
+      actions: read
     needs: build-vs
     uses: ./.github/workflows/release-asset.yml
     with:
@@ -43,6 +54,9 @@ jobs:
 
   build-web:
     name: Build for web
+    permissions:
+      contents: read
+      actions: write
     needs: lint-test
     uses: ./.github/workflows/build.yml
     with:
@@ -50,6 +64,9 @@ jobs:
 
   attach-release-web-asset:
     name: Attach release web asset
+    permissions:
+      contents: write
+      actions: read
     needs: build-web
     uses: ./.github/workflows/release-asset.yml
     with:
@@ -57,6 +74,9 @@ jobs:
 
   build-push-docker-image:
     name: Build & push Docker image
+    permissions:
+      contents: read
+      actions: write
     needs: [build-jetbrains, "build-vs", build-web]
     uses: ./.github/workflows/docker-image.yml
     secrets: inherit
@@ -66,6 +86,9 @@ jobs:
 
   update-digma:
     name: Update UI releases in digma
+    permissions:
+      contents: read
+      actions: write
     needs:
       [
         attach-release-jetbrains-asset,
