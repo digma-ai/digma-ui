@@ -12,8 +12,6 @@ on:
       - ".husky/**"
       - ".vscode/**"
       - "website/**"
-      - ".prettierignore"
-      - ".prettierrc"
       - "LICENSE"
       - "README.md"
   pull_request:
@@ -24,18 +22,21 @@ on:
       - ".husky/**"
       - ".vscode/**"
       - "website/**"
-      - ".prettierignore"
-      - ".prettierrc"
       - "LICENSE"
       - "README.md"
 
 jobs:
   lint-test:
+    permissions:
+      contents: read
     name: Lint & test
     uses: ./.github/workflows/lint-test.yml
 
   build-jetbrains:
     name: Build for JetBrains
+    permissions:
+      contents: read
+      actions: write
     needs: lint-test
     uses: ./.github/workflows/build.yml
     with:
@@ -43,6 +44,9 @@ jobs:
 
   build-vs:
     name: Build for Visual Studio
+    permissions:
+      contents: read
+      actions: write
     needs: lint-test
     uses: ./.github/workflows/build.yml
     with:
@@ -50,6 +54,9 @@ jobs:
 
   build-web:
     name: Build for web
+    permissions:
+      contents: read
+      actions: write
     needs: lint-test
     uses: ./.github/workflows/build.yml
     with:
@@ -57,6 +64,9 @@ jobs:
 
   build-docker-image:
     name: Build Docker image
+    permissions:
+      contents: read
+      actions: write
     needs: [build-jetbrains, build-vs, build-web]
     if: github.actor != 'dependabot[bot]'
     uses: ./.github/workflows/docker-image.yml

@@ -7,11 +7,11 @@ on:
         type: string
         required: true
 
-permissions:
-  contents: write
-
 jobs:
   attach:
+    permissions:
+      contents: write
+      actions: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
@@ -27,4 +27,4 @@ jobs:
         with:
           files: dist/${{ inputs.artifact-name }}.zip
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CONTENTS_WRITE_PAT }}
