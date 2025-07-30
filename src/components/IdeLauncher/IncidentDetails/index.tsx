@@ -1,3 +1,4 @@
+import { formatISO } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useGetIncidentQuery } from "../../../redux/services/digma";
@@ -21,12 +22,9 @@ import { trackingEvents } from "../tracking";
 import type { AddChatContextFileResult } from "../types";
 import { addChatContextFile } from "./addChatContextFile";
 
-const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
-
 export const IncidentDetails = () => {
   const params = useParams();
   const incidentId = params.id;
-  const [isIncidentNotFound, setIsIncidentNotFound] = useState(false);
   const [selectItems, setSelectItems] = useState<SelectItem[]>();
   const [isIdeProjectScanningInProgress, setIsIdeProjectScanningInProgress] =
     useState(false);
@@ -44,7 +42,6 @@ export const IncidentDetails = () => {
   } = useGetIncidentQuery(
     { id: incidentId ?? "" },
     {
-      pollingInterval: isIncidentNotFound ? 0 : REFRESH_INTERVAL,
       skip: !incidentId
     }
   );
@@ -58,7 +55,7 @@ export const IncidentDetails = () => {
       setAddChatContextFileResult(undefined);
       setAddingChatContextFileInProgress(true);
       const result = await addChatContextFile(port, {
-        name: `incident-${incidentId}.json`,
+        name: `incident-${incidentId}-${formatISO(new Date(), { format: "basic" })}.json`,
         content: JSON.stringify(incidentData, null, 2)
       });
       sendTrackingEvent(trackingEvents.IDE_CHAT_CONTEXT_FILE_RESULT_RECEIVED, {
@@ -158,16 +155,6 @@ export const IncidentDetails = () => {
 
     void initialScan();
   }, [tryToScanRunningIdeProjects]);
-
-  useEffect(() => {
-    setIsIncidentNotFound(false);
-  }, [incidentId]);
-
-  useEffect(() => {
-    if (error && "status" in error && error.status === 404) {
-      setIsIncidentNotFound(true);
-    }
-  }, [error]);
 
   const renderContent = () => {
     if (!incidentId) {
@@ -278,8 +265,7 @@ export const IncidentDetails = () => {
       );
     }
 
-    // TODO: remove equal check when we have only one IDE project
-    if (selectItems.length >= 1) {
+    if (selectItems.length > 1) {
       return (
         <>
           <TextContainer>
