@@ -2,7 +2,6 @@ import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUs
 import { MagicWandIcon } from "../../../../common/icons/16px/MagicWandIcon";
 import { trackingEvents } from "../../../tracking";
 import { Accordion } from "./Accordion";
-import { convertToMarkdown } from "./convertToMarkdown";
 import * as s from "./styles";
 import type { AgentEventProps } from "./types";
 import { TypingMarkdown } from "./TypingMarkdown";
@@ -49,7 +48,7 @@ export const AgentEvent = ({
       return (
         <Accordion
           summary={<s.ToolName $status={event.status}>{toolName}</s.ToolName>}
-          content={<TypingMarkdown text={convertToMarkdown(event.message)} />}
+          content={<TypingMarkdown text={event.message} />}
         />
       );
     }
