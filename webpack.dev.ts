@@ -44,26 +44,22 @@ const apiProxyClient = axios.create({
 });
 
 const login = async (credentials: Credentials) => {
-  const response = await apiProxyClient.post<{
-    accessToken: string;
-    refreshToken: string;
-    expiration: string;
-    userId: string;
-  }>("/authentication/login", credentials);
+  const response = await apiProxyClient.post<Session>(
+    "/authentication/login",
+    credentials
+  );
 
   return response.data;
 };
 
 const refreshToken = async (session: Session) => {
-  const response = await apiProxyClient.post<{
-    accessToken: string;
-    refreshToken: string;
-    expiration: string;
-    userId: string;
-  }>("/authentication/refresh-token", {
-    accessToken: session.accessToken,
-    refreshToken: session.refreshToken
-  });
+  const response = await apiProxyClient.post<Session>(
+    "/authentication/refresh-token",
+    {
+      accessToken: session.accessToken,
+      refreshToken: session.refreshToken
+    }
+  );
 
   return response.data;
 };

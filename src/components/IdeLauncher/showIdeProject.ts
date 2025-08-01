@@ -1,11 +1,11 @@
 import axios, { isAxiosError } from "axios";
-import type { ShowIdeProjectResult } from "./types";
+import type { ShowIntellijIdeProjectResult } from "./types";
 
 export const showIdeProject = async (
   port: number,
   project: string,
   params: Record<string, string>
-): Promise<ShowIdeProjectResult> => {
+): Promise<ShowIntellijIdeProjectResult> => {
   const pluginParams = Object.entries(params).reduce(
     (acc, [key, value]) => {
       const KEY_PREFIX = "plugin.";

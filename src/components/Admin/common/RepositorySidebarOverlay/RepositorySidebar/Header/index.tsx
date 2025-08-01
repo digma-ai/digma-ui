@@ -100,7 +100,7 @@ export const Header = ({
           onGoHome={handleGoHome}
         />
         <ScopeBar
-          isExpanded={false}
+          isExpanded={isSpanInfoVisible}
           isSpanInfoEnabled={isSpanInfoEnabled}
           linkedEndpoints={linkedEndpoints}
           scope={scope}
