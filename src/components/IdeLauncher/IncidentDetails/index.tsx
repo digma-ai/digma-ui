@@ -1,11 +1,9 @@
-import { formatISO } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { useGetIncidentQuery } from "../../../redux/services/digma";
-import type { GetIncidentResponse } from "../../../redux/services/types";
+import { usePrevious } from "../../../hooks/usePrevious";
 import { isString } from "../../../typeGuards/isString";
-import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { uniqueBy } from "../../../utils/uniqueBy";
 import {
   Subtitle,
   TextContainer,
@@ -14,13 +12,10 @@ import {
 import { NewButton } from "../../common/v3/NewButton";
 import type { SelectItem } from "../../common/v3/Select/types";
 import { IdeProjectSelect } from "../common/IdeProjectSelect";
-import { getSelectItemValue } from "../common/IdeProjectSelect/utils/getSelectedItemValue";
-import { parseSelectedItemValue } from "../common/IdeProjectSelect/utils/parseSelectedItemValue";
 import { scanRunningVSCodeIdeProjects } from "../scanRunningVSCodeIdeProjects";
 import { ButtonsContainer, EmphasizedText } from "../styles";
 import { trackingEvents } from "../tracking";
-import type { AddChatContextFileResult } from "../types";
-import { addChatContextFile } from "./addChatContextFile";
+import { addChatContextIncidentFile } from "./addChatContextFile";
 
 export const IncidentDetails = () => {
   const params = useParams();
@@ -28,41 +23,19 @@ export const IncidentDetails = () => {
   const [selectItems, setSelectItems] = useState<SelectItem[]>();
   const [isIdeProjectScanningInProgress, setIsIdeProjectScanningInProgress] =
     useState(false);
+  const previousIsProjectScanningInProgress = usePrevious(
+    isIdeProjectScanningInProgress
+  );
   const [
     isAddingChatContextFileInProgress,
     setAddingChatContextFileInProgress
   ] = useState(false);
-  const [addChatContextFileResult, setAddChatContextFileResult] =
-    useState<AddChatContextFileResult>();
-
-  const {
-    data: incidentData,
-    isLoading,
-    error
-  } = useGetIncidentQuery(
-    { id: incidentId ?? "" },
-    {
-      skip: !incidentId
-    }
-  );
 
   const tryToAddChatContextFile = useCallback(
-    async (
-      port: number,
-      incidentId: string,
-      incidentData: GetIncidentResponse
-    ) => {
-      setAddChatContextFileResult(undefined);
+    (ideUriScheme: string, incidentId: string) => {
       setAddingChatContextFileInProgress(true);
-      const result = await addChatContextFile(port, {
-        name: `incident-${incidentId}-${formatISO(new Date(), { format: "basic" })}.json`,
-        content: JSON.stringify(incidentData, null, 2)
-      });
-      sendTrackingEvent(trackingEvents.IDE_CHAT_CONTEXT_FILE_RESULT_RECEIVED, {
-        result
-      });
-      setAddChatContextFileResult(result);
-      setAddingChatContextFileInProgress(false);
+
+      addChatContextIncidentFile(ideUriScheme, incidentId);
     },
     []
   );
@@ -73,31 +46,43 @@ export const IncidentDetails = () => {
     const result = await scanRunningVSCodeIdeProjects();
     setIsIdeProjectScanningInProgress(false);
 
+    const ides = uniqueBy(
+      result.map((x) => x.response),
+      "ideUriScheme"
+    );
+
     setSelectItems(
-      result.map((x, i) => ({
-        label: `${x.response.ideName} (${x.response.workspace})`,
-        description: `${x.response.ideName} (${x.response.workspace})`,
-        value: getSelectItemValue(x.port, x.response.workspace),
+      ides.map((x, i) => ({
+        label: x.ideName,
+        description: x.ideName,
+        value: x.ideUriScheme,
         enabled: true,
         selected: result.length === 1 && i === 0
       }))
     );
   }, []);
 
+  // Automatically select the first IDE if there is only one available
   useEffect(() => {
-    if (selectItems && selectItems.length === 1 && incidentId && incidentData) {
-      void tryToAddChatContextFile(
-        parseSelectedItemValue(selectItems[0].value).port,
-        incidentId,
-        incidentData
-      );
+    if (
+      previousIsProjectScanningInProgress &&
+      !isIdeProjectScanningInProgress &&
+      selectItems?.length === 1 &&
+      incidentId
+    ) {
+      tryToAddChatContextFile(selectItems[0].value, incidentId);
     }
-  }, [incidentId, incidentData, tryToAddChatContextFile, selectItems]);
+  }, [
+    incidentId,
+    isIdeProjectScanningInProgress,
+    previousIsProjectScanningInProgress,
+    tryToAddChatContextFile,
+    selectItems
+  ]);
 
-  const handleSelectChange = async (value: string | string[]) => {
+  const handleSelectChange = (value: string | string[]) => {
     sendUserActionTrackingEvent(trackingEvents.IDE_PROJECT_SELECTED);
     const selectedValue = isString(value) ? value : value[0];
-    const { port } = parseSelectedItemValue(selectedValue);
 
     if (!selectItems) {
       return;
@@ -110,11 +95,11 @@ export const IncidentDetails = () => {
       }))
     );
 
-    if (!incidentId || !incidentData) {
+    if (!incidentId) {
       return;
     }
 
-    await tryToAddChatContextFile(port, incidentId, incidentData);
+    tryToAddChatContextFile(selectedValue, incidentId);
   };
 
   const handleTryScanningAgainButtonClick = () => {
@@ -122,21 +107,6 @@ export const IncidentDetails = () => {
       trackingEvents.TRY_SCANNING_AGAIN_BUTTON_CLICKED
     );
     window.location.reload();
-  };
-
-  const handleTryShowIdeProjectAgainButtonClick = async () => {
-    sendUserActionTrackingEvent(trackingEvents.TRY_AGAIN_BUTTON_CLICKED);
-    const selectedItemValue = selectItems?.find((item) => item.selected)?.value;
-    if (!selectedItemValue) {
-      return;
-    }
-
-    if (!incidentId || !incidentData) {
-      return;
-    }
-
-    const { port } = parseSelectedItemValue(selectedItemValue);
-    await tryToAddChatContextFile(port, incidentId, incidentData);
   };
 
   // const handleGetDigmaButtonClick = () => {
@@ -165,22 +135,6 @@ export const IncidentDetails = () => {
       );
     }
 
-    if (!incidentData && isLoading) {
-      return (
-        <TextContainer>
-          <Title>Getting incident details</Title>
-        </TextContainer>
-      );
-    }
-
-    if (!incidentData && error) {
-      return (
-        <TextContainer>
-          <Title>Failed to get incident details</Title>
-        </TextContainer>
-      );
-    }
-
     if (isIdeProjectScanningInProgress) {
       return (
         <TextContainer>
@@ -197,40 +151,6 @@ export const IncidentDetails = () => {
       return (
         <TextContainer>
           <Title>Adding the incident details to the IDE chat context</Title>
-        </TextContainer>
-      );
-    }
-
-    if (addChatContextFileResult?.result === "failure") {
-      return (
-        <>
-          <TextContainer>
-            <Title>
-              There was an issue adding the incident details to the IDE chat
-              context
-            </Title>
-            <Subtitle>
-              Please check that IDE is running and click the{" "}
-              <EmphasizedText>Try again</EmphasizedText> button below.
-            </Subtitle>
-          </TextContainer>
-          <NewButton
-            label={"Try again"}
-            onClick={() => {
-              void handleTryShowIdeProjectAgainButtonClick();
-            }}
-          />
-        </>
-      );
-    }
-
-    if (addChatContextFileResult?.result === "success") {
-      return (
-        <TextContainer>
-          <Title>
-            Incident details have been added to the IDE chat context
-          </Title>
-          <Subtitle>You can close this tab.</Subtitle>
         </TextContainer>
       );
     }

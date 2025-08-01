@@ -6,19 +6,16 @@ import type {
   VSCodeIdeScanningResult
 } from "./types";
 
-const PORT_RANGES_TO_SCAN = [
-  [33100, 33119], // VS Code
-  [33200, 33219], // Cursor
-  [33300, 33319], // Windsurf
-  [33400, 33419] // Unknown VS Code fork
-];
+const START_PORT_TO_SCAN = 33100;
+const END_PORT_TO_SCAN = 33119;
 
 const ABOUT_PATH = "api/digma/about";
 
 export const scanRunningVSCodeIdeProjects =
   async (): Promise<VSCodeIdeScanningResult> => {
-    const instances = PORT_RANGES_TO_SCAN.flatMap(([start, end]) =>
-      Array.from({ length: end - start + 1 }, (_, i) => start + i)
+    const instances = Array.from(
+      { length: END_PORT_TO_SCAN - START_PORT_TO_SCAN + 1 },
+      (_, i) => START_PORT_TO_SCAN + i
     ).map((port) => ({
       port,
       url: `http://localhost:${port}/${ABOUT_PATH}`

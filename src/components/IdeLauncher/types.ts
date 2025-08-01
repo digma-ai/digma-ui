@@ -13,6 +13,7 @@ export interface IntellijPluginInfo {
 
 export interface VSCodeExtensionInfo {
   ideName: string;
+  ideUriScheme: string;
   ideVersion: string;
   workspace: string;
 }
