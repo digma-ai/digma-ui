@@ -1,7 +1,6 @@
 import { useEffect, useState, type ComponentType } from "react";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { uniqueBy } from "../../../../../utils/uniqueBy";
-import type { VSCodeExtensionInfo } from "../../../../IdeLauncher/types";
 import { VSCodeLogoIcon } from "../../../../common/icons/100px/VSCodeLogoIcon";
 import { CursorLogoIcon } from "../../../../common/icons/24px/CursorLogoIcon";
 import type { IconProps } from "../../../../common/icons/types";
@@ -11,7 +10,7 @@ import { trackingEvents } from "../../../tracking";
 import { addChatContextIncidentFile } from "./addChatContextFile";
 import { scanRunningVSCodeIdeProjects } from "./scanRunningVSCodeIdeProjects";
 import * as s from "./styles";
-import type { IdeToolbarProps } from "./types";
+import type { IdeToolbarProps, VSCodeExtensionInfo } from "./types";
 
 const IDE_ICONS: Record<string, ComponentType<IconProps>> = {
   cursor: CursorLogoIcon,
