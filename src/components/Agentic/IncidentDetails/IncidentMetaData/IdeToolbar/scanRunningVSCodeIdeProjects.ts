@@ -1,10 +1,10 @@
 import axios from "axios";
-import { isString } from "../../typeGuards/isString";
+import { isString } from "../../../../../typeGuards/isString";
 import type {
   IntellijPluginInfo,
   VSCodeExtensionInfo,
   VSCodeIdeScanningResult
-} from "./types";
+} from "../../../../IdeLauncher/types";
 
 const START_PORT_TO_SCAN = 33100;
 const END_PORT_TO_SCAN = 33119;

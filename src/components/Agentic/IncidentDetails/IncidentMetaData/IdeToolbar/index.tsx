@@ -1,7 +1,6 @@
 import { useEffect, useState, type ComponentType } from "react";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { uniqueBy } from "../../../../../utils/uniqueBy";
-import { scanRunningVSCodeIdeProjects } from "../../../../IdeLauncher/scanRunningVSCodeIdeProjects";
 import type { VSCodeExtensionInfo } from "../../../../IdeLauncher/types";
 import { VSCodeLogoIcon } from "../../../../common/icons/100px/VSCodeLogoIcon";
 import { CursorLogoIcon } from "../../../../common/icons/24px/CursorLogoIcon";
@@ -10,6 +9,7 @@ import { NewIconButton } from "../../../../common/v3/NewIconButton";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../tracking";
 import { addChatContextIncidentFile } from "./addChatContextFile";
+import { scanRunningVSCodeIdeProjects } from "./scanRunningVSCodeIdeProjects";
 import * as s from "./styles";
 import type { IdeToolbarProps } from "./types";
 
