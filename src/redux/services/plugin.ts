@@ -1,10 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { serializeParams } from "./serializeParams";
 
 export const pluginApi = createApi({
   reducerPath: "pluginApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "/plugin-api",
-    credentials: "same-origin"
+    credentials: "same-origin",
+    paramsSerializer: serializeParams
   }),
   endpoints: () => ({})
 });
