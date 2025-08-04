@@ -166,7 +166,9 @@ export const MCPServerDialog = ({
     onClose();
   };
 
-  const title = serverData?.uid ? "Set MCP Server" : "Add MCP Server";
+  const title = serverData?.uid
+    ? `Edit ${serverData.name} MCP Server`
+    : "Add MCP Server";
 
   return (
     <Dialog title={title} onClose={handleDialogClose}>
