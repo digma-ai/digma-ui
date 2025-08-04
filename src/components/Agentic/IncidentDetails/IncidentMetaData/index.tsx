@@ -12,10 +12,12 @@ import {
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { intersperse } from "../../../../utils/intersperse";
 import { InfoCircleIcon } from "../../../common/icons/InfoCircleIcon";
+import { NewButton } from "../../../common/v3/NewButton";
 import { NewIconButton } from "../../../common/v3/NewIconButton";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { trackingEvents } from "../../tracking";
 import { Divider } from "./Divider";
+import { IdeToolbar } from "./IdeToolbar";
 import * as s from "./styles";
 
 const DATE_FORMAT = "dd MMM, yyyy HH:mm";
@@ -194,24 +196,27 @@ export const IncidentMetaData = () => {
   return (
     <s.Container>
       <s.AttributesList>{attributes}</s.AttributesList>
-      {data.status === "active" && (
-        <s.CloseIncidentButton
-          label={"Cancel incident"}
-          onClick={handleCancelButtonClick}
-        />
-      )}
-      {data.status === "pending" && (
-        <s.CloseIncidentButton
-          label={"Close incident"}
-          onClick={handleCloseButtonClick}
-        />
-      )}
-      {["error", "closed", "canceled"].includes(data.status) && (
-        <s.CloseIncidentButton
-          label={"Delete incident"}
-          onClick={handleDeleteButtonClick}
-        />
-      )}
+      <s.Toolbar>
+        {incidentId && <IdeToolbar incidentId={incidentId} />}
+        {data.status === "active" && (
+          <NewButton
+            label={"Cancel incident"}
+            onClick={handleCancelButtonClick}
+          />
+        )}
+        {data.status === "pending" && (
+          <NewButton
+            label={"Close incident"}
+            onClick={handleCloseButtonClick}
+          />
+        )}
+        {["error", "closed", "canceled"].includes(data.status) && (
+          <NewButton
+            label={"Delete incident"}
+            onClick={handleDeleteButtonClick}
+          />
+        )}
+      </s.Toolbar>
     </s.Container>
   );
 };

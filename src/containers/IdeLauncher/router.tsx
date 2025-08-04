@@ -1,7 +1,6 @@
 import type { RouteObject } from "react-router";
 import { createBrowserRouter, useRouteError } from "react-router";
 import { IdeLauncher } from "../../components/IdeLauncher";
-import { IncidentDetails } from "../../components/IdeLauncher/IncidentDetails";
 import { ProjectOpener } from "../../components/IdeLauncher/ProjectOpener";
 
 export const routes: RouteObject[] = [
@@ -15,10 +14,6 @@ export const routes: RouteObject[] = [
       {
         index: true,
         element: <ProjectOpener />
-      },
-      {
-        path: "incidents/:id",
-        element: <IncidentDetails />
       }
     ]
   }
