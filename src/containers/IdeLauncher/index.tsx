@@ -1,6 +1,5 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { sendMessage } from "../../api";
 import { App } from "../../components/common/App";
 import { PostHogHoC } from "../../components/common/PostHogHoC";
 import { IdeLauncher } from "../../components/IdeLauncher";
@@ -13,9 +12,6 @@ posthog?.register({ app: APP_ID });
 window.addEventListener("error", (e) => {
   handleUncaughtError(APP_ID, e);
 });
-
-// TODO: make not required and remove
-window.sendMessageToDigma = sendMessage;
 
 const rootElement = document.getElementById("root");
 

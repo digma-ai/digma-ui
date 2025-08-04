@@ -135,8 +135,10 @@ export const IdeLauncher = () => {
       await tryToScanRunningIdeProjects();
     }
 
-    void initialScan();
-  }, [tryToScanRunningIdeProjects]);
+    if (!isMobile) {
+      void initialScan();
+    }
+  }, [isMobile, tryToScanRunningIdeProjects]);
 
   const renderContent = () => {
     if (!action) {
