@@ -170,6 +170,10 @@ export const IncidentTemplate = () => {
     }
   }, [mcpServers]);
 
+  const mcpServerToDelete = mcpServers?.mcps.find(
+    (x) => x.uid === mcpServerIdToDelete
+  );
+
   return (
     <s.Container>
       <s.Header>
@@ -211,7 +215,7 @@ export const IncidentTemplate = () => {
       {mcpServerIdToDelete && (
         <s.StyledOverlay>
           <CancelConfirmation
-            header={"Delete MCP server"}
+            header={`Delete ${mcpServerToDelete?.name ?? " "}MCP server`}
             description={"Are you sure you want to delete this MCP server?"}
             onClose={handleDeleteMCPServerDialogClose}
             onConfirm={handleDeleteMCPServerDialogConfirm}
