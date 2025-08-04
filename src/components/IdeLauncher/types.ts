@@ -11,19 +11,7 @@ export interface IntellijPluginInfo {
   openProjects: string[];
 }
 
-export interface VSCodeExtensionInfo {
-  ideName: string;
-  ideUriScheme: string;
-  ideVersion: string;
-  workspace: string;
-}
-
 export interface ShowIntellijIdeProjectResult {
-  result: "success" | "failure";
-  error?: { message: string };
-}
-
-export interface AddChatContextFileResult {
   result: "success" | "failure";
   error?: { message: string };
 }
@@ -31,9 +19,4 @@ export interface AddChatContextFileResult {
 export type IntellijIdeScanningResult = {
   port: number;
   response: IntellijPluginInfo;
-}[];
-
-export type VSCodeIdeScanningResult = {
-  port: number;
-  response: VSCodeExtensionInfo;
 }[];

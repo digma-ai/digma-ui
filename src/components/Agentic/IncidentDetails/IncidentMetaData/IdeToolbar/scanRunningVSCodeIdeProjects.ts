@@ -1,10 +1,6 @@
 import axios from "axios";
 import { isString } from "../../../../../typeGuards/isString";
-import type {
-  IntellijPluginInfo,
-  VSCodeExtensionInfo,
-  VSCodeIdeScanningResult
-} from "../../../../IdeLauncher/types";
+import type { VSCodeExtensionInfo, VSCodeIdeScanningResult } from "./types";
 
 const START_PORT_TO_SCAN = 33100;
 const END_PORT_TO_SCAN = 33119;
@@ -24,7 +20,7 @@ export const scanRunningVSCodeIdeProjects =
     const responses = await Promise.allSettled(
       instances.map((x) =>
         axios
-          .get<IntellijPluginInfo>(x.url)
+          .get<VSCodeExtensionInfo>(x.url)
           .then((response) => ({ port: x.port, response: response.data }))
           .catch((error) => ({
             port: x.port,
