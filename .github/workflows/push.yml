@@ -39,6 +39,7 @@ jobs:
       actions: write
     needs: lint-test
     uses: ./.github/workflows/build.yml
+    secrets: inherit
     with:
       platform: "jetbrains"
 
@@ -49,6 +50,7 @@ jobs:
       actions: write
     needs: lint-test
     uses: ./.github/workflows/build.yml
+    secrets: inherit
     with:
       platform: "vs"
 
@@ -59,6 +61,7 @@ jobs:
       actions: write
     needs: lint-test
     uses: ./.github/workflows/build.yml
+    secrets: inherit
     with:
       platform: "web"
 
