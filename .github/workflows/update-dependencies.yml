@@ -28,7 +28,7 @@ jobs:
 
       - name: Commit, push changes and create PR
         env:
-          GH_TOKEN: ${{ secrets.CONTENTS_WRITE_PAT }}
+          GITHUB_TOKEN: ${{ secrets.CONTENTS_WRITE_PAT }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

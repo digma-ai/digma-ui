@@ -27,4 +27,4 @@ jobs:
         with:
           files: dist/${{ inputs.artifact-name }}.zip
         env:
-          GITHUB_TOKEN: ${{ secrets.CONTENTS_WRITE_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
