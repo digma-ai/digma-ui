@@ -16,6 +16,8 @@ jobs:
       contents: read
       actions: write
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.CONTENTS_WRITE_PAT }}
     outputs:
       artifact-name: ${{ steps.get-artifact-name.outputs.artifact_name }}
     steps:
@@ -28,9 +30,7 @@ jobs:
 
       - run: npm ci
 
-      - env:
-          GITHUB_TOKEN: ${{ secrets.CONTENTS_WRITE_PAT }} # TODO: fix
-        run: npm run build:prod:${{ inputs.platform }}
+      - run: npm run build:prod:${{ inputs.platform }}
 
       - name: Get artifact name
         id: get-artifact-name
