@@ -155,7 +155,7 @@
     "styled-components": "^6.1.19",
     "uuid": "^11.1.0",
     "zustand": "^4.5.5",
-    "zustand-slices": "^0.3.0"
+    "zustand-slices": "^0.4.0"
   },
   "overrides": {
     "react-syntax-highlighter": {
