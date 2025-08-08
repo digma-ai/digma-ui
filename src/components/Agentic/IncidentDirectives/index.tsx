@@ -279,7 +279,11 @@ export const IncidentDirectives = () => {
       },
       cell: (info) => {
         const value = info.getValue();
-        return <s.Condition>{value}</s.Condition>;
+        return (
+          <Tooltip title={value}>
+            <s.Condition>{value}</s.Condition>
+          </Tooltip>
+        );
       },
       enableSorting: true,
       sortingFn: (rowA, rowB) => {
@@ -313,7 +317,14 @@ export const IncidentDirectives = () => {
       },
       cell: (info) => {
         const value = info.getValue();
-        return <span>{value.join(", ")}</span>;
+        const valueString = value.join(", ");
+        return (
+          <Tooltip title={valueString}>
+            <s.TruncatedTableCellContent>
+              {valueString}
+            </s.TruncatedTableCellContent>
+          </Tooltip>
+        );
       },
       enableSorting: true,
       sortingFn: (rowA, rowB) => {

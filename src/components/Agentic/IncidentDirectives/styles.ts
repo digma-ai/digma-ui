@@ -139,12 +139,26 @@ export const RecordNumber = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;
 
-export const Condition = styled.span`
+export const TruncatedTableCellContent = styled.span`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:hover {
+    padding: 26px 0 16px;
+    overflow-y: auto;
+    white-space: normal;
+    box-sizing: border-box;
+    height: 100%;
+  }
+`;
+
+export const Condition = styled(TruncatedTableCellContent)`
   ${subheading1BoldTypography}
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
-export const Directive = styled.span`
+export const Directive = styled(TruncatedTableCellContent)`
   ${subheading1RegularTypography}
   color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;

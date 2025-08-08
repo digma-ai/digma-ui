@@ -47,9 +47,7 @@ export const posthogMiddleware =
       }
 
       if (
-        rejectedAction.payload.error?.includes(
-          "Error: TypeError: Failed to fetch"
-        )
+        rejectedAction.payload.error?.includes("TypeError: Failed to fetch")
       ) {
         // Ignore network errors
         return next(action);
