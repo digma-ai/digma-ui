@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { subheading1RegularTypography } from "../../../common/App/typographies";
-import { NewButton } from "../../../common/v3/NewButton";
 
 export const Container = styled.div`
   display: flex;
@@ -14,19 +13,13 @@ export const AttributesList = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  margin-right: auto;
 `;
 
 export const DividerContainer = styled.div`
   color: ${({ theme }) => theme.colors.v3.stroke.primary};
   height: 25px;
   display: flex;
-`;
-
-export const CloseIncidentButton = styled(NewButton)`
-  flex-shrink: 0;
-  margin-top: 12px;
-  margin-left: auto;
-  margin-right: 16px;
 `;
 
 export const Attribute = styled.div`
@@ -76,4 +69,13 @@ export const ServiceTag = styled(Tag)`
 export const HiddenServicesCountTag = styled(Tag)`
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   color: ${({ theme }) => theme.colors.v3.text.secondary};
+`;
+
+export const Toolbar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-top: 12px;
+  margin-right: 16px;
 `;

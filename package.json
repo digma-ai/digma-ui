@@ -1,6 +1,6 @@
 {
   "name": "digma-ui",
-  "version": "16.6.4",
+  "version": "16.7.0-alpha.3",
   "description": "Digma UI",
   "scripts": {
     "lint:eslint": "eslint --cache .",
@@ -96,6 +96,7 @@
     "husky": "^9.1.7",
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
+    "jiti": "^2.5.1",
     "knip": "^5.62.0",
     "lint-staged": "^16.1.2",
     "postcss-styled-syntax": "^0.7.1",

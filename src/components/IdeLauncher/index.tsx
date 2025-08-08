@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { JETBRAINS_MARKETPLACE_PLUGIN_URL } from "../../constants";
+import { useStableSearchParams } from "../../hooks/useStableSearchParams";
 import { isString } from "../../typeGuards/isString";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
@@ -10,36 +11,19 @@ import {
   Title
 } from "../common/GenericPageLayout/styles";
 import { NewButton } from "../common/v3/NewButton";
-import { Select } from "../common/v3/Select";
 import type { SelectItem } from "../common/v3/Select/types";
-import { scanRunningIdeProjects } from "./scanRunningIdeProjects";
+import { IdeProjectSelect } from "./common/IdeProjectSelect";
+import { getSelectItemValue } from "./common/IdeProjectSelect/utils/getSelectedItemValue";
+import { parseSelectedItemValue } from "./common/IdeProjectSelect/utils/parseSelectedItemValue";
+import { scanRunningIntellijIdeProjects } from "./scanRunningIntellijIdeProjects";
 import { showIdeProject } from "./showIdeProject";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import type { ShowIdeProjectResult } from "./types";
-
-const SELECT_VALUE_DELIMITER = ":";
-
-const getSelectItemValue = (port: number, project: string) =>
-  `${port}${SELECT_VALUE_DELIMITER}${project}`;
-
-const parseSelectedItemValue = (value: string) => {
-  const [port, project] = value.split(SELECT_VALUE_DELIMITER);
-  return { port: Number(port), project };
-};
-
-const getURLQueryParams = (url: string) => {
-  const searchParams = new URLSearchParams(url);
-  const params: Record<string, string> = {};
-  for (const [key, value] of searchParams.entries()) {
-    params[key] = value;
-  }
-  return params;
-};
+import type { ShowIntellijIdeProjectResult } from "./types";
 
 export const IdeLauncher = () => {
-  const params = getURLQueryParams(window.location.search);
-  const action = params["plugin.action"];
+  const [searchParams] = useStableSearchParams();
+  const action = searchParams.get("plugin.action");
   const [selectItems, setSelectItems] = useState<SelectItem[]>();
   const isMobile = ["Android", "iPhone", "iPad"].some((x) =>
     window.navigator.userAgent.includes(x)
@@ -49,27 +33,30 @@ export const IdeLauncher = () => {
   const [isShowIdeProjectInProgress, setIsShowIdeProjectInProgress] =
     useState(false);
   const [showIdeProjectResult, setShowIdeProjectResult] =
-    useState<ShowIdeProjectResult>();
+    useState<ShowIntellijIdeProjectResult>();
 
   const tryToShowIdeProject = useCallback(
     async (port: number, project: string) => {
       setShowIdeProjectResult(undefined);
       setIsShowIdeProjectInProgress(true);
-      const params = getURLQueryParams(window.location.search);
-      const result = await showIdeProject(port, project, params);
+      const result = await showIdeProject(
+        port,
+        project,
+        Object.fromEntries(searchParams)
+      );
       sendTrackingEvent(trackingEvents.IDE_PROJECT_OPEN_RESULT_RECEIVED, {
         result
       });
       setShowIdeProjectResult(result);
       setIsShowIdeProjectInProgress(false);
     },
-    []
+    [searchParams]
   );
 
   const tryToScanRunningIdeProjects = useCallback(async () => {
     setSelectItems(undefined);
     setIsIdeProjectScanningInProgress(true);
-    const result = await scanRunningIdeProjects();
+    const result = await scanRunningIntellijIdeProjects();
     setIsIdeProjectScanningInProgress(false);
 
     const projects = result
@@ -152,8 +139,6 @@ export const IdeLauncher = () => {
       void initialScan();
     }
   }, [isMobile, tryToScanRunningIdeProjects]);
-
-  const selectedItem = selectItems?.find((item) => item.selected);
 
   const renderContent = () => {
     if (!action) {
@@ -265,15 +250,10 @@ export const IdeLauncher = () => {
               selection
             </Subtitle>
           </TextContainer>
-          <s.SelectContainer>
-            <Select
-              placeholder={selectedItem?.label ?? "Select IDE Project"}
-              items={selectItems}
-              onChange={(value) => {
-                void handleSelectChange(value);
-              }}
-            />
-          </s.SelectContainer>
+          <IdeProjectSelect
+            items={selectItems}
+            onChange={(value) => void handleSelectChange(value)}
+          />
         </>
       );
     }

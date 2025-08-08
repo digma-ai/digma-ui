@@ -8,7 +8,3 @@ export const ButtonsContainer = styled.div`
   display: flex;
   gap: 16px;
 `;
-
-export const SelectContainer = styled.div`
-  width: 560px;
-`;

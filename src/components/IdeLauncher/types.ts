@@ -1,4 +1,4 @@
-export interface PluginInfo {
+export interface IntellijPluginInfo {
   name: string;
   productName: string;
   edition: string;
@@ -11,9 +11,12 @@ export interface PluginInfo {
   openProjects: string[];
 }
 
-export interface ShowIdeProjectResult {
+export interface ShowIntellijIdeProjectResult {
   result: "success" | "failure";
   error?: { message: string };
 }
 
-export type IdeScanningResult = { port: number; response: PluginInfo }[];
+export type IntellijIdeScanningResult = {
+  port: number;
+  response: IntellijPluginInfo;
+}[];
