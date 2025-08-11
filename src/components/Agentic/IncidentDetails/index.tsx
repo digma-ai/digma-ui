@@ -1,6 +1,6 @@
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useTheme } from "styled-components";
 import { useAgenticDispatch } from "../../../containers/Agentic/hooks";
@@ -113,6 +113,20 @@ export const IncidentDetails = () => {
     );
   };
 
+  const handleAgentSelect = useCallback(
+    (id: string | null) => {
+      setSearchParams((params) => {
+        if (id) {
+          params.set("agent", id);
+        } else {
+          params.delete("agent");
+        }
+        return params;
+      });
+    },
+    [setSearchParams]
+  );
+
   useEffect(() => {
     setAgentViewMode("summary");
   }, [agentId]);
@@ -136,17 +150,6 @@ export const IncidentDetails = () => {
   const isAgentChatEnabled = agentsData?.agents.find(
     (agent) => agent.name === `${agentId}_chat`
   );
-
-  const handleAgentSelect = (id: string | null) => {
-    setSearchParams((params) => {
-      if (id) {
-        params.set("agent", id);
-      } else {
-        params.delete("agent");
-      }
-      return params;
-    });
-  };
 
   if (!incidentData && isLoading) {
     return (

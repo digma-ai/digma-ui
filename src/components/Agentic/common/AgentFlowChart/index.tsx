@@ -1,4 +1,5 @@
 import { Position, type Edge } from "@xyflow/react";
+import React, { useCallback, useMemo } from "react";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { trackingEvents } from "../../tracking";
 import { FlowChart } from "../FlowChart";
@@ -91,7 +92,7 @@ const getFlowChartNodeData = ({
     : {};
 };
 
-export const AgentFlowChart = ({
+export const AgentFlowChartComponent = ({
   agents,
   onAgentSelect,
   selectedAgentId,
@@ -101,188 +102,208 @@ export const AgentFlowChart = ({
   onEditMCPServer,
   onDeleteMCPServer
 }: AgentFlowChartProps) => {
-  const extendedAgents: ExtendedAgent[] = [
-    {
-      name: "digma",
-      display_name: "Digma",
-      description: "Digma",
-      status: "waiting",
-      status_details: {},
-      mcp_servers: []
-    },
-    ...agents.map((agent) => ({
-      ...agent,
-      mcp_servers: agent.mcp_servers.map((server) => ({
-        ...server
-      }))
-    })),
-    {
-      name: "validator",
-      display_name: "Validator",
-      description: "Validator",
-      status: "waiting",
-      status_details: {},
-      mcp_servers: []
-    }
-  ];
-
-  const handleNodeClick = (id: string) => {
-    switch (id) {
-      case "digma": {
-        if (!isEditMode) {
-          onAgentSelect(null);
-        }
-        break;
+  const extendedAgents: ExtendedAgent[] = useMemo(
+    () => [
+      {
+        name: "digma",
+        display_name: "Digma",
+        description: "Digma",
+        status: "waiting",
+        status_details: {},
+        mcp_servers: []
+      },
+      ...agents.map((agent) => ({
+        ...agent,
+        mcp_servers: agent.mcp_servers.map((server) => ({
+          ...server
+        }))
+      })),
+      {
+        name: "validator",
+        display_name: "Validator",
+        description: "Validator",
+        status: "waiting",
+        status_details: {},
+        mcp_servers: []
       }
-      case "watchman":
-      case "triager":
-      case "infra_resolver":
-      case "code_resolver":
-        {
-          if (
-            extendedAgents?.find((a) => a.name === id)?.status === "skipped"
-          ) {
-            break;
+    ],
+    [agents]
+  );
+
+  const handleNodeClick = useCallback(
+    (id: string) => {
+      switch (id) {
+        case "digma": {
+          if (!isEditMode) {
+            onAgentSelect(null);
           }
-
-          onAgentSelect(id);
+          break;
         }
-        break;
-      case "validator":
-      default:
-        break;
-    }
-  };
+        case "watchman":
+        case "triager":
+        case "infra_resolver":
+        case "code_resolver":
+          {
+            if (
+              extendedAgents?.find((a) => a.name === id)?.status === "skipped"
+            ) {
+              break;
+            }
 
-  const nodes: FlowChartNode[] = [
-    {
-      type: "flowChart",
-      id: "digma",
-      position: { x: 0, y: -31 }, // TODO: find a way to center this
-      data: {
-        ...getFlowChartNodeData({
-          agent: extendedAgents?.find((a) => a.name === "digma"),
-          isSelected: !selectedAgentId,
-          isInteractive: !isEditMode
-        }),
-        orientation: "vertical",
-        type: "input"
+            onAgentSelect(id);
+          }
+          break;
+        case "validator":
+        default:
+          break;
       }
     },
-    {
-      type: "flowChart",
-      id: "watchman",
-      position: { x: 200, y: 0 },
-      data: {
-        ...getFlowChartNodeData({
-          agent: extendedAgents?.find((a) => a.name === "watchman"),
-          isSelected: "watchman" === selectedAgentId,
-          isInteractive:
-            extendedAgents?.find((a) => a.name === "watchman")?.status !==
-            "skipped",
-          isEditMode,
-          onAddMCPServer,
-          onEditMCPServer,
-          onDeleteMCPServer
-        })
-      }
-    },
-    {
-      type: "flowChart",
-      id: "triager",
-      position: { x: 500, y: 0 },
-      data: {
-        ...getFlowChartNodeData({
-          agent: extendedAgents?.find((a) => a.name === "triager"),
-          isSelected: "triager" === selectedAgentId,
-          isInteractive:
-            extendedAgents?.find((a) => a.name === "triager")?.status !==
-            "skipped",
-          isEditMode,
-          onAddMCPServer,
-          onEditMCPServer,
-          onDeleteMCPServer
-        })
-      }
-    },
-    {
-      type: "flowChart",
-      id: "infra_resolver",
-      position: { x: 800, y: -50 },
-      data: {
-        ...getFlowChartNodeData({
-          agent: extendedAgents?.find((a) => a.name === "infra_resolver"),
-          isSelected: "infra_resolver" === selectedAgentId,
-          isInteractive:
-            extendedAgents?.find((a) => a.name === "infra_resolver")?.status !==
-            "skipped",
-          isEditMode,
-          onAddMCPServer,
-          onEditMCPServer,
-          onDeleteMCPServer
-        })
-      }
-    },
-    {
-      type: "flowChart",
-      id: "code_resolver",
-      position: { x: 800, y: 50 },
-      data: {
-        ...getFlowChartNodeData({
-          agent: extendedAgents?.find((a) => a.name === "code_resolver"),
-          isSelected: "code_resolver" === selectedAgentId,
-          isInteractive:
-            extendedAgents?.find((a) => a.name === "code_resolver")?.status !==
-            "skipped",
-          isEditMode,
-          onAddMCPServer,
-          onEditMCPServer,
-          onDeleteMCPServer
-        })
-      }
-    },
-    {
-      type: "flowChart",
-      id: "validator",
-      position: { x: 1100, y: 0 },
-      data: {
-        ...getFlowChartNodeData({
-          agent: extendedAgents?.find((a) => a.name === "validator"),
-          isSelected: false,
-          isInteractive: false
-        }),
-        type: "output"
-      }
-    }
-  ];
+    [extendedAgents, isEditMode, onAgentSelect]
+  );
 
-  const edges: Edge[] = [
-    { id: "digma-watchman", source: "digma", target: "watchman" },
-    { id: "watchman-triager", source: "watchman", target: "triager" },
-    {
-      id: "triager-infra_resolver",
-      source: "triager",
-      target: "infra_resolver"
-    },
-    {
-      id: "triager-code_resolver",
-      source: "triager",
-      target: "code_resolver"
-    },
-    {
-      id: "infra_resolver-validator",
-      source: "infra_resolver",
-      target: "validator"
-    },
-    {
-      id: "code_resolver-validator",
-      source: "code_resolver",
-      target: "validator"
-    }
-  ].map((edge) => ({
-    ...edge,
-    animated: !isEditMode
-  }));
+  const nodes: FlowChartNode[] = useMemo(
+    () => [
+      {
+        type: "flowChart",
+        id: "digma",
+        position: { x: 0, y: -31 }, // TODO: find a way to center this
+        data: {
+          ...getFlowChartNodeData({
+            agent: extendedAgents?.find((a) => a.name === "digma"),
+            isSelected: !selectedAgentId,
+            isInteractive: !isEditMode
+          }),
+          orientation: "vertical",
+          type: "input"
+        }
+      },
+      {
+        type: "flowChart",
+        id: "watchman",
+        position: { x: 200, y: 0 },
+        data: {
+          ...getFlowChartNodeData({
+            agent: extendedAgents?.find((a) => a.name === "watchman"),
+            isSelected: "watchman" === selectedAgentId,
+            isInteractive:
+              extendedAgents?.find((a) => a.name === "watchman")?.status !==
+              "skipped",
+            isEditMode,
+            onAddMCPServer,
+            onEditMCPServer,
+            onDeleteMCPServer
+          })
+        }
+      },
+      {
+        type: "flowChart",
+        id: "triager",
+        position: { x: 500, y: 0 },
+        data: {
+          ...getFlowChartNodeData({
+            agent: extendedAgents?.find((a) => a.name === "triager"),
+            isSelected: "triager" === selectedAgentId,
+            isInteractive:
+              extendedAgents?.find((a) => a.name === "triager")?.status !==
+              "skipped",
+            isEditMode,
+            onAddMCPServer,
+            onEditMCPServer,
+            onDeleteMCPServer
+          })
+        }
+      },
+      {
+        type: "flowChart",
+        id: "infra_resolver",
+        position: { x: 800, y: -50 },
+        data: {
+          ...getFlowChartNodeData({
+            agent: extendedAgents?.find((a) => a.name === "infra_resolver"),
+            isSelected: "infra_resolver" === selectedAgentId,
+            isInteractive:
+              extendedAgents?.find((a) => a.name === "infra_resolver")
+                ?.status !== "skipped",
+            isEditMode,
+            onAddMCPServer,
+            onEditMCPServer,
+            onDeleteMCPServer
+          })
+        }
+      },
+      {
+        type: "flowChart",
+        id: "code_resolver",
+        position: { x: 800, y: 50 },
+        data: {
+          ...getFlowChartNodeData({
+            agent: extendedAgents?.find((a) => a.name === "code_resolver"),
+            isSelected: "code_resolver" === selectedAgentId,
+            isInteractive:
+              extendedAgents?.find((a) => a.name === "code_resolver")
+                ?.status !== "skipped",
+            isEditMode,
+            onAddMCPServer,
+            onEditMCPServer,
+            onDeleteMCPServer
+          })
+        }
+      },
+      {
+        type: "flowChart",
+        id: "validator",
+        position: { x: 1100, y: 0 },
+        data: {
+          ...getFlowChartNodeData({
+            agent: extendedAgents?.find((a) => a.name === "validator"),
+            isSelected: false,
+            isInteractive: false
+          }),
+          type: "output"
+        }
+      }
+    ],
+    [
+      extendedAgents,
+      isEditMode,
+      selectedAgentId,
+      onAddMCPServer,
+      onEditMCPServer,
+      onDeleteMCPServer
+    ]
+  );
+
+  const edges: Edge[] = useMemo(
+    () =>
+      [
+        { id: "digma-watchman", source: "digma", target: "watchman" },
+        { id: "watchman-triager", source: "watchman", target: "triager" },
+        {
+          id: "triager-infra_resolver",
+          source: "triager",
+          target: "infra_resolver"
+        },
+        {
+          id: "triager-code_resolver",
+          source: "triager",
+          target: "code_resolver"
+        },
+        {
+          id: "infra_resolver-validator",
+          source: "infra_resolver",
+          target: "validator"
+        },
+        {
+          id: "code_resolver-validator",
+          source: "code_resolver",
+          target: "validator"
+        }
+      ].map((edge) => ({
+        ...edge,
+        animated: !isEditMode
+      })),
+    [isEditMode]
+  );
 
   return (
     <FlowChart
@@ -293,3 +314,5 @@ export const AgentFlowChart = ({
     />
   );
 };
+
+export const AgentFlowChart = React.memo(AgentFlowChartComponent);
