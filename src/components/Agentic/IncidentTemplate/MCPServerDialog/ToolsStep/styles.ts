@@ -116,7 +116,7 @@ export const InstructionsTextArea = styled.textarea`
   color: #fff;
   ${/* TODO: change to typography from the theme */ ""}
   font-size: 14px;
-  resize: none;
+  resize: vertical;
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.v3.text.secondary};
