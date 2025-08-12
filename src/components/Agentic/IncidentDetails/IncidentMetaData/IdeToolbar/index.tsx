@@ -20,7 +20,7 @@ const IDE_ICONS: Record<string, ComponentType<IconProps>> = {
 export const IdeToolbar = ({ incidentId }: IdeToolbarProps) => {
   const [ides, setIdes] = useState<VSCodeExtensionInfo[]>();
 
-  const handleIdeButtonClick = (ide: string) => {
+  const handleIdeButtonClick = (ide: string) => () => {
     sendUserActionTrackingEvent(trackingEvents.INCIDENT_IDE_BUTTON_CLICKED, {
       ide
     });
@@ -68,7 +68,7 @@ export const IdeToolbar = ({ incidentId }: IdeToolbarProps) => {
                 size={"large"}
                 key={ide.ideUriScheme}
                 icon={(props) => <IdeIcon {...props} />}
-                onClick={() => handleIdeButtonClick(ide.ideUriScheme)}
+                onClick={handleIdeButtonClick(ide.ideUriScheme)}
               />
             </Tooltip>
           );

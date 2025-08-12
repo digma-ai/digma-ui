@@ -9,7 +9,7 @@ import {
   type NodeTypes
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { useEffect, useMemo, type MouseEvent } from "react";
+import React, { useCallback, useEffect, useMemo, type MouseEvent } from "react";
 import useDimensions from "react-cool-dimensions";
 import { useTheme } from "styled-components";
 import { getThemeKind } from "../../../common/App/styles";
@@ -27,7 +27,7 @@ const nodeTypes: NodeTypes = {
   flowChart: FlowChartNode
 };
 
-const FlowChartInner = ({
+const FlowChartInnerComponent = ({
   nodes,
   edges,
   onNodeClick,
@@ -38,11 +38,14 @@ const FlowChartInner = ({
   const { observe, width, height } = useDimensions();
   const { fitView } = useReactFlow();
 
-  const handleNodeClick = (e: MouseEvent, node: FlowChartNode) => {
-    if (onNodeClick) {
-      onNodeClick(node.id);
-    }
-  };
+  const handleNodeClick = useCallback(
+    (e: MouseEvent, node: FlowChartNode) => {
+      if (onNodeClick) {
+        onNodeClick(node.id);
+      }
+    },
+    [onNodeClick]
+  );
 
   const extendedNodes: FlowChartNode[] = useMemo(
     () =>
@@ -97,6 +100,8 @@ const FlowChartInner = ({
     </s.Container>
   );
 };
+
+export const FlowChartInner = React.memo(FlowChartInnerComponent);
 
 export const FlowChart = (props: FlowChartProps) => (
   <ReactFlowProvider>

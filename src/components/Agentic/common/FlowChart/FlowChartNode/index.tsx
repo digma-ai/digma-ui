@@ -4,7 +4,7 @@ import {
   type Node,
   type NodeProps
 } from "@xyflow/react";
-import { useState, type ReactNode } from "react";
+import React, { useState, type ReactNode } from "react";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { PauseIcon } from "../../../../common/icons/12px/PauseIcon";
 import { ChevronIcon } from "../../../../common/icons/16px/ChevronIcon";
@@ -46,7 +46,10 @@ export type FlowChartNodeData = {
 
 export type FlowChartNode = Node<FlowChartNodeData, "flowChart">;
 
-export const FlowChartNode = ({ id, data }: NodeProps<FlowChartNode>) => {
+export const FlowChartNodeComponent = ({
+  id,
+  data
+}: NodeProps<FlowChartNode>) => {
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
 
   const handleNodeClick = () => {
@@ -163,3 +166,5 @@ export const FlowChartNode = ({ id, data }: NodeProps<FlowChartNode>) => {
     </>
   );
 };
+
+export const FlowChartNode = React.memo(FlowChartNodeComponent);
