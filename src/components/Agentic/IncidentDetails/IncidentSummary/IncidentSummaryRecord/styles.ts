@@ -30,7 +30,6 @@ export const Header = styled.div`
 `;
 
 export const Agent = styled.span`
-  text-transform: capitalize;
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
