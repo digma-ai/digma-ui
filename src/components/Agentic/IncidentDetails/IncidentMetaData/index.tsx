@@ -20,7 +20,7 @@ import { Divider } from "./Divider";
 import { IdeToolbar } from "./IdeToolbar";
 import * as s from "./styles";
 
-const DATE_FORMAT = "dd MMM, yyyy HH:mm";
+const DATE_FORMAT = "dd MMM, y HH:mm";
 const SERVICE_TAGS_TO_SHOW = 2;
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 

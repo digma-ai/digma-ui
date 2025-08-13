@@ -15,7 +15,7 @@ export const DotTooltipContent = ({
         <s.Timestamp>
           {format(date, "HH:mm:ss.SSS")}
           <s.Divider />
-          {format(date, "MM/dd/yyyy")}
+          {format(date, "MM/dd/y")}
         </s.Timestamp>
         {getDurationString(data.duration)}
       </s.Container>

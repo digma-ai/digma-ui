@@ -157,7 +157,7 @@ export const OccurrenceChart = ({
                   return (
                     <s.TooltipContainer>
                       <span>Occurrences: {value}</span>
-                      <span>{format(date, "MM/dd/yyyy")}</span>
+                      <span>{format(date, "MM/dd/y")}</span>
                     </s.TooltipContainer>
                   );
                 }}

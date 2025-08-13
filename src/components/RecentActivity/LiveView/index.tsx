@@ -138,7 +138,7 @@ const getMaxDurationRecord = (
   );
 
 const formatXAxisDate = (dateTime: number): string =>
-  format(dateTime, "HH:mm MM/dd/yyyy");
+  format(dateTime, "HH:mm MM/dd/y");
 
 export const LiveView = ({ data, onClose }: LiveViewProps) => {
   const theme = useTheme();

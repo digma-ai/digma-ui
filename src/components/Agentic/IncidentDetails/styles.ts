@@ -6,7 +6,6 @@ import {
 import { Toggle } from "../../common/v3/Toggle";
 import { OptionButton } from "../../common/v3/Toggle/styles";
 import type { ToggleProps } from "../../common/v3/Toggle/types";
-import { textStyles } from "../common/AgentEventsList/AgentEvent/TypingMarkdown/MarkdownRenderer/styles";
 import type { AgentViewMode, BreadcrumbProps } from "./types";
 
 export const Container = styled.div`
@@ -153,8 +152,7 @@ export const StatusBarText = styled.span`
   white-space: nowrap;
 `;
 
-export const IncidentSummaryText = styled.div`
-  ${textStyles}
+export const IncidentSummaryContainer = styled.div`
   flex-grow: 1;
   overflow: auto;
 `;
