@@ -92,7 +92,7 @@ export const Environments = () => {
             cell: (info) => {
               const value = info.getValue();
               const dateString = value
-                ? format(value, "MMM d, yyyy h:mm aaa")
+                ? format(value, "MMM d, y h:mm aaa")
                 : "";
 
               return (

@@ -1165,11 +1165,19 @@ export interface StatusData {
   status_info: ErrorStatusInfo | null;
 }
 
+export interface IncidentSummaryRecord {
+  agent: string;
+  agent_display_name: string;
+  timestamp: string;
+  text: string;
+}
+
 export interface GetIncidentResponse {
   id: string;
   name: string;
   description: string;
   summary: string;
+  summary_timeline: IncidentSummaryRecord[];
   status: IncidentStatus;
   related_issues: GenericIncidentIssue[];
   related_artifacts: IncidentArtifact[];

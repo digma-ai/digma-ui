@@ -24,6 +24,7 @@ import { AdditionalInfo } from "./AdditionalInfo";
 import { AgentSummary } from "./AgentSummary";
 import { IncidentAgentChat } from "./IncidentAgentChat";
 import { IncidentMetaData } from "./IncidentMetaData";
+import { IncidentSummary } from "./IncidentSummary";
 import * as s from "./styles";
 import type { AgentViewMode } from "./types";
 
@@ -147,8 +148,8 @@ export const IncidentDetails = () => {
 
   const incidentStatus = incidentData?.description;
 
-  const isAgentChatEnabled = agentsData?.agents.find(
-    (agent) => agent.name === `${agentId}_chat`
+  const isAgentChatEnabled = Boolean(
+    agentsData?.agents.find((agent) => agent.name === `${agentId}_chat`)
   );
 
   if (!incidentData && isLoading) {
@@ -239,9 +240,11 @@ export const IncidentDetails = () => {
                   <AgentSummary key={agentId} />
                 )
               ) : (
-                <s.IncidentSummaryText>
-                  {incidentData?.summary}
-                </s.IncidentSummaryText>
+                <s.IncidentSummaryContainer>
+                  <IncidentSummary
+                    records={incidentData?.summary_timeline ?? []}
+                  />
+                </s.IncidentSummaryContainer>
               )}
             </s.SummaryContainer>
             <s.AdditionalInfoContainer>
