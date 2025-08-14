@@ -2,20 +2,20 @@ import type { IncidentSummaryRecord } from "../../../../redux/services/types";
 
 export const mockedIncidentSummaryRecords: IncidentSummaryRecord[] = [
   {
-    id: "1",
-    agent_display_name: "triager",
+    agent: "triager",
+    agent_display_name: "Triager",
     timestamp: "2023-10-01T12:00:00Z",
     text: "Lorem ipsum dolor sit amet"
   },
   {
-    id: "2",
-    agent_display_name: "code resolver",
+    agent: "code_resolver",
+    agent_display_name: "Code resolver",
     timestamp: "2023-10-01T12:00:00Z",
     text: "Lorem ipsum dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
   },
   {
-    id: "3",
-    agent_display_name: "infra resolver",
+    agent: "infra_resolver",
+    agent_display_name: "Infra resolver",
     timestamp: "2023-10-01T12:00:00Z",
     text: "Lorem ipsum dolor sit amet"
   }

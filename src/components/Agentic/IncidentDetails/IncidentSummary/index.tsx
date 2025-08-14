@@ -6,7 +6,7 @@ export const IncidentSummary = ({ records }: IncidentSummaryProps) => (
   <s.Container>
     {records.map((record) => (
       <IncidentSummaryRecord
-        key={record.id}
+        key={record.agent}
         agent={record.agent_display_name}
         datetime={record.timestamp}
         text={record.text}

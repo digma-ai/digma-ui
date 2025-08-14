@@ -1166,7 +1166,7 @@ export interface StatusData {
 }
 
 export interface IncidentSummaryRecord {
-  id: string;
+  agent: string;
   agent_display_name: string;
   timestamp: string;
   text: string;
