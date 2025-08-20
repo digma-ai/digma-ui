@@ -154,7 +154,7 @@
     "squarify": "^1.1.0",
     "styled-components": "^6.1.19",
     "uuid": "^11.1.0",
-    "zustand": "^4.5.5",
+    "zustand": "^5.0.8",
     "zustand-slices": "^0.3.0"
   },
   "overrides": {
