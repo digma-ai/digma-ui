@@ -10,18 +10,28 @@ import type {
 import { AgentFlowChartNodeToolbar } from "./AgentFlowChartNodeToolbar";
 import type { AgentFlowChartProps, ExtendedAgent } from "./types";
 
+const isAgentWaitingOrSkipped = (
+  agents: ExtendedAgent[],
+  agentName: string
+) => {
+  const agent = agents.find((a) => a.name === agentName);
+  return agent ? ["waiting", "skipped"].includes(agent.status) : undefined;
+};
+
 const getFlowChartNodeData = ({
   agent,
   isSelected,
   isInteractive,
+  isDisabled,
   isEditMode,
   onAddMCPServer,
   onEditMCPServer,
   onDeleteMCPServer
 }: {
   agent?: ExtendedAgent;
-  isInteractive?: boolean;
   isSelected?: boolean;
+  isInteractive?: boolean;
+  isDisabled?: boolean;
   isEditMode?: boolean;
   onAddMCPServer?: (agentName: string) => void;
   onEditMCPServer?: (agentName: string, server: string) => void;
@@ -69,7 +79,7 @@ const getFlowChartNodeData = ({
         isPending: agent.status === "pending",
         hasError: agent.status === "error",
         isInteractive,
-        isDisabled: agent.status === "skipped",
+        isDisabled,
         sideContainers: [
           {
             isVisible: Boolean(agent.mcp_servers.length > 0 || isEditMode),
@@ -86,8 +96,7 @@ const getFlowChartNodeData = ({
               />
             )
           }
-        ],
-        isKebabMenuVisible: isEditMode
+        ]
       }
     : {};
 };
@@ -186,8 +195,11 @@ export const AgentFlowChartComponent = ({
             agent: extendedAgents?.find((a) => a.name === "watchman"),
             isSelected: "watchman" === selectedAgentId,
             isInteractive:
-              extendedAgents?.find((a) => a.name === "watchman")?.status !==
-              "skipped",
+              Boolean(isEditMode) ||
+              !isAgentWaitingOrSkipped(extendedAgents, "watchman"),
+            isDisabled:
+              !isEditMode &&
+              isAgentWaitingOrSkipped(extendedAgents, "watchman"),
             isEditMode,
             onAddMCPServer,
             onEditMCPServer,
@@ -204,8 +216,10 @@ export const AgentFlowChartComponent = ({
             agent: extendedAgents?.find((a) => a.name === "triager"),
             isSelected: "triager" === selectedAgentId,
             isInteractive:
-              extendedAgents?.find((a) => a.name === "triager")?.status !==
-              "skipped",
+              Boolean(isEditMode) ||
+              !isAgentWaitingOrSkipped(extendedAgents, "triager"),
+            isDisabled:
+              !isEditMode && isAgentWaitingOrSkipped(extendedAgents, "triager"),
             isEditMode,
             onAddMCPServer,
             onEditMCPServer,
@@ -222,8 +236,11 @@ export const AgentFlowChartComponent = ({
             agent: extendedAgents?.find((a) => a.name === "infra_resolver"),
             isSelected: "infra_resolver" === selectedAgentId,
             isInteractive:
-              extendedAgents?.find((a) => a.name === "infra_resolver")
-                ?.status !== "skipped",
+              Boolean(isEditMode) ||
+              !isAgentWaitingOrSkipped(extendedAgents, "infra_resolver"),
+            isDisabled:
+              !isEditMode &&
+              isAgentWaitingOrSkipped(extendedAgents, "infra_resolver"),
             isEditMode,
             onAddMCPServer,
             onEditMCPServer,
@@ -240,8 +257,11 @@ export const AgentFlowChartComponent = ({
             agent: extendedAgents?.find((a) => a.name === "code_resolver"),
             isSelected: "code_resolver" === selectedAgentId,
             isInteractive:
-              extendedAgents?.find((a) => a.name === "code_resolver")
-                ?.status !== "skipped",
+              Boolean(isEditMode) ||
+              !isAgentWaitingOrSkipped(extendedAgents, "code_resolver"),
+            isDisabled:
+              !isEditMode &&
+              isAgentWaitingOrSkipped(extendedAgents, "code_resolver"),
             isEditMode,
             onAddMCPServer,
             onEditMCPServer,

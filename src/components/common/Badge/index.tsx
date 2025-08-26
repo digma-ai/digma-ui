@@ -1,4 +1,4 @@
-import { memo } from "react";
+import React from "react";
 import * as s from "./styles";
 import type { BadgeProps } from "./types";
 
@@ -8,4 +8,4 @@ const BadgeComponent = ({ customStyles }: BadgeProps) => (
   </s.Outline>
 );
 
-export const Badge = memo(BadgeComponent);
+export const Badge = React.memo(BadgeComponent);

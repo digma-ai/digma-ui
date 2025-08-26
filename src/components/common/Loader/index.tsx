@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-curly-brace-presence */
-import { memo } from "react";
+import React from "react";
 import { CircleLoader } from "../CircleLoader";
 import type { LoaderProps } from "./types";
 
@@ -365,4 +365,4 @@ const LoaderComponent = ({ size = 20, status, themeKind }: LoaderProps) => {
   }
 };
 
-export const Loader = memo(LoaderComponent);
+export const Loader = React.memo(LoaderComponent);

@@ -5,3 +5,8 @@ export interface AgentEventsListProps {
   onNavigateToIncident?: () => void;
   typeInitialEvents?: boolean;
 }
+
+export interface RenderState {
+  currentEventIndex: number;
+  isTyping: boolean;
+}
