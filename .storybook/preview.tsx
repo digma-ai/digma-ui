@@ -14,7 +14,7 @@ import { store } from "./store";
 
 const preview: Preview = {
   decorators: [
-    withRouter,
+    withRouter, // TODO: Fix the story crash on frequent rerendering
     (Story: StoryFn, context): JSX.Element => {
       const [isInitialized, setIsInitialized] = useState(false);
       const theme = context.globals.theme as Theme;

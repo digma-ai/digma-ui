@@ -69,7 +69,10 @@ const getFlowChartNodeData = ({
         isPending: agent.status === "pending",
         hasError: agent.status === "error",
         isInteractive,
-        isDisabled: agent.status === "skipped",
+        isDisabled:
+          !isEditMode &&
+          ["waiting", "skipped"].includes(agent.status) &&
+          !["digma", "validator"].includes(agent.name),
         sideContainers: [
           {
             isVisible: Boolean(agent.mcp_servers.length > 0 || isEditMode),
@@ -86,8 +89,7 @@ const getFlowChartNodeData = ({
               />
             )
           }
-        ],
-        isKebabMenuVisible: isEditMode
+        ]
       }
     : {};
 };
