@@ -23,7 +23,7 @@ export const ToolContainer = styled.details`
 `;
 
 export const ToolSummary = styled.summary`
-  background-color: ${({ theme }) => theme.colors.v3.surface.secondary};
+  background: ${({ theme }) => theme.colors.v3.surface.secondary};
   padding: 12px 16px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.v3.text.primary};
