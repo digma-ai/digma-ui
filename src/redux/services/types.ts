@@ -1241,6 +1241,14 @@ export interface IncidentAgentEvent {
   mcp_name?: string | null;
   conversation_id?: string;
   status?: IncidentAgentEventStatus;
+  section?: IncidentAgentEventSection;
+}
+
+export interface IncidentAgentEventSection {
+  id: string;
+  name: string;
+  description: string;
+  status: AgentStatus;
 }
 
 export type GetIncidentAgentEventsResponse = IncidentAgentEvent[];

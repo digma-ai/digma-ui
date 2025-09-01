@@ -1,7 +1,7 @@
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { MagicWandIcon } from "../../../../common/icons/16px/MagicWandIcon";
 import { trackingEvents } from "../../../tracking";
-import { Accordion } from "./Accordion";
+import { Accordion } from "../../Accordion";
 import * as s from "./styles";
 import type { AgentEventProps } from "./types";
 import { TypingMarkdown } from "./TypingMarkdown";

@@ -1,7 +1,7 @@
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { Chat } from "../../common/Chat";
 import { trackingEvents } from "../../tracking";
-import { AgentEventsList } from "../AgentEventsList";
+import { AgentEventList } from "../AgentEventList";
 import type { AgentChatProps } from "./types";
 
 export const AgentChat = ({
@@ -42,7 +42,7 @@ export const AgentChat = ({
       chatContent={
         <>
           {data && (
-            <AgentEventsList
+            <AgentEventList
               key={conversationId}
               events={data}
               typeInitialEvents={typeInitialMessages}
