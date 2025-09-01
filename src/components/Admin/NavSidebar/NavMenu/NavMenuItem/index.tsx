@@ -23,7 +23,7 @@ export const NavMenuItem = ({ item, onClick }: NavMenuItemProps) => {
         e.preventDefault();
         setIsExpanded(!isExpanded);
       } else {
-        onClick?.();
+        onClick?.(e);
       }
     };
 

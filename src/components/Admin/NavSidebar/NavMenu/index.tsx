@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useMemo, type MouseEvent } from "react";
 import { getFeatureFlagValue } from "../../../../featureFlags";
 import { useGetAboutQuery } from "../../../../redux/services/digma";
+import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { FeatureFlag } from "../../../../types";
 import { GlobeIcon } from "../../../common/icons/16px/GlobeIcon";
 import { HomeIcon } from "../../../common/icons/16px/HomeIcon";
@@ -16,6 +17,8 @@ export const NavMenu = () => {
     about,
     FeatureFlag.AreBlockedTracesEnabled
   );
+
+  const { isAgenticEnabled } = useConfigSelector();
 
   const navigationItems: NavigationItem[] = useMemo(
     () => [
@@ -63,16 +66,33 @@ export const NavMenu = () => {
               ]
             }
           ]
+        : []),
+      ...(isAgenticEnabled
+        ? [
+            {
+              id: "aiSre",
+              name: "AI SRE",
+              route: `${window.location.origin}/agentic`,
+              onClick: (e: MouseEvent<HTMLAnchorElement>) => {
+                e.preventDefault();
+                window.open(
+                  `${window.location.origin}/agentic`,
+                  "_blank",
+                  "noopener noreferrer"
+                );
+              }
+            }
+          ]
         : [])
     ],
-    [isTroubleshootingEnabled]
+    [isTroubleshootingEnabled, isAgenticEnabled]
   );
 
   return (
     <nav>
       <s.NavigationList>
         {navigationItems.map((x) => (
-          <NavMenuItem key={x.id} item={x} />
+          <NavMenuItem key={x.id} item={x} onClick={x.onClick} />
         ))}
       </s.NavigationList>
     </nav>

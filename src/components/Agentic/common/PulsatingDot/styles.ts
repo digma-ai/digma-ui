@@ -15,6 +15,6 @@ export const Container = styled.div`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.v3.text.white};
+  background: ${({ theme }) => theme.colors.v3.text.white};
   animation: ${pulsate} 1s infinite alternate;
 `;

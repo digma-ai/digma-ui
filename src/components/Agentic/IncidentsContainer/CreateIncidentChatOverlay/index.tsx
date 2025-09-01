@@ -61,7 +61,7 @@ export const CreateIncidentChatOverlay = () => {
         {
           id: "__start_message",
           type: "human",
-          agent_name: "incident_entry",
+          agent_name: AGENT_ID,
           message: text,
           tool_name: null,
           mcp_name: null

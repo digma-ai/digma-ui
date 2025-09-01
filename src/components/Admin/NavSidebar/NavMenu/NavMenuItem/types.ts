@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { MouseEvent, ReactNode } from "react";
 
 export interface NavigationItem {
   id: string;
@@ -6,6 +6,7 @@ export interface NavigationItem {
   route: string;
   icon?: ReactNode;
   items?: NavigationItem[];
+  onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
 }
 
 export interface ContainerProps {
@@ -14,5 +15,5 @@ export interface ContainerProps {
 
 export interface NavMenuItemProps {
   item: NavigationItem;
-  onClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
 }
