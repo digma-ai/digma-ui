@@ -1,18 +1,16 @@
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import { useParams } from "react-router";
 import { useStableSearchParams } from "../../../../hooks/useStableSearchParams";
 import { useGetIncidentAgentsQuery } from "../../../../redux/services/digma";
-import type {
-  AgentStatus,
-  IncidentAgentEvent
-} from "../../../../redux/services/types";
-import { groupBy } from "../../../../utils/groupBy";
+import type { IncidentAgentEvent } from "../../../../redux/services/types";
 import { ThreeCirclesSpinner } from "../../../common/ThreeCirclesSpinner";
 import { Spinner } from "../../../common/v3/Spinner";
+import { AgentEventList } from "../../common/AgentEventList";
 import { mockedAgentEvents } from "../../common/AgentEventList/mockData";
 import { AgentEventSection } from "../../common/AgentEventSection";
-import type { AgentEventSectionType } from "../../common/AgentEventSection/types";
+import { useAutoScroll } from "../useAutoScroll";
 import * as s from "./styles";
+import type { AgentEventSlice } from "./types";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
@@ -27,7 +25,7 @@ export const AgentSummary = () => {
   const incidentId = params.id;
   const [searchParams] = useStableSearchParams();
   const agentId = searchParams.get("agent");
-  // const { elementRef, handleElementScroll } = useAutoScroll<HTMLDivElement>();
+  const { elementRef, handleElementScroll } = useAutoScroll<HTMLDivElement>();
 
   const { data: agentsData } = useGetIncidentAgentsQuery(
     { id: incidentId ?? "" },
@@ -53,34 +51,72 @@ export const AgentSummary = () => {
     [agentsData, agentId]
   );
 
-  const sections: {
-    id: string;
-    name: string;
-    description: string;
-    status: AgentStatus;
-    events: IncidentAgentEvent[];
-    type: AgentEventSectionType | undefined;
-  }[] = useMemo(() => {
-    return Object.entries(
-      groupBy(agentEventsData, (event) => event.section?.id ?? "__ungrouped")
-    ).map(([sectionId, sectionEvents], i) => ({
-      id: sectionId,
-      // TODO: get section metadata from corresponding API endpoint
-      name: sectionEvents[0].section?.name ?? sectionId,
-      description: sectionEvents[0].section?.description ?? "",
-      status: sectionEvents[0].section?.status ?? "waiting",
-      events: sectionEvents,
-      type:
-        i === 0
-          ? "intro"
-          : i === agentEventsData.length - 1
-            ? "summary"
-            : undefined
-    }));
+  const slices: AgentEventSlice[] = useMemo(() => {
+    const result: AgentEventSlice[] = [];
+
+    if (agentEventsData.length === 0) {
+      return result;
+    }
+
+    let currentSlice: IncidentAgentEvent[] = [];
+    let currentSectionId: string | null = null;
+
+    for (let i = 0; i < agentEventsData.length; i++) {
+      const event = agentEventsData[i];
+      const eventSectionId = event.section?.id ?? null;
+
+      // If this is the first event or section changes
+      if (i === 0 || eventSectionId !== currentSectionId) {
+        // Process previous slice if it exists
+        if (currentSlice.length > 0) {
+          const firstEvent = currentSlice[0];
+
+          result.push({
+            // TODO: get section metadata from corresponding API endpoint
+            id: firstEvent.section?.id ?? `__ungrouped_${result.length}`,
+            name: firstEvent.section?.name ?? "",
+            description: firstEvent.section?.description ?? "",
+            status: firstEvent.section?.status ?? "waiting",
+            events: currentSlice,
+            type: result.length === 0 ? "intro" : undefined,
+            hasSection: Boolean(firstEvent.section?.id)
+          });
+        }
+
+        // Start new slice with current event
+        currentSlice = [event];
+        currentSectionId = eventSectionId;
+      } else {
+        // Add event to current slice (same section)
+        currentSlice.push(event);
+      }
+    }
+
+    // Process the final slice
+    if (currentSlice.length > 0) {
+      const firstEvent = currentSlice[0];
+
+      result.push({
+        id: firstEvent.section?.id ?? `__ungrouped_${result.length}`,
+        name: firstEvent.section?.name ?? "",
+        description: firstEvent.section?.description ?? "",
+        status: firstEvent.section?.status ?? "waiting",
+        events: currentSlice,
+        type: result.length === 0 ? "intro" : undefined,
+        hasSection: Boolean(firstEvent.section?.id)
+      });
+    }
+
+    // Mark the last section as summary if there are multiple sections
+    if (result.length > 1) {
+      result[result.length - 1].type = "summary";
+    }
+
+    return result;
   }, [agentEventsData]);
 
   return (
-    <s.Container>
+    <s.Container ref={elementRef} onScroll={handleElementScroll}>
       {!agentEventsData && isLoading && (
         <s.LoadingContainer>
           <Spinner size={32} />
@@ -88,13 +124,21 @@ export const AgentSummary = () => {
       )}
       {agentEventsData && (
         <s.EventsContainer>
-          {sections.map((section, i) => (
-            <AgentEventSection
-              key={section.id}
-              data={section}
-              typeInitialEvents={false}
-              index={i}
-            />
+          {slices.map((slice, i) => (
+            <Fragment key={slice.id}>
+              {slice.hasSection ? (
+                <AgentEventSection
+                  data={slice}
+                  typeInitialEvents={false}
+                  index={i}
+                />
+              ) : (
+                <AgentEventList
+                  events={slice.events}
+                  typeInitialEvents={false}
+                />
+              )}
+            </Fragment>
           ))}
         </s.EventsContainer>
       )}

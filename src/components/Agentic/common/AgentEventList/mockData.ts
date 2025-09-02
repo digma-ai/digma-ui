@@ -5,25 +5,13 @@ export const mockedAgentEvents: IncidentAgentEvent[] = [
     id: "1",
     type: "human",
     message: "Can you help me understand why my API response time is slow?",
-    agent_name: "agent",
-    section: {
-      id: "kubernetes",
-      name: "Kubernetes Investigator",
-      description: "Objective: Look for any issues in namespace",
-      status: "completed"
-    }
+    agent_name: "agent"
   },
   {
     id: "2",
     type: "token",
     message: "Let me analyze your application's performance data...",
-    agent_name: "agent",
-    section: {
-      id: "kubernetes",
-      name: "Kubernetes Investigator",
-      description: "Objective: Look for any issues in namespace",
-      status: "completed"
-    }
+    agent_name: "agent"
   },
   {
     id: "3",
