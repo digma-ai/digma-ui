@@ -6,8 +6,20 @@ const DEFAULT_MCP_SERVER_BLOCK_SIZE = 50; // in pixels
 
 export const Container = styled.div<ContainerProps>`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: ${({ $zoomLevel }) =>
     $zoomLevel ? $zoomLevel * DEFAULT_GAP_SIZE : DEFAULT_GAP_SIZE}px;
+  max-width: calc(
+    3 *
+      ${({ $zoomLevel }) =>
+        $zoomLevel
+          ? $zoomLevel * DEFAULT_MCP_SERVER_BLOCK_SIZE
+          : DEFAULT_MCP_SERVER_BLOCK_SIZE}px +
+      2 *
+      ${({ $zoomLevel }) =>
+        $zoomLevel ? $zoomLevel * DEFAULT_GAP_SIZE : DEFAULT_GAP_SIZE}px
+  );
 `;
 
 export const MCPServerBlock = styled.div<MCPServerBlockProps>`

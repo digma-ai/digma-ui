@@ -1,8 +1,12 @@
 import styled from "styled-components";
 import type { ContainerProps, MCPServerIconContainerProps } from "./types";
 
+const GAP = 6; // in pixels
+export const MCP_SERVER_ICON_SIZE = 17; // in pixels
+
 export const Container = styled.div<ContainerProps>`
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
   align-items: center;
   justify-content: center;
@@ -17,6 +21,14 @@ export const Container = styled.div<ContainerProps>`
       rgb(255 255 255 / 10%) 0%,
       rgb(255 255 255 / 0%) 100%
     );
+  max-width: calc(
+    3 *
+      ${({ $zoomLevel }) =>
+        $zoomLevel
+          ? $zoomLevel * MCP_SERVER_ICON_SIZE
+          : MCP_SERVER_ICON_SIZE}px +
+      2 * ${({ $zoomLevel }) => ($zoomLevel ? $zoomLevel * GAP : GAP)}px
+  );
 `;
 
 export const MCPServerIconContainer = styled.div<MCPServerIconContainerProps>`
