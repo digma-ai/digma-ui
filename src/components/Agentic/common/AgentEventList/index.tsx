@@ -1,16 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import type { IncidentAgentEvent } from "../../../../redux/services/types";
 import { AgentEvent } from "./AgentEvent";
-import type { AgentEventsListProps, RenderState } from "./types";
+import type { AgentEventListProps, RenderState } from "./types";
 
 const isTypingEvent = (event: IncidentAgentEvent) =>
   ["ai", "token"].includes(event.type);
 
-export const AgentEventsList = ({
+export const AgentEventList = ({
   events,
   onNavigateToIncident,
   typeInitialEvents
-}: AgentEventsListProps) => {
+}: AgentEventListProps) => {
   const [initialVisibleCount] = useState(() =>
     typeInitialEvents ? 0 : events.length
   );
@@ -97,10 +97,12 @@ export const AgentEventsList = ({
     [events, renderState.currentEventIndex]
   );
 
-  return visibleEvents.map((event) => (
+  return visibleEvents.map((event, i) => (
     <AgentEvent
       key={event.id}
       event={event}
+      index={i}
+      eventsCount={visibleEvents.length}
       onNavigateToIncident={onNavigateToIncident}
       onEventTypingComplete={handleEventTypingComplete}
       isEventTypingRequired={shouldShowTypingForEvent(event.id)}

@@ -1,10 +1,13 @@
-import { useState } from "react";
-import { ChevronIcon } from "../../../../../common/icons/16px/ChevronIcon";
-import { Direction } from "../../../../../common/icons/types";
+import { forwardRef, useState, type ForwardedRef } from "react";
+import { ChevronIcon } from "../../../common/icons/16px/ChevronIcon";
+import { Direction } from "../../../common/icons/types";
 import * as s from "./styles";
 import type { AccordionProps } from "./types";
 
-export const Accordion = ({ summary, content }: AccordionProps) => {
+export const AccordionComponent = (
+  { summary, content, className }: AccordionProps,
+  ref: ForwardedRef<HTMLDivElement>
+) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSummaryClick = () => {
@@ -12,7 +15,7 @@ export const Accordion = ({ summary, content }: AccordionProps) => {
   };
 
   return (
-    <s.Container>
+    <s.Container className={className} ref={ref}>
       <s.Summary onClick={handleSummaryClick}>
         <s.IconContainer>
           <ChevronIcon
@@ -27,3 +30,5 @@ export const Accordion = ({ summary, content }: AccordionProps) => {
     </s.Container>
   );
 };
+
+export const Accordion = forwardRef(AccordionComponent);

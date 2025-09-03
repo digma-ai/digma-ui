@@ -1,17 +1,22 @@
 import { useMemo } from "react";
 import { useParams } from "react-router";
 import { useStableSearchParams } from "../../../../hooks/useStableSearchParams";
-import {
-  useGetIncidentAgentEventsQuery,
-  useGetIncidentAgentsQuery
-} from "../../../../redux/services/digma";
+import { useGetIncidentAgentsQuery } from "../../../../redux/services/digma";
+import type { IncidentAgentEvent } from "../../../../redux/services/types";
 import { ThreeCirclesSpinner } from "../../../common/ThreeCirclesSpinner";
 import { Spinner } from "../../../common/v3/Spinner";
-import { AgentEventsList } from "../../common/AgentEventsList";
+import { AgentEventList } from "../../common/AgentEventList";
+import { mockedAgentEvents } from "../../common/AgentEventList/mockData";
 import { useAutoScroll } from "../useAutoScroll";
 import * as s from "./styles";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+
+const agentEventsData: IncidentAgentEvent[] = mockedAgentEvents.filter(
+  (event) => event.type !== "human"
+);
+
+const isLoading = false;
 
 export const AgentSummary = () => {
   const params = useParams();
@@ -28,13 +33,13 @@ export const AgentSummary = () => {
     }
   );
 
-  const { data: agentEventsData, isLoading } = useGetIncidentAgentEventsQuery(
-    { incidentId: incidentId ?? "", agentId: agentId ?? "" },
-    {
-      pollingInterval: REFRESH_INTERVAL,
-      skip: !incidentId || !agentId
-    }
-  );
+  // const { data: agentEventsData, isLoading } = useGetIncidentAgentEventsQuery(
+  //   { incidentId: incidentId ?? "", agentId: agentId ?? "" },
+  //   {
+  //     pollingInterval: REFRESH_INTERVAL,
+  //     skip: !incidentId || !agentId
+  //   }
+  // );
 
   const isAgentRunning = useMemo(
     () =>
@@ -52,7 +57,14 @@ export const AgentSummary = () => {
         </s.LoadingContainer>
       )}
       {agentEventsData && (
-        <AgentEventsList events={agentEventsData} typeInitialEvents={false} />
+        <s.EventsContainer>
+          {agentEventsData && (
+            <AgentEventList
+              events={agentEventsData}
+              typeInitialEvents={false}
+            />
+          )}
+        </s.EventsContainer>
       )}
       {isAgentRunning && <ThreeCirclesSpinner />}
     </s.Container>

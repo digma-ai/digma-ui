@@ -33,3 +33,9 @@ export const ToolSummary = styled.summary`
 export const ToolContent = styled.div`
   padding: 16px;
 `;
+
+export const EventsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;

@@ -1,6 +1,6 @@
 import type { IncidentAgentEvent } from "../../../../redux/services/types";
 
-export interface AgentEventsListProps {
+export interface AgentEventListProps {
   events: IncidentAgentEvent[];
   onNavigateToIncident?: () => void;
   typeInitialEvents?: boolean;

@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
   border-radius: 8px;
   flex-shrink: 0;
   overflow: hidden;
 `;
 
 export const Summary = styled.div`
-  background-color: ${({ theme }) => theme.colors.v3.surface.secondary};
+  background: ${({ theme }) => theme.colors.v3.surface.secondary};
   color: ${({ theme }) => theme.colors.v3.text.primary};
   padding: 8px;
   cursor: pointer;

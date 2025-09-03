@@ -4,7 +4,7 @@ import { MarkdownRenderer } from ".";
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof MarkdownRenderer> = {
   title:
-    "Agentic/common/AgentEventsList/AgentEvent/TypingMarkdown/MarkdownRenderer",
+    "Agentic/common/AgentEventList/AgentEvent/TypingMarkdown/MarkdownRenderer",
   component: MarkdownRenderer,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
