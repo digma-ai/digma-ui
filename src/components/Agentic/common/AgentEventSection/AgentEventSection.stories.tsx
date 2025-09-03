@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5";
-import { fn } from "storybook/test";
 import { useTheme } from "styled-components";
-import type { IncidentAgentEventSection } from "../../../../redux/services/types";
 import { mockedAgentEvents } from "../AgentEventList/mockData";
 import { AgentEventSection } from "../AgentEventSection";
 
@@ -22,46 +20,19 @@ type Story = StoryObj<typeof AgentEventSection>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
   args: {
-    data: {
-      id: "kubernetes",
-      name: "Kubernetes Investigator",
-      description: "Objective: Look for any issues in namespace",
-      status: "completed",
-      events: mockedAgentEvents.filter((event) => event.type !== "human")
-    },
-    onNavigateToIncident: fn(),
+    data: mockedAgentEvents.find((event) => event.type === "section"),
     typeInitialEvents: false
   }
 };
 
 export const Multiple: Story = {
   args: {
-    onNavigateToIncident: fn(),
     typeInitialEvents: false
   },
   render: (args) => {
     const theme = useTheme();
 
-    const data: IncidentAgentEventSection[] = [
-      {
-        id: "kubernetes",
-        name: "Kubernetes Investigator",
-        description: "Objective: Look for any issues in namespace",
-        status: "completed"
-      },
-      {
-        id: "observability",
-        name: "Observability Investigator",
-        description: "Objective: Look for any issues in the traces",
-        status: "running"
-      },
-      {
-        id: "code",
-        name: "Code Investigator",
-        description: "Objective: Look for any issues in the repo codebase",
-        status: "waiting"
-      }
-    ];
+    const data = mockedAgentEvents.filter((event) => event.type === "section");
 
     return (
       <div

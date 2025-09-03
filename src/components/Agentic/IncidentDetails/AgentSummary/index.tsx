@@ -1,4 +1,4 @@
-import { Fragment, useMemo } from "react";
+import { useMemo } from "react";
 import { useParams } from "react-router";
 import { useStableSearchParams } from "../../../../hooks/useStableSearchParams";
 import { useGetIncidentAgentsQuery } from "../../../../redux/services/digma";
@@ -7,10 +7,8 @@ import { ThreeCirclesSpinner } from "../../../common/ThreeCirclesSpinner";
 import { Spinner } from "../../../common/v3/Spinner";
 import { AgentEventList } from "../../common/AgentEventList";
 import { mockedAgentEvents } from "../../common/AgentEventList/mockData";
-import { AgentEventSection } from "../../common/AgentEventSection";
 import { useAutoScroll } from "../useAutoScroll";
 import * as s from "./styles";
-import type { AgentEventSlice } from "./types";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
@@ -51,70 +49,6 @@ export const AgentSummary = () => {
     [agentsData, agentId]
   );
 
-  const slices: AgentEventSlice[] = useMemo(() => {
-    const result: AgentEventSlice[] = [];
-
-    if (agentEventsData.length === 0) {
-      return result;
-    }
-
-    let currentSlice: IncidentAgentEvent[] = [];
-    let currentSectionId: string | null = null;
-
-    for (let i = 0; i < agentEventsData.length; i++) {
-      const event = agentEventsData[i];
-      const eventSectionId = event.section?.id ?? null;
-
-      // If this is the first event or section changes
-      if (i === 0 || eventSectionId !== currentSectionId) {
-        // Process previous slice if it exists
-        if (currentSlice.length > 0) {
-          const firstEvent = currentSlice[0];
-
-          result.push({
-            // TODO: get section metadata from corresponding API endpoint
-            id: firstEvent.section?.id ?? `__ungrouped_${result.length}`,
-            name: firstEvent.section?.name ?? "",
-            description: firstEvent.section?.description ?? "",
-            status: firstEvent.section?.status ?? "waiting",
-            events: currentSlice,
-            type: result.length === 0 ? "intro" : undefined,
-            hasSection: Boolean(firstEvent.section?.id)
-          });
-        }
-
-        // Start new slice with current event
-        currentSlice = [event];
-        currentSectionId = eventSectionId;
-      } else {
-        // Add event to current slice (same section)
-        currentSlice.push(event);
-      }
-    }
-
-    // Process the final slice
-    if (currentSlice.length > 0) {
-      const firstEvent = currentSlice[0];
-
-      result.push({
-        id: firstEvent.section?.id ?? `__ungrouped_${result.length}`,
-        name: firstEvent.section?.name ?? "",
-        description: firstEvent.section?.description ?? "",
-        status: firstEvent.section?.status ?? "waiting",
-        events: currentSlice,
-        type: result.length === 0 ? "intro" : undefined,
-        hasSection: Boolean(firstEvent.section?.id)
-      });
-    }
-
-    // Mark the last section as summary if there are multiple sections
-    if (result.length > 1) {
-      result[result.length - 1].type = "summary";
-    }
-
-    return result;
-  }, [agentEventsData]);
-
   return (
     <s.Container ref={elementRef} onScroll={handleElementScroll}>
       {!agentEventsData && isLoading && (
@@ -124,22 +58,12 @@ export const AgentSummary = () => {
       )}
       {agentEventsData && (
         <s.EventsContainer>
-          {slices.map((slice, i) => (
-            <Fragment key={slice.id}>
-              {slice.hasSection ? (
-                <AgentEventSection
-                  data={slice}
-                  typeInitialEvents={false}
-                  index={i}
-                />
-              ) : (
-                <AgentEventList
-                  events={slice.events}
-                  typeInitialEvents={false}
-                />
-              )}
-            </Fragment>
-          ))}
+          {agentEventsData && (
+            <AgentEventList
+              events={agentEventsData}
+              typeInitialEvents={false}
+            />
+          )}
         </s.EventsContainer>
       )}
       {isAgentRunning && <ThreeCirclesSpinner />}

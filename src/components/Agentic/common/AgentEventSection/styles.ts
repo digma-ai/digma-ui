@@ -28,7 +28,7 @@ export const SectionAccordion = styled(Accordion)<SectionAccordionProps>`
     position: sticky;
     top: 0;
     z-index: 1;
-    border-radius: ${({ $isSticky }) => ($isSticky ? "0 0 8px 8px" : "8px")};
+    border-radius: ${({ $isSticky }) => ($isSticky ? "0" : "8px")};
   }
 
   & > ${Content} {
@@ -40,6 +40,10 @@ export const SectionAccordionSummaryContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+`;
+
+export const SummarySubtitle = styled.span`
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
 
 export const SectionAccordionContentContainer = styled.div`

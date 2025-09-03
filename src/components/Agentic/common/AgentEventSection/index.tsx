@@ -18,7 +18,7 @@ const getHue = (index: number, sectionType?: AgentEventSectionType) => {
 
 export const AgentEventSection = ({
   data,
-  onNavigateToIncident,
+  type,
   typeInitialEvents,
   index
 }: AgentEventSectionProps) => {
@@ -52,24 +52,25 @@ export const AgentEventSection = ({
     <s.Container>
       <s.StickySentinel ref={sentinelRef} />
       <s.SectionAccordion
-        key={data.id}
         ref={stickyRef}
         $isSticky={isSticky}
-        $hue={getHue(index, data.type)}
+        $hue={getHue(index, type)}
         summary={
           <s.SectionAccordionSummaryContainer>
-            <span>{data.name}</span>
-            {data.status === "running" && <s.StyledPulsatingDot />}
+            <span>{data.section?.name}</span>
+            {data.section?.status === "active" && <s.StyledPulsatingDot />}
+            <s.SummarySubtitle>{data.section?.summary}</s.SummarySubtitle>
           </s.SectionAccordionSummaryContainer>
         }
         content={
           <s.SectionAccordionContentContainer>
-            <s.Description>{data.description}</s.Description>
-            <AgentEventList
-              events={data.events}
-              onNavigateToIncident={onNavigateToIncident}
-              typeInitialEvents={typeInitialEvents}
-            />
+            <s.Description>{data.section?.description}</s.Description>
+            {data.events && (
+              <AgentEventList
+                events={data.events}
+                typeInitialEvents={typeInitialEvents}
+              />
+            )}
           </s.SectionAccordionContentContainer>
         }
       />

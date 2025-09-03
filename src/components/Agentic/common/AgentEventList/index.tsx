@@ -97,10 +97,12 @@ export const AgentEventList = ({
     [events, renderState.currentEventIndex]
   );
 
-  return visibleEvents.map((event) => (
+  return visibleEvents.map((event, i) => (
     <AgentEvent
       key={event.id}
       event={event}
+      index={i}
+      eventsCount={visibleEvents.length}
       onNavigateToIncident={onNavigateToIncident}
       onEventTypingComplete={handleEventTypingComplete}
       isEventTypingRequired={shouldShowTypingForEvent(event.id)}

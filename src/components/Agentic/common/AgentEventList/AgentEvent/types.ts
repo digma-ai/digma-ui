@@ -5,6 +5,8 @@ import type {
 
 export interface AgentEventProps {
   event: IncidentAgentEvent;
+  index: number;
+  eventsCount: number;
   onNavigateToIncident?: () => void;
   onEventTypingComplete: (id: string) => void;
   isEventTypingRequired: boolean;

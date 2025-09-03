@@ -1,16 +1,10 @@
-import type {
-  IncidentAgentEvent,
-  IncidentAgentEventSection
-} from "../../../../redux/services/types";
+import type { IncidentAgentEvent } from "../../../../redux/services/types";
 
 export type AgentEventSectionType = "intro" | "summary";
 
 export interface AgentEventSectionProps {
-  data: IncidentAgentEventSection & {
-    type?: AgentEventSectionType;
-    events: IncidentAgentEvent[];
-  };
-  onNavigateToIncident?: () => void;
+  data: IncidentAgentEvent;
+  type?: AgentEventSectionType;
   typeInitialEvents?: boolean;
   index: number;
 }

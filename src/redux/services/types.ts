@@ -1234,12 +1234,14 @@ export interface IncidentAgentEvent {
     | "error"
     | "agent_end"
     | "input_user_required"
-    | "memory_update";
+    | "memory_update"
+    | "section";
   message: string;
   agent_name: string;
   tool_name?: string | null;
   mcp_name?: string | null;
   conversation_id?: string;
+  events?: IncidentAgentEvent[] | null;
   status?: IncidentAgentEventStatus;
   section?: IncidentAgentEventSection;
 }
@@ -1248,7 +1250,8 @@ export interface IncidentAgentEventSection {
   id: string;
   name: string;
   description: string;
-  status: AgentStatus;
+  summary: string;
+  status: "active" | "completed";
 }
 
 export type GetIncidentAgentEventsResponse = IncidentAgentEvent[];
