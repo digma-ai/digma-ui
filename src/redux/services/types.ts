@@ -1037,6 +1037,7 @@ export interface GetSpanInfoResponse {
   firstSeen?: string;
   lastSeen?: string;
   linkedEndpoints?: LinkedEndpoint[];
+  uid?: string;
 }
 
 export interface GetSpanEnvironmentsPayload {

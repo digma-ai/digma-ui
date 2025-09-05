@@ -8,6 +8,7 @@ import History, {
   type HistoryEntryLocation
 } from "../../../../history/History";
 import { usePrevious } from "../../../../hooks/usePrevious";
+import { useStableSearchParams } from "../../../../hooks/useStableSearchParams";
 import {
   digmaApi,
   useGetSpanInfoQuery
@@ -87,6 +88,7 @@ export const RepositorySidebarOverlay = ({
     () => new History<RepositorySidebarHistoryState>([])
   );
   const previousIsSidebarOpen = usePrevious(isSidebarOpen);
+  const [, setSearchParams] = useStableSearchParams();
 
   const { data: spanInfo } = useGetSpanInfoQuery(
     { spanCodeObjectId: currentSpanCodeObjectId ?? "" },
@@ -130,9 +132,17 @@ export const RepositorySidebarOverlay = ({
       e: CustomEvent<HistoryEntry<RepositorySidebarHistoryState>>
     ) => {
       setCurrentSpanCodeObjectId(e.detail.state?.spanCodeObjectId);
-      setCurrentTabLocation(
-        e.detail.state?.tabLocation ?? { id: TAB_IDS.ISSUES }
-      );
+      const newTabLocation = e.detail.state?.tabLocation ?? {
+        id: TAB_IDS.ISSUES
+      };
+      setCurrentTabLocation(newTabLocation);
+      setSearchParams((params) => {
+        if (spanInfo?.uid) {
+          params.set("sidebar-scope", spanInfo.uid);
+        }
+        params.set("sidebar-view", JSON.stringify(newTabLocation));
+        return params;
+      });
     };
 
     window.addEventListener(
