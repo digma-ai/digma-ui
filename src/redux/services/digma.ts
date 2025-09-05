@@ -110,6 +110,8 @@ import type {
   SetMetricsReportDataPayload,
   SetServiceEndpointsPayload,
   SetServiceEnvironmentsPayload,
+  StartIncidentCreationChatPayload,
+  StartIncidentCreationChatResponse,
   TestMCPServerPayload,
   TestMCPServerResponse,
   UndismissErrorPayload,
@@ -663,12 +665,23 @@ export const digmaApi = createApi({
       }),
       invalidatesTags: ["IncidentAgentChatEvent"]
     }),
+    startIncidentCreationChat: builder.mutation<
+      StartIncidentCreationChatResponse,
+      StartIncidentCreationChatPayload
+    >({
+      query: ({ data }) => ({
+        url: `Agentic/manual-incident`,
+        method: "POST",
+        body: data
+      }),
+      invalidatesTags: ["IncidentEntryAgentChatEvent"]
+    }),
     sendMessageToIncidentCreationChat: builder.mutation<
-      unknown, // text/event-stream
+      void,
       SendMessageToIncidentCreationChatPayload
     >({
       query: ({ incidentId, data }) => ({
-        url: `Agentic/incident-entry/${window.encodeURIComponent(incidentId)}`,
+        url: `Agentic/manual-incident/${window.encodeURIComponent(incidentId)}`,
         method: "POST",
         body: data
       }),
@@ -845,6 +858,7 @@ export const {
   useGetIncidentAgentEventsQuery,
   useGetIncidentAgentChatEventsQuery,
   useSendMessageToIncidentAgentChatMutation,
+  useStartIncidentCreationChatMutation,
   useSendMessageToIncidentCreationChatMutation,
   useGetIncidentAgentDirectivesQuery,
   useDeleteIncidentAgentDirectiveMutation,
