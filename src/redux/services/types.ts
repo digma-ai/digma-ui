@@ -1258,6 +1258,14 @@ export interface SendMessageToIncidentAgentChatPayload {
   data: { text: string };
 }
 
+export interface StartIncidentCreationChatPayload {
+  data: { text: string };
+}
+
+export interface StartIncidentCreationChatResponse {
+  conversation_id: string;
+}
+
 export interface SendMessageToIncidentCreationChatPayload {
   incidentId: string;
   data: { text: string };
